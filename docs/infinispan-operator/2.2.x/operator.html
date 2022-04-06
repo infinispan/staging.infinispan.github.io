@@ -454,8 +454,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#operator">1. Infinispan Operator</a>
 <ul class="sectlevel2">
 <li><a href="#infinispan-operator-deployments_operator">1.1. Infinispan Operator deployments</a></li>
-<li><a href="#_cluster_management">1.2. Cluster management</a></li>
-<li><a href="#_resource_reconciliation">1.3. Resource reconciliation</a></li>
+<li><a href="#operator-managed-clusters_operator">1.2. Cluster management</a></li>
+<li><a href="#operator-reconciliation_operator">1.3. Resource reconciliation</a></li>
 </ul>
 </li>
 <li><a href="#installing-native-cli-plugin">2. Installing the native Infinispan CLI as a client plugin</a>
@@ -525,11 +525,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#configuring-autoscaling_services">7.9.1. Configuring automatic scaling</a></li>
 </ul>
 </li>
-<li><a href="#adding-custom-labels_services">7.10. Adding labels to Infinispan resources</a>
-<ul class="sectlevel3">
-<li><a href="#label-environment-variables_services">7.10.1. Global labels for Infinispan Operator</a></li>
-</ul>
-</li>
+<li><a href="#adding-custom-labels_services">7.10. Adding labels and annotations to Infinispan resources</a></li>
+<li><a href="#adding-labels-annotations-env_services">7.11. Adding labels and annotations with environment variables</a></li>
 </ul>
 </li>
 <li><a href="#configuring-authentication">8. Configuring authentication</a>
@@ -732,7 +729,7 @@ Infinispan Operator also configures Infinispan services according to the specifi
 </div>
 </div>
 <div class="sect2">
-<h3 id="_cluster_management"><a class="anchor" href="#_cluster_management"></a>1.2. Cluster management</h3>
+<h3 id="operator-managed-clusters_operator"><a class="anchor" href="#operator-managed-clusters_operator"></a>1.2. Cluster management</h3>
 <div class="paragraph">
 <p>A single Infinispan Operator installation can manage multiple Infinispan clusters in separate namespaces.
 Each time a user applies CRs to modify the deployment, Infinispan Operator applies the changes globally to all Infinispan clusters.</p>
@@ -745,7 +742,7 @@ Each time a user applies CRs to modify the deployment, Infinispan Operator appli
 </div>
 </div>
 <div class="sect2">
-<h3 id="_resource_reconciliation"><a class="anchor" href="#_resource_reconciliation"></a>1.3. Resource reconciliation</h3>
+<h3 id="operator-reconciliation_operator"><a class="anchor" href="#operator-reconciliation_operator"></a>1.3. Resource reconciliation</h3>
 <div class="paragraph">
 <p>Infinispan Operator reconciles custom resources such as the <code>Cache</code> CR with resources on your Infinispan cluster.</p>
 </div>
@@ -2793,10 +2790,11 @@ In this case you should use eviction to control the size of the data container o
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-custom-labels_services"><a class="anchor" href="#adding-custom-labels_services"></a>7.10. Adding labels to Infinispan resources</h3>
+<h3 id="adding-custom-labels_services"><a class="anchor" href="#adding-custom-labels_services"></a>7.10. Adding labels and annotations to Infinispan resources</h3>
 <div class="paragraph _abstract">
-<p>Attach key/value labels to pods and services that Infinispan Operator creates and manages.
-These labels help you identify relationships between objects to better organize and monitor Infinispan resources.</p>
+<p>Attach key/value labels and annotations to pods and services that Infinispan Operator creates and manages.
+Labels help you identify relationships between objects to better organize and monitor Infinispan resources.
+Annotations are arbitrary non-identifying metadata for client applications or deployment and management tooling.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -2805,40 +2803,16 @@ These labels help you identify relationships between objects to better organize 
 <p>Open your <code>Infinispan</code> CR for editing.</p>
 </li>
 <li>
-<p>Add any labels that you want Infinispan Operator to attach to resources with <code>metadata.annotations</code>.</p>
+<p>Attach labels and annotations to Infinispan resources in the <code>metadata.annotations</code> section.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Define values for annotations directly in the <code>metadata.annotations</code> section.</p>
 </li>
 <li>
-<p>Add values for your labels with <code>metadata.labels</code>.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Specify labels that you want to attach to services with the <code>metadata.annotations.infinispan.org/targetLabels</code> field.</p>
+<p>Define values for labels with the <code>metadata.labels</code> field.</p>
 </li>
-<li>
-<p>Specify labels that you want to attach to pods with the <code>metadata.annotations.infinispan.org/podTargetLabels</code> field.</p>
-</li>
-<li>
-<p>Define values for your labels with the <code>metadata.labels</code> fields.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">apiVersion: infinispan.org/v1
-kind: Infinispan
-metadata:
-  annotations:
-    infinispan.org/targetLabels: svc-label1, svc-label2
-    infinispan.org/podTargetLabels: pod-label1, pod-label2
-  labels:
-    svc-label1: svc-value1
-    svc-label2: svc-value2
-    pod-label1: pod-value1
-    pod-label2: pod-value2
-    # The operator does not attach these labels to resources.
-    my-label: my-value
-    environment: development</code></pre>
-</div>
-</div>
-</li>
-</ol>
+</ul>
 </div>
 </li>
 <li>
@@ -2846,38 +2820,97 @@ metadata:
 </li>
 </ol>
 </div>
-<div class="ulist _additional-resources">
-<div class="title">Additional resources</div>
+<div class="listingblock">
+<div class="title">Custom annotations</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  annotations:
+    infinispan.org/targetAnnotations: service-annotation1, service-annotation2
+    infinispan.org/podTargetAnnotations: pod-annotation1, pod-annotation2
+    service-annotation1: value
+    service-annotation2: value
+    pod-annotation1: value
+    pod-annotation2: value</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Custom labels</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  annotations:
+    infinispan.org/targetLabels: service-label1, service-label2
+    infinispan.org/podTargetLabels: pod-label1, pod-label2
+  labels:
+    service-label1: value
+    service-label2: value
+    pod-label1: value
+    pod-label2: value
+    # The operator does not attach these labels to resources.
+    my-label: my-value
+    environment: development</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-labels-annotations-env_services"><a class="anchor" href="#adding-labels-annotations-env_services"></a>7.11. Adding labels and annotations with environment variables</h3>
+<div class="paragraph _abstract">
+<p>Set environment variables for Infinispan Operator to add labels and annotations that automatically propagate to all Infinispan pods and services.</p>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Add labels and annotations to your Infinispan Operator subscription with the <code>spec.config.env</code> field in one of the following ways:</p>
+</div>
+<div class="ulist">
 <ul>
 <li>
-<p><a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Labels and Selectors</a></p>
+<p>Use the <code>kubectl edit subscription</code> command.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>kubectl edit subscription infinispan -n openshift-operators</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p><a href="https://github.com/kubernetes/kubernetes/blob/release-1.0/docs/user-guide/labels.md">Labels: Kubernetes User Guide</a></p>
+<p>Use the Red Hat OpenShift Console.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to <strong>Operators</strong> &gt; <strong>Installed Operators</strong> &gt; <strong>Subscription</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Edit Subscription</strong> from the <strong>Actions</strong> menu.</p>
+</li>
+</ol>
+</div>
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="label-environment-variables_services"><a class="anchor" href="#label-environment-variables_services"></a>7.10.1. Global labels for Infinispan Operator</h4>
-<div class="paragraph _abstract">
-<p>Global labels are automatically propagated to all Infinispan pods and services.</p>
-</div>
-<div class="paragraph">
-<p>You can add and modify global labels for Infinispan Operator with the <code>env</code> field in the operator yaml.</p>
-</div>
 <div class="listingblock">
+<div class="title">Labels and annotations with environment variables</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml"># Defines global labels for services.
-- name: INFINISPAN_OPERATOR_TARGET_LABELS
-  value: |
-    {"svc-label1":"svc-value1",
-     "svc-label2":"svc-value2"}
-# Defines global labels for pods.
-- name: INFINISPAN_OPERATOR_POD_TARGET_LABELS
-  value: |
-    {"pod-label1":"pod-value1",
-     "pod-label2":"pod-value2"}</code></pre>
-</div>
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">spec:
+  config:
+    env:
+      - name: INFINISPAN_OPERATOR_TARGET_LABELS
+        value: |
+         {"service-label1":"value",
+         service-label1":"value"}
+      - name: INFINISPAN_OPERATOR_POD_TARGET_LABELS
+        value: |
+         {"pod-label1":"value",
+         "pod-label2":"value"}
+      - name: INFINISPAN_OPERATOR_TARGET_ANNOTATIONS
+        value: |
+         {"service-annotation1":"value",
+         "service-annotation2":"value"}
+      - name: INFINISPAN_OPERATOR_POD_TARGET_ANNOTATIONS
+        value: |
+         {"pod-annotation1":"value",
+         "pod-annotation2":"value"}</code></pre>
 </div>
 </div>
 </div>
@@ -3952,9 +3985,12 @@ infinispan-external  NodePort        192.0.2.24       &lt;none&gt;        11222:
 <p>Verify that the route is available.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl get ingress
-
-NAME                 CLASS    HOSTS   ADDRESS   PORTS   AGE
+<pre class="highlight nowrap"><code>kubectl get ingress</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>NAME                 CLASS    HOSTS   ADDRESS   PORTS   AGE
 infinispan   &lt;none&gt;   *                 443     73s</code></pre>
 </div>
 </div>
@@ -4154,7 +4190,7 @@ You must ensure that Infinispan clusters establish connections in the same way a
 <div class="sect2">
 <h3 id="cross-site-expose-types_cross-site"><a class="anchor" href="#cross-site-expose-types_cross-site"></a>13.1. Cross-site replication expose types</h3>
 <div class="paragraph _abstract">
-<p>You can use a <code>NodePort</code> service or a <code>LoadBalancer</code> service to handle network traffic for backup operations between Infinispan clusters.
+<p>You can use a <code>NodePort</code> service, a <code>LoadBalancer</code> service, or an OpenShift <code>Route</code> to handle network traffic for backup operations between Infinispan clusters.
 Before you start setting up cross-site replication you should determine what expose type is available for your Red Hat OpenShift cluster.
 In some cases you may require an administrator to provision services before you can configure an expose type.</p>
 </div>
@@ -4168,12 +4204,25 @@ In most cases, an administrator must also configure DNS routing for those extern
 </div>
 <div class="paragraph">
 <div class="title"><code>LoadBalancer</code></div>
-<p>A <code>LoadBalancer</code> is service that directs network traffic to the correct node in the OpenShift cluster.</p>
+<p>A <code>LoadBalancer</code> is a service that directs network traffic to the correct node in the OpenShift cluster.</p>
 </div>
 <div class="paragraph">
 <p>Whether you can use a <code>LoadBalancer</code> as the expose type for cross-site replication depends on the host platform.
 AWS supports network load balancers (NLB) while some other cloud platforms do not.
 To use a <code>LoadBalancer</code> service, an administrator must first create an ingress controller backed by an NLB.</p>
+</div>
+<div class="paragraph">
+<div class="title"><code>Route</code></div>
+<p>An OpenShift <code>Route</code> allows Infinispan clusters to connect with each other through a public secure URL.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan uses TLS with the SNI header to send backup requests between clusters through an OpenShift <code>Route</code>.
+To do this you must add a keystore with TLS certificates so that Infinispan can encrypt network traffic for cross-site replication.</p>
+</div>
+<div class="paragraph">
+<p>When you specify <code>Route</code> as the expose type for cross-site replication, Infinispan Operator creates a route with TLS passthrough encryption for each Infinispan cluster that it manages.
+You can specify a hostname for the <code>Route</code> but you cannot specify a <code>Route</code> that you have already created.
+Likewise it is not possible to use an ingress instead of a route because Kubernetes does not support TLS+SNI.</p>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -4436,7 +4485,8 @@ kubectl create secret generic site-a-secret -n ns-site-a --from-literal=token=$T
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Determine a suitable expose type for cross-site replication.</p>
+<p>Determine a suitable expose type for cross-site replication.<br>
+If you use an OpenShift <code>Route</code> you must add a keystore with TLS certificates and secure cross-site connections.</p>
 </li>
 <li>
 <p>Create and exchange Red Hat OpenShift service account tokens for each Infinispan cluster.<br>
@@ -4454,10 +4504,27 @@ Or, if you are using Kubernetes, apply cluster roles and create site access secr
 <p>Specify the name of the local site with <code>spec.service.sites.local.name</code>.</p>
 </li>
 <li>
-<p>Set the value of the <code>spec.service.sites.local.expose.type</code> field to either <code>NodePort</code> or <code>LoadBalancer</code>.</p>
+<p>Configure the expose type for cross-site replication.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Set the value of the <code>spec.service.sites.local.expose.type</code> field to one of the following:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>NodePort</code></p>
 </li>
 <li>
-<p>Optionally configure ports with the following fields:</p>
+<p><code>LoadBalancer</code></p>
+</li>
+<li>
+<p><code>Route</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Optionally specify a port or custom hostname with the following fields:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -4466,7 +4533,13 @@ Or, if you are using Kubernetes, apply cluster roles and create site access secr
 <li>
 <p><code>spec.service.sites.local.expose.port</code> if you use a <code>LoadBalancer</code> service.</p>
 </li>
+<li>
+<p><code>spec.service.sites.local.expose.routeHostName</code> if you use an OpenShift <code>Route</code>.</p>
+</li>
 </ul>
+</div>
+</li>
+</ol>
 </div>
 </li>
 <li>
@@ -4635,7 +4708,8 @@ Manual cross-site connections are necessary in any scenario where access to the 
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Determine a suitable expose type for cross-site replication.</p>
+<p>Determine a suitable expose type for cross-site replication.<br>
+If you use an OpenShift <code>Route</code> you must add a keystore with TLS certificates and secure cross-site connections.</p>
 </li>
 <li>
 <p>Ensure you have the correct host names and ports for each Infinispan cluster and each <code>&lt;cluster-name&gt;-site</code> service.</p>
@@ -4655,10 +4729,27 @@ Manual cross-site connections are necessary in any scenario where access to the 
 <p>Specify the name of the local site with <code>spec.service.sites.local.name</code>.</p>
 </li>
 <li>
-<p>Set the value of the <code>spec.service.sites.local.expose.type</code> field to either <code>NodePort</code> or <code>LoadBalancer</code>.</p>
+<p>Configure the expose type for cross-site replication.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Set the value of the <code>spec.service.sites.local.expose.type</code> field to one of the following:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>NodePort</code></p>
 </li>
 <li>
-<p>Optionally configure ports with the following fields:</p>
+<p><code>LoadBalancer</code></p>
+</li>
+<li>
+<p><code>Route</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Optionally specify a port or custom hostname with the following fields:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -4667,7 +4758,13 @@ Manual cross-site connections are necessary in any scenario where access to the 
 <li>
 <p><code>spec.service.sites.local.expose.port</code> if you use a <code>LoadBalancer</code> service.</p>
 </li>
+<li>
+<p><code>spec.service.sites.local.expose.routeHostName</code> if you use an OpenShift <code>Route</code>.</p>
+</li>
 </ul>
+</div>
+</li>
+</ol>
 </div>
 </li>
 <li>
@@ -4838,7 +4935,7 @@ This prevents a large number of log files from uses container storage.</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.expose.type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the network service for cross-site replication. Infinispan clusters use this service to communicate and perform backup operations. You can set the value to <code>NodePort</code> or <code>LoadBalancer</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the network service for cross-site replication. Infinispan clusters use this service to communicate and perform backup operations. You can set the value to <code>NodePort</code>, <code>LoadBalancer</code>, or <code>Route</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.expose.nodePort</code></p></td>
@@ -4847,6 +4944,10 @@ This prevents a large number of log files from uses container storage.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.expose.port</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the network port for the service if you expose Infinispan through a <code>LoadBalancer</code> service. The default port is <code>7900</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.expose.routeHostName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a custom hostname if you expose Infinispan through an OpenShift <code>Route</code>. If you do not set a value then OpenShift generates a hostname.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.maxRelayNodes</code></p></td>
@@ -4941,7 +5042,11 @@ If you set up cross-site on Kubernetes this field specifies the access secret fo
 <div class="sect2">
 <h3 id="securing-cross-site-connections_cross-site"><a class="anchor" href="#securing-cross-site-connections_cross-site"></a>13.5. Securing cross-site connections</h3>
 <div class="paragraph _abstract">
-<p>Add keystores, and optional trust stores, so that Infinispan clusters can encrypt RELAY messages and secure cross-site replication traffic.</p>
+<p>Add keystores and trust stores so that Infinispan clusters can secure cross-site replication traffic.</p>
+</div>
+<div class="paragraph">
+<p>You must add a keystore to use an OpenShift <code>Route</code> as the expose type for cross-site replication.
+Securing cross-site connections is optional if you use a <code>NodePort</code> or <code>LoadBalancer</code> as the expose type.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
