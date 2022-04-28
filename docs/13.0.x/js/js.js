@@ -27,7 +27,7 @@ $(document).ready(function() {
     $('#dchooser').append('<option value="/titles/xsite/xsite.html">Infinispan cross-site replication</option>');
     $('#dchooser').change(function(e) {
        if (this.value !== '') {
-          window.location.href = path.substring(0, path.index('/titles/')) + this.value;
+          window.location.href = path.substring(0, path.indexOf('/titles/')) + this.value;
        }
     });
     $('#dchooser').after('<hr/>');
