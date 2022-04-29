@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.16">
 <title>Infinispan Operator 2.2 Guide</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -193,8 +193,7 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
 details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
 details{margin-left:1.25rem}
-details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
-details>summary::-webkit-details-marker{display:none}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;-webkit-tap-highlight-color:transparent}
 details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
 details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
 details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
@@ -236,8 +235,9 @@ pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
 table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
 table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
 table.linenotable td.code{padding-left:.75em}
-table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
-pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+table.linenotable td.linenos{border-right:1px solid;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
 .quoteblock{margin:0 1em 1.25em 1.5em;display:table}
 .quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
 .quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
@@ -274,7 +274,7 @@ table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-c
 table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
 table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
 table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
-table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
 th.halign-center,td.halign-center{text-align:center}
@@ -290,11 +290,10 @@ ol{margin-left:1.75em}
 ul li ol{margin-left:1.5em}
 dl dd{margin-left:1.125em}
 dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
-li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
 ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
 ul.unstyled,ol.unstyled{margin-left:0}
-li>p:empty:only-child::before{content:"";display:inline-block}
 ul.checklist>li>p:first-child{margin-left:-1em}
 ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
 ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
@@ -337,6 +336,8 @@ sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
 #footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
 #footnotes .footnote:last-of-type{margin-bottom:0}
 #content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
 div.unbreakable{page-break-inside:avoid}
 .big{font-size:larger}
 .small{font-size:smaller}
@@ -446,7 +447,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
 <script src="/assets/javascript/copy.js" type="text/javascript"></script>
 </head>
-<body id="infinispan_operator" class="book toc2 toc-left">
+<body id="infinispan_operator" class="article toc2 toc-left">
 <div id="header">
 <h1>Infinispan Operator 2.2 Guide</h1>
 <div id="toc" class="toc2">
@@ -573,13 +574,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#exposing-loadbalancer_network-services">12.2. Exposing Infinispan through a LoadBalancer service</a></li>
 <li><a href="#exposing-nodeport_network-services">12.3. Exposing Infinispan through a NodePort service</a></li>
 <li><a href="#exposing-routes_network-services">12.4. Exposing Infinispan through a Route</a></li>
-<li><a href="#network-services_network-services">12.5. Network services</a>
-<ul class="sectlevel3">
-<li><a href="#_internal_service">12.5.1. Internal service</a></li>
-<li><a href="#_external_service">12.5.2. External service</a></li>
-<li><a href="#_cross_site_service">12.5.3. Cross-site service</a></li>
-</ul>
-</li>
+<li><a href="#network-services_network-services">12.5. Network services</a></li>
 </ul>
 </li>
 <li><a href="#setting-up-xsite">13. Setting up cross-site replication</a>
@@ -628,13 +623,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#creating-caches">16. Creating caches with Infinispan Operator</a>
 <ul class="sectlevel2">
 <li><a href="#caches_creating-caches">16.1. Infinispan caches</a></li>
-<li><a href="#cache-cr_creating-caches">16.2. Cache CRs</a></li>
-<li><a href="#creating-caches_creating-caches">16.3. Creating caches with the Cache CR</a></li>
-<li><a href="#creating-caches-templates_creating-caches">16.4. Creating caches from templates</a></li>
-<li><a href="#adding-cache-stores_creating-caches">16.5. Adding persistent cache stores</a></li>
-<li><a href="#creating-caches-cacheservice_creating-caches">16.6. Adding caches to Cache Service pods</a>
+<li><a href="#creating-caches_creating-caches">16.2. Creating caches with the Cache CR</a></li>
+<li><a href="#adding-cache-stores_creating-caches">16.3. Adding persistent cache stores</a></li>
+<li><a href="#creating-caches-cacheservice_creating-caches">16.4. Adding caches to Cache Service pods</a>
 <ul class="sectlevel3">
-<li><a href="#default-cache-service-config_creating-caches">16.6.1. Default cache configuration</a></li>
+<li><a href="#default-cache-service-config_creating-caches">16.4.1. Default cache configuration</a></li>
 </ul>
 </li>
 </ul>
@@ -687,9 +680,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#hotrod-clients_clients">21.4. Hot Rod clients</a>
 <ul class="sectlevel3">
 <li><a href="#hotrod-configuration-builder_clients">21.4.1. Hot Rod client configuration API</a></li>
-<li><a href="#hotrod-properties_clients">21.4.2. Hot Rod client properties</a></li>
-<li><a href="#configuring-clients-present-certificates_clients">21.4.3. Configuring Hot Rod clients for certificate authentication</a></li>
-<li><a href="#creating-caches-hotrod_clients">21.4.4. Creating caches from Hot Rod clients</a></li>
+<li><a href="#configuring-clients-present-certificates_clients">21.4.2. Configuring Hot Rod clients for certificate authentication</a></li>
+<li><a href="#creating-caches-hotrod_clients">21.4.3. Creating caches from Hot Rod clients</a></li>
 </ul>
 </li>
 <li><a href="#connecting-rest_clients">21.5. Accessing the REST API</a></li>
@@ -754,20 +746,17 @@ For example if you create a cache through the Infinispan Console then Infinispan
 <div class="paragraph">
 <p>To perform reconciliation Infinispan Operator creates a <code>listener</code> pod for each Infinispan cluster that detects modifications for <code>Infinispan</code> resources.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Declarative Kubernetes representations of Infinispan resources that Infinispan Operator creates with the <code>listener</code> pod are linked to <code>Infinispan</code> CRs.
+<div class="ulist">
+<div class="title">Notes about reconciliation</div>
+<ul>
+<li>
+<p>When you create a cache through the Infinispan Console, CLI, or other client application, Infinispan Operator creates a corresponding <code>Cache</code> CR with a unique name that conforms to the Kubernetes naming policy.</p>
+</li>
+<li>
+<p>Declarative Kubernetes representations of Infinispan resources that Infinispan Operator creates with the <code>listener</code> pod are linked to <code>Infinispan</code> CRs.<br>
 Deleting <code>Infinispan</code> CRs removes any associated resource declarations.</p>
-</div>
-</td>
-</tr>
-</table>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -2088,7 +2077,8 @@ spec:
   expose:
     type: LoadBalancer
   configMapName: "my-cluster-config"
-  configListener: true
+  configListener:
+    enabled: true
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -2170,7 +2160,7 @@ spec:
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.configListener</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Creates a <code>listener</code> pod in each Infinispan cluster that allows Infinispan Operator to reconcile server-side modifications with Infinispan resources such as the <code>Cache</code> CR.</p>
 <p class="tableblock">The <code>listener</code> pod consumes minimal resources and is enabled by default.
-Setting a value of <code>false</code> removes the <code>listener</code> pod and disables reconciliation.
+Setting a value of <code>false</code> removes the <code>listener</code> pod and disables bi-directional reconciliation.
 You should do this only if you do not need declarative Kubernetes representations of Infinispan resources created through the Infinispan Console, CLI, or client applications.</p></td>
 </tr>
 <tr>
@@ -3845,10 +3835,7 @@ Infinispan command line interface (CLI), REST API, and Hot Rod endpoint.</p>
 <p>Check that the internal service is available as follows:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl get services
-
-NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)
-infinispan ClusterIP   192.0.2.0        &lt;none&gt;        11222/TCP</code></pre>
+<pre class="highlight nowrap"><code>kubectl get services</code></pre>
 </div>
 </div>
 </li>
@@ -3902,10 +3889,7 @@ a <code>LoadBalancer</code> service.</p>
 <p>Verify that the <code>-external</code> service is available.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl get services | grep external
-
-NAME                         TYPE            CLUSTER-IP    EXTERNAL-IP   PORT(S)
-infinispan-external  LoadBalancer    192.0.2.24    hostname.com  11222/TCP</code></pre>
+<pre class="highlight nowrap"><code>kubectl get services | grep external</code></pre>
 </div>
 </div>
 </li>
@@ -3944,10 +3928,7 @@ infinispan-external  LoadBalancer    192.0.2.24    hostname.com  11222/TCP</code
 <p>Verify that the <code>-external</code> service is available.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl get services | grep external
-
-NAME                         TYPE            CLUSTER-IP       EXTERNAL-IP   PORT(S)
-infinispan-external  NodePort        192.0.2.24       &lt;none&gt;        11222:30000/TCP</code></pre>
+<pre class="highlight nowrap"><code>kubectl get services | grep external</code></pre>
 </div>
 </div>
 </li>
@@ -3989,12 +3970,6 @@ infinispan-external  NodePort        192.0.2.24       &lt;none&gt;        11222:
 <pre class="highlight nowrap"><code>kubectl get ingress</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>NAME                 CLASS    HOSTS   ADDRESS   PORTS   AGE
-infinispan   &lt;none&gt;   *                 443     73s</code></pre>
-</div>
-</div>
 </li>
 </ol>
 </div>
@@ -4033,18 +4008,6 @@ infinispan   &lt;none&gt;   *                 443     73s</code></pre>
 <div class="paragraph _abstract">
 <p>Reference information for network services that Infinispan Operator creates and manages.</p>
 </div>
-<div class="sect3">
-<h4 id="_internal_service"><a class="anchor" href="#_internal_service"></a>12.5.1. Internal service</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Allow Infinispan pods to discover each other and form clusters.</p>
-</li>
-<li>
-<p>Provide access to Infinispan endpoints from clients in the same Kubernetes namespace.</p>
-</li>
-</ul>
-</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -4065,83 +4028,20 @@ infinispan   &lt;none&gt;   *                 443     73s</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;cluster_name&gt;</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>11222</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TCP</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Internal access to Infinispan endpoints</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access to Infinispan endpoints within the Kubernetes cluster or from an OpenShift <code>Route</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;cluster_name&gt;-ping</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>8888</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TCP</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cluster discovery</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cluster discovery for Infinispan pods.</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_external_service"><a class="anchor" href="#_external_service"></a>12.5.2. External service</h4>
-<div class="paragraph">
-<p>Provides access to Infinispan endpoints from clients outside Kubernetes or in different namespaces.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>You must create the external service with Infinispan Operator. It is not available
-by default.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Service</th>
-<th class="tableblock halign-left valign-top">Port</th>
-<th class="tableblock halign-left valign-top">Protocol</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;cluster_name&gt;-external</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>11222</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TCP</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">External access to Infinispan endpoints.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access to Infinispan endpoints from a <code>LoadBalancer</code> or <code>NodePort</code> service.</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_cross_site_service"><a class="anchor" href="#_cross_site_service"></a>12.5.3. Cross-site service</h4>
-<div class="paragraph">
-<p>Allows Infinispan to back up data between clusters.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Service</th>
-<th class="tableblock halign-left valign-top">Port</th>
-<th class="tableblock halign-left valign-top">Protocol</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>&lt;cluster_name&gt;-site</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>7900</code></p></td>
@@ -4150,7 +4050,6 @@ by default.</p>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -5994,51 +5893,20 @@ You should separate Infinispan configuration from application code for easier va
 <div class="paragraph">
 <p>You can use Hot Rod or HTTP clients but Infinispan recommends <code>Cache</code> CR or <code>Batch</code> CR unless your specific use case requires programmatic remote cache creation.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="cache-cr_creating-caches"><a class="anchor" href="#cache-cr_creating-caches"></a>16.2. Cache CRs</h3>
-<div class="paragraph _abstract">
-<p>Find out details for configuring Infinispan caches with <code>Cache</code> CR.</p>
-</div>
-<div class="paragraph">
-<p>When using <code>Cache</code> CRs, the following rules apply:</p>
-</div>
+<h4 id="_cache_crs" class="discrete">Cache CRs</h4>
 <div class="ulist">
 <ul>
 <li>
 <p><code>Cache</code> CRs apply to Data Grid Service pods only.</p>
 </li>
 <li>
-<p>You can create a single cache for each <code>Cache</code> CR.</p>
-</li>
-<li>
-<p>If your <code>Cache</code> CR contains a template and a cache configuration, Infinispan Operator uses the template.</p>
-</li>
-<li>
-<p>If you edit caches in the Kubernetes Dashboard, the changes are reflected through the user interface but do not take effect on the Infinispan cluster. You cannot edit caches. To change cache configuration, you must first delete the cache through the console or CLI and then re-create the cache.</p>
-</li>
-<li>
-<p>Deleting <code>Cache</code> CRs in the Kubernetes Dashboard does not remove caches from Infinispan clusters. You must delete caches through the console or CLI.</p>
+<p>Each <code>Cache</code> CR corresponds to a single cache on the Infinispan cluster.</p>
 </li>
 </ul>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Infinispan Operator uses the <strong>operator</strong> user and corresponding password to perform cache operations.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches_creating-caches"><a class="anchor" href="#creating-caches_creating-caches"></a>16.3. Creating caches with the Cache CR</h3>
+<h3 id="creating-caches_creating-caches"><a class="anchor" href="#creating-caches_creating-caches"></a>16.2. Creating caches with the Cache CR</h3>
 <div class="paragraph _abstract">
 <p>Complete the following steps to create caches on Data Grid Service clusters using valid configuration in XML or YAML format.</p>
 </div>
@@ -6120,70 +5988,7 @@ spec:
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-templates_creating-caches"><a class="anchor" href="#creating-caches-templates_creating-caches"></a>16.4. Creating caches from templates</h3>
-<div class="paragraph _abstract">
-<p>Complete the following steps to create caches on Data Grid Service clusters using cache templates.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Identify the cache template you want to use for your cache.<br>
-You can find a list of available templates in Infinispan Console.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Create a <code>Cache</code> CR that specifies the name of a template to use.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Specify a name for the <code>Cache</code> CR with the <code>metadata.name</code> field.</p>
-</li>
-<li>
-<p>Specify the target Infinispan cluster with the <code>spec.clusterName</code> field.</p>
-</li>
-<li>
-<p>Name your cache with the <code>spec.name</code> field.</p>
-</li>
-<li>
-<p>Specify a cache template with the <code>spec.template</code> field.</p>
-<div class="paragraph">
-<p>The following example creates a cache named "mycache" from the <code>org.infinispan.DIST_SYNC</code> cache template:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>apiVersion: infinispan.org/v2alpha1
-kind: Cache
-metadata:
-  name: mycachedefinition
-spec:
-  clusterName: infinispan
-  name: mycache
-  templateName: org.infinispan.DIST_SYNC</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>Apply the <code>Cache</code> CR, for example:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>kubectl apply -f mycache.yaml
-cache.infinispan.org/mycachedefinition created</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="adding-cache-stores_creating-caches"><a class="anchor" href="#adding-cache-stores_creating-caches"></a>16.5. Adding persistent cache stores</h3>
+<h3 id="adding-cache-stores_creating-caches"><a class="anchor" href="#adding-cache-stores_creating-caches"></a>16.3. Adding persistent cache stores</h3>
 <div class="paragraph _abstract">
 <p>You can add persistent cache stores to Data Grid Service pods to save data to the persistent volume.</p>
 </div>
@@ -6210,7 +6015,7 @@ cache.infinispan.org/mycachedefinition created</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-cacheservice_creating-caches"><a class="anchor" href="#creating-caches-cacheservice_creating-caches"></a>16.6. Adding caches to Cache Service pods</h3>
+<h3 id="creating-caches-cacheservice_creating-caches"><a class="anchor" href="#creating-caches-cacheservice_creating-caches"></a>16.4. Adding caches to Cache Service pods</h3>
 <div class="paragraph _abstract">
 <p>Cache Service pods include a default cache configuration with recommended
 settings. This default cache lets you start using Infinispan without the need
@@ -6248,7 +6053,7 @@ If you want multiple custom caches you should create Data Grid Service pods inst
 </ul>
 </div>
 <div class="sect3">
-<h4 id="default-cache-service-config_creating-caches"><a class="anchor" href="#default-cache-service-config_creating-caches"></a>16.6.1. Default cache configuration</h4>
+<h4 id="default-cache-service-config_creating-caches"><a class="anchor" href="#default-cache-service-config_creating-caches"></a>16.4.1. Default cache configuration</h4>
 <div class="paragraph _abstract">
 <p>This topic describes default cache configuration for Cache Service pods.</p>
 </div>
@@ -7445,12 +7250,12 @@ spec:
 <div class="sect2">
 <h3 id="client-connection-details_clients"><a class="anchor" href="#client-connection-details_clients"></a>21.1. Client connection details</h3>
 <div class="paragraph _abstract">
-<p>Before you can connect to Infinispan, you need to retrieve the following pieces of information:</p>
+<p>Client connections to Infinispan require the following information:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Service hostname</p>
+<p>Hostname</p>
 </li>
 <li>
 <p>Port</p>
@@ -7464,16 +7269,25 @@ spec:
 </ul>
 </div>
 <div class="paragraph">
-<div class="title">Service hostnames</div>
-<p>The service hostname depends on how you expose Infinispan on the network or if your clients are running on Kubernetes.</p>
+<div class="title">Hostnames</div>
+<p>The hostname you use depends on whether clients are running on the same Kubernetes cluster as Infinispan.</p>
 </div>
 <div class="paragraph">
-<p>For clients running on Kubernetes, you can use the name of the internal service that Infinispan Operator creates.</p>
+<p>Client applications running on the same Kubernetes cluster use the internal service name for the Infinispan cluster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">metadata:
+  name: infinispan</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>For clients running outside Kubernetes, the service hostname is the location URL if you use a <code>LoadBalancer</code> service.
-For a <code>NodePort</code> service, the service hostname is the node host name.
-For a route, the service hostname is either a custom hostname or a system-defined hostname.</p>
+<p>Client applications running on a different Kubernetes, or outside Kubernetes, use a hostname that depends on how Infinispan is exposed on the network.</p>
+</div>
+<div class="paragraph">
+<p>A <code>LoadBalancer</code> service uses the URL for the load balancer.
+A <code>NodePort</code> service uses the node hostname.
+An Red Hat OpenShift <code>Route</code> uses either a custom hostname that you define or a hostname that the system generates.</p>
 </div>
 <div class="paragraph">
 <div class="title">Ports</div>
@@ -7589,9 +7403,9 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 <div class="title">Procedure</div>
 <ul>
 <li>
-<p>Access the console from any browser at <code>$SERVICE_HOSTNAME:$PORT</code>.</p>
+<p>Access the console from any browser at <code>$HOSTNAME:$PORT</code>.</p>
 <div class="paragraph">
-<p>Replace <code>$SERVICE_HOSTNAME:$PORT</code> with the hostname and port where Infinispan is available on the network.</p>
+<p>Replace <code>$HOSTNAME:$PORT</code> with the network location where Infinispan is available.</p>
 </div>
 </li>
 </ul>
@@ -7604,14 +7418,30 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div class="paragraph">
 <div class="title">Client intelligence</div>
-<p>Client intelligence refers to mechanisms the Hot Rod protocol provides so that clients can locate and send requests to Infinispan pods.</p>
+<p>The Hot Rod protocol includes a mechanism that provides clients with an up to date view of the cache topology.
+Client intelligence improves performance by reducing the number of network hops for read and write operations.</p>
 </div>
 <div class="paragraph">
-<p>Hot Rod clients running on Kubernetes can access internal IP addresses for Infinispan pods so you can use any client intelligence.
+<p>Clients running in the same Kubernetes cluster can access internal IP addresses for Infinispan pods so you can use any client intelligence.
 The default intelligence, <code>HASH_DISTRIBUTION_AWARE</code>, is recommended because it allows clients to route requests to primary owners, which improves performance.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>Hot Rod clients running outside Kubernetes must use <code>BASIC</code> intelligence.</p>
+<p>Kubernetes cluster administrators can define network policies that restrict traffic to Infinispan.
+In some cases network isolation policies can require you to use <code>BASIC</code> intelligence even when clients are running in the same Kubernetes cluster but a different namespace.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Hot Rod clients must use <code>BASIC</code> intelligence when connecting to Infinispan through a <code>LoadBalancer</code>, <code>NodePort</code>, or OpenShift <code>Route</code>.</p>
 </div>
 <div class="sect3">
 <h4 id="hotrod-configuration-builder_clients"><a class="anchor" href="#hotrod-configuration-builder_clients"></a>21.4.1. Hot Rod client configuration API</h4>
@@ -7626,18 +7456,21 @@ The default intelligence, <code>HASH_DISTRIBUTION_AWARE</code>, is recommended b
 </td>
 <td class="content">
 <div class="paragraph">
-<p><code>$SERVICE_HOSTNAME:$PORT</code> denotes the hostname and port that allows access to your Infinispan cluster.
-You should replace these variables with the actual hostname and port for your environment.</p>
+<p>Replace <code>$SERVICE_HOSTNAME</code> in the following examples with the internal service name of your Infinispan cluster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">metadata:
+  name: infinispan</code></pre>
+</div>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <h5 id="_on_kubernetes" class="discrete">On Kubernetes</h5>
-<div class="paragraph">
-<p>Hot Rod clients running on Kubernetes can use the following configuration:</p>
-</div>
 <div class="listingblock">
+<div class="title">ConfigurationBuilder</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-java" data-lang="java">import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 import org.infinispan.client.hotrod.configuration.SaslQop;
@@ -7646,7 +7479,7 @@ import org.infinispan.client.hotrod.impl.ConfigurationProperties;
 
 ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer()
-               .host("$SERVICE_HOSTNAME")
+               .host("$HOSTNAME")
                .port(ConfigurationProperties.DEFAULT_HOTROD_PORT)
              .security().authentication()
                .username("username")
@@ -7660,11 +7493,29 @@ ConfigurationBuilder builder = new ConfigurationBuilder();
                .trustStoreType("pem");</code></pre>
 </div>
 </div>
-<h5 id="_outside_kubernetes" class="discrete">Outside Kubernetes</h5>
-<div class="paragraph">
-<p>Hot Rod clients running outside Kubernetes can use the following configuration:</p>
-</div>
 <div class="listingblock">
+<div class="title">hotrod-client.properties</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-java" data-lang="java"># Connection
+infinispan.client.hotrod.server_list=$HOSTNAME:$PORT
+
+# Authentication
+infinispan.client.hotrod.use_auth=true
+infinispan.client.hotrod.auth_username=developer
+infinispan.client.hotrod.auth_password=$PASSWORD
+infinispan.client.hotrod.auth_server_name=$CLUSTER_NAME
+infinispan.client.hotrod.sasl_properties.javax.security.sasl.qop=auth
+infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512
+
+# Encryption
+infinispan.client.hotrod.sni_host_name=$SERVICE_HOSTNAME
+infinispan.client.hotrod.trust_store_file_name=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+infinispan.client.hotrod.trust_store_type=pem</code></pre>
+</div>
+</div>
+<h5 id="_outside_kubernetes" class="discrete">Outside Kubernetes</h5>
+<div class="listingblock">
+<div class="title">ConfigurationBuilder</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-java" data-lang="java">import org.infinispan.client.hotrod.configuration.ClientIntelligence;
 import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
@@ -7673,7 +7524,7 @@ import org.infinispan.client.hotrod.configuration.SaslQop;
 
 ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.addServer()
-               .host("$SERVICE_HOSTNAME")
+               .host("$HOSTNAME")
                .port("$PORT")
              .security().authentication()
                .username("username")
@@ -7690,58 +7541,11 @@ ConfigurationBuilder builder = new ConfigurationBuilder();
       builder.clientIntelligence(ClientIntelligence.BASIC);</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="hotrod-properties_clients"><a class="anchor" href="#hotrod-properties_clients"></a>21.4.2. Hot Rod client properties</h4>
-<div class="paragraph _abstract">
-<p>You can configure Hot Rod client connections with the <code>hotrod-client.properties</code> file on the application classpath.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><code>$SERVICE_HOSTNAME:$PORT</code> denotes the hostname and port that allows access to your Infinispan cluster.
-You should replace these variables with the actual hostname and port for your environment.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<h5 id="_on_kubernetes_2" class="discrete">On Kubernetes</h5>
-<div class="paragraph">
-<p>Hot Rod clients running on Kubernetes can use the following properties:</p>
-</div>
 <div class="listingblock">
+<div class="title">hotrod-client.properties</div>
 <div class="content">
-<pre class="highlight nowrap"><code># Connection
-infinispan.client.hotrod.server_list=$SERVICE_HOSTNAME:$PORT
-
-# Authentication
-infinispan.client.hotrod.use_auth=true
-infinispan.client.hotrod.auth_username=developer
-infinispan.client.hotrod.auth_password=$PASSWORD
-infinispan.client.hotrod.auth_server_name=$CLUSTER_NAME
-infinispan.client.hotrod.sasl_properties.javax.security.sasl.qop=auth
-infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512
-
-# Encryption
-infinispan.client.hotrod.sni_host_name=$SERVICE_HOSTNAME
-infinispan.client.hotrod.trust_store_file_name=/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
-infinispan.client.hotrod.trust_store_type=pem</code></pre>
-</div>
-</div>
-<h5 id="_outside_kubernetes_2" class="discrete">Outside Kubernetes</h5>
-<div class="paragraph">
-<p>Hot Rod clients running outside Kubernetes can use the following properties:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code># Connection
-infinispan.client.hotrod.server_list=$SERVICE_HOSTNAME:$PORT
+<pre class="highlight nowrap"><code class="language-java" data-lang="java"># Connection
+infinispan.client.hotrod.server_list=$HOSTNAME:$PORT
 
 # Client intelligence
 infinispan.client.hotrod.client_intelligence=BASIC
@@ -7764,7 +7568,7 @@ infinispan.client.hotrod.trust_store_type=PCKS12</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-clients-present-certificates_clients"><a class="anchor" href="#configuring-clients-present-certificates_clients"></a>21.4.3. Configuring Hot Rod clients for certificate authentication</h4>
+<h4 id="configuring-clients-present-certificates_clients"><a class="anchor" href="#configuring-clients-present-certificates_clients"></a>21.4.2. Configuring Hot Rod clients for certificate authentication</h4>
 <div class="paragraph _abstract">
 <p>If you enable client certificate authentication, clients must present valid certificates when negotiating connections with Infinispan.</p>
 </div>
@@ -7812,7 +7616,7 @@ ConfigurationBuilder builder = new ConfigurationBuilder();
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating-caches-hotrod_clients"><a class="anchor" href="#creating-caches-hotrod_clients"></a>21.4.4. Creating caches from Hot Rod clients</h4>
+<h4 id="creating-caches-hotrod_clients"><a class="anchor" href="#creating-caches-hotrod_clients"></a>21.4.3. Creating caches from Hot Rod clients</h4>
 <div class="paragraph _abstract">
 <p>You can remotely create caches on Infinispan clusters running on Kubernetes with Hot Rod clients.
 However, Infinispan recommends that you create caches using Infinispan Console, the CLI, or with <code>Cache</code> CRs instead of with Hot Rod clients.</p>
@@ -7900,9 +7704,9 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 <div class="title">Procedure</div>
 <ul>
 <li>
-<p>Access the REST API with any HTTP client at <code>$SERVICE_HOSTNAME:$PORT/rest/v2</code>.</p>
+<p>Access the REST API with any HTTP client at <code>$HOSTNAME:$PORT/rest/v2</code>.</p>
 <div class="paragraph">
-<p>Replace <code>$SERVICE_HOSTNAME:$PORT</code> with the hostname and port where Infinispan is available on the network.</p>
+<p>Replace <code>$HOSTNAME:$PORT</code> with the network location where Infinispan listens for client connections.</p>
 </div>
 </li>
 </ul>
@@ -7921,7 +7725,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-08 08:31:40 UTC
+Last updated 2022-04-28 16:32:28 +0100
 </div>
 </div>
 <script>

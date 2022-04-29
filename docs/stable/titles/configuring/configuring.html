@@ -754,6 +754,35 @@ $(addBlockSwitches);
 <li><a href="#merging-partitions-manually_partition-handling">7.7. Manually merging partitions in embedded caches</a></li>
 </ul>
 </li>
+<li><a href="#security-authorization">8. Configuring user roles and permissions</a>
+<ul class="sectlevel2">
+<li><a href="#security-authorization_security-authorization">8.1. Security authorization</a>
+<ul class="sectlevel3">
+<li><a href="#user-roles-permissions_security-authorization">8.1.1. User roles and permissions</a></li>
+<li><a href="#user-permissions_security-authorization">8.1.2. Permissions</a>
+<ul class="sectlevel4">
+<li><a href="#cache_manager_permissions">Cache Manager permissions</a></li>
+<li><a href="#cache_permissions">Cache permissions</a></li>
+</ul>
+</li>
+<li><a href="#role-mappers_security-authorization">8.1.3. Role mappers</a>
+<ul class="sectlevel4">
+<li><a href="#cluster_role_mappers">Cluster role mappers</a></li>
+<li><a href="#identity_role_mappers">Identity role mappers</a></li>
+<li><a href="#commonname_role_mappers">CommonName role mappers</a></li>
+<li><a href="#custom_role_mappers">Custom role mappers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#acl-cache_security-authorization">8.2. Access control list (ACL) cache</a></li>
+<li><a href="#customizing-authorization_security-authorization">8.3. Customizing roles and permissions</a></li>
+<li><a href="#configuring-cache-authorization_security-authorization">8.4. Configuring caches with security authorization</a></li>
+<li><a href="#disabling-authorization_security-authorization">8.5. Disabling security authorization</a></li>
+<li><a href="#configuring-authorization-programmatically_security-authorization">8.6. Programmatically configuring authorization</a></li>
+<li><a href="#code-execution-security-authorization_security-authorization">8.7. Code execution with security authorization</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -9654,10 +9683,799 @@ crm.resolveConflicts((preferredEntry, otherEntries) -&gt; preferredEntry);</code
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="security-authorization"><a class="anchor" href="#security-authorization"></a>8. Configuring user roles and permissions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Authorization is a security feature that requires users to have certain permissions before they can access caches or interact with Infinispan resources.
+You assign roles to users that provide different levels of permissions, from read-only access to full, super user privileges.</p>
+</div>
+<div class="sect2">
+<h3 id="security-authorization_security-authorization"><a class="anchor" href="#security-authorization_security-authorization"></a>8.1. Security authorization</h3>
+<div class="paragraph">
+<p>Infinispan authorization secures your deployment by restricting user access.</p>
+</div>
+<div class="paragraph">
+<p>User applications or clients must belong to a role that is assigned with sufficient permissions before they can perform operations on Cache Managers or caches.</p>
+</div>
+<div class="paragraph">
+<p>For example, you configure authorization on a specific cache instance so that invoking <code>Cache.get()</code> requires an identity to be assigned a role with read permission while <code>Cache.put()</code> requires a role with write permission.</p>
+</div>
+<div class="paragraph">
+<p>In this scenario, if a user application or client with the <code>io</code> role attempts to write an entry, Infinispan denies the request and throws a security exception.
+If a user application or client with the <code>writer</code> role sends a write request, Infinispan validates authorization and issues a token for subsequent operations.</p>
+</div>
+<div class="paragraph">
+<div class="title">Identities</div>
+<p>Identities are security Principals of type <code>java.security.Principal</code>.
+Subjects, implemented with the <code>javax.security.auth.Subject</code> class, represent a group of security Principals.
+In other words, a Subject represents a user and all groups to which it belongs.</p>
+</div>
+<div class="paragraph">
+<div class="title">Identities to roles</div>
+<p>Infinispan uses role mappers so that security principals correspond to roles,
+which you assign one or more permissions.</p>
+</div>
+<div class="paragraph">
+<p>The following image illustrates how security principals correspond to roles:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../topics/images/SecurityRolesPermissions.svg" alt="Roles/Permissions mapping">
+</div>
+</div>
+<div class="sect3">
+<h4 id="user-roles-permissions_security-authorization"><a class="anchor" href="#user-roles-permissions_security-authorization"></a>8.1.1. User roles and permissions</h4>
+<div class="paragraph">
+<p>Infinispan includes a default set of roles that grant users with permissions to access data and interact with Infinispan resources.</p>
+</div>
+<div class="paragraph">
+<p><code>ClusterRoleMapper</code> is the default mechanism that Infinispan uses to associate security principals to authorization roles.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>ClusterRoleMapper</code> matches principal names to role names.
+A user named <code>admin</code> gets <code>admin</code> permissions automatically, a user named <code>deployer</code> gets <code>deployer</code> permissions, and so on.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Role</th>
+<th class="tableblock halign-left valign-top">Permissions</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>admin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Superuser with all permissions including control of the Cache Manager lifecycle.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deployer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL_READ, ALL_WRITE, LISTEN, EXEC, MONITOR, CREATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can create and delete Infinispan resources in addition to <code>application</code> permissions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>application</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL_READ, ALL_WRITE, LISTEN, EXEC, MONITOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Has read and write access to Infinispan resources in addition to <code>observer</code> permissions. Can also listen to events and execute server tasks and scripts.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>observer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL_READ, MONITOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Has read access to Infinispan resources in addition to <code>monitor</code> permissions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>monitor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONITOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can view statistics via JMX and the <code>metrics</code> endpoint.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Reference</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs">org.infinispan.security.AuthorizationPermission Enumeration</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/configdocs/">Infinispan configuration schema reference</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="user-permissions_security-authorization"><a class="anchor" href="#user-permissions_security-authorization"></a>8.1.2. Permissions</h4>
+<div class="paragraph">
+<p>Authorization roles have different permissions with varying levels of access to Infinispan.
+Permissions let you restrict user access to both Cache Managers and caches.</p>
+</div>
+<div class="sect4">
+<h5 id="cache_manager_permissions"><a class="anchor" href="#cache_manager_permissions"></a>Cache Manager permissions</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Permission</th>
+<th class="tableblock halign-left valign-top">Function</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CONFIGURATION</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>defineConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines new cache configurations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>addListener</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registers listeners against a Cache Manager.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIFECYCLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stop</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stops the Cache Manager.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CREATE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createCache</code>, <code>removeCache</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create and remove container resources  such as caches, counters, schemas, and scripts.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONITOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>getStats</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows access to JMX statistics and the <code>metrics</code> endpoint.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Includes all Cache Manager permissions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="cache_permissions"><a class="anchor" href="#cache_permissions"></a>Cache permissions</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Permission</th>
+<th class="tableblock halign-left valign-top">Function</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>get</code>, <code>contains</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Retrieves entries from a cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>put</code>, <code>putIfAbsent</code>, <code>replace</code>, <code>remove</code>, <code>evict</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Writes, replaces, removes, evicts data in a cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EXEC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>distexec</code>, <code>streams</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows code execution against a cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LISTEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>addListener</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registers listeners against a cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BULK_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>keySet</code>, <code>values</code>, <code>entrySet</code>, <code>query</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Executes bulk retrieve operations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BULK_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clear</code>, <code>putAll</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Executes bulk write operations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LIFECYCLE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>start</code>, <code>stop</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Starts and stops a cache.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ADMIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>getVersion</code>, <code>addInterceptor*</code>, <code>removeInterceptor</code>, <code>getInterceptorChain</code>, <code>getEvictionManager</code>, <code>getComponentRegistry</code>, <code>getDistributionManager</code>, <code>getAuthorizationManager</code>, <code>evict</code>, <code>getRpcManager</code>, <code>getCacheConfiguration</code>, <code>getCacheManager</code>, <code>getInvocationContextContainer</code>, <code>setAvailability</code>, <code>getDataContainer</code>, <code>getStats</code>, <code>getXAResource</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows access to underlying components and internal structures.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MONITOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>getStats</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows access to JMX statistics and the <code>metrics</code> endpoint.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Includes all cache permissions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL_READ</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Combines the READ and BULK_READ permissions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ALL_WRITE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Combines the WRITE and BULK_WRITE permissions.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/security/package-summary.html">Infinispan Security API</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="role-mappers_security-authorization"><a class="anchor" href="#role-mappers_security-authorization"></a>8.1.3. Role mappers</h4>
+<div class="paragraph">
+<p>Infinispan includes a <code>PrincipalRoleMapper</code> API that maps security Principals in a Subject to authorization roles that you can assign to users.</p>
+</div>
+<div class="sect4">
+<h5 id="cluster_role_mappers"><a class="anchor" href="#cluster_role_mappers"></a>Cluster role mappers</h5>
+<div class="paragraph">
+<p><code>ClusterRoleMapper</code> uses a persistent replicated cache to dynamically store principal-to-role mappings for the default roles and permissions.</p>
+</div>
+<div class="paragraph">
+<p>By default uses the Principal name as the role name and implements <code>org.infinispan.security.MutableRoleMapper</code> which exposes methods to change role mappings at runtime.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Java class: <code>org.infinispan.security.mappers.ClusterRoleMapper</code></p>
+</li>
+<li>
+<p>Declarative configuration: <code>&lt;cluster-role-mapper /&gt;</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="identity_role_mappers"><a class="anchor" href="#identity_role_mappers"></a>Identity role mappers</h5>
+<div class="paragraph">
+<p><code>IdentityRoleMapper</code> uses the Principal name as the role name.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Java class: <code>org.infinispan.security.mappers.IdentityRoleMapper</code></p>
+</li>
+<li>
+<p>Declarative configuration: <code>&lt;identity-role-mapper /&gt;</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="commonname_role_mappers"><a class="anchor" href="#commonname_role_mappers"></a>CommonName role mappers</h5>
+<div class="paragraph">
+<p><code>CommonNameRoleMapper</code> uses the Common Name (CN) as the role name if the
+Principal name is a Distinguished Name (DN).</p>
+</div>
+<div class="paragraph">
+<p>For example this DN, <code>cn=managers,ou=people,dc=example,dc=com</code>, maps to the <code>managers</code> role.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Java class: <code>org.infinispan.security.mappers.CommonRoleMapper</code></p>
+</li>
+<li>
+<p>Declarative configuration: <code>&lt;common-name-role-mapper /&gt;</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="custom_role_mappers"><a class="anchor" href="#custom_role_mappers"></a>Custom role mappers</h5>
+<div class="paragraph">
+<p>Custom role mappers are implementations of <code>org.infinispan.security.PrincipalRoleMapper</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Declarative configuration: <code>&lt;custom-role-mapper class="my.custom.RoleMapper" /&gt;</code></p>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/security/package-summary.html">Infinispan Security API</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/security/PrincipalRoleMapper.html">org.infinispan.security.PrincipalRoleMapper</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="acl-cache_security-authorization"><a class="anchor" href="#acl-cache_security-authorization"></a>8.2. Access control list (ACL) cache</h3>
+<div class="paragraph">
+<p>Infinispan caches roles that you grant to users internally for optimal performance.
+Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to ensure user permissions are applied correctly.</p>
+</div>
+<div class="paragraph">
+<p>If necessary, you can disable the ACL cache or configure it with the <code>cache-size</code> and <code>cache-timeout</code> attributes.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;infinispan&gt;</span>
+  <span class="tag">&lt;cache-container</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">acl-cache-configuration</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;security</span> <span class="attribute-name">cache-size</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">1000</span><span class="delimiter">&quot;</span></span>
+              <span class="attribute-name">cache-timeout</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;authorization</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/security&gt;</span>
+  <span class="tag">&lt;/cache-container&gt;</span>
+<span class="tag">&lt;/infinispan&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">infinispan</span><span class="delimiter">&quot;</span></span> : {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">cache-container</span><span class="delimiter">&quot;</span></span> : {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">acl-cache-configuration</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span> : {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">cache-size</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">1000</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">cache-timeout</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">authorization</span><span class="delimiter">&quot;</span></span> : {}
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">infinispan</span>:
+  <span class="key">cacheContainer</span>:
+    <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">acl-cache-configuration</span><span class="delimiter">&quot;</span></span>
+    <span class="key">security</span>:
+      <span class="key">cache-size</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">1000</span><span class="delimiter">&quot;</span></span>
+      <span class="key">cache-timeout</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+      <span class="key">authorization</span>: <span class="string"><span class="content">~</span></span></code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/configdocs/">Infinispan configuration schema reference</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-authorization_security-authorization"><a class="anchor" href="#customizing-authorization_security-authorization"></a>8.3. Customizing roles and permissions</h3>
+<div class="paragraph">
+<p>You can customize authorization settings in your Infinispan configuration to use role mappers with different combinations of roles and permissions.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Declare a role mapper and a set of custom roles and permissions in the Cache Manager configuration.</p>
+</li>
+<li>
+<p>Configure authorization for caches to restrict access based on user roles.</p>
+</li>
+</ol>
+</div>
+<h4 id="custom_roles_and_permissions_configuration" class="discrete">Custom roles and permissions configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;infinispan&gt;</span>
+  <span class="tag">&lt;cache-container</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">custom-authorization</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;security&gt;</span>
+      <span class="tag">&lt;authorization&gt;</span>
+        <span class="comment">&lt;!-- Declare a role mapper that associates a security principal
+             to each role. --&gt;</span>
+        <span class="tag">&lt;identity-role-mapper</span> <span class="tag">/&gt;</span>
+        <span class="comment">&lt;!-- Specify user roles and corresponding permissions. --&gt;</span>
+        <span class="tag">&lt;role</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">permissions</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;role</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">reader</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">permissions</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;role</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">writer</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">permissions</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;role</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">supervisor</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">permissions</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">READ WRITE EXEC</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;/authorization&gt;</span>
+    <span class="tag">&lt;/security&gt;</span>
+  <span class="tag">&lt;/cache-container&gt;</span>
+<span class="tag">&lt;/infinispan&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">infinispan</span><span class="delimiter">&quot;</span></span> : {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">cache-container</span><span class="delimiter">&quot;</span></span> : {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">custom-authorization</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span> : {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">authorization</span><span class="delimiter">&quot;</span></span> : {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">identity-role-mapper</span><span class="delimiter">&quot;</span></span> : <span class="value">null</span>,
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">roles</span><span class="delimiter">&quot;</span></span> : {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">reader</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">role</span><span class="delimiter">&quot;</span></span> : {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">permissions</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
+              }
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">role</span><span class="delimiter">&quot;</span></span> : {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">permissions</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span>
+              }
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">writer</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">role</span><span class="delimiter">&quot;</span></span> : {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">permissions</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
+              }
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">supervisor</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">role</span><span class="delimiter">&quot;</span></span> : {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">permissions</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">READ WRITE EXEC</span><span class="delimiter">&quot;</span></span>
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">infinispan</span>:
+  <span class="key">cacheContainer</span>:
+    <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">custom-authorization</span><span class="delimiter">&quot;</span></span>
+    <span class="key">security</span>:
+      <span class="key">authorization</span>:
+        <span class="key">identityRoleMapper</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">null</span><span class="delimiter">&quot;</span></span>
+        <span class="key">roles</span>:
+          <span class="key">reader</span>:
+            <span class="key">role</span>:
+              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
+          <span class="key">admin</span>:
+            <span class="key">role</span>:
+              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span>
+          <span class="key">writer</span>:
+            <span class="key">role</span>:
+              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
+          <span class="key">supervisor</span>:
+            <span class="key">role</span>:
+              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">READ WRITE EXEC</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-cache-authorization_security-authorization"><a class="anchor" href="#configuring-cache-authorization_security-authorization"></a>8.4. Configuring caches with security authorization</h3>
+<div class="paragraph">
+<p>Use authorization in your cache configuration to restrict user access.
+Before they can read or write cache entries, or create and delete caches, users must have a role with a sufficient level of permission.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Ensure the <code>authorization</code> element is included in the <code>security</code> section of the <code>cache-container</code> configuration.</p>
+<div class="paragraph">
+<p>Infinispan enables security authorization in the Cache Manager by default and provides a global set of roles and permissions for caches.</p>
+</div>
+</li>
+<li>
+<p>If necessary, declare custom roles and permissions in the Cache Manager configuration.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your cache configuration for editing.</p>
+</li>
+<li>
+<p>Add the <code>authorization</code> element to caches to restrict user access based on their roles and permissions.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="authorization_configuration" class="discrete">Authorization configuration</h4>
+<div class="paragraph">
+<p>The following configuration shows how to use implicit authorization configuration with default roles and permissions:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;distributed-cache&gt;</span>
+  <span class="tag">&lt;security&gt;</span>
+    <span class="comment">&lt;!-- Inherit authorization settings from the cache-container. --&gt;</span> <span class="tag">&lt;authorization</span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;/security&gt;</span>
+<span class="tag">&lt;/distributed-cache&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">distributed-cache</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">authorization</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">enabled</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">distributedCache</span>:
+  <span class="key">security</span>:
+    <span class="key">authorization</span>:
+      <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span></code></pre>
+</div>
+</div>
+<h4 id="custom_roles_and_permissions" class="discrete">Custom roles and permissions</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;distributed-cache&gt;</span>
+  <span class="tag">&lt;security&gt;</span>
+    <span class="tag">&lt;authorization</span> <span class="attribute-name">roles</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">admin supervisor</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;/security&gt;</span>
+<span class="tag">&lt;/distributed-cache&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">distributed-cache</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">authorization</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">enabled</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">roles</span><span class="delimiter">&quot;</span></span>: [<span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">supervisor</span><span class="delimiter">&quot;</span></span>]
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">distributedCache</span>:
+  <span class="key">security</span>:
+    <span class="key">authorization</span>:
+      <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">roles</span>: <span class="string"><span class="content">[&quot;admin&quot;,&quot;supervisor&quot;]</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="disabling-authorization_security-authorization"><a class="anchor" href="#disabling-authorization_security-authorization"></a>8.5. Disabling security authorization</h3>
+<div class="paragraph">
+<p>In local development environments you can disable authorization so that users do not need roles and permissions.
+Disabling security authorization means that any user can access data and interact with Infinispan resources.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Remove any <code>authorization</code> elements from the <code>security</code> configuration for the Cache Manager.</p>
+</li>
+<li>
+<p>Remove any <code>authorization</code> configuration from your caches.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-authorization-programmatically_security-authorization"><a class="anchor" href="#configuring-authorization-programmatically_security-authorization"></a>8.6. Programmatically configuring authorization</h3>
+<div class="paragraph">
+<p>When using embedded caches, you can configure authorization with the <code>GlobalSecurityConfigurationBuilder</code> and <code>ConfigurationBuilder</code> classes.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Construct a <code>GlobalConfigurationBuilder</code> that enables authorization, specifies a role mapper, and defines a set of roles and permissions.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">GlobalConfigurationBuilder global = <span class="keyword">new</span> GlobalConfigurationBuilder();
+global
+   .security()
+      .authorization().enable() <i class="conum" data-value="1"></i><b>(1)</b>
+         .principalRoleMapper(<span class="keyword">new</span> IdentityRoleMapper()) <i class="conum" data-value="2"></i><b>(2)</b>
+         .role(<span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="3"></i><b>(3)</b>
+            .permission(AuthorizationPermission.ALL)
+         .role(<span class="string"><span class="delimiter">&quot;</span><span class="content">reader</span><span class="delimiter">&quot;</span></span>)
+            .permission(AuthorizationPermission.READ)
+         .role(<span class="string"><span class="delimiter">&quot;</span><span class="content">writer</span><span class="delimiter">&quot;</span></span>)
+            .permission(AuthorizationPermission.WRITE)
+         .role(<span class="string"><span class="delimiter">&quot;</span><span class="content">supervisor</span><span class="delimiter">&quot;</span></span>)
+            .permission(AuthorizationPermission.READ)
+            .permission(AuthorizationPermission.WRITE)
+            .permission(AuthorizationPermission.EXEC);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enables Infinispan authorization for the Cache Manager.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Specifies an implementation of <code>PrincipalRoleMapper</code> that maps Principals
+to roles.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Defines roles and their associated permissions.</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Enable authorization in the <code>ConfigurationBuilder</code> for caches to restrict access based on user roles.</p>
+<div class="listingblock">
+<div class="content">
+<pre>ConfigurationBuilder config = new ConfigurationBuilder();
+config
+   .security()
+      .authorization()
+         .enable(); <i class="conum" data-value="1"></i><b>(1)</b></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Implicitly adds all roles from the global configuration.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you do not want to apply all roles to a cache, explicitly define the roles
+that are authorized for caches as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ConfigurationBuilder config = new ConfigurationBuilder();
+config
+   .security()
+      .authorization()
+         .enable()
+         .role("admin") <i class="conum" data-value="1"></i><b>(1)</b>
+         .role("supervisor")
+         .role("reader");</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Defines authorized roles for the cache. In this example, users who have the <code>writer</code> role only are not authorized for the "secured" cache. Infinispan denies any access requests from those users.</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/configuration/global/GlobalSecurityConfigurationBuilder.html">org.infinispan.configuration.global.GlobalSecurityConfigurationBuilder</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/configuration/cache/ConfigurationBuilder.html">org.infinispan.configuration.cache.ConfigurationBuilder</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="code-execution-security-authorization_security-authorization"><a class="anchor" href="#code-execution-security-authorization_security-authorization"></a>8.7. Code execution with security authorization</h3>
+<div class="paragraph">
+<p>When you configure security authorization for embedded caches and then construct a <code>DefaultCacheManager</code>, it returns a <code>SecureCache</code> that checks the security context before invoking any operations.
+A <code>SecureCache</code> also ensures that applications cannot retrieve lower-level insecure objects such as <code>DataContainer</code>.
+For this reason, you must execute code with an identity that has the required authorization.</p>
+</div>
+<div class="paragraph">
+<p>In Java, executing code with a specific identity usually means wrapping the code to be executed within a <code>PrivilegedAction</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.infinispan.security.Security</span>;
+
+<span class="predefined-type">Security</span>.doAs(subject, <span class="keyword">new</span> <span class="predefined-type">PrivilegedExceptionAction</span>&lt;<span class="predefined-type">Void</span>&gt;() {
+<span class="directive">public</span> <span class="predefined-type">Void</span> run() <span class="directive">throws</span> <span class="exception">Exception</span> {
+    cache.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>);
+}
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With Java 8, you can simplify the preceding call as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">Security</span>.doAs(mySubject, <span class="predefined-type">PrivilegedAction</span>&lt;<span class="predefined-type">String</span>&gt;() -&gt; cache.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The preceding call uses the <code>Security.doAs()</code> method instead of <code>Subject.doAs()</code>.
+You can use either method with Infinispan, however <code>Security.doAs()</code> provides better performance.</p>
+</div>
+<div class="paragraph">
+<p>If you need the current Subject, use the following call to retrieve it from the Infinispan context or from the AccessControlContext:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">Security</span>.getSubject();</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-11 07:29:16 -0500
+Last updated 2022-04-14 07:06:06 -0400
 </div>
 </div>
 <style>

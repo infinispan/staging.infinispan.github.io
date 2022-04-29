@@ -582,6 +582,7 @@ $(addBlockSwitches);
 <li><a href="#rest">3.1.2. REST</a></li>
 <li><a href="#memcached">3.1.3. Memcached</a></li>
 <li><a href="#endpoint-protocol-comparison_server-endpoints">3.1.4. Comparison of endpoint protocols</a></li>
+<li><a href="#client-server-compatibility_server-endpoints">3.1.5. Hot Rod client compatibility with Infinispan Server</a></li>
 </ul>
 </li>
 <li><a href="#configuring-server-endpoints_server-endpoints">3.2. Configuring Infinispan Server endpoints</a></li>
@@ -837,7 +838,15 @@ Infinispan Server speeds time to deployment by separating caches from applicatio
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="https://infinispan.org/assets/images/documentation/icon-get-started.png" alt="Get started icon" height="32"></span>
-You can also visit our <a href="https://infinispan.org/get-started/">Get Started with Infinispan</a> tutorial and run the server image in 4 easy steps.</p>
+<a href="https://infinispan.org/get-started/">Start running Infinispan in 4 easy steps</a></p>
+</div>
+<h3 id="ansible_collection" class="discrete">Ansible collection</h3>
+<div class="paragraph">
+<p>Automate installation of Infinispan clusters with our Ansible collection that optionally includes Keycloak caches and cross-site replication configuration.
+The Ansible collection also lets you inject Infinispan caches into the static configuration for each server instance during installation.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://github.com/ansible-middleware/infinispan">Ansible collection for Infinispan</a> is available from Ansible Galaxy.</p>
 </div>
 <div class="sect2">
 <h3 id="server-requirements_server-getting-started"><a class="anchor" href="#server-requirements_server-getting-started"></a>1.1. Infinispan Server requirements</h3>
@@ -912,7 +921,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ unzip infinispan-server-13.0.8.Final.zip</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ unzip infinispan-server-13.0.9.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2591,6 +2600,43 @@ when cluster topology changes occur.</p>
 </tbody>
 </table>
 </div>
+<div class="sect3">
+<h4 id="client-server-compatibility_server-endpoints"><a class="anchor" href="#client-server-compatibility_server-endpoints"></a>3.1.5. Hot Rod client compatibility with Infinispan Server</h4>
+<div class="paragraph">
+<p>Infinispan Server allows you to connect Hot Rod clients with different versions.
+For instance during a migration or upgrade to your Infinispan cluster, the Hot Rod client version might be a lower Infinispan version than Infinispan Server.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan recommends using the latest Hot Rod client version to benefit from the most recent capabilities and security enhancements.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Infinispan 10 and later</div>
+<p>Hot Rod protocol version 3.x automatically negotiates the highest version possible for clients with Infinispan Server.</p>
+</div>
+<div class="paragraph">
+<div class="title">Infinispan 9.4 and earlier</div>
+<p>Clients that use a Hot Rod protocol version that is higher than the Infinispan Server version must set the <code>infinispan.client.hotrod.protocol_version</code> property.</p>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://infinispan.org/docs/stable/titles/hotrod_protocol/hotrod_protocol.html">Hot Rod protocol reference</a></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="configuring-server-endpoints_server-endpoints"><a class="anchor" href="#configuring-server-endpoints_server-endpoints"></a>3.2. Configuring Infinispan Server endpoints</h3>
@@ -3631,6 +3677,21 @@ user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
 </tr>
 </table>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Adding credentials to a properties realm with the CLI creates the user only on the server instance to which you are connected.
+You must manually synchronize credentials in a properties realm to each node in the cluster.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
 <ol class="arabic">
@@ -4135,6 +4196,25 @@ LDAP queries and access specific attributes.</p>
 </div>
 <div class="paragraph">
 <p>As an alternative to verifying user credentials with the <code>direct-verification</code> attribute, you can specify an LDAP attribute that validates passwords with the <code>user-password-mapper</code> element.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You cannot use endpoint authentication mechanisms that perform hashing with the <code>direct-verification</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Because Active Directory does not expose the <code>password</code> attribute you can use the <code>direct-verification</code> attribute only and not the <code>user-password-mapper</code> element.
+As a result you must use the <code>BASIC</code> authentication mechanism with the REST endpoint and <code>PLAIN</code> with the Hot Rod endpoint to integrate with Active Directory Server.
+A more secure alternative is to use Kerberos, which allows the <code>SPNEGO</code>, <code>GSSAPI</code>, and <code>GS2-KRB5</code> authentication mechanisms.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The <code>rdn-identifier</code> attribute specifies an LDAP attribute that finds the user entry based on a provided identifier, which is typically a username; for example, the <code>uid</code> or <code>sAMAccountName</code> attribute.
@@ -7312,7 +7392,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.8.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.9.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -10866,7 +10946,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-11 07:29:16 -0500
+Last updated 2022-04-14 07:06:06 -0400
 </div>
 </div>
 <style>

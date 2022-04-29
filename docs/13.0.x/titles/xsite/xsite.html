@@ -552,8 +552,9 @@ $(addBlockSwitches);
 <li><a href="#backing-up-caches-different-names_configuring-cross-site-replication">2.3. Backing up to caches with different names</a></li>
 <li><a href="#configuring-state-transfer_configuring-cross-site-replication">2.4. Configuring cross-site state transfer</a></li>
 <li><a href="#configuring-conflict-resolution_configuring-cross-site-replication">2.5. Configuring conflict resolution algorithms</a></li>
-<li><a href="#verifying-cross-site-views_configuring-cross-site-replication">2.6. Verifying cross-site views</a></li>
-<li><a href="#configuring-hot-rod-clients-cross-site_configuring-cross-site-replication">2.7. Configuring Hot Rod clients for cross-site replication</a></li>
+<li><a href="#cleaning-irac-tombstones_configuring-cross-site-replication">2.6. Cleaning tombstones for asynchronous backups</a></li>
+<li><a href="#verifying-cross-site-views_configuring-cross-site-replication">2.7. Verifying cross-site views</a></li>
+<li><a href="#configuring-hot-rod-clients-cross-site_configuring-cross-site-replication">2.8. Configuring Hot Rod clients for cross-site replication</a></li>
 </ul>
 </li>
 <li><a href="#cross-site-operations-cli">3. Performing cross-site operations with the CLI</a>
@@ -1873,7 +1874,85 @@ If you want Infinispan to replicate between caches with different names, you can
 </div>
 </div>
 <div class="sect2">
-<h3 id="verifying-cross-site-views_configuring-cross-site-replication"><a class="anchor" href="#verifying-cross-site-views_configuring-cross-site-replication"></a>2.6. Verifying cross-site views</h3>
+<h3 id="cleaning-irac-tombstones_configuring-cross-site-replication"><a class="anchor" href="#cleaning-irac-tombstones_configuring-cross-site-replication"></a>2.6. Cleaning tombstones for asynchronous backups</h3>
+<div class="paragraph">
+<p>With the asynchronous backup strategy Infinispan stores metadata, known as tombstones, when it removes keys.
+Infinispan periodically runs a task to remove these tombstones and reduce excessive memory usage when backup locations no longer require the metadata.
+You can configure the frequency for this task by defining a target size for tombstone maps as well as the maximum delay between task runs.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Specify the number of tombstones to store with the <code>tombstone-map-size</code> attribute.</p>
+<div class="paragraph">
+<p>If the number of tombstones increases beyond this number then Infinispan runs the cleanup task more frequently.
+Likewise, if the number of tombstones is less than this number then Infinispan does not run the cleanup task as frequently.</p>
+</div>
+</li>
+<li>
+<p>Add the <code>max-cleanup-delay</code> attribute and specify the maximum delay, in milliseconds, between tombstone cleanup tasks.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="tombstone_cleanup_task_configuration" class="discrete">Tombstone cleanup task configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;distributed-cache&gt;</span>
+   <span class="tag">&lt;backups</span> <span class="attribute-name">tombstone-map-size</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">512000</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">max-cleanup-delay</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">30000</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;backup</span> <span class="attribute-name">site</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">LON</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">strategy</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+   <span class="tag">&lt;/backups&gt;</span>
+<span class="tag">&lt;/distributed-cache&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">distributed-cache</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">backups</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">tombstone-map-size</span><span class="delimiter">&quot;</span></span>: <span class="integer">512000</span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">max-cleanup-delay</span><span class="delimiter">&quot;</span></span>: <span class="integer">30000</span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">LON</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">backup</span><span class="delimiter">&quot;</span></span>: {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">strategy</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span>
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">distributedCache</span>:
+  <span class="key">backups</span>:
+    <span class="key">tombstoneMapSize</span>: <span class="string"><span class="content">512000</span></span>
+    <span class="key">maxCleanupDelay</span>: <span class="string"><span class="content">30000</span></span>
+    <span class="key">LON</span>:
+      <span class="key">backup</span>:
+        <span class="key">strategy</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/configdocs/">Infinispan configuration schema reference</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="verifying-cross-site-views_configuring-cross-site-replication"><a class="anchor" href="#verifying-cross-site-views_configuring-cross-site-replication"></a>2.7. Verifying cross-site views</h3>
 <div class="paragraph">
 <p>When you set up Infinispan to perform cross-site replication, you should check log files to ensure that Infinispan clusters have successfully formed cross-site views.</p>
 </div>
@@ -1899,7 +1978,7 @@ INFO  [org.infinispan.XSITE] (jgroups-7,&lt;server-hostname&gt;) ISPN000439: Rec
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-hot-rod-clients-cross-site_configuring-cross-site-replication"><a class="anchor" href="#configuring-hot-rod-clients-cross-site_configuring-cross-site-replication"></a>2.7. Configuring Hot Rod clients for cross-site replication</h3>
+<h3 id="configuring-hot-rod-clients-cross-site_configuring-cross-site-replication"><a class="anchor" href="#configuring-hot-rod-clients-cross-site_configuring-cross-site-replication"></a>2.8. Configuring Hot Rod clients for cross-site replication</h3>
 <div class="paragraph">
 <p>Configure Hot Rod clients to use Infinispan clusters at different sites.</p>
 </div>
@@ -2871,7 +2950,7 @@ If you did not take the site offline manually, this message could indicate a fai
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-11 07:29:16 -0500
+Last updated 2022-04-14 07:06:06 -0400
 </div>
 </div>
 <style>

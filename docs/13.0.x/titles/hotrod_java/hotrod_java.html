@@ -527,100 +527,98 @@ $(addBlockSwitches);
 <ul class="sectlevel1">
 <li><a href="#hotrod-java-client">1. Hot Rod Java Clients</a>
 <ul class="sectlevel2">
-<li><a href="#hotrod_hotrod-java-client">1.1. Hot Rod Protocol</a>
-<ul class="sectlevel3">
-<li><a href="#hotrod-client-intelligence_hotrod-java-client">1.1.1. Client Intelligence</a></li>
-<li><a href="#request-balancing_hotrod-java-client">1.1.2. Request Balancing</a></li>
-<li><a href="#hotrod_failover">1.1.3. Client Failover</a></li>
+<li><a href="#hotrod_hotrod-java-client">1.1. Hot Rod Protocol</a></li>
+<li><a href="#hotrod-client-intelligence_hotrod-java-client">1.2. Client Intelligence</a></li>
+<li><a href="#request-balancing_hotrod-java-client">1.3. Request Balancing</a></li>
+<li><a href="#hotrod_failover">1.4. Client Failover</a></li>
+<li><a href="#client-server-compatibility_hotrod-java-client">1.5. Hot Rod client compatibility with Infinispan Server</a></li>
 </ul>
 </li>
-<li><a href="#configuring-maven-repository">1.2. Configuring the Infinispan Maven repository</a>
-<ul class="sectlevel3">
-<li><a href="#configuring-pom-xml_configuring-maven-repository">1.2.1. Configuring your Infinispan POM</a></li>
-</ul>
-</li>
-<li><a href="#adding-hotrod-client-dependencies_hotrod-java-client">1.3. Adding Hot Rod Java Client Dependencies</a></li>
-</ul>
-</li>
-<li><a href="#hotrod-client-configuration_hotrod-java-client">2. Hot Rod Java Client Configuration</a>
+<li><a href="#configuring-maven-repository">2. Configuring the Infinispan Maven repository</a>
 <ul class="sectlevel2">
-<li><a href="#configuring-hotrod-java-clients_hotrod-client-configuration">2.1. Configuring Hot Rod Client Connections</a>
-<ul class="sectlevel3">
-<li><a href="#configuring-hotrod-clusters_hotrod-client-configuration">2.1.1. Defining Infinispan Clusters in Client Configuration</a></li>
-<li><a href="#switching-hotrod-clusters_hotrod-client-configuration">2.1.2. Manually Switching Infinispan Clusters</a></li>
-<li><a href="#configuring-hotrod-connection-pools_hotrod-client-configuration">2.1.3. Configuring Connection Pools</a></li>
+<li><a href="#configuring-pom-xml_configuring-maven-repository">2.1. Configuring your Infinispan POM</a></li>
 </ul>
 </li>
-<li><a href="#configuring-hotrod-authentication_hotrod-client-configuration">2.2. Configuring Authentication Mechanisms for Hot Rod Clients</a>
-<ul class="sectlevel3">
-<li><a href="#hotrod_auth_tgt">2.2.1. Creating GSSAPI Login Contexts</a></li>
-<li><a href="#sasl-authentication-mechanisms_hotrod-client-configuration">2.2.2. SASL authentication mechanisms</a></li>
-</ul>
-</li>
-<li><a href="#configuring-hotrod-encryption_hotrod-client-configuration">2.3. Configuring Hot Rod client encryption</a></li>
-<li><a href="#enabling-hotrod-client-statistics_hotrod-client-configuration">2.4. Enabling Hot Rod client statistics</a></li>
-<li><a href="#near-caches-hotrod-client-configuration">2.5. Near Caches</a>
-<ul class="sectlevel3">
-<li><a href="#configuring-near-caching-hotrod-client-configuration">2.5.1. Configuring Near Caches</a></li>
-</ul>
-</li>
-<li><a href="#forcing-return-values_hotrod-client-configuration">2.6. Forcing Return Values</a></li>
-<li><a href="#creating-caches-hotrod_hotrod-client-configuration">2.7. Creating remote caches from Hot Rod clients</a></li>
-</ul>
-</li>
-<li><a href="#hotrod-client-api_hotrod-java-client">3. Hot Rod Client API</a>
+<li><a href="#hotrod-client-configuration_{context}">3. Hot Rod Java Client Configuration</a>
 <ul class="sectlevel2">
-<li><a href="#remotecache_api">3.1. RemoteCache API</a>
+<li><a href="#adding-hotrod-client-dependencies_hotrod-client-configuration">3.1. Adding Hot Rod Java Client Dependencies</a></li>
+<li><a href="#configuring-hotrod-java-clients_hotrod-client-configuration">3.2. Configuring Hot Rod Client Connections</a>
 <ul class="sectlevel3">
-<li><a href="#hotrod_unsupported_methods">3.1.1. Unsupported Methods</a></li>
+<li><a href="#configuring-hotrod-clusters_hotrod-client-configuration">3.2.1. Defining Infinispan Clusters in Client Configuration</a></li>
+<li><a href="#switching-hotrod-clusters_hotrod-client-configuration">3.2.2. Manually Switching Infinispan Clusters</a></li>
+<li><a href="#configuring-hotrod-connection-pools_hotrod-client-configuration">3.2.3. Configuring Connection Pools</a></li>
 </ul>
 </li>
-<li><a href="#hr_remote_iterator">3.2. Remote Iterator API</a>
+<li><a href="#configuring-hotrod-authentication_hotrod-client-configuration">3.3. Configuring Authentication Mechanisms for Hot Rod Clients</a>
 <ul class="sectlevel3">
-<li><a href="#custom_filters">3.2.1. Deploying Custom Filters to Infinispan Server</a></li>
+<li><a href="#hotrod_auth_tgt">3.3.1. Creating GSSAPI Login Contexts</a></li>
+<li><a href="#sasl-authentication-mechanisms_hotrod-client-configuration">3.3.2. SASL authentication mechanisms</a></li>
 </ul>
 </li>
-<li><a href="#hr_versioned_api">3.3. MetadataValue API</a></li>
-<li><a href="#hotrod_streaming">3.4. Streaming API</a></li>
-<li><a href="#remotecache_countermanager-hotrod-client-api">3.5. Counter API</a></li>
-<li><a href="#creating_event_listeners">3.6. Creating Event Listeners</a>
+<li><a href="#configuring-hotrod-encryption_hotrod-client-configuration">3.4. Configuring Hot Rod client encryption</a></li>
+<li><a href="#enabling-hotrod-client-statistics_hotrod-client-configuration">3.5. Enabling Hot Rod client statistics</a></li>
+<li><a href="#near-caches-hotrod-client-configuration">3.6. Near Caches</a>
 <ul class="sectlevel3">
-<li><a href="#removing_event_listeners">3.6.1. Removing Event Listeners</a></li>
-<li><a href="#filtering_events">3.6.2. Filtering Events</a></li>
-<li><a href="#skipping_notifications">3.6.3. Skipping Notifications</a></li>
-<li><a href="#customizing_events">3.6.4. Customizing Events</a></li>
-<li><a href="#filter_and_custom_events">3.6.5. Filter and Custom Events</a></li>
-<li><a href="#event_marshalling">3.6.6. Event Marshalling</a>
+<li><a href="#configuring-near-caching-hotrod-client-configuration">3.6.1. Configuring Near Caches</a></li>
+</ul>
+</li>
+<li><a href="#forcing-return-values_hotrod-client-configuration">3.7. Forcing Return Values</a></li>
+<li><a href="#creating-caches-hotrod_hotrod-client-configuration">3.8. Creating remote caches from Hot Rod clients</a></li>
+</ul>
+</li>
+<li><a href="#hotrod-client-api_{context}">4. Hot Rod Client API</a>
+<ul class="sectlevel2">
+<li><a href="#remotecache_api">4.1. RemoteCache API</a>
+<ul class="sectlevel3">
+<li><a href="#hotrod_unsupported_methods">4.1.1. Unsupported Methods</a></li>
+</ul>
+</li>
+<li><a href="#hr_remote_iterator">4.2. Remote Iterator API</a>
+<ul class="sectlevel3">
+<li><a href="#custom_filters">4.2.1. Deploying Custom Filters to Infinispan Server</a></li>
+</ul>
+</li>
+<li><a href="#hr_versioned_api">4.3. MetadataValue API</a></li>
+<li><a href="#hotrod_streaming">4.4. Streaming API</a></li>
+<li><a href="#remotecache_countermanager-hotrod-client-api">4.5. Counter API</a></li>
+<li><a href="#creating_event_listeners">4.6. Creating Event Listeners</a>
+<ul class="sectlevel3">
+<li><a href="#removing_event_listeners">4.6.1. Removing Event Listeners</a></li>
+<li><a href="#filtering_events">4.6.2. Filtering Events</a></li>
+<li><a href="#skipping_notifications">4.6.3. Skipping Notifications</a></li>
+<li><a href="#customizing_events">4.6.4. Customizing Events</a></li>
+<li><a href="#filter_and_custom_events">4.6.5. Filter and Custom Events</a></li>
+<li><a href="#event_marshalling">4.6.6. Event Marshalling</a>
 <ul class="sectlevel4">
 <li><a href="#protostream_deployment">Deploying Protostream Marshallers</a></li>
 </ul>
 </li>
-<li><a href="#listener_state_handling">3.6.7. Listener State Handling</a></li>
-<li><a href="#listener_failure_handling">3.6.8. Listener Failure Handling</a></li>
+<li><a href="#listener_state_handling">4.6.7. Listener State Handling</a></li>
+<li><a href="#listener_failure_handling">4.6.8. Listener Failure Handling</a></li>
 </ul>
 </li>
-<li><a href="#hotrod_transactions">3.7. Hot Rod Java Client Transactions</a>
+<li><a href="#hotrod_transactions">4.7. Hot Rod Java Client Transactions</a>
 <ul class="sectlevel3">
-<li><a href="#hr_transactions_config_server">3.7.1. Configuring the Server</a></li>
-<li><a href="#hr_transactions_config_client">3.7.2. Configuring Hot Rod Clients</a>
+<li><a href="#hr_transactions_config_server">4.7.1. Configuring the Server</a></li>
+<li><a href="#hr_transactions_config_client">4.7.2. Configuring Hot Rod Clients</a>
 <ul class="sectlevel4">
 <li><a href="#hr_transactions_tmlookup">TransactionManagerLookup Interface</a></li>
 </ul>
 </li>
-<li><a href="#hr_transactions_modes">3.7.3. Transaction Modes</a></li>
-<li><a href="#hr_transactions_force_return_value">3.7.4. Detecting Conflicts with Transactions</a></li>
-<li><a href="#hr_transactions_ex_use_config">3.7.5. Using the Configured Transaction Manager and Transaction Mode</a></li>
+<li><a href="#hr_transactions_modes">4.7.3. Transaction Modes</a></li>
+<li><a href="#hr_transactions_force_return_value">4.7.4. Detecting Conflicts with Transactions</a></li>
+<li><a href="#hr_transactions_ex_use_config">4.7.5. Using the Configured Transaction Manager and Transaction Mode</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#junit-testing">4. JUnit testing</a>
+<li><a href="#junit-testing">5. JUnit testing</a>
 <ul class="sectlevel2">
-<li><a href="#testing_infinispan_with_test_containers">4.1. Testing Infinispan with test containers</a>
+<li><a href="#testing_infinispan_with_test_containers">5.1. Testing Infinispan with test containers</a>
 <ul class="sectlevel3">
-<li><a href="#starting_the_infinispan_test_container">4.1.1. Starting the Infinispan test container</a></li>
-<li><a href="#changing_credentials">4.1.2. Changing credentials</a></li>
-<li><a href="#adding_the_test_container_to_your_project_dependencies">4.1.3. Adding the test container to your project dependencies</a></li>
+<li><a href="#starting_the_infinispan_test_container">5.1.1. Starting the Infinispan test container</a></li>
+<li><a href="#changing_credentials">5.1.2. Changing credentials</a></li>
+<li><a href="#adding_the_test_container_to_your_project_dependencies">5.1.3. Adding the test container to your project dependencies</a></li>
 </ul>
 </li>
 </ul>
@@ -664,8 +662,9 @@ requests directly to those nodes, which reduces latency.</p>
 </li>
 </ul>
 </div>
-<div class="sect3">
-<h4 id="hotrod-client-intelligence_hotrod-java-client"><a class="anchor" href="#hotrod-client-intelligence_hotrod-java-client"></a>1.1.1. Client Intelligence</h4>
+</div>
+<div class="sect2">
+<h3 id="hotrod-client-intelligence_hotrod-java-client"><a class="anchor" href="#hotrod-client-intelligence_hotrod-java-client"></a>1.2. Client Intelligence</h3>
 <div class="paragraph">
 <p>Hot Rod clients use intelligence mechanisms to efficiently send requests to Infinispan Server clusters.</p>
 </div>
@@ -694,7 +693,7 @@ Clients can then connect directly to that node to perform read and write operati
 <p>The benefit of <code>HASH_DISTRIBUTION_AWARE</code> intelligence is that Infinispan Server does not need to look up values based on key hashes, which uses less server-side resources.
 Another benefit is that Infinispan Server responds to client requests more quickly because they do not need to make additional network roundtrips.</p>
 </div>
-<h5 id="configuration" class="discrete">Configuration</h5>
+<h4 id="configuration" class="discrete">Configuration</h4>
 <div class="listingblock primary">
 <div class="title">ConfigurationBuilder</div>
 <div class="content">
@@ -717,8 +716,8 @@ builder.clientIntelligence(ClientIntelligence.BASIC);</code></pre>
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="request-balancing_hotrod-java-client"><a class="anchor" href="#request-balancing_hotrod-java-client"></a>1.1.2. Request Balancing</h4>
+<div class="sect2">
+<h3 id="request-balancing_hotrod-java-client"><a class="anchor" href="#request-balancing_hotrod-java-client"></a>1.3. Request Balancing</h3>
 <div class="paragraph">
 <p>Hot Rod Java clients balance requests to Infinispan Server clusters so that read and write operations are spread across nodes.</p>
 </div>
@@ -776,8 +775,8 @@ builder.addServer()
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="hotrod_failover"><a class="anchor" href="#hotrod_failover"></a>1.1.3. Client Failover</h4>
+<div class="sect2">
+<h3 id="hotrod_failover"><a class="anchor" href="#hotrod_failover"></a>1.4. Client Failover</h3>
 <div class="paragraph">
 <p>Hot Rod clients can automatically failover when Infinispan cluster topologies
 change. For instance, Hot Rod clients that are topology-aware can detect when
@@ -806,17 +805,56 @@ to ensure that operations do not partially complete and leave conflicting
 entries on different nodes.</p>
 </div>
 </div>
-</div>
 <div class="sect2">
-<h3 id="configuring-maven-repository"><a class="anchor" href="#configuring-maven-repository"></a>1.2. Configuring the Infinispan Maven repository</h3>
+<h3 id="client-server-compatibility_hotrod-java-client"><a class="anchor" href="#client-server-compatibility_hotrod-java-client"></a>1.5. Hot Rod client compatibility with Infinispan Server</h3>
+<div class="paragraph">
+<p>Infinispan Server allows you to connect Hot Rod clients with different versions.
+For instance during a migration or upgrade to your Infinispan cluster, the Hot Rod client version might be a lower Infinispan version than Infinispan Server.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan recommends using the latest Hot Rod client version to benefit from the most recent capabilities and security enhancements.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Infinispan 10 and later</div>
+<p>Hot Rod protocol version 3.x automatically negotiates the highest version possible for clients with Infinispan Server.</p>
+</div>
+<div class="paragraph">
+<div class="title">Infinispan 9.4 and earlier</div>
+<p>Clients that use a Hot Rod protocol version that is higher than the Infinispan Server version must set the <code>infinispan.client.hotrod.protocol_version</code> property.</p>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://infinispan.org/docs/stable/titles/hotrod_protocol/hotrod_protocol.html">Hot Rod protocol reference</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuring-maven-repository"><a class="anchor" href="#configuring-maven-repository"></a>2. Configuring the Infinispan Maven repository</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan Java distributions are available from Maven.</p>
 </div>
 <div class="paragraph">
 <p>Infinispan artifacts are available from Maven central. See the <a href="https://search.maven.org/search?q=g:org.infinispan">org.infinispan</a> group for available Infinispan artifacts.</p>
 </div>
-<div class="sect3">
-<h4 id="configuring-pom-xml_configuring-maven-repository"><a class="anchor" href="#configuring-pom-xml_configuring-maven-repository"></a>1.2.1. Configuring your Infinispan POM</h4>
+<div class="sect2">
+<h3 id="configuring-pom-xml_configuring-maven-repository"><a class="anchor" href="#configuring-pom-xml_configuring-maven-repository"></a>2.1. Configuring your Infinispan POM</h3>
 <div class="paragraph">
 <p>Maven uses configuration files called Project Object Model (POM) files to
 define projects and manage builds. POM files are in XML format and describe the
@@ -851,7 +889,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;properties&gt;</span>
-  <span class="tag">&lt;version.infinispan&gt;</span>13.0.8.Final<span class="tag">&lt;/version.infinispan&gt;</span>
+  <span class="tag">&lt;version.infinispan&gt;</span>13.0.9.Final<span class="tag">&lt;/version.infinispan&gt;</span>
 <span class="tag">&lt;/properties&gt;</span>
 
 <span class="tag">&lt;dependencyManagement&gt;</span>
@@ -873,8 +911,15 @@ artifact you add as a dependency to your project.</p>
 </div>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="hotrod-client-configuration_{context}"><a class="anchor" href="#hotrod-client-configuration_{context}"></a>3. Hot Rod Java Client Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Infinispan provides a Hot Rod Java client configuration API that exposes configuration properties.</p>
+</div>
 <div class="sect2">
-<h3 id="adding-hotrod-client-dependencies_hotrod-java-client"><a class="anchor" href="#adding-hotrod-client-dependencies_hotrod-java-client"></a>1.3. Adding Hot Rod Java Client Dependencies</h3>
+<h3 id="adding-hotrod-client-dependencies_hotrod-client-configuration"><a class="anchor" href="#adding-hotrod-client-dependencies_hotrod-client-configuration"></a>3.1. Adding Hot Rod Java Client Dependencies</h3>
 <div class="paragraph">
 <p>Add Hot Rod Java client dependencies to include it in your project.</p>
 </div>
@@ -908,16 +953,8 @@ as follows:</p>
 <p><a href="../server/server.html#server_requirements">Infinispan Server Requirements</a></p>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="hotrod-client-configuration_hotrod-java-client"><a class="anchor" href="#hotrod-client-configuration_hotrod-java-client"></a>2. Hot Rod Java Client Configuration</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Infinispan provides a Hot Rod Java client configuration API that exposes configuration properties.</p>
-</div>
 <div class="sect2">
-<h3 id="configuring-hotrod-java-clients_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-java-clients_hotrod-client-configuration"></a>2.1. Configuring Hot Rod Client Connections</h3>
+<h3 id="configuring-hotrod-java-clients_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-java-clients_hotrod-client-configuration"></a>3.2. Configuring Hot Rod Client Connections</h3>
 <div class="paragraph">
 <p>Configure Hot Rod Java client connections to Infinispan Server.</p>
 </div>
@@ -1006,7 +1043,7 @@ RemoteCacheManager cacheManager = <span class="keyword">new</span> RemoteCacheMa
 </ul>
 </div>
 <div class="sect3">
-<h4 id="configuring-hotrod-clusters_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-clusters_hotrod-client-configuration"></a>2.1.1. Defining Infinispan Clusters in Client Configuration</h4>
+<h4 id="configuring-hotrod-clusters_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-clusters_hotrod-client-configuration"></a>3.2.1. Defining Infinispan Clusters in Client Configuration</h4>
 <div class="paragraph">
 <p>Provide the locations of Infinispan clusters in Hot Rod client configuration.</p>
 </div>
@@ -1045,7 +1082,7 @@ RemoteCacheManager remoteCacheManager = <span class="keyword">new</span> RemoteC
 </div>
 </div>
 <div class="sect3">
-<h4 id="switching-hotrod-clusters_hotrod-client-configuration"><a class="anchor" href="#switching-hotrod-clusters_hotrod-client-configuration"></a>2.1.2. Manually Switching Infinispan Clusters</h4>
+<h4 id="switching-hotrod-clusters_hotrod-client-configuration"><a class="anchor" href="#switching-hotrod-clusters_hotrod-client-configuration"></a>3.2.2. Manually Switching Infinispan Clusters</h4>
 <div class="paragraph">
 <p>Manually switch Hot Rod Java client connections between Infinispan clusters.</p>
 </div>
@@ -1075,7 +1112,7 @@ configuration, which is defined as a list of Infinispan servers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-hotrod-connection-pools_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-connection-pools_hotrod-client-configuration"></a>2.1.3. Configuring Connection Pools</h4>
+<h4 id="configuring-hotrod-connection-pools_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-connection-pools_hotrod-client-configuration"></a>3.2.3. Configuring Connection Pools</h4>
 <div class="paragraph">
 <p>Hot Rod Java clients keep pools of persistent connections to Infinispan servers to reuse TCP connections instead of creating them on each request.</p>
 </div>
@@ -1119,7 +1156,7 @@ infinispan.client.hotrod.connection_pool.max_pending_requests = 20</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-hotrod-authentication_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-authentication_hotrod-client-configuration"></a>2.2. Configuring Authentication Mechanisms for Hot Rod Clients</h3>
+<h3 id="configuring-hotrod-authentication_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-authentication_hotrod-client-configuration"></a>3.3. Configuring Authentication Mechanisms for Hot Rod Clients</h3>
 <div class="paragraph">
 <p>Infinispan Server uses different mechanisms to authenticate Hot Rod client connections.</p>
 </div>
@@ -1333,7 +1370,7 @@ document to provide examples for each possible callback type.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="hotrod_auth_tgt"><a class="anchor" href="#hotrod_auth_tgt"></a>2.2.1. Creating GSSAPI Login Contexts</h4>
+<h4 id="hotrod_auth_tgt"><a class="anchor" href="#hotrod_auth_tgt"></a>3.3.1. Creating GSSAPI Login Contexts</h4>
 <div class="paragraph">
 <p>To use the GSSAPI mechanism, you must create a <em>LoginContext</em> so your Hot Rod client can obtain a Ticket Granting Ticket (TGT).</p>
 </div>
@@ -1391,7 +1428,7 @@ authenticate with Kerberos and verify <code>krb5.conf</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="sasl-authentication-mechanisms_hotrod-client-configuration"><a class="anchor" href="#sasl-authentication-mechanisms_hotrod-client-configuration"></a>2.2.2. SASL authentication mechanisms</h4>
+<h4 id="sasl-authentication-mechanisms_hotrod-client-configuration"><a class="anchor" href="#sasl-authentication-mechanisms_hotrod-client-configuration"></a>3.3.2. SASL authentication mechanisms</h4>
 <div class="paragraph">
 <p>Infinispan Server supports the following SASL authentications mechanisms with Hot Rod endpoints:</p>
 </div>
@@ -1458,7 +1495,7 @@ authenticate with Kerberos and verify <code>krb5.conf</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-hotrod-encryption_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-encryption_hotrod-client-configuration"></a>2.3. Configuring Hot Rod client encryption</h3>
+<h3 id="configuring-hotrod-encryption_hotrod-client-configuration"><a class="anchor" href="#configuring-hotrod-encryption_hotrod-client-configuration"></a>3.4. Configuring Hot Rod client encryption</h3>
 <div class="paragraph">
 <p>Infinispan Server can enforce SSL/TLS encryption and present Hot Rod clients with certificates to establish trust and negotiate secure connections.</p>
 </div>
@@ -1582,7 +1619,7 @@ infinispan.client.hotrod.sasl_mechanism = EXTERNAL</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="enabling-hotrod-client-statistics_hotrod-client-configuration"><a class="anchor" href="#enabling-hotrod-client-statistics_hotrod-client-configuration"></a>2.4. Enabling Hot Rod client statistics</h3>
+<h3 id="enabling-hotrod-client-statistics_hotrod-client-configuration"><a class="anchor" href="#enabling-hotrod-client-statistics_hotrod-client-configuration"></a>3.5. Enabling Hot Rod client statistics</h3>
 <div class="paragraph">
 <p>Hot Rod Java clients can provide statistics that include remote cache and near-cache hits and misses as well as connection pool usage.</p>
 </div>
@@ -1627,7 +1664,7 @@ infinispan.client.hotrod.jmx_domain = my.domain.org</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="near-caches-hotrod-client-configuration"><a class="anchor" href="#near-caches-hotrod-client-configuration"></a>2.5. Near Caches</h3>
+<h3 id="near-caches-hotrod-client-configuration"><a class="anchor" href="#near-caches-hotrod-client-configuration"></a>3.6. Near Caches</h3>
 <div class="paragraph">
 <p>Near caches are local to Hot Rod clients and store recently used data so that every read operation does not need to traverse the network, which significantly increases performance.</p>
 </div>
@@ -1696,7 +1733,7 @@ This means you do not need to manually keep the cache size within the boundaries
 </ul>
 </div>
 <div class="sect3">
-<h4 id="configuring-near-caching-hotrod-client-configuration"><a class="anchor" href="#configuring-near-caching-hotrod-client-configuration"></a>2.5.1. Configuring Near Caches</h4>
+<h4 id="configuring-near-caching-hotrod-client-configuration"><a class="anchor" href="#configuring-near-caching-hotrod-client-configuration"></a>3.6.1. Configuring Near Caches</h4>
 <div class="paragraph">
 <p>Configure Hot Rod Java clients with near caches to store recently used data locally in the client JVM.</p>
 </div>
@@ -1776,7 +1813,7 @@ builder.remoteCache(<span class="string"><span class="delimiter">&quot;</span><s
 </div>
 </div>
 <div class="sect2">
-<h3 id="forcing-return-values_hotrod-client-configuration"><a class="anchor" href="#forcing-return-values_hotrod-client-configuration"></a>2.6. Forcing Return Values</h3>
+<h3 id="forcing-return-values_hotrod-client-configuration"><a class="anchor" href="#forcing-return-values_hotrod-client-configuration"></a>3.7. Forcing Return Values</h3>
 <div class="paragraph">
 <p>To avoid sending data unnecessarily, write operations on remote caches return <code>null</code> instead of previous values.</p>
 </div>
@@ -1834,7 +1871,7 @@ infinispan.client.hotrod.cache.somecaches*.force_return_values = true</code></pr
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-hotrod_hotrod-client-configuration"><a class="anchor" href="#creating-caches-hotrod_hotrod-client-configuration"></a>2.7. Creating remote caches from Hot Rod clients</h3>
+<h3 id="creating-caches-hotrod_hotrod-client-configuration"><a class="anchor" href="#creating-caches-hotrod_hotrod-client-configuration"></a>3.8. Creating remote caches from Hot Rod clients</h3>
 <div class="paragraph">
 <p>Use the Infinispan Hot Rod API to create remote caches on Infinispan Server from Java, C++, .NET/C#, JS clients and more.</p>
 </div>
@@ -1914,7 +1951,7 @@ infinispan.client.hotrod.cache.[my.other.cache].configuration_uri=file:///path/t
 </div>
 </div>
 <div class="sect1">
-<h2 id="hotrod-client-api_hotrod-java-client"><a class="anchor" href="#hotrod-client-api_hotrod-java-client"></a>3. Hot Rod Client API</h2>
+<h2 id="hotrod-client-api_{context}"><a class="anchor" href="#hotrod-client-api_{context}"></a>4. Hot Rod Client API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan Hot Rod client API provides interfaces for creating caches
@@ -1922,7 +1959,7 @@ remotely, manipulating data, monitoring the topology of clustered caches, and
 more.</p>
 </div>
 <div class="sect2">
-<h3 id="remotecache_api"><a class="anchor" href="#remotecache_api"></a>3.1. RemoteCache API</h3>
+<h3 id="remotecache_api"><a class="anchor" href="#remotecache_api"></a>4.1. RemoteCache API</h3>
 <div class="paragraph">
 <p>The collection methods <code>keySet</code>, <code>entrySet</code> and <code>values</code> are backed by the
 remote cache. That is that every method is called back into the <code>RemoteCache</code>.
@@ -1978,7 +2015,7 @@ have to copy the contents yourself. Also you can do this with <code>entrySet</co
 </div>
 </div>
 <div class="sect3">
-<h4 id="hotrod_unsupported_methods"><a class="anchor" href="#hotrod_unsupported_methods"></a>3.1.1. Unsupported Methods</h4>
+<h4 id="hotrod_unsupported_methods"><a class="anchor" href="#hotrod_unsupported_methods"></a>4.1.1. Unsupported Methods</h4>
 <div class="paragraph">
 <p>The Infinispan <code>RemoteCache</code> API does not support all methods available in the
 <code>Cache</code> API and throws <code>UnsupportedOperationException</code> when unsupported methods
@@ -2023,7 +2060,7 @@ value objects.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="hr_remote_iterator"><a class="anchor" href="#hr_remote_iterator"></a>3.2. Remote Iterator API</h3>
+<h3 id="hr_remote_iterator"><a class="anchor" href="#hr_remote_iterator"></a>4.2. Remote Iterator API</h3>
 <div class="paragraph">
 <p>Infinispan provides a remote iterator API to retrieve entries where memory
 resources are constrained or if you plan to do server-side filtering or
@@ -2056,7 +2093,7 @@ try (CloseableIterator&lt;Entry&lt;<span class="predefined-type">Object</span>, 
 </div>
 </div>
 <div class="sect3">
-<h4 id="custom_filters"><a class="anchor" href="#custom_filters"></a>3.2.1. Deploying Custom Filters to Infinispan Server</h4>
+<h4 id="custom_filters"><a class="anchor" href="#custom_filters"></a>4.2.1. Deploying Custom Filters to Infinispan Server</h4>
 <div class="paragraph">
 <p>Deploy custom filters to Infinispan server instances.</p>
 </div>
@@ -2128,7 +2165,7 @@ installation directory.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="hr_versioned_api"><a class="anchor" href="#hr_versioned_api"></a>3.3. MetadataValue API</h3>
+<h3 id="hr_versioned_api"><a class="anchor" href="#hr_versioned_api"></a>4.3. MetadataValue API</h3>
 <div class="paragraph">
 <p>Use the <code>MetadataValue</code> interface for versioned operations.</p>
 </div>
@@ -2158,7 +2195,7 @@ of the value for the entry is unchanged:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="hotrod_streaming"><a class="anchor" href="#hotrod_streaming"></a>3.4. Streaming API</h3>
+<h3 id="hotrod_streaming"><a class="anchor" href="#hotrod_streaming"></a>4.4. Streaming API</h3>
 <div class="paragraph">
 <p>Infinispan provides a Streaming API that implements methods that return
 instances of <code>InputStream</code> and <code>OutputStream</code> so you can stream large objects
@@ -2246,7 +2283,7 @@ words, when the <code>close()</code> method is invoked on the <code>OutputStream
 </div>
 </div>
 <div class="sect2">
-<h3 id="remotecache_countermanager-hotrod-client-api"><a class="anchor" href="#remotecache_countermanager-hotrod-client-api"></a>3.5. Counter API</h3>
+<h3 id="remotecache_countermanager-hotrod-client-api"><a class="anchor" href="#remotecache_countermanager-hotrod-client-api"></a>4.5. Counter API</h3>
 <div class="paragraph">
 <p>The <code>CounterManager</code> interface is the entry point to define, retrieve and remove counters.</p>
 </div>
@@ -2272,7 +2309,7 @@ CounterManager counterManager = RemoteCounterManagerFactory.asCounterManager(man
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating_event_listeners"><a class="anchor" href="#creating_event_listeners"></a>3.6. Creating Event Listeners</h3>
+<h3 id="creating_event_listeners"><a class="anchor" href="#creating_event_listeners"></a>4.6. Creating Event Listeners</h3>
 <div class="paragraph">
 <p>Java Hot Rod clients can register listeners to receive cache-entry level events.
 Cache entry created, modified and removed events are supported.</p>
@@ -2341,7 +2378,7 @@ cache.addClientListener(<span class="keyword">new</span> EventPrintListener());<
 </div>
 </div>
 <div class="sect3">
-<h4 id="removing_event_listeners"><a class="anchor" href="#removing_event_listeners"></a>3.6.1. Removing Event Listeners</h4>
+<h4 id="removing_event_listeners"><a class="anchor" href="#removing_event_listeners"></a>4.6.1. Removing Event Listeners</h4>
 <div class="paragraph">
 <p>When an client event listener is not needed any more, it can be removed:</p>
 </div>
@@ -2353,7 +2390,7 @@ cache.removeClientListener(listener);</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="filtering_events"><a class="anchor" href="#filtering_events"></a>3.6.2. Filtering Events</h4>
+<h4 id="filtering_events"><a class="anchor" href="#filtering_events"></a>4.6.2. Filtering Events</h4>
 <div class="paragraph">
 <p>In order to avoid inundating clients with events, users can provide filtering
 functionality to limit the number of events fired by the server for a
@@ -2505,7 +2542,7 @@ registered. To make them marshallable, either make them extend <code>Serializabl
 </div>
 </div>
 <div class="sect3">
-<h4 id="skipping_notifications"><a class="anchor" href="#skipping_notifications"></a>3.6.3. Skipping Notifications</h4>
+<h4 id="skipping_notifications"><a class="anchor" href="#skipping_notifications"></a>4.6.3. Skipping Notifications</h4>
 <div class="paragraph">
 <p>Include the <code>SKIP_LISTENER_NOTIFICATION</code> flag when calling remote API methods to
 perform operations without getting event notifications from the server.
@@ -2519,7 +2556,7 @@ set the flag as follows:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="customizing_events"><a class="anchor" href="#customizing_events"></a>3.6.4. Customizing Events</h4>
+<h4 id="customizing_events"><a class="anchor" href="#customizing_events"></a>4.6.4. Customizing Events</h4>
 <div class="paragraph">
 <p>The events generated by default contain just enough information to make the
 event relevant but they avoid cramming too much information in order to reduce
@@ -2723,7 +2760,7 @@ registered. To make them marshallable, either make them extend <code>Serializabl
 </div>
 </div>
 <div class="sect3">
-<h4 id="filter_and_custom_events"><a class="anchor" href="#filter_and_custom_events"></a>3.6.5. Filter and Custom Events</h4>
+<h4 id="filter_and_custom_events"><a class="anchor" href="#filter_and_custom_events"></a>4.6.5. Filter and Custom Events</h4>
 <div class="paragraph">
 <p>If you want to do both event filtering and customization, it&#8217;s easier to
 implement <code>org.infinispan.notifications.cachelistener.filter.CacheEventFilterConverter</code>
@@ -2818,7 +2855,7 @@ cache.addClientListener(<span class="keyword">new</span> CustomEventPrintListene
 </div>
 </div>
 <div class="sect3">
-<h4 id="event_marshalling"><a class="anchor" href="#event_marshalling"></a>3.6.6. Event Marshalling</h4>
+<h4 id="event_marshalling"><a class="anchor" href="#event_marshalling"></a>4.6.6. Event Marshalling</h4>
 <div class="paragraph">
 <p>Hot Rod servers can store data in different formats, but in spite of that,
 Java Hot Rod client users can still develop <code>CacheEventConverter</code> or <code>CacheEventFilter</code>
@@ -2877,7 +2914,7 @@ as part of the Infinispan server configuration.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="listener_state_handling"><a class="anchor" href="#listener_state_handling"></a>3.6.7. Listener State Handling</h4>
+<h4 id="listener_state_handling"><a class="anchor" href="#listener_state_handling"></a>4.6.7. Listener State Handling</h4>
 <div class="paragraph">
 <p>Client listener annotation has an optional <code>includeCurrentState</code> attribute
 that specifies whether state will be sent to the client when the listener is
@@ -2895,7 +2932,7 @@ contents are iterated over.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="listener_failure_handling"><a class="anchor" href="#listener_failure_handling"></a>3.6.8. Listener Failure Handling</h4>
+<h4 id="listener_failure_handling"><a class="anchor" href="#listener_failure_handling"></a>4.6.8. Listener Failure Handling</h4>
 <div class="paragraph">
 <p>When a Hot Rod client registers a client listener, it does so in a single
 node in a cluster. If that node fails, the Java Hot Rod client detects that
@@ -2931,7 +2968,7 @@ receive events for the contents of the entire cache.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="hotrod_transactions"><a class="anchor" href="#hotrod_transactions"></a>3.7. Hot Rod Java Client Transactions</h3>
+<h3 id="hotrod_transactions"><a class="anchor" href="#hotrod_transactions"></a>4.7. Hot Rod Java Client Transactions</h3>
 <div class="paragraph">
 <p>You can configure and use Hot Rod clients in JTA <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Transaction.html">Transaction</a>s.</p>
 </div>
@@ -2954,7 +2991,7 @@ To avoid data inconsistency, be sure to read about <a href="#hr_transactions_for
 </table>
 </div>
 <div class="sect3">
-<h4 id="hr_transactions_config_server"><a class="anchor" href="#hr_transactions_config_server"></a>3.7.1. Configuring the Server</h4>
+<h4 id="hr_transactions_config_server"><a class="anchor" href="#hr_transactions_config_server"></a>4.7.1. Configuring the Server</h4>
 <div class="paragraph">
 <p>Caches in the server must also be transactional for clients to participate in JTA <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Transaction.html">Transaction</a>s.</p>
 </div>
@@ -2991,7 +3028,7 @@ Hot Rod transactions should not use <code>FULL_XA</code> because it degrades per
 </div>
 </div>
 <div class="sect3">
-<h4 id="hr_transactions_config_client"><a class="anchor" href="#hr_transactions_config_client"></a>3.7.2. Configuring Hot Rod Clients</h4>
+<h4 id="hr_transactions_config_client"><a class="anchor" href="#hr_transactions_config_client"></a>4.7.2. Configuring Hot Rod Clients</h4>
 <div class="paragraph">
 <p>Transactional <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> are configured per-cache basis.
 The exception is the transaction&#8217;s <code>timeout</code> which is global, because a single transaction can interact with multiple <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a>s.</p>
@@ -3067,7 +3104,7 @@ Note that this implementation has significant limitations when handling concurre
 </div>
 </div>
 <div class="sect3">
-<h4 id="hr_transactions_modes"><a class="anchor" href="#hr_transactions_modes"></a>3.7.3. Transaction Modes</h4>
+<h4 id="hr_transactions_modes"><a class="anchor" href="#hr_transactions_modes"></a>4.7.3. Transaction Modes</h4>
 <div class="paragraph">
 <p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/configuration/TransactionMode.html">TransactionMode</a> controls how a <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>.</p>
 </div>
@@ -3116,7 +3153,7 @@ Invoke the <code>XaResource.recover()</code> method to retrieve transactions to 
 </div>
 </div>
 <div class="sect3">
-<h4 id="hr_transactions_force_return_value"><a class="anchor" href="#hr_transactions_force_return_value"></a>3.7.4. Detecting Conflicts with Transactions</h4>
+<h4 id="hr_transactions_force_return_value"><a class="anchor" href="#hr_transactions_force_return_value"></a>4.7.4. Detecting Conflicts with Transactions</h4>
 <div class="paragraph">
 <p>Transactions use the initial values of keys to detect conflicts.</p>
 </div>
@@ -3247,7 +3284,7 @@ If you do not need the return value for the <code>cache.put()</code> operation t
 </div>
 </div>
 <div class="sect3">
-<h4 id="hr_transactions_ex_use_config"><a class="anchor" href="#hr_transactions_ex_use_config"></a>3.7.5. Using the Configured Transaction Manager and Transaction Mode</h4>
+<h4 id="hr_transactions_ex_use_config"><a class="anchor" href="#hr_transactions_ex_use_config"></a>4.7.5. Using the Configured Transaction Manager and Transaction Mode</h4>
 <div class="paragraph">
 <p>The following example shows how to use the <code>TransactionManager</code> and <code>TransactionMode</code> that you configure in the <code>RemoteCacheManager</code>:</p>
 </div>
@@ -3279,13 +3316,13 @@ tm.commit();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="junit-testing"><a class="anchor" href="#junit-testing"></a>4. JUnit testing</h2>
+<h2 id="junit-testing"><a class="anchor" href="#junit-testing"></a>5. JUnit testing</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Run JUnit tests for Infinispan.</p>
 </div>
 <div class="sect2">
-<h3 id="testing_infinispan_with_test_containers"><a class="anchor" href="#testing_infinispan_with_test_containers"></a>4.1. Testing Infinispan with test containers</h3>
+<h3 id="testing_infinispan_with_test_containers"><a class="anchor" href="#testing_infinispan_with_test_containers"></a>5.1. Testing Infinispan with test containers</h3>
 <div class="paragraph">
 <p>Run <a href="https://infinispan.org">Infinispan Server</a> instances using <a href="https://www.testcontainers.org">Testcontainers</a> for faster, simpler JUnit tests.</p>
 </div>
@@ -3293,7 +3330,7 @@ tm.commit();</code></pre>
 <p>The Infinispan Server test container is based on the <a href="https://github.com/infinispan/infinispan-images/">official container image</a> provided by Infinispan.</p>
 </div>
 <div class="sect3">
-<h4 id="starting_the_infinispan_test_container"><a class="anchor" href="#starting_the_infinispan_test_container"></a>4.1.1. Starting the Infinispan test container</h4>
+<h4 id="starting_the_infinispan_test_container"><a class="anchor" href="#starting_the_infinispan_test_container"></a>5.1.1. Starting the Infinispan test container</h4>
 <div class="paragraph">
 <p>You can start the Infinispan Server container instance from any Java application as follows:</p>
 </div>
@@ -3309,7 +3346,7 @@ tm.commit();</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="changing_credentials"><a class="anchor" href="#changing_credentials"></a>4.1.2. Changing credentials</h4>
+<h4 id="changing_credentials"><a class="anchor" href="#changing_credentials"></a>5.1.2. Changing credentials</h4>
 <div class="paragraph">
 <p>Infinispan Server is configured with the following default credentials:</p>
 </div>
@@ -3335,7 +3372,7 @@ container.start();</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="adding_the_test_container_to_your_project_dependencies"><a class="anchor" href="#adding_the_test_container_to_your_project_dependencies"></a>4.1.3. Adding the test container to your project dependencies</h4>
+<h4 id="adding_the_test_container_to_your_project_dependencies"><a class="anchor" href="#adding_the_test_container_to_your_project_dependencies"></a>5.1.3. Adding the test container to your project dependencies</h4>
 <div class="paragraph">
 <p>Add the following dependency to your <code>pom.xml</code> file:</p>
 </div>
@@ -3356,7 +3393,7 @@ container.start();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-11 07:29:16 -0500
+Last updated 2022-04-14 07:06:06 -0400
 </div>
 </div>
 <style>
