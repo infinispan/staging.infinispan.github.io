@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex">
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/rest/rest.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -1042,7 +1045,7 @@ specific header <em>Key-Content-Type</em> for keys in different formats.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -u user:password -X POST --data-binary @./schema.proto http://127.0.0.1:11222/rest/v2/caches/___protobuf_metadata/schema.proto</code></pre>
+<pre class="CodeRay highlight"><code>curl -u user:password -X POST --data-binary @./schema.proto http://127.0.0.1:11222/rest/v2/caches/___protobuf_metadata/schema.proto</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1591,7 +1594,7 @@ For example, the following command converts the replicated cache configuration f
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ curl localhost:11222/rest/v2/caches?action=convert \
+<pre class="CodeRay highlight nowrap"><code>curl localhost:11222/rest/v2/caches?action=convert \
 --digest -u username:password \
 -X POST -H &quot;Accept: application/yaml&quot; -H &quot;Content-Type: application/xml&quot; \
 -d '&lt;replicated-cache mode=&quot;SYNC&quot; statistics=&quot;false&quot;&gt;&lt;encoding media-type=&quot;application/x-protostream&quot;/&gt;&lt;expiration lifespan=&quot;300000&quot; /&gt;&lt;memory max-size=&quot;400MB&quot; when-full=&quot;REMOVE&quot;/&gt;&lt;/replicated-cache&gt;'</code></pre>
@@ -6310,7 +6313,7 @@ print(resp.read().decode(<span class="string"><span class="delimiter">'</span><s
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-14 07:06:06 -0400
+Last updated 2022-05-13 18:08:03 +0100
 </div>
 </div>
 <style>

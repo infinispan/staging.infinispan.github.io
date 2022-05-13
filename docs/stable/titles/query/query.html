@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/query/query.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -2078,7 +2081,7 @@ You can also use any HTTP client to index and query caches via the REST API.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; schema --upload=person.proto person.proto</code></pre>
+<pre class="CodeRay highlight nowrap"><code>schema --upload=person.proto person.proto</code></pre>
 </div>
 </div>
 </li>
@@ -2104,7 +2107,7 @@ You can also use any HTTP client to index and query caches via the REST API.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; create cache --file=people.xml people</code></pre>
+<pre class="CodeRay highlight nowrap"><code>create cache --file=people.xml people</code></pre>
 </div>
 </div>
 </li>
@@ -2155,7 +2158,7 @@ For this example procedure, create entries that use the following JSON values:</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default/caches/people]&gt; put --encoding=application/json --file=personone.json personone</code></pre>
+<pre class="CodeRay highlight nowrap"><code>put --encoding=application/json --file=personone.json personone</code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -2180,7 +2183,7 @@ For this example procedure, create entries that use the following JSON values:</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default/caches/people]&gt; query &quot;from org.infinispan.example.Person p WHERE p.name='Person' ORDER BY p.age ASC&quot;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>query &quot;from org.infinispan.example.Person p WHERE p.name='Person' ORDER BY p.age ASC&quot;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2923,7 +2926,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-14 07:06:06 -0400
+Last updated 2022-05-13 18:08:03 +0100
 </div>
 </div>
 <style>

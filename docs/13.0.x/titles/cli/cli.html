@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex">
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/cli/cli.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -1045,7 +1048,7 @@ For this reason you should create a user with <code>admin</code> permissions the
 <p>Add a user assigned to the <code>admin</code> group.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">$ bin/cli.sh user create myuser -p changeme -g admin</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="sh">bin/cli.sh user create myuser -p changeme -g admin</code></pre>
 </div>
 </div>
 </li>
@@ -1053,7 +1056,7 @@ For this reason you should create a user with <code>admin</code> permissions the
 <p>Use implicit authorization to gain <code>admin</code> permissions.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">$ bin/cli.sh user create admin -p changeme</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="sh">bin/cli.sh user create admin -p changeme</code></pre>
 </div>
 </div>
 </li>
@@ -1286,7 +1289,7 @@ A user named <code>admin</code> gets <code>admin</code> permissions automaticall
 <p><strong>Linux:</strong></p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -1294,7 +1297,7 @@ A user named <code>admin</code> gets <code>admin</code> permissions automaticall
 <p><strong>Microsoft Windows:</strong></p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin\cli.bat</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin\cli.bat</code></pre>
 </div>
 </div>
 </li>
@@ -1354,72 +1357,68 @@ default cache container.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt;</pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt;</code></pre>
 </div>
 </div>
 <div class="ulist">
 <ul>
 <li>
 <p>Use <code class="command">ls</code> to list resources.</p>
-</li>
-</ul>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; ls
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; ls
 caches
 counters
 configurations
 schemas
-tasks</pre>
+tasks</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Use <code class="command">cd</code> to navigate the resource tree.</p>
-</li>
-</ul>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; cd caches</pre>
+<pre class="CodeRay highlight nowrap"><code>cd caches</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Use <code class="command">describe</code> to view information about resources.</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>describe</code></pre>
+</div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; describe
-{
-  "name" : "default",
-  "version" : "xx.x.x-FINAL",
-  "cluster_name" : "cluster",
-  "coordinator" : true,
-  "cache_configuration_names" : [ "org.infinispan.REPL_ASYNC", "___protobuf_metadata", "org.infinispan.DIST_SYNC", "org.infinispan.LOCAL", "org.infinispan.INVALIDATION_SYNC", "org.infinispan.REPL_SYNC", "org.infinispan.SCATTERED_SYNC", "org.infinispan.INVALIDATION_ASYNC", "org.infinispan.DIST_ASYNC" ],
-  "physical_addresses" : "[192.0.2.0:7800]",
-  "coordinator_address" : "&lt;hostname&gt;",
-  "cache_manager_status" : "RUNNING",
-  "created_cache_count" : "1",
-  "running_cache_count" : "1",
-  "node_address" : "&lt;hostname&gt;",
-  "cluster_members" : [ "&lt;hostname1&gt;", "&lt;hostname2&gt;" ],
-  "cluster_members_physical_addresses" : [ "192.0.2.0:7800", "192.0.2.0:7801" ],
-  "cluster_size" : 2,
-  "defined_caches" : [ {
-    "name" : "mycache",
-    "started" : true
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">xx.x.x-FINAL</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">cluster_name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">cluster</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">coordinator</span><span class="delimiter">&quot;</span></span> : <span class="value">true</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">cache_configuration_names</span><span class="delimiter">&quot;</span></span> : [ <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.REPL_ASYNC</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">___protobuf_metadata</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.DIST_SYNC</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.LOCAL</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.INVALIDATION_SYNC</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.REPL_SYNC</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.SCATTERED_SYNC</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.INVALIDATION_ASYNC</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">org.infinispan.DIST_ASYNC</span><span class="delimiter">&quot;</span></span> ],
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">physical_addresses</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">[192.0.2.0:7800]</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">coordinator_address</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;hostname&gt;</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">cache_manager_status</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">RUNNING</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">created_cache_count</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">1</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">running_cache_count</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">1</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">node_address</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;hostname&gt;</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">cluster_members</span><span class="delimiter">&quot;</span></span> : [ <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;hostname1&gt;</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;hostname2&gt;</span><span class="delimiter">&quot;</span></span> ],
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">cluster_members_physical_addresses</span><span class="delimiter">&quot;</span></span> : [ <span class="string"><span class="delimiter">&quot;</span><span class="content">192.0.2.0:7800</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">192.0.2.0:7801</span><span class="delimiter">&quot;</span></span> ],
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">cluster_size</span><span class="delimiter">&quot;</span></span> : <span class="integer">2</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">defined_caches</span><span class="delimiter">&quot;</span></span> : [ {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">mycache</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">started</span><span class="delimiter">&quot;</span></span> : <span class="value">true</span>
   }, {
-    "name" : "___protobuf_metadata",
-    "started" : true
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">___protobuf_metadata</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">started</span><span class="delimiter">&quot;</span></span> : <span class="value">true</span>
   } ]
-}</pre>
+}</code></pre>
 </div>
+</div>
+</li>
+</ul>
 </div>
 <div class="sect3">
 <h4 id="cli_resources"><a class="anchor" href="#cli_resources"></a>1.3.1. CLI Resources</h4>
@@ -1516,7 +1515,7 @@ server</pre>
 <p>Stop all nodes in a cluster with the <code class="command">shutdown cluster</code> command, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; shutdown cluster</code></pre>
+<pre class="CodeRay highlight nowrap"><code>shutdown cluster</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1528,7 +1527,7 @@ If you use a cache store, the <code class="command">shutdown cluster</code> comm
 <p>Stop individual server instances with the <code class="command">shutdown server</code> command and the server hostname, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; shutdown server &lt;my_server01&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>shutdown server &lt;my_server01&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -1626,7 +1625,7 @@ You can restart nodes in any order but the cluster remains in DEGRADED state unt
 <p>Start the CLI and enter your credentials when prompted.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -1637,7 +1636,7 @@ You can restart nodes in any order but the cluster remains in DEGRADED state unt
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; create cache --file=mycache.xml mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>create cache --file=mycache.xml mycache</code></pre>
 </div>
 </div>
 </li>
@@ -1650,7 +1649,7 @@ You can restart nodes in any order but the cluster remains in DEGRADED state unt
 <p>List all remote caches with the <code class="command">ls</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; ls caches
+<pre class="CodeRay highlight nowrap"><code>ls caches
 mycache</code></pre>
 </div>
 </div>
@@ -1659,7 +1658,7 @@ mycache</code></pre>
 <p>View cache configuration with the <code class="command">describe</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe caches/mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>describe caches/mycache</code></pre>
 </div>
 </div>
 </li>
@@ -1955,7 +1954,7 @@ You can modify attributes in your cache configuration either one at a time or pr
 <p>Verify your changes with the <code class="command">describe</code> command, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe caches/mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>describe caches/mycache</code></pre>
 </div>
 </div>
 </li>
@@ -1982,18 +1981,18 @@ You can modify attributes in your cache configuration either one at a time or pr
 <div class="ulist">
 <ul>
 <li>
-<p>Use the <code class="command">put</code> command from the context of a cache:</p>
+<p>Use the <code class="command">--cache=</code> with the <code class="command">put</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default/caches/mycache]&gt; put hello world</code></pre>
+<pre class="CodeRay highlight nowrap"><code>put --cache=mycache hello world</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Use the <code class="command">--cache=</code> with the <code class="command">put</code> command:</p>
+<p>Use the <code class="command">put</code> command from the context of a cache:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; put --cache=mycache hello world</pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default/caches/mycache]&gt; put hello world</code></pre>
 </div>
 </div>
 </li>
@@ -2031,7 +2030,7 @@ world</code></pre>
 <p>Delete all entries with the <code class="command">clearcache</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; clearcache mycache</pre>
+<pre class="CodeRay highlight nowrap"><code>clearcache mycache</code></pre>
 </div>
 </div>
 </li>
@@ -2039,7 +2038,7 @@ world</code></pre>
 <p>Remove specific entries with the <code class="command">remove</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; remove --cache=mycache hello</pre>
+<pre class="CodeRay highlight nowrap"><code>remove --cache=mycache hello</code></pre>
 </div>
 </div>
 </li>
@@ -2064,7 +2063,7 @@ world</code></pre>
 <p>Remove caches with the <code class="command">drop</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; drop cache mycache</pre>
+<pre class="CodeRay highlight nowrap"><code>drop cache mycache</code></pre>
 </div>
 </div>
 </li>
@@ -2087,7 +2086,7 @@ You can configure automatic cache rebalancing by disabling or enabling it at the
 <p>Disable automatic rebalancing for all caches with the <code class="command">rebalance disable</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; rebalance disable</pre>
+<pre class="CodeRay highlight nowrap"><code>rebalance disable</code></pre>
 </div>
 </div>
 </li>
@@ -2098,7 +2097,7 @@ You can configure automatic cache rebalancing by disabling or enabling it at the
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; rebalance enable caches/mycache</pre>
+<pre class="CodeRay highlight nowrap"><code>rebalance enable caches/mycache</code></pre>
 </div>
 </div>
 </li>
@@ -2106,7 +2105,7 @@ You can configure automatic cache rebalancing by disabling or enabling it at the
 <p>Re-enable automatic rebalancing for all caches.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; rebalance enable</pre>
+<pre class="CodeRay highlight nowrap"><code>rebalance enable</code></pre>
 </div>
 </div>
 </li>
@@ -2174,7 +2173,7 @@ disconnect</code></pre>
 <p>Run the CLI and specify the file as input.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh -f batch</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh -f batch</code></pre>
 </div>
 </div>
 </li>
@@ -2209,7 +2208,7 @@ property.</p>
 <p>Start the Infinispan CLI in interactive mode.</p>
 <div class="listingblock">
 <div class="content">
-<pre>$ bin/cli.sh -c localhost:11222 -f -</pre>
+<pre>bin/cli.sh -c localhost:11222 -f -</pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -2260,7 +2259,7 @@ quit</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ echo describe|bin/cli.sh -c localhost:11222 -f -
+<pre>echo describe|bin/cli.sh -c localhost:11222 -f -
 {
   "name" : "default",
   "version" : "10.0.0-SNAPSHOT",
@@ -2315,7 +2314,7 @@ quit</pre>
 <p>Using the <code>cli.dir</code> system property:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh -Dcli.dir=/path/to/cli/storage ...</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh -Dcli.dir=/path/to/cli/storage ...</code></pre>
 </div>
 </div>
 </li>
@@ -2324,7 +2323,7 @@ quit</pre>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code>export ISPN_CLI_DIR=/path/to/cli/storage
-$ bin/cli.sh ...</code></pre>
+bin/cli.sh ...</code></pre>
 </div>
 </div>
 </li>
@@ -2362,7 +2361,7 @@ $ bin/cli.sh ...</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ bin/cli.sh config set autoconnect-url http://&lt;username&gt;:&lt;password&gt;@&lt;hostname&gt;:11222</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh config set autoconnect-url http://&lt;username&gt;:&lt;password&gt;@&lt;hostname&gt;:11222</code></pre>
 </div>
 </div>
 </li>
@@ -2401,7 +2400,7 @@ $ bin/cli.sh ...</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; alias q=quit</code></pre>
+<pre class="CodeRay highlight nowrap"><code>alias q=quit</code></pre>
 </div>
 </div>
 </li>
@@ -2409,7 +2408,7 @@ $ bin/cli.sh ...</code></pre>
 <p>Run the <code class="command">alias</code> command to check the defined aliases.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; alias
+<pre class="CodeRay highlight nowrap"><code>alias
 alias q='quit'</code></pre>
 </div>
 </div>
@@ -2418,7 +2417,7 @@ alias q='quit'</code></pre>
 <p>Delete aliases with the <code class="command">unalias</code> command, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; unalias q</code></pre>
+<pre class="CodeRay highlight nowrap"><code>unalias q</code></pre>
 </div>
 </div>
 </li>
@@ -2450,7 +2449,7 @@ Server, the CLI can validate server certificates to verify the identity.</p>
 <p>Specify the location of the server key store, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre>$ bin/cli.sh config set truststore /home/user/my-trust-store.jks</pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh config set truststore /home/user/my-trust-store.jks</code></pre>
 </div>
 </div>
 </li>
@@ -2458,7 +2457,7 @@ Server, the CLI can validate server certificates to verify the identity.</p>
 <p>Define the key store password, if necessary, as follows:</p>
 <div class="listingblock">
 <div class="content">
-<pre>$ bin/cli.sh config set truststore-password secret</pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh config set truststore-password secret</code></pre>
 </div>
 </div>
 </li>
@@ -2466,11 +2465,12 @@ Server, the CLI can validate server certificates to verify the identity.</p>
 <p>Verify your CLI configuration.</p>
 <div class="listingblock">
 <div class="content">
-<pre>$ bin/cli.sh config get truststore
-truststore=/home/user/my-trust-store.jks
-
-$ bin/cli.sh config get truststore-password
-truststore-password=secret</pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh config get truststore</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh config get truststore-password</code></pre>
 </div>
 </div>
 </li>
@@ -2575,7 +2575,7 @@ count of objects.</p>
 <p>Create <code>my-weak-counter</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">c</span><span class="error">r</span><span class="error">e</span><span class="error">a</span><span class="error">t</span><span class="error">e</span> <span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span> <span class="error">-</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">c</span><span class="error">u</span><span class="error">r</span><span class="error">r</span><span class="error">e</span><span class="error">n</span><span class="error">c</span><span class="error">y</span><span class="error">-</span><span class="error">l</span><span class="error">e</span><span class="error">v</span><span class="error">e</span><span class="error">l</span><span class="error">=</span><span class="integer">1</span> <span class="error">-</span><span class="error">-</span><span class="error">i</span><span class="error">n</span><span class="error">i</span><span class="error">t</span><span class="error">i</span><span class="error">a</span><span class="error">l</span><span class="error">-</span><span class="error">v</span><span class="error">a</span><span class="error">l</span><span class="error">u</span><span class="error">e</span><span class="error">=</span><span class="integer">5</span> <span class="error">-</span><span class="error">-</span><span class="error">s</span><span class="error">t</span><span class="error">o</span><span class="error">r</span><span class="error">a</span><span class="error">g</span><span class="error">e</span><span class="error">=</span><span class="error">P</span><span class="error">E</span><span class="error">R</span><span class="error">S</span><span class="error">I</span><span class="error">S</span><span class="error">T</span><span class="error">E</span><span class="error">N</span><span class="error">T</span> <span class="error">-</span><span class="error">-</span><span class="error">t</span><span class="error">y</span><span class="error">p</span><span class="error">e</span><span class="error">=</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span> <span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>create counter --concurrency-level=1 --initial-value=5 --storage=PERSISTENT --type=weak my-weak-counter</code></pre>
 </div>
 </div>
 </li>
@@ -2583,7 +2583,7 @@ count of objects.</p>
 <p>Create <code>my-strong-counter</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">c</span><span class="error">r</span><span class="error">e</span><span class="error">a</span><span class="error">t</span><span class="error">e</span> <span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span> <span class="error">-</span><span class="error">-</span><span class="error">i</span><span class="error">n</span><span class="error">i</span><span class="error">t</span><span class="error">i</span><span class="error">a</span><span class="error">l</span><span class="error">-</span><span class="error">v</span><span class="error">a</span><span class="error">l</span><span class="error">u</span><span class="error">e</span><span class="error">=</span><span class="integer">3</span> <span class="error">-</span><span class="error">-</span><span class="error">s</span><span class="error">t</span><span class="error">o</span><span class="error">r</span><span class="error">a</span><span class="error">g</span><span class="error">e</span><span class="error">=</span><span class="error">P</span><span class="error">E</span><span class="error">R</span><span class="error">S</span><span class="error">I</span><span class="error">S</span><span class="error">T</span><span class="error">E</span><span class="error">N</span><span class="error">T</span> <span class="error">-</span><span class="error">-</span><span class="error">t</span><span class="error">y</span><span class="error">p</span><span class="error">e</span><span class="error">=</span><span class="error">s</span><span class="error">t</span><span class="error">r</span><span class="error">o</span><span class="error">n</span><span class="error">g</span> <span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">s</span><span class="error">t</span><span class="error">r</span><span class="error">o</span><span class="error">n</span><span class="error">g</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>create counter --initial-value=3 --storage=PERSISTENT --type=strong my-strong-counter</code></pre>
 </div>
 </div>
 </li>
@@ -2594,9 +2594,7 @@ count of objects.</p>
 <p>List available counters.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">l</span><span class="error">s</span> <span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span><span class="error">s</span>
-<span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">s</span><span class="error">t</span><span class="error">r</span><span class="error">o</span><span class="error">n</span><span class="error">g</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>
-<span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>ls counters</code></pre>
 </div>
 </div>
 </li>
@@ -2608,9 +2606,12 @@ count of objects.</p>
 <p>Describe <code>my-weak-counter</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">d</span><span class="error">e</span><span class="error">s</span><span class="error">c</span><span class="error">r</span><span class="error">i</span><span class="error">b</span><span class="error">e</span> <span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>
-
-{
+<pre class="CodeRay highlight nowrap"><code>describe counters/my-weak-counter</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
     <span class="key"><span class="delimiter">&quot;</span><span class="content">weak-counter</span><span class="delimiter">&quot;</span></span>:{
         <span class="key"><span class="delimiter">&quot;</span><span class="content">initial-value</span><span class="delimiter">&quot;</span></span>:<span class="integer">5</span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">storage</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">PERSISTENT</span><span class="delimiter">&quot;</span></span>,
@@ -2624,9 +2625,12 @@ count of objects.</p>
 <p>Describe <code>my-strong-counter</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">d</span><span class="error">e</span><span class="error">s</span><span class="error">c</span><span class="error">r</span><span class="error">i</span><span class="error">b</span><span class="error">e</span> <span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">s</span><span class="error">t</span><span class="error">r</span><span class="error">o</span><span class="error">n</span><span class="error">g</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>
-
-{
+<pre class="CodeRay highlight nowrap"><code>describe counters/my-strong-counter</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
     <span class="key"><span class="delimiter">&quot;</span><span class="content">strong-counter</span><span class="delimiter">&quot;</span></span>:{
         <span class="key"><span class="delimiter">&quot;</span><span class="content">initial-value</span><span class="delimiter">&quot;</span></span>:<span class="integer">3</span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">storage</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">PERSISTENT</span><span class="delimiter">&quot;</span></span>,
@@ -2654,7 +2658,7 @@ count of objects.</p>
 <p>Select a counter.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span> <span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>counter my-weak-counter</code></pre>
 </div>
 </div>
 </li>
@@ -2662,8 +2666,8 @@ count of objects.</p>
 <p>List the current count.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>]<span class="error">&gt;</span> <span class="error">l</span><span class="error">s</span>
-<span class="integer">5</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default/counters/my-weak-counter]&gt; ls
+5</code></pre>
 </div>
 </div>
 </li>
@@ -2671,7 +2675,7 @@ count of objects.</p>
 <p>Increment the counter value by <code>2</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>]<span class="error">&gt;</span> <span class="error">a</span><span class="error">d</span><span class="error">d</span> <span class="error">-</span><span class="error">-</span><span class="error">d</span><span class="error">e</span><span class="error">l</span><span class="error">t</span><span class="error">a</span><span class="error">=</span><span class="integer">2</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default/counters/my-weak-counter]&gt; add --delta=2</code></pre>
 </div>
 </div>
 </li>
@@ -2679,7 +2683,7 @@ count of objects.</p>
 <p>Decrement the counter value by <code>-4</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">m</span><span class="error">y</span><span class="error">-</span><span class="error">w</span><span class="error">e</span><span class="error">a</span><span class="error">k</span><span class="error">-</span><span class="error">c</span><span class="error">o</span><span class="error">u</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>]<span class="error">&gt;</span> <span class="error">a</span><span class="error">d</span><span class="error">d</span> <span class="error">-</span><span class="error">-</span><span class="error">d</span><span class="error">e</span><span class="error">l</span><span class="error">t</span><span class="error">a</span><span class="error">=</span><span class="integer">-4</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default/counters/my-weak-counter]&gt; add --delta=-4</code></pre>
 </div>
 </div>
 </li>
@@ -2697,7 +2701,7 @@ count of objects.</p>
 <code>--quiet=true</code> to hide the return value.</p>
 </div>
 <div class="paragraph">
-<p>For example, <code>my-strong-counter]&gt; add --delta=3 --quiet=true</code>.</p>
+<p>For example, <code>add --delta=3 --quiet=true</code>.</p>
 </div>
 <div class="paragraph">
 <p>Weak counters return empty responses.</p>
@@ -2747,7 +2751,7 @@ communicate with each other to backup data.</p>
 <p>Check if backup locations are online or offline with the <code class="command">site status</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site status --cache=cacheName --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site status --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -2788,7 +2792,7 @@ locations.</p>
 <p>Bring backup locations online with the <code class="command">bring-online</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site bring-online --cache=customers --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site bring-online --cache=customers --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2796,7 +2800,7 @@ locations.</p>
 <p>Take backup locations offline with the <code class="command">take-offline</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site take-offline --cache=customers --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site take-offline --cache=customers --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2848,23 +2852,22 @@ Alternatively you can use the default mode, which is to manually perform state t
 <p>Retrieve the current state transfer mode.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site state-transfer-mode get --cache=cacheName --site=NYC
-"MANUAL"</pre>
+<pre class="CodeRay highlight nowrap"><code>site state-transfer-mode get --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Configure automatic state transfer operations for a cache and backup location.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>site state-transfer-mode set --cache=cacheName --site=NYC --mode=AUTO</code></pre>
+</div>
+</div>
 </li>
 </ul>
 </div>
 </li>
 </ol>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[//containers/default]&gt; site state-transfer-mode set --cache=cacheName --site=NYC --mode=AUTO</pre>
-</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2901,7 +2904,7 @@ Alternatively you can use the default mode, which is to manually perform state t
 <p>Use the <code class="command">site push-site-state</code> command to push state transfer, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site push-site-state --cache=cacheName --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site push-site-state --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2973,7 +2976,7 @@ create backup archives.</p>
 <p>Back up all resources with an automatically generated name.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">c</span><span class="error">r</span><span class="error">e</span><span class="error">a</span><span class="error">t</span><span class="error">e</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup create</code></pre>
 </div>
 </div>
 </li>
@@ -2981,7 +2984,7 @@ create backup archives.</p>
 <p>Back up all resources in a backup archive named <code>example-backup</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">c</span><span class="error">r</span><span class="error">e</span><span class="error">a</span><span class="error">t</span><span class="error">e</span> <span class="error">-</span><span class="error">n</span> <span class="error">e</span><span class="error">x</span><span class="error">a</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">-</span><span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup create -n example-backup</code></pre>
 </div>
 </div>
 </li>
@@ -2989,7 +2992,7 @@ create backup archives.</p>
 <p>Back up all resources to the <code>/some/server/dir</code> path on the server.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">c</span><span class="error">r</span><span class="error">e</span><span class="error">a</span><span class="error">t</span><span class="error">e</span> <span class="error">-</span><span class="error">d</span> <span class="error">/</span><span class="error">s</span><span class="error">o</span><span class="error">m</span><span class="error">e</span><span class="error">/</span><span class="error">s</span><span class="error">e</span><span class="error">r</span><span class="error">v</span><span class="error">e</span><span class="error">r</span><span class="error">/</span><span class="error">d</span><span class="error">i</span><span class="error">r</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup create -d /some/server/dir</code></pre>
 </div>
 </div>
 </li>
@@ -2997,7 +3000,7 @@ create backup archives.</p>
 <p>Back up only caches and cache templates.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">c</span><span class="error">r</span><span class="error">e</span><span class="error">a</span><span class="error">t</span><span class="error">e</span> <span class="error">-</span><span class="error">-</span><span class="error">c</span><span class="error">a</span><span class="error">c</span><span class="error">h</span><span class="error">e</span><span class="error">s</span><span class="error">=</span><span class="error">*</span> <span class="error">-</span><span class="error">-</span><span class="error">t</span><span class="error">e</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">a</span><span class="error">t</span><span class="error">e</span><span class="error">s</span><span class="error">=</span><span class="error">*</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup create --caches=* --templates=*</code></pre>
 </div>
 </div>
 </li>
@@ -3005,7 +3008,7 @@ create backup archives.</p>
 <p>Back up named Protobuf schemas only.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">c</span><span class="error">r</span><span class="error">e</span><span class="error">a</span><span class="error">t</span><span class="error">e</span> <span class="error">-</span><span class="error">-</span><span class="error">p</span><span class="error">r</span><span class="error">o</span><span class="error">t</span><span class="error">o</span><span class="error">-</span><span class="error">s</span><span class="error">c</span><span class="error">h</span><span class="error">e</span><span class="error">m</span><span class="error">a</span><span class="error">s</span><span class="error">=</span><span class="error">s</span><span class="error">c</span><span class="error">h</span><span class="error">e</span><span class="error">m</span><span class="error">a</span><span class="integer">1</span>,<span class="error">s</span><span class="error">c</span><span class="error">h</span><span class="error">e</span><span class="error">m</span><span class="error">a</span><span class="integer">2</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup create --proto-schemas=schema1,schema2</code></pre>
 </div>
 </div>
 </li>
@@ -3016,7 +3019,7 @@ create backup archives.</p>
 <p>List available backup archives on the server.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">l</span><span class="error">s</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup ls</code></pre>
 </div>
 </div>
 </li>
@@ -3028,7 +3031,7 @@ complete.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">g</span><span class="error">e</span><span class="error">t</span> <span class="error">e</span><span class="error">x</span><span class="error">a</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">-</span><span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup get example-backup</code></pre>
 </div>
 </div>
 </li>
@@ -3036,7 +3039,7 @@ complete.</p>
 <p>Optionally delete the <code>example-backup</code> archive from the server.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">d</span><span class="error">e</span><span class="error">l</span><span class="error">e</span><span class="error">t</span><span class="error">e</span> <span class="error">e</span><span class="error">x</span><span class="error">a</span><span class="error">m</span><span class="error">p</span><span class="error">l</span><span class="error">e</span><span class="error">-</span><span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup delete example-backup</code></pre>
 </div>
 </div>
 </li>
@@ -3074,7 +3077,7 @@ the backed up state.</p>
 <p>Restore all content from a backup archive accessible on the server.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">r</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">o</span><span class="error">r</span><span class="error">e</span> <span class="error">/</span><span class="error">s</span><span class="error">o</span><span class="error">m</span><span class="error">e</span><span class="error">/</span><span class="error">p</span><span class="error">a</span><span class="error">t</span><span class="error">h</span><span class="error">/</span><span class="error">o</span><span class="error">n</span><span class="error">/</span><span class="error">t</span><span class="error">h</span><span class="error">e</span><span class="error">/</span><span class="error">s</span><span class="error">e</span><span class="error">r</span><span class="error">v</span><span class="error">e</span><span class="error">r</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup restore /some/path/on/the/server</code></pre>
 </div>
 </div>
 </li>
@@ -3082,7 +3085,7 @@ the backed up state.</p>
 <p>Restore all content from a local backup archive.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">r</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">o</span><span class="error">r</span><span class="error">e</span> <span class="error">-</span><span class="error">u</span> <span class="error">/</span><span class="error">s</span><span class="error">o</span><span class="error">m</span><span class="error">e</span><span class="error">/</span><span class="error">l</span><span class="error">o</span><span class="error">c</span><span class="error">a</span><span class="error">l</span><span class="error">/</span><span class="error">p</span><span class="error">a</span><span class="error">t</span><span class="error">h</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup restore -u /some/local/path</code></pre>
 </div>
 </div>
 </li>
@@ -3090,7 +3093,7 @@ the backed up state.</p>
 <p>Restore only cache content from a backup archive on the server.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="json">[<span class="error">/</span><span class="error">/</span><span class="error">c</span><span class="error">o</span><span class="error">n</span><span class="error">t</span><span class="error">a</span><span class="error">i</span><span class="error">n</span><span class="error">e</span><span class="error">r</span><span class="error">s</span><span class="error">/</span><span class="error">d</span><span class="error">e</span><span class="error">f</span><span class="error">a</span><span class="error">u</span><span class="error">l</span><span class="error">t</span>]<span class="error">&gt;</span> <span class="error">b</span><span class="error">a</span><span class="error">c</span><span class="error">k</span><span class="error">u</span><span class="error">p</span> <span class="error">r</span><span class="error">e</span><span class="error">s</span><span class="error">t</span><span class="error">o</span><span class="error">r</span><span class="error">e</span> <span class="error">/</span><span class="error">s</span><span class="error">o</span><span class="error">m</span><span class="error">e</span><span class="error">/</span><span class="error">p</span><span class="error">a</span><span class="error">t</span><span class="error">h</span><span class="error">/</span><span class="error">o</span><span class="error">n</span><span class="error">/</span><span class="error">t</span><span class="error">h</span><span class="error">e</span><span class="error">/</span><span class="error">s</span><span class="error">e</span><span class="error">r</span><span class="error">v</span><span class="error">e</span><span class="error">r</span> <span class="error">-</span><span class="error">-</span><span class="error">c</span><span class="error">a</span><span class="error">c</span><span class="error">h</span><span class="error">e</span><span class="error">s</span><span class="error">=</span><span class="error">*</span></code></pre>
+<pre class="CodeRay highlight nowrap"><code>backup restore /some/path/on/the/server --caches=*</code></pre>
 </div>
 </div>
 </li>
@@ -5279,7 +5282,7 @@ Performs a test connection on the datasource.</p>
 <div class="sect3">
 <h4 id="name_36"><a class="anchor" href="#name_36"></a>8.36.1. NAME</h4>
 <div class="paragraph">
-<p>shutdown - stops running servers or brings clusters down gracefully.</p>
+<p>shutdown - stops server instances and clusters.</p>
 </div>
 </div>
 <div class="sect3">
@@ -5306,12 +5309,11 @@ Stops the server with hostname <code>my_server01</code>.</p>
 </div>
 <div class="paragraph">
 <p><code>shutdown cluster</code><br>
-Stores cluster state, persists entries if you use a cache store, and stops all nodes.</p>
+Stops all nodes in the cluster after storing cluster state and persisting entries if there is a cache store.</p>
 </div>
 <div class="paragraph">
 <p><code>shutdown container</code><br>
-Stores cluster state and persists entries if you use a cache store. The servers remain running with active endpoints
-and clustering, however REST calls to container resources will result in a 503 Service Unavailable response.</p>
+Stops the data container without terminating the server process. Stores cluster state and persists entries if there is a cache store. Server instances remain running with active endpoints and clustering. REST calls to container resources will result in a 503 Service Unavailable response. The <code>shutdown container</code> command is intended for environments, such as Kubernetes, that automate resource lifecycle management. For self-managed environments you should use the <code>shutdown server</code> or <code>shutdown cluster</code> commands to stop servers.</p>
 </div>
 </div>
 <div class="sect3">
@@ -5785,7 +5787,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-14 07:06:06 -0400
+Last updated 2022-03-30 12:10:07 +0100
 </div>
 </div>
 <style>

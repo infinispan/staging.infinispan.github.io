@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex">
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/configuring/configuring.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -1428,7 +1431,7 @@ When defining a zero capacity node, the node does not hold any data.</p>
 <div class="sect3">
 <h4 id="level-one-caches_clustered-caches"><a class="anchor" href="#level-one-caches_clustered-caches"></a>2.2.4. Level one (L1) caches</h4>
 <div class="paragraph">
-<p>Infinispan nodes create local replicas when they retrieve entries from another node in the clsuter.
+<p>Infinispan nodes create local replicas when they retrieve entries from another node in the cluster.
 L1 caches avoid repeatedly looking up entries on primary owner nodes and adds performance.</p>
 </div>
 <div class="paragraph">
@@ -1524,31 +1527,39 @@ builder.clustering().cacheMode(CacheMode.DIST_SYNC)
 <div class="sect3">
 <h4 id="server-hinting_clustered-caches"><a class="anchor" href="#server-hinting_clustered-caches"></a>2.2.5. Server hinting</h4>
 <div class="paragraph">
-<p>The following topology hints can be specified:</p>
+<p>Server hinting increases availability of data in distributed caches by replicating entries across as many servers, racks, and data centers as possible.</p>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Machine</dt>
-<dd>
-<p>This is probably the most useful, when multiple JVM instances run on the
-same node, or even when multiple virtual machines run on the same physical machine.</p>
-</dd>
-<dt class="hdlist1">Rack</dt>
-<dd>
-<p>In larger clusters, nodes located on the same rack are more likely to experience a
-hardware or network failure at the same time.</p>
-</dd>
-<dt class="hdlist1">Site</dt>
-<dd>
-<p>Some clusters may have nodes in multiple physical locations for extra resilience.
-Note that Cross site replication is another alternative for
-clusters that need to span two or more data centres.</p>
-</dd>
-</dl>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Server hinting applies only to distributed caches.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>All of the above are optional.
-When provided, the distribution algorithm will try to spread the ownership of each segment across as many sites, racks, and machines (in this order) as possible.</p>
+<p>When Infinispan distributes the copies of your data, it follows the order of precedence: site, rack, machine, and node.
+All of the configuration attributes are optional.
+For example, when you specify only the rack IDs, then Infinispan distributes the copies across different racks and nodes.</p>
+</div>
+<div class="paragraph">
+<p>Server hinting can impact cluster rebalancing operations by moving more segments than necessary if the number of segments for the cache is too low.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+An alternative for clusters in multiple data centers is cross-site replication.
+</td>
+</tr>
+</table>
 </div>
 <h5 id="server_hinting_configuration" class="discrete">Server hinting configuration</h5>
 <div class="listingblock primary">
@@ -1600,6 +1611,14 @@ When provided, the distribution algorithm will try to spread the ownership of ea
   .rackId(<span class="string"><span class="delimiter">&quot;</span><span class="content">Rack01</span><span class="delimiter">&quot;</span></span>)
   .siteId(<span class="string"><span class="delimiter">&quot;</span><span class="content">US-WestCoast</span><span class="delimiter">&quot;</span></span>);</code></pre>
 </div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/configuration/global/TransportConfigurationBuilder.html">org.infinispan.configuration.global.TransportConfigurationBuilder</a></p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -2829,7 +2848,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Run the <code class="command">describe</code> command in the default container.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">[//containers/default]&gt; describe</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe</code></pre>
 </div>
 </div>
 </dd>
@@ -2958,7 +2977,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Start the CLI and enter your credentials when prompted.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -2969,7 +2988,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; create cache --file=mycache.xml mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>create cache --file=mycache.xml mycache</code></pre>
 </div>
 </div>
 </li>
@@ -2982,7 +3001,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>List all remote caches with the <code class="command">ls</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; ls caches
+<pre class="CodeRay highlight nowrap"><code>ls caches
 mycache</code></pre>
 </div>
 </div>
@@ -2991,7 +3010,7 @@ mycache</code></pre>
 <p>View cache configuration with the <code class="command">describe</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe caches/mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>describe caches/mycache</code></pre>
 </div>
 </div>
 </li>
@@ -5943,7 +5962,7 @@ You can then specify the JDNI name of the managed datasources in your caches, wh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -6023,7 +6042,7 @@ configuration.</p>
 <p>Start a CLI session.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -6031,7 +6050,7 @@ configuration.</p>
 <p>List all datasources and confirm the one you created is available.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server datasource ls</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server datasource ls</code></pre>
 </div>
 </div>
 </li>
@@ -6039,7 +6058,7 @@ configuration.</p>
 <p>Test a datasource connection.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server datasource test my-datasource</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server datasource test my-datasource</code></pre>
 </div>
 </div>
 </li>
@@ -6738,7 +6757,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -6963,7 +6982,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -8610,7 +8629,7 @@ file.</p>
 <p>Prepend all configuration properties with <code>source.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">source.type=SOFT_INDEX_FILE_STORE
+<pre class="CodeRay highlight nowrap"><code>source.type=SOFT_INDEX_FILE_STORE
 source.cache_name=myCache
 source.location=/path/to/source/sifs
 source.version=&lt;version&gt;</code></pre>
@@ -8628,7 +8647,7 @@ source.version=&lt;version&gt;</code></pre>
 <p>Prepend all configuration properties with <code>target.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">target.type=SINGLE_FILE_STORE
+<pre class="CodeRay highlight nowrap"><code>target.type=SINGLE_FILE_STORE
 target.cache_name=myCache
 target.location=/path/to/target/sfs.dat</code></pre>
 </div>
@@ -10475,7 +10494,7 @@ You can use either method with Infinispan, however <code>Security.doAs()</code> 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-14 07:06:06 -0400
+Last updated 2022-03-30 12:10:07 +0100
 </div>
 </div>
 <style>

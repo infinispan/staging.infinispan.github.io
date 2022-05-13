@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex">
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/hotrod_java/hotrod_java.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -539,7 +542,7 @@ $(addBlockSwitches);
 <li><a href="#configuring-pom-xml_configuring-maven-repository">2.1. Configuring your Infinispan POM</a></li>
 </ul>
 </li>
-<li><a href="#hotrod-client-configuration_{context}">3. Hot Rod Java Client Configuration</a>
+<li><a href="#hotrod-client-configuration_hot_rod">3. Hot Rod Java Client Configuration</a>
 <ul class="sectlevel2">
 <li><a href="#adding-hotrod-client-dependencies_hotrod-client-configuration">3.1. Adding Hot Rod Java Client Dependencies</a></li>
 <li><a href="#configuring-hotrod-java-clients_hotrod-client-configuration">3.2. Configuring Hot Rod Client Connections</a>
@@ -566,7 +569,7 @@ $(addBlockSwitches);
 <li><a href="#creating-caches-hotrod_hotrod-client-configuration">3.8. Creating remote caches from Hot Rod clients</a></li>
 </ul>
 </li>
-<li><a href="#hotrod-client-api_{context}">4. Hot Rod Client API</a>
+<li><a href="#hotrod-client-api_hot_rod">4. Hot Rod Client API</a>
 <ul class="sectlevel2">
 <li><a href="#remotecache_api">4.1. RemoteCache API</a>
 <ul class="sectlevel3">
@@ -889,7 +892,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;properties&gt;</span>
-  <span class="tag">&lt;version.infinispan&gt;</span>13.0.9.Final<span class="tag">&lt;/version.infinispan&gt;</span>
+  <span class="tag">&lt;version.infinispan&gt;</span>13.0.10.Final<span class="tag">&lt;/version.infinispan&gt;</span>
 <span class="tag">&lt;/properties&gt;</span>
 
 <span class="tag">&lt;dependencyManagement&gt;</span>
@@ -913,7 +916,7 @@ artifact you add as a dependency to your project.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="hotrod-client-configuration_{context}"><a class="anchor" href="#hotrod-client-configuration_{context}"></a>3. Hot Rod Java Client Configuration</h2>
+<h2 id="hotrod-client-configuration_hot_rod"><a class="anchor" href="#hotrod-client-configuration_hot_rod"></a>3. Hot Rod Java Client Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan provides a Hot Rod Java client configuration API that exposes configuration properties.</p>
@@ -1951,7 +1954,7 @@ infinispan.client.hotrod.cache.[my.other.cache].configuration_uri=file:///path/t
 </div>
 </div>
 <div class="sect1">
-<h2 id="hotrod-client-api_{context}"><a class="anchor" href="#hotrod-client-api_{context}"></a>4. Hot Rod Client API</h2>
+<h2 id="hotrod-client-api_hot_rod"><a class="anchor" href="#hotrod-client-api_hot_rod"></a>4. Hot Rod Client API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan Hot Rod client API provides interfaces for creating caches
@@ -3393,7 +3396,7 @@ container.start();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-14 07:06:06 -0400
+Last updated 2022-05-13 18:08:03 +0100
 </div>
 </div>
 <style>
