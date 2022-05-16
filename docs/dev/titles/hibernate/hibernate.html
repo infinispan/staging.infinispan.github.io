@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Hibernate Second-Level Caching</title>
+<title>Hibernate second-level caching (2LC)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/hibernate/hibernate.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,7 +525,7 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Hibernate Second-Level Caching</h1>
+<h1>Hibernate second-level caching (2LC)</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -579,7 +582,35 @@ This guide provides details about using Infinispan as second-level cache provide
 <p>Applications running in environments where Infinispan is not default cache provider for Hibernate will need to depend on the correct cache provider version.</p>
 </div>
 <div class="paragraph">
+<p>With the divergence of Jakarta packages compared to javax, Hibernate 6 is the only version Infinispan supports using the Jakarta namespace.
+Therefore, if you need to use javax namespace you will still need to utilize Hibernate 5.3.</p>
+</div>
+<div class="paragraph">
 <p>The Infinispan cache provider version suitable for your application depends on the Hibernate version in use:</p>
+</div>
+<div class="listingblock">
+<div class="title">Hibernate 6.0</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
+  &lt;artifactId&gt;infinispan-hibernate-cache-v60&lt;/artifactId&gt;
+  &lt;version&gt;${version.infinispan}&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>hibernate 5.3 is supported with Infinispan 13.0.x and older.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="title">Hibernate 5.3</div>
@@ -599,7 +630,7 @@ This guide provides details about using Infinispan as second-level cache provide
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Hibernate 5.2 is supported with Infinispan 9.2.x only.</p>
+<p>hibernate 5.2 is supported with Infinispan 9.2.x only.</p>
 </div>
 </td>
 </tr>
@@ -1051,7 +1082,7 @@ Also, the result of an update within a transaction is not visible to the result 
 <p><em>query cache has initial state transfer disabled</em>. It is not recommended that this is enabled.</p>
 </div>
 <div class="paragraph">
-<p>Up to Hibernate 5.2 both transactional and non-transactional query caches have been supported, though non-transactional variant is recommended. Hibernate 5.3 drops support for transactional caches, only non-transactional variant is supported. If the cache is configured with transactions this setting is ignored and warning is logged.</p>
+<p>Up to Hibernate 5.2 both transactional and non-transactional query caches have been supported, though non-transactional variant is recommended. Hibernate 5.3 onwards drops support for transactional caches, only non-transactional variant is supported. If the cache is configured with transactions this setting is ignored and warning is logged.</p>
 </div>
 <div class="paragraph">
 <div class="title">Timestamps</div>
@@ -1336,7 +1367,7 @@ Example:</p>
 <code>transactional</code>, <code>read-write</code>, <code>nonstrict-read-write</code> and <code>read-only</code>.</p>
 </div>
 <div class="paragraph">
-<p>Integrations with Hibernate 4.x required <em>transactional invalidation caches</em> and in integrations with Hibernate &le; 5.2 <em>transactional invalidation caches</em> are supported (in JTA environment). However for all 5.x versions <em>non-transactional caches</em> are preferred. With Hibernate 5.3 the support for transactional caches has been dropped completely, and both <code>read-write</code> and <code>transactional</code> use the same implementation. Infinispan provides the same consistency guarantees for both <code>transactional</code> and <code>read-write</code> strategies, use of transactions is considered an implementation detail.</p>
+<p>Integrations with Hibernate 4.x required <em>transactional invalidation caches</em> and in integrations with Hibernate &le; 5.2 <em>transactional invalidation caches</em> are supported (in JTA environment). However for all 5.x versions <em>non-transactional caches</em> are preferred. With Hibernate 5.3 onward the support for transactional caches has been dropped completely, and both <code>read-write</code> and <code>transactional</code> use the same implementation. Infinispan provides the same consistency guarantees for both <code>transactional</code> and <code>read-write</code> strategies, use of transactions is considered an implementation detail.</p>
 </div>
 <div class="paragraph">
 <p>In integrations with Hibernate 5.2 or lower the actual setting of cache concurrency mode (<code>read-write</code> vs. <code>transactional</code>) is not honored on invalidation caches, the appropriate strategy is selected based on the cache configuration (<em>non-transactional</em> vs. <em>transactional</em>).</p>
@@ -1380,7 +1411,7 @@ However this strategy uses less RPCs and can be more performant than the other o
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">transactional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&ge; 5.3 non-transactional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&ge; 5.3+ non-transactional</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">invalidation</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
 </tr>
@@ -1445,7 +1476,7 @@ When using invalidation caches it makes sense to keep this off as the put-from-l
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

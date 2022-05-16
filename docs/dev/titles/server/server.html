@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Infinispan 14.0 Server Guide</title>
+<title>Guide to Infinispan Server</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/server/server.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,7 +525,7 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Infinispan 14.0 Server Guide</h1>
+<h1>Guide to Infinispan Server</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -533,12 +536,11 @@ $(addBlockSwitches);
 <li><a href="#installing-servers_server-getting-started">1.3. Installing Infinispan Server</a></li>
 <li><a href="#starting-servers_server-getting-started">1.4. Starting Infinispan Server</a></li>
 <li><a href="#passing-server-configuration-startup_server-getting-started">1.5. Passing Infinispan Server configuration at startup</a></li>
-<li><a href="#creating-users_server-getting-started">1.6. Creating and modifying Infinispan users</a>
+<li><a href="#creating-users_server-getting-started">1.6. Creating Infinispan users</a>
 <ul class="sectlevel3">
-<li><a href="#adding_credentials">1.6.1. Adding credentials</a></li>
-<li><a href="#assigning_roles_to_users">1.6.2. Assigning roles to users</a></li>
-<li><a href="#adding_users_to_groups">1.6.3. Adding users to groups</a></li>
-<li><a href="#user-roles-permissions_server-getting-started">1.6.4. User roles and permissions</a></li>
+<li><a href="#granting-roles-to-users_server-getting-started">1.6.1. Granting roles to users</a></li>
+<li><a href="#adding-users-to-groups_server-getting-started">1.6.2. Adding users to groups</a></li>
+<li><a href="#default-user-roles_server-getting-started">1.6.3. Infinispan user roles and permissions</a></li>
 </ul>
 </li>
 <li><a href="#verifying-cluster-views_server-getting-started">1.7. Verifying cluster views</a></li>
@@ -581,8 +583,10 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#hot_rod">3.1.1. Hot Rod</a></li>
 <li><a href="#rest">3.1.2. REST</a></li>
-<li><a href="#memcached">3.1.3. Memcached</a></li>
-<li><a href="#endpoint-protocol-comparison_server-endpoints">3.1.4. Comparison of endpoint protocols</a></li>
+<li><a href="#resp">3.1.3. RESP</a></li>
+<li><a href="#memcached">3.1.4. Memcached</a></li>
+<li><a href="#endpoint-protocol-comparison_server-endpoints">3.1.5. Comparison of endpoint protocols</a></li>
+<li><a href="#client-server-compatibility_server-endpoints">3.1.6. Hot Rod client compatibility with Infinispan Server</a></li>
 </ul>
 </li>
 <li><a href="#configuring-server-endpoints_server-endpoints">3.2. Configuring Infinispan Server endpoints</a></li>
@@ -632,41 +636,35 @@ $(addBlockSwitches);
 <li><a href="#configuring-ssl-engine_endpoint-security">6.1.2. Configuring TLS versions and cipher suites</a></li>
 </ul>
 </li>
-<li><a href="#configuring-client-certificate-authentication_endpoint-security">6.2. Configuring client certificate authentication</a></li>
-<li><a href="#configuring-client-certificate-authorization_endpoint-security">6.3. Configuring authorization with client certificates</a></li>
+<li><a href="#configuring-server-fips_endpoint-security">6.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</a></li>
+<li><a href="#configuring-client-certificate-authentication_endpoint-security">6.3. Configuring client certificate authentication</a></li>
+<li><a href="#configuring-client-certificate-authorization_endpoint-security">6.4. Configuring authorization with client certificates</a></li>
 </ul>
 </li>
 <li><a href="#credential-keystores">7. Storing Infinispan Server credentials in keystores</a>
 <ul class="sectlevel2">
 <li><a href="#setting-up-credential-keystores_credential-keystores">7.1. Setting up credential keystores</a></li>
-<li><a href="#credential-keystore-configuration_credential-keystores">7.2. Credential keystore configuration</a></li>
+<li><a href="#securing-passwords-credential-keystores_credential-keystores">7.2. Securing passwords for credential keystores</a></li>
+<li><a href="#credential-keystore-configuration_credential-keystores">7.3. Credential keystore configuration</a></li>
+<li><a href="#credential-keystore-references_credential-keystores">7.4. Credential keystore references</a></li>
 </ul>
 </li>
-<li><a href="#security-authorization">8. Configuring user roles and permissions</a>
+<li><a href="#rbac-remote">8. Configuring user roles and permissions</a>
 <ul class="sectlevel2">
-<li><a href="#security-authorization_security-authorization">8.1. Security authorization</a>
+<li><a href="#default-user-roles_rbac-remote">8.1. Infinispan user roles and permissions</a>
 <ul class="sectlevel3">
-<li><a href="#user-roles-permissions_security-authorization">8.1.1. User roles and permissions</a></li>
-<li><a href="#user-permissions_security-authorization">8.1.2. Permissions</a>
-<ul class="sectlevel4">
-<li><a href="#cache_manager_permissions">Cache Manager permissions</a></li>
-<li><a href="#cache_permissions">Cache permissions</a></li>
+<li><a href="#user-permissions_rbac-remote">8.1.1. Permissions</a></li>
+<li><a href="#role-mappers_rbac-remote">8.1.2. Role and permission mappers</a></li>
+<li><a href="#configuring-role-mappers_rbac-remote">8.1.3. Configuring role mappers</a></li>
 </ul>
 </li>
-<li><a href="#role-mappers_security-authorization">8.1.3. Role mappers</a>
-<ul class="sectlevel4">
-<li><a href="#cluster_role_mappers">Cluster role mappers</a></li>
-<li><a href="#identity_role_mappers">Identity role mappers</a></li>
-<li><a href="#commonname_role_mappers">CommonName role mappers</a></li>
-<li><a href="#custom_role_mappers">Custom role mappers</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#acl-cache_security-authorization">8.2. Access control list (ACL) cache</a></li>
-<li><a href="#customizing-authorization_security-authorization">8.3. Customizing roles and permissions</a></li>
-<li><a href="#configuring-cache-authorization_security-authorization">8.4. Configuring caches with security authorization</a></li>
-<li><a href="#disabling-authorization_security-authorization">8.5. Disabling security authorization</a></li>
+<li><a href="#granting-roles-to-users_rbac-remote">8.2. Granting roles to users</a></li>
+<li><a href="#adding-users-to-groups_rbac-remote">8.3. Adding users to groups</a></li>
+<li><a href="#creating-custom-roles-dynamically_rbac-remote">8.4. Creating custom roles at runtime</a></li>
+<li><a href="#creating-custom-roles-statically_rbac-remote">8.5. Adding custom roles to Cache Manager configuration</a></li>
+<li><a href="#configuring-cache-authorization_rbac-remote">8.6. Configuring caches with security authorization</a></li>
+<li><a href="#disabling-authorization_rbac-remote">8.7. Disabling security authorization</a></li>
+<li><a href="#configuring-acl-cache_rbac-remote">8.8. Configuring the access control list (ACL) cache</a></li>
 </ul>
 </li>
 <li><a href="#statistics-jmx">9. Enabling and configuring Infinispan statistics and JMX monitoring</a>
@@ -824,7 +822,8 @@ $(addBlockSwitches);
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan Server deployments offer distributed remote caches with elastic scalability and high performance access.</p>
+<p>Infinispan Server runs in a dedicated Java Virtual Machine (JVM) and provides client access to remote caches through Hot Rod or REST endpoints.
+Infinispan Server speeds time to deployment by separating caches from application logic and offers built-in capabilities for monitoring and administration.</p>
 </div>
 </div>
 </div>
@@ -832,11 +831,19 @@ $(addBlockSwitches);
 <h2 id="server-getting-started"><a class="anchor" href="#server-getting-started"></a>1. Getting started with Infinispan Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Quickly set up Infinispan Server and learn the basics.</p>
+<p>Install the server distribution, create a user, and start your first Infinispan cluster.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="https://infinispan.org/assets/images/documentation/icon-get-started.png" alt="Get started icon" height="32"></span>
-You can also visit our <a href="https://infinispan.org/get-started/">Get Started with Infinispan</a> tutorial and run the server image in 4 easy steps.</p>
+<a href="https://infinispan.org/get-started/">Start running Infinispan in 4 easy steps</a></p>
+</div>
+<h3 id="ansible_collection" class="discrete">Ansible collection</h3>
+<div class="paragraph">
+<p>Automate installation of Infinispan clusters with our Ansible collection that optionally includes Keycloak caches and cross-site replication configuration.
+The Ansible collection also lets you inject Infinispan caches into the static configuration for each server instance during installation.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://github.com/ansible-middleware/infinispan">Ansible collection for Infinispan</a> is available from Ansible Galaxy.</p>
 </div>
 <div class="sect2">
 <h3 id="server-requirements_server-getting-started"><a class="anchor" href="#server-requirements_server-getting-started"></a>1.1. Infinispan Server requirements</h3>
@@ -874,7 +881,7 @@ Hot Rod Java clients.</p>
 <p>Run the <code>sha1sum</code> command with the server download archive as the argument, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ sha1sum infinispan-server-${version}.zip</code></pre>
+<pre class="highlight nowrap"><code>sha1sum infinispan-server-${version}.zip</code></pre>
 </div>
 </div>
 </li>
@@ -911,7 +918,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ unzip infinispan-server-14.0.0.Dev01.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.0.Dev02.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -945,7 +952,7 @@ Hot Rod Java clients.</p>
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/server.sh</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh</code></pre>
 </div>
 </div>
 </dd>
@@ -1058,7 +1065,7 @@ You must manually propagate caches to each node.</p>
 <p>Specify one or more configuration files with the <code>--server-config=</code> or <code>-c</code> argument, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ bin/server.sh -c infinispan.xml -c datasources.yaml -c security-realms.json</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -c infinispan.xml -c datasources.yaml -c security-realms.json</code></pre>
 </div>
 </div>
 </li>
@@ -1066,20 +1073,46 @@ You must manually propagate caches to each node.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-users_server-getting-started"><a class="anchor" href="#creating-users_server-getting-started"></a>1.6. Creating and modifying Infinispan users</h3>
+<h3 id="creating-users_server-getting-started"><a class="anchor" href="#creating-users_server-getting-started"></a>1.6. Creating Infinispan users</h3>
 <div class="paragraph">
-<p>Add Infinispan user credentials and assign permissions to control access to data.</p>
+<p>Add credentials to authenticate with Infinispan Server deployments through Hot Rod and REST endpoints.
+Before you can access the Infinispan Console or perform cache operations you must create at least one user with the Infinispan command line interface (CLI).</p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>Infinispan server installations use a property realm to authenticate users for the Hot Rod and REST endpoints.
-This means you need to create at least one user before you can access Infinispan.</p>
+<p>Infinispan enforces security authorization with role-based access control (RBAC).
+Create an <code>admin</code> user the first time you add credentials to gain full <code>ADMIN</code> permissions to your Infinispan deployment.</p>
 </div>
-<div class="paragraph">
-<p>By default, users also need roles with permissions to access caches and interact with Infinispan resources.
-You can assign roles to users individually or add users to groups that have role permissions.</p>
+</td>
+</tr>
+</table>
 </div>
-<div class="paragraph">
-<p>You create users and assign roles with the <code class="command">user</code> command in the Infinispan command line interface (CLI).</p>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Download and install Infinispan Server.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open a terminal in <code>$ISPN_HOME</code>.</p>
+</li>
+<li>
+<p>Create an <code>admin</code> user with the <code class="command">user create</code> command.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">bin/cli.sh user create admin -p changeme</code></pre>
+</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1095,124 +1128,143 @@ You can assign roles to users individually or add users to groups that have role
 </tr>
 </table>
 </div>
-<div class="sect3">
-<h4 id="adding_credentials"><a class="anchor" href="#adding_credentials"></a>1.6.1. Adding credentials</h4>
-<div class="paragraph">
-<p>You need an <code>admin</code> user for the Infinispan Console and full control over your Infinispan environment.
-For this reason you should create a user with <code>admin</code> permissions the first time you add credentials.</p>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Open a terminal in <code>$ISPN_HOME</code>.</p>
 </li>
-<li>
-<p>Create an <code>admin</code> user with the <code class="command">user create</code> command.</p>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Verification</div>
+<p>Open <code>user.properties</code> and confirm the user exists.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>cat server/conf/users.properties
+
+admin=scram-sha-1\:BYGcIAwvf6b...</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Adding credentials to a properties realm with the CLI creates the user only on the server instance to which you are connected.
+You must manually synchronize credentials in a properties realm to each node in the cluster.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="granting-roles-to-users_server-getting-started"><a class="anchor" href="#granting-roles-to-users_server-getting-started"></a>1.6.1. Granting roles to users</h4>
+<div class="paragraph">
+<p>Assign roles to users and grant them permissions to perform cache operations and interact with Infinispan resources.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Grant roles to groups instead of users if you want to assign the same role to multiple users and centrally maintain their permissions.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="ulist">
+<div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Add a user assigned to the <code>admin</code> group.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">$ bin/cli.sh user create myuser -p changeme -g admin</code></pre>
-</div>
-</div>
+<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
 </li>
 <li>
-<p>Use implicit authorization to gain <code>admin</code> permissions.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">$ bin/cli.sh user create admin -p changeme</code></pre>
-</div>
-</div>
+<p>Create Infinispan users.</p>
 </li>
 </ul>
 </div>
-</li>
-<li>
-<p>Open <code>user.properties</code> and <code>groups.properties</code> with any text editor to verify users and groups.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>$ cat server/conf/users.properties
-
-#$REALM_NAME=default$
-#$ALGORITHM=encrypted$
-myuser=scram-sha-1\:BYGcIAwvf6b...
-
-$ cat server/conf/groups.properties
-
-myuser=admin</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect3">
-<h4 id="assigning_roles_to_users"><a class="anchor" href="#assigning_roles_to_users"></a>1.6.2. Assigning roles to users</h4>
-<div class="paragraph">
-<p>Assign roles to users so they have the correct permissions to access data and modify Infinispan resources.</p>
-</div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Start a CLI session with an <code>admin</code> user.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">$ bin/cli.sh</code></pre>
-</div>
-</div>
+<p>Create a CLI connection to Infinispan.</p>
 </li>
 <li>
-<p>Assign the <code>deployer</code> role to "katie".</p>
+<p>Assign roles to users with the <code class="command">user roles grant</code> command, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; user roles grant --roles=deployer katie</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>List roles for "katie".</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; user roles ls katie
-["deployer"]</code></pre>
+<pre class="highlight nowrap"><code>user roles grant --roles=deployer katie</code></pre>
 </div>
 </div>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<div class="title">Verification</div>
+<p>List roles that you grant to users with the <code class="command">user roles ls</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles ls katie
+["deployer"]</code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="adding_users_to_groups"><a class="anchor" href="#adding_users_to_groups"></a>1.6.3. Adding users to groups</h4>
+<h4 id="adding-users-to-groups_server-getting-started"><a class="anchor" href="#adding-users-to-groups_server-getting-started"></a>1.6.2. Adding users to groups</h4>
 <div class="paragraph">
 <p>Groups let you change permissions for multiple users.
 You assign a role to a group and then add users to that group.
 Users inherit permissions from the group role.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You use groups as part of a property realm in the Infinispan Server configuration.
+Each group is a special type of user that also requires a username and password.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
+</li>
+<li>
+<p>Create Infinispan users.</p>
+</li>
+</ul>
+</div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Start a CLI session with an <code>admin</code> user.</p>
+<p>Create a CLI connection to Infinispan.</p>
 </li>
 <li>
 <p>Use the <code class="command">user create</code> command to create a group.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Specify "developers" as the group name with the <code>--groups</code> argument.</p>
+<p>Specify a group name with the <code>--groups</code> argument.</p>
 </li>
 <li>
 <p>Set a username and password for the group.</p>
-<div class="paragraph">
-<p>In a property realm, a group is a special type of user that also requires a username and password.</p>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; user create --groups=developers developers -p changeme</code></pre>
+<pre class="highlight nowrap"><code>user create --groups=developers developers -p changeme</code></pre>
 </div>
 </div>
 </li>
@@ -1223,61 +1275,50 @@ Users inherit permissions from the group role.</p>
 <p>List groups.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; user ls --groups
-["developers"]</code></pre>
+<pre class="highlight nowrap"><code>user ls --groups</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Assign the <code>application</code> role to the "developers" group.</p>
+<p>Grant a role to the group.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; user roles grant --roles=application developers</code></pre>
+<pre class="highlight nowrap"><code>user roles grant --roles=application developers</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>List roles for the "developers" group.</p>
+<p>List roles for the group.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; user roles ls developers
-["application"]</code></pre>
+<pre class="highlight nowrap"><code>user roles ls developers</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Add existing users, one at a time, to the group as required.</p>
+<p>Add users to the group one at a time.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; user groups john --groups=developers</code></pre>
+<pre class="highlight nowrap"><code>user groups john --groups=developers</code></pre>
 </div>
 </div>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<div class="title">Verification</div>
+<p>Open <code>groups.properties</code> and confirm the group exists.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>cat server/conf/groups.properties</code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="user-roles-permissions_server-getting-started"><a class="anchor" href="#user-roles-permissions_server-getting-started"></a>1.6.4. User roles and permissions</h4>
+<h4 id="default-user-roles_server-getting-started"><a class="anchor" href="#default-user-roles_server-getting-started"></a>1.6.3. Infinispan user roles and permissions</h4>
 <div class="paragraph">
-<p>Infinispan includes a default set of roles that grant users with permissions to access data and interact with Infinispan resources.</p>
-</div>
-<div class="paragraph">
-<p><code>ClusterRoleMapper</code> is the default mechanism that Infinispan uses to associate security principals to authorization roles.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><code>ClusterRoleMapper</code> matches principal names to role names.
-A user named <code>admin</code> gets <code>admin</code> permissions automatically, a user named <code>deployer</code> gets <code>deployer</code> permissions, and so on.</p>
-</div>
-</td>
-</tr>
-</table>
+<p>Infinispan includes several roles that provide users with permissions to access caches and Infinispan resources.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1320,11 +1361,11 @@ A user named <code>admin</code> gets <code>admin</code> permissions automaticall
 </tr>
 </tbody>
 </table>
-<div class="ulist">
-<div class="title">Reference</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs">org.infinispan.security.AuthorizationPermission Enumeration</a></p>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/AuthorizationPermission.html">org.infinispan.security.AuthorizationPermission Enum</a></p>
 </li>
 <li>
 <p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
@@ -1371,7 +1412,7 @@ Doing things like specifying a port offset on the command line is not a reliable
 <p>Copy the root directory to <code>server2</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ cp -r server server2</code></pre>
+<pre class="highlight nowrap"><code>cp -r server server2</code></pre>
 </div>
 </div>
 </li>
@@ -1379,7 +1420,7 @@ Doing things like specifying a port offset on the command line is not a reliable
 <p>Specify a port offset and the <code>server2</code> directory.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/server.sh -o 100 -s server2</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -o 100 -s server2</code></pre>
 </div>
 </div>
 </li>
@@ -1422,7 +1463,7 @@ ISPN100000: Node &lt;server2_hostname&gt; joined the cluster</code></pre>
 <p>Stop all nodes in a cluster with the <code class="command">shutdown cluster</code> command, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; shutdown cluster</code></pre>
+<pre class="highlight nowrap"><code>shutdown cluster</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1434,7 +1475,7 @@ If you use a cache store, the <code class="command">shutdown cluster</code> comm
 <p>Stop individual server instances with the <code class="command">shutdown server</code> command and the server hostname, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; shutdown server &lt;my_server01&gt;</code></pre>
+<pre class="highlight nowrap"><code>shutdown server &lt;my_server01&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -2180,7 +2221,7 @@ You can specify that IP address directly in your Infinispan Server configuration
 <p>Open your Infinispan Server configuration and set the value for the <code>inet-address</code> element, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code>&lt;server xmlns="urn:infinispan:server:14.0"&gt;
   &lt;interfaces&gt;
     &lt;interface name="custom"&gt;
       &lt;inet-address value="${infinispan.bind.address:192.0.2.0}"/&gt;
@@ -2195,13 +2236,13 @@ You can specify that IP address directly in your Infinispan Server configuration
 <div class="listingblock">
 <div class="title">Linux</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ bin/server.sh -b 192.0.2.0</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -b 192.0.2.0</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Windows</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">bin\server.bat -b 192.0.2.0</code></pre>
+<pre class="highlight nowrap"><code>bin\server.bat -b 192.0.2.0</code></pre>
 </div>
 </div>
 </li>
@@ -2243,12 +2284,12 @@ If a client connects to <code>192.168.0.0</code>, for example, it does not recei
 For example, <code>10.129.2.100/23</code> and <code>10.129.4.100/23</code> are in different subnets but belong to the <code>10.0.0.0/8</code> network.</p>
 </div>
 <div class="paragraph">
-<p>For this reason, Infinispan Server overrides netmasks that the host system provides with netmasks that follow IANA conventions for private networks:</p>
+<p>For this reason, Infinispan Server overrides netmasks that the host system provides with netmasks that follow IANA conventions for private and reserved networks:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>IPv4: <code>10.0.0.0/8</code>, <code>192.168.0.0/16</code>, <code>172.16.0.0/16</code>, and <code>169.254.0.0/16</code></p>
+<p>IPv4: <code>10.0.0.0/8</code>, <code>192.168.0.0/16</code>, <code>172.16.0.0/12</code>, <code>169.254.0.0/16</code> and <code>240.0.0.0/4</code></p>
 </li>
 <li>
 <p>IPv6: <code>fc00::/7</code> and <code>fe80::/10</code></p>
@@ -2372,7 +2413,7 @@ traffic to port <code>11222</code> with firewalld as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash"># firewall-cmd --add-port=11222/tcp --permanent
+<pre class="highlight nowrap"><code># firewall-cmd --add-port=11222/tcp --permanent
 success
 # firewall-cmd --list-ports | grep 11222
 11222/tcp</code></pre>
@@ -2405,7 +2446,7 @@ The default port offset is <code>0</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ bin/server.sh -o 100</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -o 100</code></pre>
 </div>
 </div>
 <div class="dlist">
@@ -2415,7 +2456,7 @@ The default port offset is <code>0</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">bin\server.bat -o 100</code></pre>
+<pre class="highlight nowrap"><code>bin\server.bat -o 100</code></pre>
 </div>
 </div>
 </div>
@@ -2472,7 +2513,16 @@ occur.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="memcached"><a class="anchor" href="#memcached"></a>3.1.3. Memcached</h4>
+<h4 id="resp"><a class="anchor" href="#resp"></a>3.1.3. RESP</h4>
+<div class="paragraph">
+<p>Infinispan provides an implementation of the <a href="https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md">RESP3</a> protocol.</p>
+</div>
+<div class="paragraph">
+<p>The RESP connector supports a subset of the Redis commands.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="memcached"><a class="anchor" href="#memcached"></a>3.1.4. Memcached</h4>
 <div class="paragraph">
 <p>Infinispan provides an implementation of the Memcached text protocol for
 remote client access.</p>
@@ -2504,7 +2554,7 @@ when cluster topology changes occur.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="endpoint-protocol-comparison_server-endpoints"><a class="anchor" href="#endpoint-protocol-comparison_server-endpoints"></a>3.1.4. Comparison of endpoint protocols</h4>
+<h4 id="endpoint-protocol-comparison_server-endpoints"><a class="anchor" href="#endpoint-protocol-comparison_server-endpoints"></a>3.1.5. Comparison of endpoint protocols</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -2522,22 +2572,28 @@ when cluster topology changes occur.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Topology-aware</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESP</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Topology-aware</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hash-aware</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Hash-aware</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Encryption</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Encryption</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Authentication</p></td>
@@ -2546,20 +2602,26 @@ when cluster topology changes occur.</p>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Conditional ops</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Conditional ops</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bulk ops</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Bulk ops</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Transactions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Transactions</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
@@ -2570,25 +2632,68 @@ when cluster topology changes occur.</p>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Query</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Query</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Execution</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Execution</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-site failover</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Cross-site failover</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect3">
+<h4 id="client-server-compatibility_server-endpoints"><a class="anchor" href="#client-server-compatibility_server-endpoints"></a>3.1.6. Hot Rod client compatibility with Infinispan Server</h4>
+<div class="paragraph">
+<p>Infinispan Server allows you to connect Hot Rod clients with different versions.
+For instance during a migration or upgrade to your Infinispan cluster, the Hot Rod client version might be a lower Infinispan version than Infinispan Server.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan recommends using the latest Hot Rod client version to benefit from the most recent capabilities and security enhancements.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Infinispan 10 and later</div>
+<p>Hot Rod protocol version 3.x automatically negotiates the highest version possible for clients with Infinispan Server.</p>
+</div>
+<div class="paragraph">
+<div class="title">Infinispan 9.4 and earlier</div>
+<p>Clients that use a Hot Rod protocol version that is higher than the Infinispan Server version must set the <code>infinispan.client.hotrod.protocol_version</code> property.</p>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://infinispan.org/docs/stable/titles/hotrod_protocol/hotrod_protocol.html">Hot Rod protocol reference</a></p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2745,6 +2850,10 @@ You should only add these elements to custom configuration to specify authentica
 <td class="tableblock halign-left valign-top"><p class="tableblock">Includes the Hot Rod endpoint in the <code>endpoint</code> configuration.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>resp-connector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Includes the RESP endpoint in the <code>endpoint</code> configuration.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>memcached-connector</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Configures the Memcached endpoint and is disabled by default.</p></td>
 </tr>
@@ -2877,7 +2986,7 @@ Infinispan Server rejects all other connections.</p>
 <p>List all IP filtering rules active on a connector across the cluster:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; server connector ipfilter ls endpoint-default</code></pre>
+<pre class="highlight nowrap"><code>server connector ipfilter ls endpoint-default</code></pre>
 </div>
 </div>
 </li>
@@ -2899,7 +3008,7 @@ Infinispan Server rejects all other connections.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; server connector ipfilter set endpoint-default --rules=ACCEPT/192.168.0.0/16,REJECT/10.0.0.0/8`</code></pre>
+<pre class="highlight nowrap"><code>server connector ipfilter set endpoint-default --rules=ACCEPT/192.168.0.0/16,REJECT/10.0.0.0/8`</code></pre>
 </div>
 </div>
 </li>
@@ -2907,7 +3016,7 @@ Infinispan Server rejects all other connections.</p>
 <p>Remove all IP filtering rules on a connector across the cluster.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; server connector ipfilter clear endpoint-default</code></pre>
+<pre class="highlight nowrap"><code>server connector ipfilter clear endpoint-default</code></pre>
 </div>
 </div>
 </li>
@@ -3607,7 +3716,7 @@ Use the <code class="command">user create</code> commands as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
+<pre class="highlight nowrap"><code>user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
      --users-file=application-users.properties \
      --groups-file=application-groups.properties
 
@@ -3625,6 +3734,21 @@ user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
 <td class="content">
 <div class="paragraph">
 <p>Run <code class="command">user create --help</code> for examples and more information.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Adding credentials to a properties realm with the CLI creates the user only on the server instance to which you are connected.
+You must manually synchronize credentials in a properties realm to each node in the cluster.</p>
 </div>
 </td>
 </tr>
@@ -3822,7 +3946,7 @@ For example, if you have a "datagrid" server in the "INFINISPAN.ORG" domain you 
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ ktutil
+<pre class="highlight nowrap"><code>ktutil
 ktutil:  addent -password -p datagrid@INFINISPAN.ORG -k 1 -e aes256-cts
 Password for datagrid@INFINISPAN.ORG: [enter your password]
 ktutil:  wkt http.keytab
@@ -3834,8 +3958,8 @@ ktutil:  quit</code></pre>
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ ktpass -princ HTTP/datagrid@INFINISPAN.ORG -pass * -mapuser INFINISPAN\USER_NAME
-$ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
+<pre class="highlight nowrap"><code>ktpass -princ HTTP/datagrid@INFINISPAN.ORG -pass * -mapuser INFINISPAN\USER_NAME
+ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
 </div>
 </div>
 </dd>
@@ -4135,14 +4259,35 @@ LDAP queries and access specific attributes.</p>
 <div class="paragraph">
 <p>As an alternative to verifying user credentials with the <code>direct-verification</code> attribute, you can specify an LDAP attribute that validates passwords with the <code>user-password-mapper</code> element.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You cannot use endpoint authentication mechanisms that perform hashing with the <code>direct-verification</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Because Active Directory does not expose the <code>password</code> attribute you can use the <code>direct-verification</code> attribute only and not the <code>user-password-mapper</code> element.
+As a result you must use the <code>BASIC</code> authentication mechanism with the REST endpoint and <code>PLAIN</code> with the Hot Rod endpoint to integrate with Active Directory Server.
+A more secure alternative is to use Kerberos, which allows the <code>SPNEGO</code>, <code>GSSAPI</code>, and <code>GS2-KRB5</code> authentication mechanisms.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>The <code>rdn-identifier</code> attribute specifies an LDAP attribute that finds the user entry based on a provided identifier, which is typically a username; for example, the <code>uid</code> or <code>sAMAccountName</code> attribute.
 Add <code>search-recursive="true"</code> to the configuration to search the directory recursively.
 By default, the search for the user entry uses the <code>(rdn_identifier={0})</code> filter.
 Specify a different filter with the <code>filter-name</code> attribute.</p>
 </div>
-<div class="paragraph">
-<p>The <code>attribute-mapping</code> element retrieves all the groups of which the user is a member. There are typically two ways in which membership information is stored:</p>
+<div class="literalblock">
+<div class="content">
+<pre>The `attribute-mapping` element retrieves all the groups of which the user is a member. There are typically two ways in which membership information is stored:</pre>
+</div>
 </div>
 <div class="ulist">
 <ul>
@@ -5058,7 +5203,118 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-client-certificate-authentication_endpoint-security"><a class="anchor" href="#configuring-client-certificate-authentication_endpoint-security"></a>6.2. Configuring client certificate authentication</h3>
+<h3 id="configuring-server-fips_endpoint-security"><a class="anchor" href="#configuring-server-fips_endpoint-security"></a>6.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</h3>
+<div class="paragraph">
+<p>It is possible to configure Infinispan Server to present SSL/TLS certificates that verify its identity to clients.
+If a security realm contains TLS/SSL identities, it encrypts any connections to Infinispan Server endpoints that use that security realm.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>A system in FIPS mode. Execute <code>fips-mode-setup --check</code> to ensure it is enabled.</p>
+</li>
+<li>
+<p>A correctly initialized NSS database.</p>
+</li>
+<li>
+<p>A JDK installation with the <code>java.security</code> file configured to enable the <code>SunPKCS11</code> provider pointing to the NSS database and the SSL provider initialized with the <code>SunPKCS11-nss-fips</code> argument.</p>
+</li>
+<li>
+<p>A certificate installed in the NSS database.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The OpenSSL provider requires a private key, but it is not possible to retrieve a private key from the PKCS11 store. FIPS does not allow the export of unencrypted keys from FIPS compliant cryptographic module. Therefore it is not possible to use the OpenSSL provider for TLS when in FIPS mode. Start the server with the <code>-Dorg.infinispan.openssl=false</code> argument to disable OpenSSL.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add a <code>server-identities</code> definition to the Infinispan Server security realm.</p>
+</li>
+<li>
+<p>Specify the PKCS11 keystore with the <code>SunPKCS11-NSS-FIPS</code> provider.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="keystore_configuration_2" class="discrete">Keystore configuration</h4>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+   &lt;security&gt;
+      &lt;security-realms&gt;
+         &lt;security-realm name="default"&gt;
+            &lt;server-identities&gt;
+               &lt;ssl&gt;
+                  &lt;!-- Adds a keystore that reads certificates from the NSS database. --&gt;
+                  &lt;keystore provider="SunPKCS11-NSS-FIPS" type="PKCS11"/&gt;
+               &lt;/ssl&gt;
+            &lt;/server-identities&gt;
+         &lt;/security-realm&gt;
+      &lt;/security-realms&gt;
+   &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "default",
+        "server-identities": {
+          "ssl": {
+            "keystore": {
+              "provider": "SunPKCS11-NSS-FIPS",
+              "type": "PKCS11"
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "default"
+        serverIdentities:
+          ssl:
+            keystore:
+              provider: "SunPKCS11-NSS-FIPS"
+              type: "PKCS11"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-client-certificate-authentication_endpoint-security"><a class="anchor" href="#configuring-client-certificate-authentication_endpoint-security"></a>6.3. Configuring client certificate authentication</h3>
 <div class="paragraph">
 <p>Configure Infinispan Server to use mutual TLS to secure client connections.</p>
 </div>
@@ -5301,7 +5557,7 @@ These trust stores should be configured with an empty password: <code>password="
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-client-certificate-authorization_endpoint-security"><a class="anchor" href="#configuring-client-certificate-authorization_endpoint-security"></a>6.3. Configuring authorization with client certificates</h3>
+<h3 id="configuring-client-certificate-authorization_endpoint-security"><a class="anchor" href="#configuring-client-certificate-authorization_endpoint-security"></a>6.4. Configuring authorization with client certificates</h3>
 <div class="paragraph">
 <p>Enabling client certificate authentication means you do not need to specify Infinispan user credentials in client configuration, which means you must associate roles with the Common Name (CN) field in the client certificate(s).</p>
 </div>
@@ -5437,6 +5693,20 @@ Infinispan Server then decrypts the password for that alias from the keystore wh
 <div class="paragraph">
 <p>You can create as many credential keystores with as many aliases as required.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>As a security best practice, keystores should be readable only by the user who runs the process for Infinispan Server.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
 <ol class="arabic">
@@ -5462,7 +5732,7 @@ Run <code class="command">help credentials</code> for details on changing keysto
 </div>
 <div class="paragraph">
 <p>The following example shows how to create a keystore that contains an alias of "dbpassword" for the password "changeme".
-When you create a keystore you also specify a password for the keystore with the <code>-p</code> argument.</p>
+When you create a keystore you also specify a password to access the keystore with the <code>-p</code> argument.</p>
 </div>
 <div class="dlist">
 <dl>
@@ -5470,7 +5740,7 @@ When you create a keystore you also specify a password for the keystore with the
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh credentials add dbpassword -c changeme -p "secret1234!"</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh credentials add dbpassword -c changeme -p "secret1234!"</code></pre>
 </div>
 </div>
 </dd>
@@ -5478,7 +5748,7 @@ When you create a keystore you also specify a password for the keystore with the
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin\cli.bat credentials add dbpassword -c changeme -p "secret1234!"</code></pre>
+<pre class="highlight nowrap"><code>bin\cli.bat credentials add dbpassword -c changeme -p "secret1234!"</code></pre>
 </div>
 </div>
 </dd>
@@ -5489,20 +5759,59 @@ When you create a keystore you also specify a password for the keystore with the
 <p>Check that the alias is added to the keystore.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh credentials ls -p "secret1234!"
+<pre class="highlight nowrap"><code>bin/cli.sh credentials ls -p "secret1234!"
 dbpassword</code></pre>
 </div>
 </div>
+</li>
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
 </li>
 <li>
 <p>Configure Infinispan to use the credential keystore.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Specify the name and location of the credential keystore in the <code>credential-stores</code> configuration.</p>
+<p>Add a <code>credential-stores</code> section to the <code>security</code> configuration.</p>
 </li>
 <li>
-<p>Provide the credential keystore and alias in the <code>credential-reference</code> configuration.</p>
+<p>Specify the name and location of the credential keystore.</p>
+</li>
+<li>
+<p>Specify the password to access the credential keystore with the <code>clear-text-credential</code> configuration.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Instead of adding a clear-text password for the credential keystore to your Infinispan Server configuration you can use an external command or masked password for additional security.</p>
+</div>
+<div class="paragraph">
+<p>You can also use a password in one credential store as the master password for another credential store.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Reference the credential keystore in configuration that Infinispan Server uses to connect with an external system such as a datasource or LDAP server.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add a <code>credential-reference</code> section.</p>
+</li>
+<li>
+<p>Specify the name of the credential keystore with the <code>store</code> attribute.</p>
+</li>
+<li>
+<p>Specify the password alias with the <code>alias</code> attribute.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -5519,7 +5828,7 @@ dbpassword</code></pre>
 <p><code>store</code> is required only if you have multiple keystores.</p>
 </li>
 <li>
-<p><code>alias</code> is required only if the keystore contains multiple aliases.</p>
+<p><code>alias</code> is required only if the keystore contains multiple password aliases.</p>
 </li>
 </ul>
 </div>
@@ -5531,25 +5840,66 @@ dbpassword</code></pre>
 </ol>
 </div>
 </li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
 </ol>
 </div>
 </div>
 <div class="sect2">
-<h3 id="credential-keystore-configuration_credential-keystores"><a class="anchor" href="#credential-keystore-configuration_credential-keystores"></a>7.2. Credential keystore configuration</h3>
+<h3 id="securing-passwords-credential-keystores_credential-keystores"><a class="anchor" href="#securing-passwords-credential-keystores_credential-keystores"></a>7.2. Securing passwords for credential keystores</h3>
 <div class="paragraph">
-<p>This topic provides examples of credential keystores in Infinispan Server configuration.</p>
+<p>Infinispan Server requires a password to access credential keystores.
+You can add that password to Infinispan Server configuration in clear text or, as an added layer of security, you can use an external command for the password or you can mask the password.</p>
 </div>
-<h4 id="credential_keystores" class="discrete">Credential keystores</h4>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Set up a credential keystore for Infinispan Server.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Do one of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use the <code class="command">credentials mask</code> command to obscure the password, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin/cli.sh credentials mask -i 100 -s pepper99 "secret1234!"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Masked passwords use Password Based Encryption (PBE) and must be in the following format in your Infinispan Server configuration: &lt;MASKED_VALUE;SALT;ITERATION&gt;.</p>
+</div>
+</li>
+<li>
+<p>Use an external command that provides the password as standard output.</p>
+<div class="paragraph">
+<p>An external command can be any executable, such as a shell script or binary, that uses <code>java.lang.Runtime#exec(java.lang.String)</code>.<br>
+If the command requires parameters, provide them as a space-separated list of strings.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="credential-keystore-configuration_credential-keystores"><a class="anchor" href="#credential-keystore-configuration_credential-keystores"></a>7.3. Credential keystore configuration</h3>
+<div class="paragraph">
+<p>You can add credential keystores to Infinispan Server configuration and use clear-text passwords, masked passwords, or external commands that supply passwords.</p>
+</div>
+<h4 id="credential_keystore_with_a_clear_text_password" class="discrete">Credential keystore with a clear text password</h4>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
   &lt;security&gt;
-    &lt;!-- Uses a keystore to manage server credentials. --&gt;
     &lt;credential-stores&gt;
-      &lt;!-- Specifies the name and filesystem location of a keystore. --&gt;
       &lt;credential-store name="credentials" path="credentials.pfx"&gt;
-        &lt;!-- Specifies the password for the credential keystore. --&gt;
         &lt;clear-text-credential clear-text="secret1234!"/&gt;
       &lt;/credential-store&gt;
     &lt;/credential-stores&gt;
@@ -5587,11 +5937,117 @@ dbpassword</code></pre>
           clearText: "secret1234!"</code></pre>
 </div>
 </div>
+<h4 id="credential_keystore_with_a_masked_password" class="discrete">Credential keystore with a masked password</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials"
+                        path="credentials.pfx"&gt;
+        &lt;masked-credential masked="1oTMDZ5JQj6DVepJviXMnX;pepper99;100"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "masked-credential": {
+          "masked": "1oTMDZ5JQj6DVepJviXMnX;pepper99;100"
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        maskedCredential:
+          masked: "1oTMDZ5JQj6DVepJviXMnX;pepper99;100"</code></pre>
+</div>
+</div>
+<h4 id="external_command_passwords" class="discrete">External command passwords</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials"
+                        path="credentials.pfx"&gt;
+        &lt;command-credential command="/path/to/executable.sh arg1 arg2"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "command-credential": {
+          "command": "/path/to/executable.sh arg1 arg2"
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        commandCredential:
+          command: "/path/to/executable.sh arg1 arg2"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="credential-keystore-references_credential-keystores"><a class="anchor" href="#credential-keystore-references_credential-keystores"></a>7.4. Credential keystore references</h3>
+<div class="paragraph">
+<p>After you add credential keystores to Infinispan Server you can reference them in connection configurations.</p>
+</div>
 <h4 id="datasource_connections" class="discrete">Datasource connections</h4>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials"
+                        path="credentials.pfx"&gt;
+        &lt;clear-text-credential clear-text="secret1234!"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+  &lt;/security&gt;
   &lt;data-sources&gt;
     &lt;data-source name="postgres"
                  jndi-name="jdbc/postgres"&gt;
@@ -5619,19 +6075,28 @@ dbpassword</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
   "server": {
-    "data-sources": [{
-      "name": "postgres",
-      "jndi-name": "jdbc/postgres",
-      "connection-factory": {
-        "driver": "org.postgresql.Driver",
-        "username": "dbuser",
-        "url": "${org.infinispan.server.test.postgres.jdbcUrl}",
-        "credential-reference": {
-          "store": "credentials",
-          "alias": "dbpassword"
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "clear-text-credential": {
+          "clear-text": "secret1234!"
         }
-      }
-    }]
+      }],
+      "data-sources": [{
+        "name": "postgres",
+        "jndi-name": "jdbc/postgres",
+        "connection-factory": {
+          "driver": "org.postgresql.Driver",
+          "username": "dbuser",
+          "url": "${org.infinispan.server.test.postgres.jdbcUrl}",
+          "credential-reference": {
+            "store": "credentials",
+            "alias": "dbpassword"
+          }
+        }
+      }]
+    }
   }
 }</code></pre>
 </div>
@@ -5640,6 +6105,12 @@ dbpassword</code></pre>
 <div class="title">YAML</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        clearTextCredential:
+          clearText: "secret1234!"
   dataSources:
     - name: postgres
       jndiName: jdbc/postgres
@@ -5735,68 +6206,15 @@ dbpassword</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="security-authorization"><a class="anchor" href="#security-authorization"></a>8. Configuring user roles and permissions</h2>
+<h2 id="rbac-remote"><a class="anchor" href="#rbac-remote"></a>8. Configuring user roles and permissions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Authorization is a security feature that requires users to have certain permissions before they can access caches or interact with Infinispan resources.
-You assign roles to users that provide different levels of permissions, from read-only access to full, super user privileges.</p>
+<p>Configure security authorization to control access to cache and Infinispan resources.</p>
 </div>
 <div class="sect2">
-<h3 id="security-authorization_security-authorization"><a class="anchor" href="#security-authorization_security-authorization"></a>8.1. Security authorization</h3>
+<h3 id="default-user-roles_rbac-remote"><a class="anchor" href="#default-user-roles_rbac-remote"></a>8.1. Infinispan user roles and permissions</h3>
 <div class="paragraph">
-<p>Infinispan authorization secures your deployment by restricting user access.</p>
-</div>
-<div class="paragraph">
-<p>User applications or clients must belong to a role that is assigned with sufficient permissions before they can perform operations on Cache Managers or caches.</p>
-</div>
-<div class="paragraph">
-<p>For example, you configure authorization on a specific cache instance so that invoking <code>Cache.get()</code> requires an identity to be assigned a role with read permission while <code>Cache.put()</code> requires a role with write permission.</p>
-</div>
-<div class="paragraph">
-<p>In this scenario, if a user application or client with the <code>io</code> role attempts to write an entry, Infinispan denies the request and throws a security exception.
-If a user application or client with the <code>writer</code> role sends a write request, Infinispan validates authorization and issues a token for subsequent operations.</p>
-</div>
-<div class="paragraph">
-<div class="title">Identities</div>
-<p>Identities are security Principals of type <code>java.security.Principal</code>.
-Subjects, implemented with the <code>javax.security.auth.Subject</code> class, represent a group of security Principals.
-In other words, a Subject represents a user and all groups to which it belongs.</p>
-</div>
-<div class="paragraph">
-<div class="title">Identities to roles</div>
-<p>Infinispan uses role mappers so that security principals correspond to roles,
-which you assign one or more permissions.</p>
-</div>
-<div class="paragraph">
-<p>The following image illustrates how security principals correspond to roles:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../../topics/images/SecurityRolesPermissions.svg" alt="Roles/Permissions mapping">
-</div>
-</div>
-<div class="sect3">
-<h4 id="user-roles-permissions_security-authorization"><a class="anchor" href="#user-roles-permissions_security-authorization"></a>8.1.1. User roles and permissions</h4>
-<div class="paragraph">
-<p>Infinispan includes a default set of roles that grant users with permissions to access data and interact with Infinispan resources.</p>
-</div>
-<div class="paragraph">
-<p><code>ClusterRoleMapper</code> is the default mechanism that Infinispan uses to associate security principals to authorization roles.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><code>ClusterRoleMapper</code> matches principal names to role names.
-A user named <code>admin</code> gets <code>admin</code> permissions automatically, a user named <code>deployer</code> gets <code>deployer</code> permissions, and so on.</p>
-</div>
-</td>
-</tr>
-</table>
+<p>Infinispan includes several roles that provide users with permissions to access caches and Infinispan resources.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -5839,40 +6257,35 @@ A user named <code>admin</code> gets <code>admin</code> permissions automaticall
 </tr>
 </tbody>
 </table>
-<div class="ulist">
-<div class="title">Reference</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs">org.infinispan.security.AuthorizationPermission Enumeration</a></p>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/AuthorizationPermission.html">org.infinispan.security.AuthorizationPermission Enum</a></p>
 </li>
 <li>
 <p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
 </li>
 </ul>
 </div>
-</div>
 <div class="sect3">
-<h4 id="user-permissions_security-authorization"><a class="anchor" href="#user-permissions_security-authorization"></a>8.1.2. Permissions</h4>
+<h4 id="user-permissions_rbac-remote"><a class="anchor" href="#user-permissions_rbac-remote"></a>8.1.1. Permissions</h4>
 <div class="paragraph">
-<p>Authorization roles have different permissions with varying levels of access to Infinispan.
-Permissions let you restrict user access to both Cache Managers and caches.</p>
+<p>User roles are sets of permissions with different access levels.</p>
 </div>
-<div class="sect4">
-<h5 id="cache_manager_permissions"><a class="anchor" href="#cache_manager_permissions"></a>Cache Manager permissions</h5>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<caption class="title">Table 1. Cache Manager permissions</caption>
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col>
+<col>
+<col>
 </colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Permission</th>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permission</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CONFIGURATION</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>defineConfiguration</code></p></td>
@@ -5905,23 +6318,19 @@ Permissions let you restrict user access to both Cache Managers and caches.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect4">
-<h5 id="cache_permissions"><a class="anchor" href="#cache_permissions"></a>Cache permissions</h5>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<caption class="title">Table 2. Cache permissions</caption>
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col>
+<col>
+<col>
 </colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Permission</th>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permission</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">READ</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>get</code>, <code>contains</code></p></td>
@@ -5993,78 +6402,34 @@ Permissions let you restrict user access to both Cache Managers and caches.</p>
 </ul>
 </div>
 </div>
-</div>
 <div class="sect3">
-<h4 id="role-mappers_security-authorization"><a class="anchor" href="#role-mappers_security-authorization"></a>8.1.3. Role mappers</h4>
+<h4 id="role-mappers_rbac-remote"><a class="anchor" href="#role-mappers_rbac-remote"></a>8.1.2. Role and permission mappers</h4>
 <div class="paragraph">
-<p>Infinispan includes a <code>PrincipalRoleMapper</code> API that maps security Principals in a Subject to authorization roles that you can assign to users.</p>
-</div>
-<div class="sect4">
-<h5 id="cluster_role_mappers"><a class="anchor" href="#cluster_role_mappers"></a>Cluster role mappers</h5>
-<div class="paragraph">
-<p><code>ClusterRoleMapper</code> uses a persistent replicated cache to dynamically store principal-to-role mappings for the default roles and permissions.</p>
+<p>Infinispan users are implemented with the <code>javax.security.auth.Subject</code> class and represent a grouping of security principals of type <code>java.security.Principal</code>.</p>
 </div>
 <div class="paragraph">
-<p>By default uses the Principal name as the role name and implements <code>org.infinispan.security.MutableRoleMapper</code> which exposes methods to change role mappings at runtime.</p>
+<p>Infinispan includes the <code>PrincipalRoleMapper</code> API to associate security principals to roles and the <code>RolePermissionMapper</code> API to associate roles with sets of permissions.
+Infinispan also provides the following role and permission mapper implementations:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Java class: <code>org.infinispan.security.mappers.ClusterRoleMapper</code></p>
-</li>
-<li>
-<p>Declarative configuration: <code>&lt;cluster-role-mapper /&gt;</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="identity_role_mappers"><a class="anchor" href="#identity_role_mappers"></a>Identity role mappers</h5>
-<div class="paragraph">
-<p><code>IdentityRoleMapper</code> uses the Principal name as the role name.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Java class: <code>org.infinispan.security.mappers.IdentityRoleMapper</code></p>
-</li>
-<li>
-<p>Declarative configuration: <code>&lt;identity-role-mapper /&gt;</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="commonname_role_mappers"><a class="anchor" href="#commonname_role_mappers"></a>CommonName role mappers</h5>
-<div class="paragraph">
-<p><code>CommonNameRoleMapper</code> uses the Common Name (CN) as the role name if the
-Principal name is a Distinguished Name (DN).</p>
-</div>
-<div class="paragraph">
-<p>For example this DN, <code>cn=managers,ou=people,dc=example,dc=com</code>, maps to the <code>managers</code> role.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Java class: <code>org.infinispan.security.mappers.CommonRoleMapper</code></p>
-</li>
-<li>
-<p>Declarative configuration: <code>&lt;common-name-role-mapper /&gt;</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="custom_role_mappers"><a class="anchor" href="#custom_role_mappers"></a>Custom role mappers</h5>
-<div class="paragraph">
-<p>Custom role mappers are implementations of <code>org.infinispan.security.PrincipalRoleMapper</code>.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Declarative configuration: <code>&lt;custom-role-mapper class="my.custom.RoleMapper" /&gt;</code></p>
-</li>
-</ul>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Cluster role mapper</dt>
+<dd>
+<p>Stores principal to role mappings in the cluster registry.</p>
+</dd>
+<dt class="hdlist1">Cluster permission mapper</dt>
+<dd>
+<p>Stores role to permission mappings in the cluster registry and allows you to dynamically modify user roles and permissions.</p>
+</dd>
+<dt class="hdlist1">Identity role mapper</dt>
+<dd>
+<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
+</dd>
+<dt class="hdlist1">Common name role mapper</dt>
+<dd>
+<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory that contains Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
+</dd>
+</dl>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -6075,20 +6440,631 @@ Principal name is a Distinguished Name (DN).</p>
 <li>
 <p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/PrincipalRoleMapper.html">org.infinispan.security.PrincipalRoleMapper</a></p>
 </li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/RolePermissionMapper.html">org.infinispan.security.RolePermissionMapper</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/mappers/IdentityRoleMapper.html">org.infinispan.security.mappers.IdentityRoleMapper</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/mappers/CommonNameRoleMapper.html">org.infinispan.security.mappers.CommonNameRoleMapper</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="configuring-role-mappers_rbac-remote"><a class="anchor" href="#configuring-role-mappers_rbac-remote"></a>8.1.3. Configuring role mappers</h4>
+<div class="paragraph">
+<p>Infinispan enables the cluster role mapper and cluster permission mapper by default.
+You should configure role mappers if you want to use the identity role mapper, Common Name (CN) role mapper, or a custom implementation.
+For example, if your deployment integrates with an LDAP directory and you want to use the Distinguished Name (DN) as the security principal you can configure Infinispan to use the Common Name (CN) role mapper.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Declare the role mapper as part of the security authorization in the Cache Manager configuration.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h5 id="role_mapper_configuration" class="discrete">Role mapper configuration</h5>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache-container&gt;
+  &lt;security&gt;
+    &lt;authorization&gt;
+      &lt;common-name-role-mapper /&gt;
+    &lt;/authorization&gt;
+  &lt;/security&gt;
+&lt;/cache-container&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "infinispan" : {
+    "cache-container" : {
+      "security" : {
+        "authorization" : {
+          "common-name-role-mapper": {}
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  cacheContainer:
+    security:
+      authorization:
+        commonNameRoleMapper: ~</code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
+</li>
 </ul>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="granting-roles-to-users_rbac-remote"><a class="anchor" href="#granting-roles-to-users_rbac-remote"></a>8.2. Granting roles to users</h3>
+<div class="paragraph">
+<p>Assign roles to users and grant them permissions to perform cache operations and interact with Infinispan resources.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Grant roles to groups instead of users if you want to assign the same role to multiple users and centrally maintain their permissions.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
+</li>
+<li>
+<p>Create Infinispan users.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create a CLI connection to Infinispan.</p>
+</li>
+<li>
+<p>Assign roles to users with the <code class="command">user roles grant</code> command, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles grant --roles=deployer katie</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Verification</div>
+<p>List roles that you grant to users with the <code class="command">user roles ls</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles ls katie
+["deployer"]</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="acl-cache_security-authorization"><a class="anchor" href="#acl-cache_security-authorization"></a>8.2. Access control list (ACL) cache</h3>
+<h3 id="adding-users-to-groups_rbac-remote"><a class="anchor" href="#adding-users-to-groups_rbac-remote"></a>8.3. Adding users to groups</h3>
 <div class="paragraph">
-<p>Infinispan caches roles that you grant to users internally for optimal performance.
-Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to ensure user permissions are applied correctly.</p>
+<p>Groups let you change permissions for multiple users.
+You assign a role to a group and then add users to that group.
+Users inherit permissions from the group role.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You use groups as part of a property realm in the Infinispan Server configuration.
+Each group is a special type of user that also requires a username and password.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
+</li>
+<li>
+<p>Create Infinispan users.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create a CLI connection to Infinispan.</p>
+</li>
+<li>
+<p>Use the <code class="command">user create</code> command to create a group.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Specify a group name with the <code>--groups</code> argument.</p>
+</li>
+<li>
+<p>Set a username and password for the group.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user create --groups=developers developers -p changeme</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>List groups.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user ls --groups</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Grant a role to the group.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles grant --roles=application developers</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>List roles for the group.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles ls developers</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add users to the group one at a time.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user groups john --groups=developers</code></pre>
+</div>
+</div>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>If necessary, you can disable the ACL cache or configure it with the <code>cache-size</code> and <code>cache-timeout</code> attributes.</p>
+<div class="title">Verification</div>
+<p>Open <code>groups.properties</code> and confirm the group exists.</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>cat server/conf/groups.properties</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="creating-custom-roles-dynamically_rbac-remote"><a class="anchor" href="#creating-custom-roles-dynamically_rbac-remote"></a>8.4. Creating custom roles at runtime</h3>
+<div class="paragraph">
+<p>Add roles with custom permission mappings while your Infinispan cluster is running.
+Infinispan stores any roles that you create dynamically in the <code>server/data</code> directory of your Infinispan Server installation so they are available after cluster restarts.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Dynamically creating and removing roles can have a performance impact because Infinispan recomputes user permissions each time you add or remove a role.
+You should avoid frequently or repeatedly adding roles at runtime in any production environment.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
+</li>
+<li>
+<p>Have access to the command line interface (CLI) for a running Infinispan cluster.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create a CLI connection to Infinispan.</p>
+</li>
+<li>
+<p>Define a role with set of permissions with the <code class="command">user roles create</code> command.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles create --permissions=ALL_WRITE,LISTEN temprole</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles create --permissions=READ,WRITE myrole</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Assign those roles to user with the <code class="command">user roles grant</code> command.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles grant --roles=temprole myrole username</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Verification</div>
+<p>List roles for users with the <code class="command">user roles ls</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles ls username
+["temprole,myrole"]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To confirm user permissions, log in to the CLI or Infinispan Console with those credentials and try performing an operation.
+If the user does not have permission for an operation, Infinispan denies the request.</p>
+</div>
+<div class="ulist">
+<div class="title">Next steps</div>
+<ul>
+<li>
+<p>If you are temporarily assigning roles to users, you should remove them when you are done.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles deny --roles=temprole username</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user remove roles temprole</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="creating-custom-roles-statically_rbac-remote"><a class="anchor" href="#creating-custom-roles-statically_rbac-remote"></a>8.5. Adding custom roles to Cache Manager configuration</h3>
+<div class="paragraph">
+<p>Add roles with custom permission mappings to your Cache Manager configuration before you start your Infinispan cluster.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Add a security authorization section to your Cache Manager configuration.</p>
+</li>
+<li>
+<p>Declare each custom role and permission mapping in a <code>role</code> element or field.</p>
+</li>
+<li>
+<p>Specify a unique name for each custom role with the <code>name</code> attribute.</p>
+</li>
+<li>
+<p>Specify the permissions for the role with the <code>permissions</code> attribute.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Next steps</div>
+<p>Assign roles to Infinispan users with the <code class="command">user roles grant</code> command.</p>
+</div>
+<h4 id="custom_roles_and_permissions_configuration" class="discrete">Custom roles and permissions configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
+  &lt;cache-container name="custom-authorization"&gt;
+    &lt;security&gt;
+      &lt;authorization&gt;
+        &lt;role name="temprole" permissions="ALL_WRITE,LISTEN" /&gt;
+        &lt;role name="myrole" permissions="READ,WRITE"/&gt;
+      &lt;/authorization&gt;
+    &lt;/security&gt;
+  &lt;/cache-container&gt;
+&lt;/infinispan&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "infinispan" : {
+    "cache-container" : {
+      "name" : "custom-authorization",
+      "security" : {
+         "authorization" : {
+          "roles" : {
+            "temprole" : {
+              "role" : {
+                "permissions" : "ALL_WRITE LISTEN"
+              }
+            },
+            "myrole" : {
+              "role" : {
+                "permissions" : "READ WRITE"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  cacheContainer:
+    name: "custom-authorization"
+    security:
+      authorization:
+        roles:
+          temprole:
+            role:
+              permissions: "ALL_WRITE LISTEN"
+          myrole:
+            role:
+              permissions: "READ WRITE"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-cache-authorization_rbac-remote"><a class="anchor" href="#configuring-cache-authorization_rbac-remote"></a>8.6. Configuring caches with security authorization</h3>
+<div class="paragraph">
+<p>Add security authorization to caches to enforce role-based access control (RBAC).
+This requires Infinispan users to have a role with a sufficient level of permission to perform cache operations.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Create Infinispan users and either grant them with roles or assign them to groups.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Add a <code>security</code> section to the configuration.</p>
+</li>
+<li>
+<p>Specify roles that users must have to perform cache operations with the <code>authorization</code> element.</p>
+<div class="paragraph">
+<p>You can implicitly add all roles defined in the Cache Manager or explicitly define a subset of roles.</p>
+</div>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="implicit_role_configuration" class="discrete">Implicit role configuration</h4>
+<div class="paragraph">
+<p>The following configuration implicitly adds every role defined in the Cache Manager:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;security&gt;
+    &lt;authorization/&gt;
+  &lt;/security&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "distributed-cache": {
+    "security": {
+      "authorization": {
+        "enabled": true
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributedCache:
+  security:
+    authorization:
+      enabled: true</code></pre>
+</div>
+</div>
+<h4 id="explicit_role_configuration" class="discrete">Explicit role configuration</h4>
+<div class="paragraph">
+<p>The following configuration explicitly adds a subset of roles defined in the Cache Manager.
+In this case Infinispan denies cache operations for any users that do not have one of the configured roles.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;security&gt;
+    &lt;authorization roles="admin supervisor"/&gt;
+  &lt;/security&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "distributed-cache": {
+    "security": {
+      "authorization": {
+        "enabled": true,
+        "roles": ["admin","supervisor"]
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributedCache:
+  security:
+    authorization:
+      enabled: true
+      roles: ["admin","supervisor"]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="disabling-authorization_rbac-remote"><a class="anchor" href="#disabling-authorization_rbac-remote"></a>8.7. Disabling security authorization</h3>
+<div class="paragraph">
+<p>In local development environments you can disable authorization so that users do not need roles and permissions.
+Disabling security authorization means that any user can access data and interact with Infinispan resources.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Remove any <code>authorization</code> elements from the <code>security</code> configuration for the Cache Manager.</p>
+</li>
+<li>
+<p>Remove any <code>authorization</code> configuration from your caches.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-acl-cache_rbac-remote"><a class="anchor" href="#configuring-acl-cache_rbac-remote"></a>8.8. Configuring the access control list (ACL) cache</h3>
+<div class="paragraph">
+<p>When you grant or deny roles to users, Infinispan stores details about which users can access your caches internally.
+This ACL cache improves performance for security authorization by avoiding the need for Infinispan to calculate if users have the appropriate permissions to perform read and write operations for every request.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to ensure it applies user permissions correctly.
+This means that Infinispan must recalculate cache permissions for all users each time you grant or deny roles.
+For best performance you should not frequently or repeatedly grant and deny roles in production environments.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Specify the maximum number of entries for the ACL cache with the <code>cache-size</code> attribute.</p>
+<div class="paragraph">
+<p>Entries in the ACL cache have a cardinality of <code>caches * users</code>. You should set the maximum number of entries to a value that can hold information for all your caches and users. For example, the default size of <code>1000</code> is appropriate for deployments with up to 100 caches and 10 users.</p>
+</div>
+</li>
+<li>
+<p>Set the timeout value, in milliseconds, with the <code>cache-timeout</code> attribute.</p>
+<div class="paragraph">
+<p>If Infinispan does not access an entry in the ACL cache within the timeout period that entry is evicted. When the user subsequently attempts cache operations then Infinispan recalculates their cache permissions and adds an entry to the ACL cache.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Specifying a value of <code>0</code> for either the <code>cache-size</code> or <code>cache-timeout</code> attribute disables the ACL cache.
+You should disable the ACL cache only if you disable authorization.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="acl_cache_configuration" class="discrete">ACL cache configuration</h4>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
@@ -6140,240 +7116,6 @@ Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to e
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="customizing-authorization_security-authorization"><a class="anchor" href="#customizing-authorization_security-authorization"></a>8.3. Customizing roles and permissions</h3>
-<div class="paragraph">
-<p>You can customize authorization settings in your Infinispan configuration to use role mappers with different combinations of roles and permissions.</p>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Declare a role mapper and a set of custom roles and permissions in the Cache Manager configuration.</p>
-</li>
-<li>
-<p>Configure authorization for caches to restrict access based on user roles.</p>
-</li>
-</ol>
-</div>
-<h4 id="custom_roles_and_permissions_configuration" class="discrete">Custom roles and permissions configuration</h4>
-<div class="listingblock primary">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
-  &lt;cache-container name="custom-authorization"&gt;
-    &lt;security&gt;
-      &lt;authorization&gt;
-        &lt;!-- Declare a role mapper that associates a security principal
-             to each role. --&gt;
-        &lt;identity-role-mapper /&gt;
-        &lt;!-- Specify user roles and corresponding permissions. --&gt;
-        &lt;role name="admin" permissions="ALL" /&gt;
-        &lt;role name="reader" permissions="READ" /&gt;
-        &lt;role name="writer" permissions="WRITE" /&gt;
-        &lt;role name="supervisor" permissions="READ WRITE EXEC"/&gt;
-      &lt;/authorization&gt;
-    &lt;/security&gt;
-  &lt;/cache-container&gt;
-&lt;/infinispan&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">JSON</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "infinispan" : {
-    "cache-container" : {
-      "name" : "custom-authorization",
-      "security" : {
-        "authorization" : {
-          "identity-role-mapper" : null,
-          "roles" : {
-            "reader" : {
-              "role" : {
-                "permissions" : "READ"
-              }
-            },
-            "admin" : {
-              "role" : {
-                "permissions" : "ALL"
-              }
-            },
-            "writer" : {
-              "role" : {
-                "permissions" : "WRITE"
-              }
-            },
-            "supervisor" : {
-              "role" : {
-                "permissions" : "READ WRITE EXEC"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">YAML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
-  cacheContainer:
-    name: "custom-authorization"
-    security:
-      authorization:
-        identityRoleMapper: "null"
-        roles:
-          reader:
-            role:
-              permissions: "READ"
-          admin:
-            role:
-              permissions: "ALL"
-          writer:
-            role:
-              permissions: "WRITE"
-          supervisor:
-            role:
-              permissions: "READ WRITE EXEC"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configuring-cache-authorization_security-authorization"><a class="anchor" href="#configuring-cache-authorization_security-authorization"></a>8.4. Configuring caches with security authorization</h3>
-<div class="paragraph">
-<p>Use authorization in your cache configuration to restrict user access.
-Before they can read or write cache entries, or create and delete caches, users must have a role with a sufficient level of permission.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Ensure the <code>authorization</code> element is included in the <code>security</code> section of the <code>cache-container</code> configuration.</p>
-<div class="paragraph">
-<p>Infinispan enables security authorization in the Cache Manager by default and provides a global set of roles and permissions for caches.</p>
-</div>
-</li>
-<li>
-<p>If necessary, declare custom roles and permissions in the Cache Manager configuration.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Open your cache configuration for editing.</p>
-</li>
-<li>
-<p>Add the <code>authorization</code> element to caches to restrict user access based on their roles and permissions.</p>
-</li>
-<li>
-<p>Save the changes to your configuration.</p>
-</li>
-</ol>
-</div>
-<h4 id="authorization_configuration" class="discrete">Authorization configuration</h4>
-<div class="paragraph">
-<p>The following configuration shows how to use implicit authorization configuration with default roles and permissions:</p>
-</div>
-<div class="listingblock primary">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
-  &lt;security&gt;
-    &lt;!-- Inherit authorization settings from the cache-container. --&gt; &lt;authorization/&gt;
-  &lt;/security&gt;
-&lt;/distributed-cache&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">JSON</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "distributed-cache": {
-    "security": {
-      "authorization": {
-        "enabled": true
-      }
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">YAML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributedCache:
-  security:
-    authorization:
-      enabled: true</code></pre>
-</div>
-</div>
-<h4 id="custom_roles_and_permissions" class="discrete">Custom roles and permissions</h4>
-<div class="listingblock primary">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
-  &lt;security&gt;
-    &lt;authorization roles="admin supervisor"/&gt;
-  &lt;/security&gt;
-&lt;/distributed-cache&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">JSON</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "distributed-cache": {
-    "security": {
-      "authorization": {
-        "enabled": true,
-        "roles": ["admin","supervisor"]
-      }
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">YAML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributedCache:
-  security:
-    authorization:
-      enabled: true
-      roles: ["admin","supervisor"]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="disabling-authorization_security-authorization"><a class="anchor" href="#disabling-authorization_security-authorization"></a>8.5. Disabling security authorization</h3>
-<div class="paragraph">
-<p>In local development environments you can disable authorization so that users do not need roles and permissions.
-Disabling security authorization means that any user can access data and interact with Infinispan resources.</p>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Open your Infinispan configuration for editing.</p>
-</li>
-<li>
-<p>Remove any <code>authorization</code> elements from the <code>security</code> configuration for the Cache Manager.</p>
-</li>
-<li>
-<p>Remove any <code>authorization</code> configuration from your caches.</p>
-</li>
-<li>
-<p>Save the changes to your configuration.</p>
-</li>
-</ol>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -6385,7 +7127,7 @@ Disabling security authorization means that any user can access data and interac
 <div class="sect2">
 <h3 id="enabling-statistics-remote_statistics-jmx"><a class="anchor" href="#enabling-statistics-remote_statistics-jmx"></a>9.1. Enabling statistics in remote caches</h3>
 <div class="paragraph">
-<p>Infinispan Server automatically enables statistics for the default cache manager.
+<p>Infinispan Server automatically enables statistics for the default Cache Manager.
 However, you must explicitly enable statistics for your caches.</p>
 </div>
 <div class="olist arabic">
@@ -6475,7 +7217,7 @@ infinispan.client.hotrod.jmx_domain = my.domain.org</code></pre>
 <div class="sect2">
 <h3 id="configuring-metrics_statistics-jmx"><a class="anchor" href="#configuring-metrics_statistics-jmx"></a>9.3. Configuring Infinispan metrics</h3>
 <div class="paragraph">
-<p>Infinispan generates metrics that are compatible with the MicroProfile Metrics API.</p>
+<p>Infinispan generates metrics that are compatible with any monitoring system.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -6490,6 +7232,21 @@ write, and remove times.</p>
 </div>
 <div class="paragraph">
 <p>By default, Infinispan generates gauges when you enable statistics but you can also configure it to generate histograms.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan metrics are provided at the <code>vendor</code> scope.
+Metrics related to the JVM are provided in the <code>base</code> scope.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -6552,34 +7309,43 @@ write, and remove times.</p>
 </div>
 <div class="paragraph">
 <div class="title">Verification</div>
-<p>Infinispan Server exposes statistics through the <code>metrics</code> endpoint.
-You can collect metrics with any monitoring tool that supports the OpenMetrics format, such as Prometheus.</p>
+<p>Infinispan Server exposes statistics through the <code>metrics</code> endpoint that you can collect with monitoring tools such as Prometheus.
+To verify that statistics are exported to the <code>metrics</code> endpoint, you can do the following:</p>
 </div>
-<div class="paragraph">
-<p>Infinispan metrics are provided at the <code>vendor</code> scope.
-Metrics related to the JVM are provided in the <code>base</code> scope.</p>
-</div>
-<div class="paragraph">
-<p>You can retrieve metrics from Infinispan Server as follows:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock primary">
+<div class="title">Prometheus format</div>
 <div class="content">
-<pre>$ curl -v http://localhost:11222/metrics</pre>
+<pre class="highlight nowrap"><code>curl -v http://localhost:11222/metrics \
+--digest -u username:password</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>To retrieve metrics in MicroProfile JSON format, do the following:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock secondary">
+<div class="title">OpenMetrics format</div>
 <div class="content">
-<pre>$ curl --header "Accept: application/json" http://localhost:11222/metrics</pre>
+<pre class="highlight nowrap"><code>curl -v http://localhost:11222/metrics \
+--digest -u username:password \
+-H "Accept: application/openmetrics-text"</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan no longer provides metrics in MicroProfile JSON format.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://github.com/eclipse/microprofile-metrics/blob/master/README.adoc">Eclipse MicroProfile Metrics</a></p>
+<p><a href="https://micrometer.io/docs/registry/prometheus">Micrometer Prometheus</a></p>
 </li>
 </ul>
 </div>
@@ -6697,7 +7463,7 @@ If you want to remotely access Infinispan Server via JMX you must enable a remot
 </dd>
 <dt class="hdlist1"><code>org.infinispan:type=CacheManager</code></dt>
 <dd>
-<p>Attributes and operations available for cache managers, including Infinispan cache and cluster health statistics.</p>
+<p>Attributes and operations available for Cache Managers, including Infinispan cache and cluster health statistics.</p>
 </dd>
 </dl>
 </div>
@@ -6739,7 +7505,7 @@ register MBeans in custom MBeanServer instances.</p>
 <p>Open your Infinispan configuration for editing.</p>
 </li>
 <li>
-<p>Add the <code>mbean-server-lookup</code> attribute or field to the JMX configuration for the cache manager.</p>
+<p>Add the <code>mbean-server-lookup</code> attribute or field to the JMX configuration for the Cache Manager.</p>
 </li>
 <li>
 <p>Specify fully qualified name (FQN) of your <code>MBeanServerLookup</code> implementation.</p>
@@ -6824,7 +7590,7 @@ You can then specify the JDNI name of the managed datasources in your caches, wh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -6904,7 +7670,7 @@ configuration.</p>
 <p>Start a CLI session.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -6912,7 +7678,7 @@ configuration.</p>
 <p>List all datasources and confirm the one you created is available.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; server datasource ls</code></pre>
+<pre class="highlight nowrap"><code>server datasource ls</code></pre>
 </div>
 </div>
 </li>
@@ -6920,7 +7686,7 @@ configuration.</p>
 <p>Test a datasource connection.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; server datasource test my-datasource</code></pre>
+<pre class="highlight nowrap"><code>server datasource test my-datasource</code></pre>
 </div>
 </div>
 </li>
@@ -7200,7 +7966,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.Dev01.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.Dev02.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -7340,9 +8106,9 @@ If no nodes respond to the PING request, the joining node becomes the coordinato
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;TCP bind_port="7800" /&gt;
 &lt;TCPPING timeout="3000"
-         initial_hosts="${jgroups.tcpping.initial_hosts:hostname1[port1],hostname2[port2]}"
-          port_range="0"
-          num_initial_members="3"/&gt;</code></pre>
+         initial_hosts="${jgroups.tcpping.initial_hosts:hostname1[port1],hostname2[port2]}"
+         port_range="0"
+         num_initial_members="3"/&gt;</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -7599,7 +8365,7 @@ You can use these default stacks as a starting point for building custom cluster
 <p>Use the <code>cluster-stack</code> argument to set the JGroups stack file when Infinispan Server starts:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">$ bin/server.sh --cluster-stack=udp</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh --cluster-stack=udp</code></pre>
 </div>
 </div>
 </li>
@@ -7763,7 +8529,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/server.sh -Djgroups.bind.port=1234 -Djgroups.bind.address=192.0.2.0</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -Djgroups.bind.port=1234 -Djgroups.bind.address=192.0.2.0</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -8018,6 +8784,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
     &lt;!-- Defines a custom JGroups stack named "prod". --&gt;
     &lt;stack name="prod"&gt;
       &lt;TCP bind_port="7800" port_range="30" recv_buf_size="20000000" send_buf_size="640000"/&gt;
+      &lt;RED/&gt;
       &lt;MPING break_on_coord_rsp="true"
              mcast_addr="${jgroups.mping.mcast_addr:228.2.4.6}"
              mcast_port="${jgroups.mping.mcast_port:43366}"
@@ -8025,7 +8792,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
              ip_ttl="${jgroups.udp.ip_ttl:2}"/&gt;
       &lt;MERGE3 /&gt;
       &lt;FD_SOCK /&gt;
-      &lt;FD_ALL timeout="3000" interval="1000" timeout_check_interval="1000" /&gt;
+      &lt;FD_ALL3 timeout="3000" interval="1000" timeout_check_interval="1000" /&gt;
       &lt;VERIFY_SUSPECT timeout="1000" /&gt;
       &lt;pbcast.NAKACK2 use_mcast_xmit="false" xmit_interval="200" xmit_table_num_rows="50"
                       xmit_table_msgs_per_row="1024" xmit_table_max_compaction_time="30000" /&gt;
@@ -8038,12 +8805,12 @@ Affects the protocol that you specify as the insertion point.</p></td>
       &lt;FRAG3 /&gt;
     &lt;/stack&gt;
   &lt;/jgroups&gt;
-  &lt;cache-container default-cache="replicatedCache"&gt;
-    &lt;!-- Uses "prod" for cluster transport. --&gt;
-    &lt;transport cluster="${infinispan.cluster.name}"
+  &lt;cache-container default-cache="replicatedCache"&gt;
+    &lt;!-- Uses "prod" for cluster transport. --&gt;
+    &lt;transport cluster="${infinispan.cluster.name}"
            stack="prod"
            node-name="${infinispan.node.name:}"/&gt;
-  &lt;/cache-container&gt;
+  &lt;/cache-container&gt;
 &lt;/infinispan&gt;</code></pre>
 </div>
 </div>
@@ -8191,7 +8958,7 @@ Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to enc
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
+<pre class="highlight nowrap"><code>[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -8348,7 +9115,7 @@ Users are responsible for generating and distributing the secret keys that nodes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -8357,7 +9124,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
+<pre class="highlight nowrap"><code>[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -8426,7 +9193,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -8551,7 +9318,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Run the <code class="command">describe</code> command in the default container.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-sh" data-lang="sh">[//containers/default]&gt; describe</code></pre>
+<pre class="highlight nowrap"><code>[//containers/default]&gt; describe</code></pre>
 </div>
 </div>
 </dd>
@@ -8680,7 +9447,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Start the CLI and enter your credentials when prompted.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -8691,7 +9458,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; create cache --file=mycache.xml mycache</code></pre>
+<pre class="highlight nowrap"><code>create cache --file=mycache.xml mycache</code></pre>
 </div>
 </div>
 </li>
@@ -8704,7 +9471,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>List all remote caches with the <code class="command">ls</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; ls caches
+<pre class="highlight nowrap"><code>ls caches
 mycache</code></pre>
 </div>
 </div>
@@ -8713,7 +9480,7 @@ mycache</code></pre>
 <p>View cache configuration with the <code class="command">describe</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; describe caches/mycache</code></pre>
+<pre class="highlight nowrap"><code>describe caches/mycache</code></pre>
 </div>
 </div>
 </li>
@@ -9022,7 +9789,7 @@ value:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">// mode=local,language=javascript
+<pre class="highlight nowrap"><code class="language-javascript" data-lang="javascript">// mode=local,language=javascript
 multiplicand * multiplier</code></pre>
 </div>
 </div>
@@ -9034,7 +9801,7 @@ multiplicand * multiplier</code></pre>
 <p>Use the <code class="command">task</code> command to upload scripts, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; task upload --file=multiplication.js multiplication</pre>
+<pre class="highlight nowrap"><code>task upload --file=multiplication.js multiplication</code></pre>
 </div>
 </div>
 </li>
@@ -9042,8 +9809,8 @@ multiplicand * multiplier</code></pre>
 <p>Verify that your scripts are available.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; ls tasks
-multiplication</pre>
+<pre class="highlight nowrap"><code>ls tasks
+multiplication</code></pre>
 </div>
 </div>
 </li>
@@ -9099,7 +9866,7 @@ first lines of scripts, such as the following example:</p>
 </ul>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Metadata Properties</caption>
+<caption class="title">Table 3. Metadata Properties</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -9256,8 +10023,8 @@ Alternatively you can execute scripts and tasks from Hot Rod clients.</p>
 <p>Execute a script named <code>multiplier.js</code> and specify two parameters:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; task exec multiplier.js -Pmultiplicand=10 -Pmultiplier=20
-200.0</pre>
+<pre class="highlight nowrap"><code>task exec multiplier.js -Pmultiplicand=10 -Pmultiplier=20
+200.0</code></pre>
 </div>
 </div>
 </li>
@@ -9265,8 +10032,8 @@ Alternatively you can execute scripts and tasks from Hot Rod clients.</p>
 <p>Execute a task named <code>@@cache@names</code> to retrieve a list of all available caches:</p>
 <div class="listingblock">
 <div class="content">
-<pre>//containers/default]&gt; task exec @@cache@names
-["___protobuf_metadata","mycache","___script_cache"]</pre>
+<pre class="highlight nowrap"><code>task exec @@cache@names
+["___protobuf_metadata","mycache","___script_cache"]</code></pre>
 </div>
 </div>
 </li>
@@ -9937,7 +10704,7 @@ Depending on your environment you can also use different network interfaces and 
 <p>CLI: Use the <code class="command">migrate cluster connect</code> command on the target cluster.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
+<pre class="highlight nowrap"><code>[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
 </div>
 </div>
 </li>
@@ -10007,7 +10774,7 @@ You must perform the synchronization for each cache that you want to migrate to 
 <p>CLI: Use the <code class="command">migrate cluster synchronize</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[//containers/default]&gt; migrate cluster synchronize -c myCache</code></pre>
+<pre class="highlight nowrap"><code>migrate cluster synchronize -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -10034,7 +10801,7 @@ entries copied to the target cluster.</p>
 <p>CLI: Use the <code class="command">migrate cluster disconnect</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[//containers/default]&gt; migrate cluster disconnect -c myCache</code></pre>
+<pre class="highlight nowrap"><code>migrate cluster disconnect -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -10112,8 +10879,7 @@ the target version for the patch you want to create.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -10121,7 +10887,7 @@ the target version for the patch you want to create.</p>
 <p>Use the <code>patch create</code> command to generate a patch archive and include the <code>-q</code> option with a meaningful qualifier to describe the patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch create -q "this is my test patch" path/to/mypatch.zip \
+<pre class="highlight nowrap"><code>patch create -q "this is my test patch" path/to/mypatch.zip \
 path/to/target/server/home path/to/source/server/home</code></pre>
 </div>
 </div>
@@ -10141,7 +10907,7 @@ Paths are relative to <code>$ISPN_HOME</code> for the target server.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch create -q "this is my test patch" path/to/mypatch.zip \
+<pre class="highlight nowrap"><code>patch create -q "this is my test patch" path/to/mypatch.zip \
 path/to/target/server/home \
 path/to/source/server1/home path/to/source/server2/home</code></pre>
 </div>
@@ -10159,9 +10925,12 @@ install "mypatch.zip".</p>
 <p>Describe the generated patch archive.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch describe path/to/mypatch.zip
-
-Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
+<pre class="highlight nowrap"><code>patch describe path/to/mypatch.zip</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -10224,8 +10993,7 @@ patching.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -10254,7 +11022,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is installed.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/server.sh
+<pre class="highlight nowrap"><code>bin/server.sh
 ...
 ISPN080001: Infinispan Server $version</code></pre>
 </div>
@@ -10278,7 +11046,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch install path/to/patch.zip --server=path/to/server/home</code></pre>
+<pre class="highlight nowrap"><code>patch install path/to/patch.zip --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -10323,8 +11091,7 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -10332,9 +11099,12 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>List the installed patches.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch ls
-
-Infinispan patch target=$target_version source=$source_version
+<pre class="highlight nowrap"><code>patch ls</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>Infinispan patch target=$target_version source=$source_version
 created=$timestamp installed=$timestamp</code></pre>
 </div>
 </div>
@@ -10353,7 +11123,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Roll back the last installed patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch rollback</code></pre>
+<pre class="highlight nowrap"><code>patch rollback</code></pre>
 </div>
 </div>
 </li>
@@ -10361,7 +11131,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Quit the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; quit</code></pre>
+<pre class="highlight nowrap"><code>quit</code></pre>
 </div>
 </div>
 </li>
@@ -10369,9 +11139,12 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is rolled back to the previous version.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/server.sh
-...
-ISPN080001: Infinispan Server $version</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>ISPN080001: Infinispan Server $version</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -10393,7 +11166,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch rollback --server=path/to/server/home</code></pre>
+<pre class="highlight nowrap"><code>patch rollback --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -10428,8 +11201,16 @@ routing, threads, in addition to configuration and log files.</p>
 <p>Use the <code class="command">server report</code> command to download a <code>tar.gz</code> archive:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; server report
+<pre class="highlight nowrap"><code>server report
 Downloaded report 'infinispan-&lt;hostname&gt;-&lt;timestamp&gt;-report.tar.gz'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command responds with the name of the report, as in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>Downloaded report 'infinispan-&lt;hostname&gt;-&lt;timestamp&gt;-report.tar.gz'</code></pre>
 </div>
 </div>
 </li>
@@ -10475,19 +11256,13 @@ operation, which means that changes:</p>
 <ul>
 <li>
 <p>List all appenders defined on the server:</p>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging list-appenders</pre>
+<pre class="highlight nowrap"><code>logging list-appenders</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The preceding command returns:</p>
+<p>The command provides a JSON response such as the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10510,20 +11285,16 @@ operation, which means that changes:</p>
 }</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>List all logger configurations defined on the server:</p>
-</li>
-</ul>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging list-loggers</pre>
+<pre class="highlight nowrap"><code>logging list-loggers</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The preceding command returns:</p>
+<p>The command provides a JSON response such as the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10546,37 +11317,35 @@ operation, which means that changes:</p>
 } ]</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Add and modify logger configurations with the <code class="command">set</code> subcommand</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p>For example, the following command sets the logging level for the
 <code>org.infinispan</code> package to <code>DEBUG</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging set --level=DEBUG org.infinispan</pre>
+<pre class="highlight nowrap"><code>logging set --level=DEBUG org.infinispan</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Remove existing logger configurations with the <code class="command">remove</code> subcommand.</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p>For example, the following command removes the <code>org.infinispan</code> logger
 configuration, which means the root configuration is used instead:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging remove org.infinispan</pre>
+<pre class="highlight nowrap"><code>logging remove org.infinispan</code></pre>
 </div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -10585,13 +11354,19 @@ configuration, which means the root configuration is used instead:</p>
 <p>You can inspect server-collected statistics for some Infinispan Server resources with the <code class="command">stats</code> command.</p>
 </div>
 <div class="paragraph">
-<p>Use the <code class="command">stats</code> command either from the context of a resource which
-collects statistics (containers, caches) or with a path to such a resource:</p>
+<p>Use the <code class="command">stats</code> command either from the context of a resource that provides statistics (containers, caches) or with a path to such a resource:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; stats
-{
+<pre class="highlight nowrap"><code>stats</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
   "statistics_enabled" : true,
   "number_of_entries" : 0,
   "hit_ratio" : 0.0,
@@ -10617,13 +11392,20 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
   "average_remove_time" : 0,
   "average_remove_time_nanos" : 0,
   "required_minimum_number_of_nodes" : -1
-}</pre>
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; stats /containers/default/caches/mycache
-{
+<pre class="highlight nowrap"><code>stats /containers/default/caches/mycache</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
   "time_since_start" : -1,
   "time_since_reset" : -1,
   "current_number_of_entries" : -1,
@@ -10645,7 +11427,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
   "average_remove_time" : -1,
   "average_remove_time_nanos" : -1,
   "required_minimum_number_of_nodes" : -1
-}</pre>
+}</code></pre>
 </div>
 </div>
 </div>
@@ -10661,7 +11443,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
 <p>Invoke a <code>GET</code> request to retrieve cluster health.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">GET /rest/v2/cache-managers/{cacheManagerName}/health</code></pre>
+<pre class="highlight"><code>GET /rest/v2/cache-managers/{cacheManagerName}/health</code></pre>
 </div>
 </div>
 </li>
@@ -10711,7 +11493,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Get cache manager status as follows:</p>
+<p>Get Cache Manager status as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10754,7 +11536,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

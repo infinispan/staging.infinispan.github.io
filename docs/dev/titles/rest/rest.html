@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Using the Infinispan REST Server</title>
+<title>Using the Infinispan REST API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/rest/rest.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,7 +525,7 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Using the Infinispan REST Server</h1>
+<h1>Using the Infinispan REST API</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -593,16 +596,16 @@ $(addBlockSwitches);
 </li>
 <li><a href="#rest_v2_xsite_cache">2.1.28. Cross-Site Operations with Caches</a>
 <ul class="sectlevel4">
-<li><a href="#rest_v2_xsite_sites_status">Getting status of all backup locations</a></li>
-<li><a href="#rest_v2_xsite_site_status">Getting status of specific backup locations</a></li>
-<li><a href="#rest_v2_xsite_take_site_offline">Taking backup locations offline</a></li>
-<li><a href="#rest_v2_xsite_bring_backup_online">Bringing backup locations online</a></li>
-<li><a href="#rest_v2_xsite_start_push">Pushing state to backup locations</a></li>
-<li><a href="#rest_v2_xsite_cancel_state_push">Canceling state transfer</a></li>
-<li><a href="#rest_v2_xsite_state_push">Getting state transfer status</a></li>
-<li><a href="#rest_v2_xsite_clear_transfer_status">Clearing state transfer status</a></li>
-<li><a href="#rest_v2_xsite_tuning_takeoffline">Modifying take offline conditions</a></li>
-<li><a href="#rest_v2_xsite_cancel_receive_state">Canceling state transfer from receiving sites</a></li>
+<li><a href="#rest_v2_xsite_sites_status_rest">Getting status of all backup locations</a></li>
+<li><a href="#rest_v2_xsite_site_status_rest">Getting status of specific backup locations</a></li>
+<li><a href="#rest_v2_xsite_take_site_offline_rest">Taking backup locations offline</a></li>
+<li><a href="#rest_v2_xsite_bring_backup_online_rest">Bringing backup locations online</a></li>
+<li><a href="#rest_v2_xsite_start_push_rest">Pushing state to backup locations</a></li>
+<li><a href="#rest_v2_xsite_cancel_state_push_rest">Canceling state transfer</a></li>
+<li><a href="#rest_v2_xsite_state_push_rest">Getting state transfer status</a></li>
+<li><a href="#rest_v2_xsite_clear_transfer_status_rest">Clearing state transfer status</a></li>
+<li><a href="#rest_v2_xsite_tuning_takeoffline_rest">Modifying take offline conditions</a></li>
+<li><a href="#rest_v2_xsite_cancel_receive_state_rest">Canceling state transfer from receiving sites</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_rolling_upgrades">2.1.29. Rolling Upgrades</a>
@@ -671,13 +674,13 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_container_configuration_listen">2.4.22. Listening to container configuration events</a></li>
 <li><a href="#rest_v2_xsite_cache_manager">2.4.23. Cross-Site Operations with Cache Managers</a>
 <ul class="sectlevel4">
-<li><a href="#rest_v2_cache_manager_site_status">Getting status of backup locations</a></li>
-<li><a href="#rest_v2_cache_manager_take_offline">Taking backup locations offline</a></li>
-<li><a href="#rest_v2_cache_manager_bring_online">Bringing backup locations online</a></li>
-<li><a href="#rest_v2_cache_manager_get_state_transfer_mode">Retrieving the state transfer mode</a></li>
-<li><a href="#rest_v2_cache_manager_set_state_transfer_mode">Setting the state transfer mode</a></li>
-<li><a href="#rest_v2_cache_manager_start_push">Starting state transfer</a></li>
-<li><a href="#rest_v2_cache_manager_cancel_push">Canceling state transfer</a></li>
+<li><a href="#rest_v2_cache_manager_site_status_rest">Getting status of backup locations</a></li>
+<li><a href="#rest_v2_cache_manager_take_offline_rest">Taking backup locations offline</a></li>
+<li><a href="#rest_v2_cache_manager_bring_online_rest">Bringing backup locations online</a></li>
+<li><a href="#rest_v2_cache_manager_get_state_transfer_mode_rest">Retrieving the state transfer mode</a></li>
+<li><a href="#rest_v2_cache_manager_set_state_transfer_mode_rest">Setting the state transfer mode</a></li>
+<li><a href="#rest_v2_cache_manager_start_push_rest">Starting state transfer</a></li>
+<li><a href="#rest_v2_cache_manager_cancel_push_rest">Canceling state transfer</a></li>
 </ul>
 </li>
 </ul>
@@ -692,9 +695,10 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_server_config">2.5.6. Obtaining Server Configuration</a></li>
 <li><a href="#rest_v2_server_env">2.5.7. Getting Environment Variables</a></li>
 <li><a href="#rest_v2_server_memory">2.5.8. Getting JVM Memory Details</a></li>
-<li><a href="#rest_v2_server_threads">2.5.9. Getting JVM Thread Dumps</a></li>
-<li><a href="#rest_v2_server_report">2.5.10. Getting Diagnostic Reports for Infinispan Servers</a></li>
-<li><a href="#rest_v2_server_stop">2.5.11. Stopping Infinispan Servers</a></li>
+<li><a href="#rest_v2_server_memory">2.5.9. Getting JVM Heap Dumps</a></li>
+<li><a href="#rest_v2_server_threads">2.5.10. Getting JVM Thread Dumps</a></li>
+<li><a href="#rest_v2_server_report">2.5.11. Getting Diagnostic Reports for Infinispan Servers</a></li>
+<li><a href="#rest_v2_server_stop">2.5.12. Stopping Infinispan Servers</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_cluster">2.6. Working with Infinispan Clusters</a>
@@ -756,6 +760,13 @@ $(addBlockSwitches);
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This guide provides details to help you do things like configure the Infinispan REST endpoint to use cross-origin resource sharing (CORS) requests, learn about using different data formats with the REST API, as well as listing and describing REST operations for interacting with Infinispan.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="rest_server"><a class="anchor" href="#rest_server"></a>1. Infinispan REST Endpoint</h2>
 <div class="sectionbody">
@@ -1036,7 +1047,7 @@ specific header <em>Key-Content-Type</em> for keys in different formats.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -u user:password -X POST --data-binary @./schema.proto http://127.0.0.1:11222/rest/v2/caches/___protobuf_metadata/schema.proto</code></pre>
+<pre class="highlight"><code>curl -u user:password -X POST --data-binary @./schema.proto http://127.0.0.1:11222/rest/v2/caches/___protobuf_metadata/schema.proto</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1585,7 +1596,7 @@ For example, the following command converts the replicated cache configuration f
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ curl localhost:11222/rest/v2/caches?action=convert \
+<pre class="highlight nowrap"><code>curl localhost:11222/rest/v2/caches?action=convert \
 --digest -u username:password \
 -X POST -H "Accept: application/yaml" -H "Content-Type: application/xml" \
 -d '&lt;replicated-cache mode="SYNC" statistics="false"&gt;&lt;encoding media-type="application/x-protostream"/&gt;&lt;expiration lifespan="300000" /&gt;&lt;memory max-size="400MB" when-full="REMOVE"/&gt;&lt;/replicated-cache&gt;'</code></pre>
@@ -2933,7 +2944,7 @@ requests.</p>
 <p>See <a href="../xsite/xsite.html">Cross Site replication</a> for more details about this feature.</p>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_sites_status"><a class="anchor" href="#rest_v2_xsite_sites_status"></a>Getting status of all backup locations</h5>
+<h5 id="rest_v2_xsite_sites_status_rest"><a class="anchor" href="#rest_v2_xsite_sites_status_rest"></a>Getting status of all backup locations</h5>
 <div class="paragraph">
 <p>Retrieve the status of all backup locations with <code>GET</code> requests.</p>
 </div>
@@ -2993,7 +3004,7 @@ in the following example:</p>
 </table>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_site_status"><a class="anchor" href="#rest_v2_xsite_site_status"></a>Getting status of specific backup locations</h5>
+<h5 id="rest_v2_xsite_site_status_rest"><a class="anchor" href="#rest_v2_xsite_site_status_rest"></a>Getting status of specific backup locations</h5>
 <div class="paragraph">
 <p>Retrieve the status of a backup location with <code>GET</code> requests.</p>
 </div>
@@ -3043,7 +3054,7 @@ format, as in the following example:</p>
 </table>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_take_site_offline"><a class="anchor" href="#rest_v2_xsite_take_site_offline"></a>Taking backup locations offline</h5>
+<h5 id="rest_v2_xsite_take_site_offline_rest"><a class="anchor" href="#rest_v2_xsite_take_site_offline_rest"></a>Taking backup locations offline</h5>
 <div class="paragraph">
 <p>Take backup locations offline with <code>POST</code> requests and the
 <code>?action=take-offline</code> parameter.</p>
@@ -3055,7 +3066,7 @@ format, as in the following example:</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_bring_backup_online"><a class="anchor" href="#rest_v2_xsite_bring_backup_online"></a>Bringing backup locations online</h5>
+<h5 id="rest_v2_xsite_bring_backup_online_rest"><a class="anchor" href="#rest_v2_xsite_bring_backup_online_rest"></a>Bringing backup locations online</h5>
 <div class="paragraph">
 <p>Bring backup locations online with the <code>?action=bring-online</code> parameter.</p>
 </div>
@@ -3066,7 +3077,7 @@ format, as in the following example:</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_start_push"><a class="anchor" href="#rest_v2_xsite_start_push"></a>Pushing state to backup locations</h5>
+<h5 id="rest_v2_xsite_start_push_rest"><a class="anchor" href="#rest_v2_xsite_start_push_rest"></a>Pushing state to backup locations</h5>
 <div class="paragraph">
 <p>Push cache state to a backup location with the <code>?action=start-push-state</code>
 parameter.</p>
@@ -3078,7 +3089,7 @@ parameter.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_cancel_state_push"><a class="anchor" href="#rest_v2_xsite_cancel_state_push"></a>Canceling state transfer</h5>
+<h5 id="rest_v2_xsite_cancel_state_push_rest"><a class="anchor" href="#rest_v2_xsite_cancel_state_push_rest"></a>Canceling state transfer</h5>
 <div class="paragraph">
 <p>Cancel state transfer operations with the <code>?action=cancel-push-state</code> parameter.</p>
 </div>
@@ -3089,7 +3100,7 @@ parameter.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_state_push"><a class="anchor" href="#rest_v2_xsite_state_push"></a>Getting state transfer status</h5>
+<h5 id="rest_v2_xsite_state_push_rest"><a class="anchor" href="#rest_v2_xsite_state_push_rest"></a>Getting state transfer status</h5>
 <div class="paragraph">
 <p>Retrieve status of state transfer operations with the
 <code>?action=push-state-status</code> parameter.</p>
@@ -3144,7 +3155,7 @@ in JSON format, as in the following example:</p>
 </table>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_clear_transfer_status"><a class="anchor" href="#rest_v2_xsite_clear_transfer_status"></a>Clearing state transfer status</h5>
+<h5 id="rest_v2_xsite_clear_transfer_status_rest"><a class="anchor" href="#rest_v2_xsite_clear_transfer_status_rest"></a>Clearing state transfer status</h5>
 <div class="paragraph">
 <p>Clear state transfer status for sending sites with the
 <code>?action=clear-push-state-status</code> parameter.</p>
@@ -3156,7 +3167,7 @@ in JSON format, as in the following example:</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_tuning_takeoffline"><a class="anchor" href="#rest_v2_xsite_tuning_takeoffline"></a>Modifying take offline conditions</h5>
+<h5 id="rest_v2_xsite_tuning_takeoffline_rest"><a class="anchor" href="#rest_v2_xsite_tuning_takeoffline_rest"></a>Modifying take offline conditions</h5>
 <div class="paragraph">
 <p>Sites go offline if certain conditions are met. Modify the take offline
 parameters to control when backup locations automatically go offline.</p>
@@ -3200,7 +3211,7 @@ follows:</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_xsite_cancel_receive_state"><a class="anchor" href="#rest_v2_xsite_cancel_receive_state"></a>Canceling state transfer from receiving sites</h5>
+<h5 id="rest_v2_xsite_cancel_receive_state_rest"><a class="anchor" href="#rest_v2_xsite_cancel_receive_state_rest"></a>Canceling state transfer from receiving sites</h5>
 <div class="paragraph">
 <p>If the connection between two backup locations breaks, you can cancel state
 transfer on the site that is receiving the push.</p>
@@ -3856,25 +3867,25 @@ example:</p>
 <p><code>version</code> contains the Infinispan version</p>
 </li>
 <li>
-<p><code>name</code> contains the name of the cache manager as defined in the configuration</p>
+<p><code>name</code> contains the name of the Cache Manager as defined in the configuration</p>
 </li>
 <li>
-<p><code>coordinator</code> is true if the cache manager is the coordinator of the cluster</p>
+<p><code>coordinator</code> is true if the Cache Manager is the coordinator of the cluster</p>
 </li>
 <li>
-<p><code>cache_configuration_names</code> contains an array of all caches configurations defined in the cache manager</p>
+<p><code>cache_configuration_names</code> contains an array of all caches configurations defined in the Cache Manager</p>
 </li>
 <li>
 <p><code>cluster_name</code> contains the name of the cluster as defined in the configuration</p>
 </li>
 <li>
-<p><code>physical_addresses</code> contains the physical network addresses associated with the cache manager</p>
+<p><code>physical_addresses</code> contains the physical network addresses associated with the Cache Manager</p>
 </li>
 <li>
 <p><code>coordinator_address</code> contains the physical network addresses of the coordinator of the cluster</p>
 </li>
 <li>
-<p><code>cache_manager_status</code> the lifecycle status of the cache manager.
+<p><code>cache_manager_status</code> the lifecycle status of the Cache Manager.
 For possible values, check the <a href="https://docs.jboss.org/infinispan/9.4/apidocs/org/infinispan/lifecycle/ComponentStatus.html"><code>org.infinispan.lifecycle.ComponentStatus</code></a> documentation</p>
 </li>
 <li>
@@ -3884,7 +3895,7 @@ For possible values, check the <a href="https://docs.jboss.org/infinispan/9.4/ap
 <p><code>running_cache_count</code> number of created caches that are running</p>
 </li>
 <li>
-<p><code>node_address</code> contains the logical address of the cache manager</p>
+<p><code>node_address</code> contains the logical address of the Cache Manager</p>
 </li>
 <li>
 <p><code>cluster_members</code> and <code>cluster_members_physical_addresses</code> an array of logical and physical addresses of the members of the cluster</p>
@@ -3893,7 +3904,7 @@ For possible values, check the <a href="https://docs.jboss.org/infinispan/9.4/ap
 <p><code>cluster_size</code> number of members in the cluster</p>
 </li>
 <li>
-<p><code>defined_caches</code> A list of all caches defined in the cache manager, excluding private caches but including internal caches that are accessible</p>
+<p><code>defined_caches</code> A list of all caches defined in the Cache Manager, excluding private caches but including internal caches that are accessible</p>
 </li>
 <li>
 <p><code>local_site</code> The name of the local site.<br>
@@ -4386,7 +4397,7 @@ restart the container state.</p>
 <div class="paragraph">
 <p>Create backup archives, <code>application/zip</code>, that contain resources (caches, cache
 templates, counters, Protobuf schemas, server tasks, and so on) currently
-stored in the cache manager.</p>
+stored in the Cache Manager.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4465,7 +4476,7 @@ for the backup operation, as follows:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines either an array of Protobuf schema names to back up or <code>*</code> for all schemas.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tasks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>process</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies either an array of server tasks to back up or <code>*</code> for all tasks.</p></td>
 </tr>
@@ -4653,7 +4664,7 @@ an archive that is available on the server.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines either an array of Protobuf schema names to back up or <code>*</code> for all schemas.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tasks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>process</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies either an array of server tasks to back up or <code>*</code> for all tasks.</p></td>
 </tr>
@@ -4827,7 +4838,7 @@ The <code>data</code> value will contain the declarative configuration of the en
 all caches.</p>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_cache_manager_site_status"><a class="anchor" href="#rest_v2_cache_manager_site_status"></a>Getting status of backup locations</h5>
+<h5 id="rest_v2_cache_manager_site_status_rest"><a class="anchor" href="#rest_v2_cache_manager_site_status_rest"></a>Getting status of backup locations</h5>
 <div class="paragraph">
 <p>Retrieve the status of all backup locations from Cache Managers with <code>GET</code>
 requests.</p>
@@ -4898,7 +4909,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_cache_manager_take_offline"><a class="anchor" href="#rest_v2_cache_manager_take_offline"></a>Taking backup locations offline</h5>
+<h5 id="rest_v2_cache_manager_take_offline_rest"><a class="anchor" href="#rest_v2_cache_manager_take_offline_rest"></a>Taking backup locations offline</h5>
 <div class="paragraph">
 <p>Take backup locations offline with the <code>?action=take-offline</code> parameter.</p>
 </div>
@@ -4909,7 +4920,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_cache_manager_bring_online"><a class="anchor" href="#rest_v2_cache_manager_bring_online"></a>Bringing backup locations online</h5>
+<h5 id="rest_v2_cache_manager_bring_online_rest"><a class="anchor" href="#rest_v2_cache_manager_bring_online_rest"></a>Bringing backup locations online</h5>
 <div class="paragraph">
 <p>Bring backup locations online with the <code>?action=bring-online</code> parameter.</p>
 </div>
@@ -4920,7 +4931,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_cache_manager_get_state_transfer_mode"><a class="anchor" href="#rest_v2_cache_manager_get_state_transfer_mode"></a>Retrieving the state transfer mode</h5>
+<h5 id="rest_v2_cache_manager_get_state_transfer_mode_rest"><a class="anchor" href="#rest_v2_cache_manager_get_state_transfer_mode_rest"></a>Retrieving the state transfer mode</h5>
 <div class="paragraph">
 <p>Check the state transfer mode with <code>GET</code> requests.</p>
 </div>
@@ -4931,7 +4942,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_cache_manager_set_state_transfer_mode"><a class="anchor" href="#rest_v2_cache_manager_set_state_transfer_mode"></a>Setting the state transfer mode</h5>
+<h5 id="rest_v2_cache_manager_set_state_transfer_mode_rest"><a class="anchor" href="#rest_v2_cache_manager_set_state_transfer_mode_rest"></a>Setting the state transfer mode</h5>
 <div class="paragraph">
 <p>Configure the state transfer mode with the <code>?action=set</code> parameter.</p>
 </div>
@@ -4942,7 +4953,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_cache_manager_start_push"><a class="anchor" href="#rest_v2_cache_manager_start_push"></a>Starting state transfer</h5>
+<h5 id="rest_v2_cache_manager_start_push_rest"><a class="anchor" href="#rest_v2_cache_manager_start_push_rest"></a>Starting state transfer</h5>
 <div class="paragraph">
 <p>Push state of all caches to remote sites with the <code>?action=start-push-state</code> parameter.</p>
 </div>
@@ -4953,7 +4964,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_cache_manager_cancel_push"><a class="anchor" href="#rest_v2_cache_manager_cancel_push"></a>Canceling state transfer</h5>
+<h5 id="rest_v2_cache_manager_cancel_push_rest"><a class="anchor" href="#rest_v2_cache_manager_cancel_push_rest"></a>Canceling state transfer</h5>
 <div class="paragraph">
 <p>Cancel ongoing state transfer operations with the <code>?action=cancel-push-state</code> parameter.</p>
 </div>
@@ -4995,7 +5006,7 @@ as in the following example:</p>
 <div class="sect3">
 <h4 id="rest_v2_server_cm"><a class="anchor" href="#rest_v2_server_cm"></a>2.5.2. Getting Cache Managers</h4>
 <div class="paragraph">
-<p>Retrieve lists of cache managers for Infinispan servers with <code>GET</code> requests.</p>
+<p>Retrieve lists of Cache Managers for Infinispan servers with <code>GET</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5003,7 +5014,7 @@ as in the following example:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Infinispan responds with an array of the cache manager names configured for
+<p>Infinispan responds with an array of the Cache Manager names configured for
 the server.</p>
 </div>
 <div class="admonitionblock note">
@@ -5014,7 +5025,7 @@ the server.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Infinispan currently supports one cache manager per server only.</p>
+<p>Infinispan currently supports one Cache Manager per server only.</p>
 </div>
 </td>
 </tr>
@@ -5025,7 +5036,7 @@ the server.</p>
 <h4 id="rest_v2_cache_ignore"><a class="anchor" href="#rest_v2_cache_ignore"></a>2.5.3. Adding Caches to Ignore Lists</h4>
 <div class="paragraph">
 <p>Configure Infinispan to temporarily exclude specific caches from client
-requests. Send empty <code>POST</code> requests that include the names of the cache manager
+requests. Send empty <code>POST</code> requests that include the names of the Cache Manager
 name and the cache.</p>
 </div>
 <div class="listingblock">
@@ -5034,7 +5045,7 @@ name and the cache.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Infinispan responds with <code>204 (No Content)</code> if the cache is successfully added to the ignore list or <code>404 (Not Found)</code> if the cache or cache manager are not found.</p>
+<p>Infinispan responds with <code>204 (No Content)</code> if the cache is successfully added to the ignore list or <code>404 (Not Found)</code> if the cache or Cache Manager are not found.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -5044,8 +5055,8 @@ name and the cache.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Infinispan currently supports one cache manager per server only. For future
-compatibility you must provide the cache manager name in the requests.</p>
+<p>Infinispan currently supports one Cache Manager per server only. For future
+compatibility you must provide the Cache Manager name in the requests.</p>
 </div>
 </td>
 </tr>
@@ -5063,7 +5074,7 @@ compatibility you must provide the cache manager name in the requests.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Infinispan responds with <code>204 (No Content)</code> if the cache is successfully removed from ignore list or <code>404 (Not Found)</code> if the cache or cache manager are not found.</p>
+<p>Infinispan responds with <code>204 (No Content)</code> if the cache is successfully removed from ignore list or <code>404 (Not Found)</code> if the cache or Cache Manager are not found.</p>
 </div>
 </div>
 <div class="sect3">
@@ -5164,7 +5175,23 @@ format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_server_threads"><a class="anchor" href="#rest_v2_server_threads"></a>2.5.9. Getting JVM Thread Dumps</h4>
+<h4 id="rest_v2_server_memory"><a class="anchor" href="#rest_v2_server_memory"></a>2.5.9. Getting JVM Heap Dumps</h4>
+<div class="paragraph">
+<p>Generate JVM heap dumps for Infinispan servers with <code>POST</code>
+requests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>POST /rest/v2/server/memory?action=heap-dump[&amp;live=true|false]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan generates a heap dump file in HPROF format in the server data directory and responds
+with the full path of the file in JSON format.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rest_v2_server_threads"><a class="anchor" href="#rest_v2_server_threads"></a>2.5.10. Getting JVM Thread Dumps</h4>
 <div class="paragraph">
 <p>Retrieve the current thread dump for the JVM with <code>GET</code> requests.</p>
 </div>
@@ -5178,7 +5205,7 @@ format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_server_report"><a class="anchor" href="#rest_v2_server_report"></a>2.5.10. Getting Diagnostic Reports for Infinispan Servers</h4>
+<h4 id="rest_v2_server_report"><a class="anchor" href="#rest_v2_server_report"></a>2.5.11. Getting Diagnostic Reports for Infinispan Servers</h4>
 <div class="paragraph">
 <p>Retrieve aggregated reports for Infinispan servers with <code>GET</code> requests.</p>
 </div>
@@ -5195,7 +5222,7 @@ routing, threads, in addition to configuration and log files.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_server_stop"><a class="anchor" href="#rest_v2_server_stop"></a>2.5.11. Stopping Infinispan Servers</h4>
+<h4 id="rest_v2_server_stop"><a class="anchor" href="#rest_v2_server_stop"></a>2.5.12. Stopping Infinispan Servers</h4>
 <div class="paragraph">
 <p>Stop Infinispan servers with <code>POST</code> requests.</p>
 </div>
@@ -5445,7 +5472,7 @@ an archive that is available on the server.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines either an array of Protobuf schema names to back up or <code>*</code> for all schemas.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tasks</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>process</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies either an array of server tasks to back up or <code>*</code> for all tasks.</p></td>
 </tr>
@@ -6304,7 +6331,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

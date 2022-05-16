@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Marshalling and Encoding Data</title>
+<title>Encoding Infinispan caches and marshalling data</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/encoding/encoding.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,7 +525,7 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Marshalling and Encoding Data</h1>
+<h1>Encoding Infinispan caches and marshalling data</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -595,8 +598,8 @@ $(addBlockSwitches);
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan caches can store keys and values in different encodings.
-This document describes how Infinispan encodes data for remote and embedded caches and explains how to use various media types with your applications.</p>
+<p>Remote and embedded caches can store keys and values in different encodings, or media types.
+Infinispan also includes an implementation of the ProtoStream API to marshall Java objects as Protocol Buffers (Protobuf).</p>
 </div>
 </div>
 </div>
@@ -658,7 +661,7 @@ Additionally, it is possible that a <code>ConcurrentModificationException</code>
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final">Infinispan ProtoStream API</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01">Infinispan ProtoStream API</a></p>
 </li>
 </ul>
 </div>
@@ -727,7 +730,7 @@ If you want to store custom types in your caches, use ProtoStream marshalling to
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final">Infinispan ProtoStream API</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01">Infinispan ProtoStream API</a></p>
 </li>
 <li>
 <p><a href="https://developers.google.com/protocol-buffers/">developers.google.com/protocol-buffers</a></p>
@@ -1179,10 +1182,10 @@ For custom or user types, you need to provide some information so that Infinispa
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/SerializationContext.html">org.infinispan.protostream.SerializationContext</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/SerializationContext.html">org.infinispan.protostream.SerializationContext</a></p>
 </li>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/SerializationContextInitializer.html">org.infinispan.protostream.SerializationContextInitializer</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/SerializationContextInitializer.html">org.infinispan.protostream.SerializationContextInitializer</a></p>
 </li>
 </ul>
 </div>
@@ -1278,7 +1281,7 @@ public interface LibraryInitalizer extends SerializationContextInitializer {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-java" data-lang="java">@AutoProtoSchemaBuilder(includeClasses = { Author.class, Book.class, UUIDAdaptor.class, java.math.BigInteger }, schemaFileName = "library.proto", schemaFilePath = "proto", schemaPackageName = "library")
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">@AutoProtoSchemaBuilder(includeClasses = { Author.class, Book.class, UUIDAdapter.class, java.math.BigInteger }, schemaFileName = "library.proto", schemaFilePath = "proto", schemaPackageName = "library")
 public interface LibraryInitalizer extends SerializationContextInitializer {
 
 }</code></pre>
@@ -1291,7 +1294,7 @@ public interface LibraryInitalizer extends SerializationContextInitializer {
 <p><a href="https://developers.google.com/protocol-buffers">Protocol Buffers</a></p>
 </li>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final">Infinispan ProtoStream API</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01">Infinispan ProtoStream API</a></p>
 </li>
 <li>
 <p><a href="https://github.com/infinispan/protostream">Infinispan ProtoStream library</a></p>
@@ -1306,7 +1309,7 @@ public interface LibraryInitalizer extends SerializationContextInitializer {
 </div>
 <div class="paragraph">
 <p>This topic provides additional details about ProtoStream annotations.
-You should refer to the documentation in the <a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a> package for complete information.</p>
+You should refer to the documentation in the <a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a> package for complete information.</p>
 </div>
 <h5 id="protofield" class="discrete">ProtoField</h5>
 <div class="paragraph">
@@ -1440,7 +1443,7 @@ If the class does not implement <code>SerializedContextInitializer</code> or is 
 <p><code>@ProtoDoc</code> and <code>@ProtoDocs</code> are human-readable text that document message types, enums, or fields for the generated schema.</p>
 </div>
 <div class="paragraph">
-<p>You use these annotation to configure indexing for Ickle queries.</p>
+<p>You use these annotations to add comments.</p>
 </div>
 <h5 id="protoname" class="discrete">ProtoName</h5>
 <div class="paragraph">
@@ -1490,14 +1493,16 @@ If the class does not implement <code>SerializedContextInitializer</code> or is 
 </tr>
 </table>
 </div>
+<h5 id="other_annotations" class="discrete">Other annotations</h5>
+<div class="paragraph">
+<p>Infinispan copies any other annotations on classes, fields, and methods as comments in the generated Protobuf schema.
+This includes indexing annotations such as <code>@Indexed</code> and <code>@Field</code>.</p>
+</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a></p>
-</li>
-<li>
-<p><a href="../developing/developing.html#search_api">Querying values in caches</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a></p>
 </li>
 <li>
 <p><a href="https://developers.google.com/protocol-buffers/docs/proto#reserved">Protocol Buffers Language Guide - Reserved Fields</a></p>
@@ -1735,10 +1740,10 @@ public enum Language {
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/annotations/ProtoField.html">org.infinispan.protostream.annotations.ProtoField</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/annotations/ProtoField.html">org.infinispan.protostream.annotations.ProtoField</a></p>
 </li>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/annotations/ProtoFactory.html">org.infinispan.protostream.annotations.ProtoFactory</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/annotations/ProtoFactory.html">org.infinispan.protostream.annotations.ProtoFactory</a></p>
 </li>
 </ul>
 </div>
@@ -1787,7 +1792,7 @@ public class UUIDAdapter {
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/annotations/ProtoAdapter.html">org.infinispan.protostream.annotations.ProtoAdapter</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/annotations/ProtoAdapter.html">org.infinispan.protostream.annotations.ProtoAdapter</a></p>
 </li>
 </ul>
 </div>
@@ -1878,7 +1883,7 @@ interface LibraryInitializer extends GeneratedSchema {
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.4.1.Final/org/infinispan/protostream/annotations/AutoProtoSchemaBuilder.html">org.infinispan.protostream.annotations.AutoProtoSchemaBuilder</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/4.5.0.Dev01/org/infinispan/protostream/annotations/AutoProtoSchemaBuilder.html">org.infinispan.protostream.annotations.AutoProtoSchemaBuilder</a></p>
 </li>
 </ul>
 </div>
@@ -1991,7 +1996,7 @@ With the default settings, you need the <code>deployer</code> role at minimum.</
 <p>Use the <code class="command">schema</code> command with the <code>--upload=</code> argument from the Infinispan command line interface (CLI).</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; schema --upload=person.proto person</code></pre>
+<pre class="highlight nowrap"><code>schema --upload=person.proto person</code></pre>
 </div>
 </div>
 </li>
@@ -2522,7 +2527,7 @@ byte[] json = jsonValuesCache.get(1);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

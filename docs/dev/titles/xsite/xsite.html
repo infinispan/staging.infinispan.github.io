@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Infinispan Cross-Site Replication</title>
+<title>Infinispan cross-site replication</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/xsite/xsite.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,7 +525,7 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Infinispan Cross-Site Replication</h1>
+<h1>Infinispan cross-site replication</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -567,23 +570,23 @@ $(addBlockSwitches);
 </li>
 <li><a href="#cross-site-operations-rest">4. Performing cross-site operations with the REST API</a>
 <ul class="sectlevel2">
-<li><a href="#rest_v2_xsite_sites_status">4.1. Getting status of all backup locations</a></li>
-<li><a href="#rest_v2_xsite_site_status">4.2. Getting status of specific backup locations</a></li>
-<li><a href="#rest_v2_xsite_take_site_offline">4.3. Taking backup locations offline</a></li>
-<li><a href="#rest_v2_xsite_bring_backup_online">4.4. Bringing backup locations online</a></li>
-<li><a href="#rest_v2_xsite_start_push">4.5. Pushing state to backup locations</a></li>
-<li><a href="#rest_v2_xsite_cancel_state_push">4.6. Canceling state transfer</a></li>
-<li><a href="#rest_v2_xsite_state_push">4.7. Getting state transfer status</a></li>
-<li><a href="#rest_v2_xsite_clear_transfer_status">4.8. Clearing state transfer status</a></li>
-<li><a href="#rest_v2_xsite_tuning_takeoffline">4.9. Modifying take offline conditions</a></li>
-<li><a href="#rest_v2_xsite_cancel_receive_state">4.10. Canceling state transfer from receiving sites</a></li>
-<li><a href="#rest_v2_cache_manager_site_status">4.11. Getting status of backup locations</a></li>
-<li><a href="#rest_v2_cache_manager_take_offline">4.12. Taking backup locations offline</a></li>
-<li><a href="#rest_v2_cache_manager_bring_online">4.13. Bringing backup locations online</a></li>
-<li><a href="#rest_v2_cache_manager_get_state_transfer_mode">4.14. Retrieving the state transfer mode</a></li>
-<li><a href="#rest_v2_cache_manager_set_state_transfer_mode">4.15. Setting the state transfer mode</a></li>
-<li><a href="#rest_v2_cache_manager_start_push">4.16. Starting state transfer</a></li>
-<li><a href="#rest_v2_cache_manager_cancel_push">4.17. Canceling state transfer</a></li>
+<li><a href="#rest_v2_xsite_sites_status_cross-site-operations-rest">4.1. Getting status of all backup locations</a></li>
+<li><a href="#rest_v2_xsite_site_status_cross-site-operations-rest">4.2. Getting status of specific backup locations</a></li>
+<li><a href="#rest_v2_xsite_take_site_offline_cross-site-operations-rest">4.3. Taking backup locations offline</a></li>
+<li><a href="#rest_v2_xsite_bring_backup_online_cross-site-operations-rest">4.4. Bringing backup locations online</a></li>
+<li><a href="#rest_v2_xsite_start_push_cross-site-operations-rest">4.5. Pushing state to backup locations</a></li>
+<li><a href="#rest_v2_xsite_cancel_state_push_cross-site-operations-rest">4.6. Canceling state transfer</a></li>
+<li><a href="#rest_v2_xsite_state_push_cross-site-operations-rest">4.7. Getting state transfer status</a></li>
+<li><a href="#rest_v2_xsite_clear_transfer_status_cross-site-operations-rest">4.8. Clearing state transfer status</a></li>
+<li><a href="#rest_v2_xsite_tuning_takeoffline_cross-site-operations-rest">4.9. Modifying take offline conditions</a></li>
+<li><a href="#rest_v2_xsite_cancel_receive_state_cross-site-operations-rest">4.10. Canceling state transfer from receiving sites</a></li>
+<li><a href="#rest_v2_cache_manager_site_status_cross-site-operations-rest">4.11. Getting status of backup locations</a></li>
+<li><a href="#rest_v2_cache_manager_take_offline_cross-site-operations-rest">4.12. Taking backup locations offline</a></li>
+<li><a href="#rest_v2_cache_manager_bring_online_cross-site-operations-rest">4.13. Bringing backup locations online</a></li>
+<li><a href="#rest_v2_cache_manager_get_state_transfer_mode_cross-site-operations-rest">4.14. Retrieving the state transfer mode</a></li>
+<li><a href="#rest_v2_cache_manager_set_state_transfer_mode_cross-site-operations-rest">4.15. Setting the state transfer mode</a></li>
+<li><a href="#rest_v2_cache_manager_start_push_cross-site-operations-rest">4.16. Starting state transfer</a></li>
+<li><a href="#rest_v2_cache_manager_cancel_push_cross-site-operations-rest">4.17. Canceling state transfer</a></li>
 </ul>
 </li>
 <li><a href="#cross-site-operations-jmx">5. Performing cross-site operations via JMX</a>
@@ -593,11 +596,6 @@ $(addBlockSwitches);
 <li><a href="#cross-site-jmx-mbeans_cross-site-operations-jmx">5.3. JMX MBeans for cross-site replication</a></li>
 </ul>
 </li>
-<li><a href="#cross-site-replication-logs">6. Cross-site replication log messages</a>
-<ul class="sectlevel2">
-<li><a href="#cross-site-replication-log-messages_cross-site-replication-logs">6.1. Infinispan log messages for cross-site replication</a></li>
-</ul>
-</li>
 </ul>
 </div>
 </div>
@@ -605,10 +603,7 @@ $(addBlockSwitches);
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Find out how Infinispan performs cross-site replication so you can get optimal
-performance and avoid issues. Learn how to configure Infinispan to back up
-data to remote clusters. Follow procedures to transfer state from one cluster
-to another, take sites offline, and so on.</p>
+<p>Cross-site replication configures Infinispan to back up data across clusters. With cross-site replication you create global clusters that span multiple geographic locations to protect against disaster and ensure continuity of service.</p>
 </div>
 </div>
 </div>
@@ -616,55 +611,29 @@ to another, take sites offline, and so on.</p>
 <h2 id="cross-site-replication"><a class="anchor" href="#cross-site-replication"></a>1. Cross-site replication</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Replicate data across Infinispan clusters in multiple geographic regions to:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ensure service continuity in the event of data center outages.</p>
-</li>
-<li>
-<p>Present a single, unified caching service to client applications that consists of different clusters across multiple host platforms.</p>
-</li>
-</ul>
+<p>This section explains Infinispan cross-site replication capabilities, including details about relay nodes, state transfer, and client connections for remote caches.</p>
 </div>
 <div class="sect2">
 <h3 id="cross-site-replication_cross-site-replication"><a class="anchor" href="#cross-site-replication_cross-site-replication"></a>1.1. Cross-site replication</h3>
 <div class="paragraph">
-<p>Infinispan clusters running in different locations can discover and
-communicate with each other.</p>
+<p>Infinispan can back up data between clusters running in geographically dispersed data centers and across different cloud providers.
+Cross-site replication provides Infinispan with a global cluster view and:</p>
 </div>
-<div class="paragraph">
-<p>Sites are typically data centers in various geographic locations. Cross-site
-replication bridges Infinispan clusters in sites to form global clusters, as
-in the following diagram:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Guarantees service continuity in the event of outages or disasters.</p>
+</li>
+<li>
+<p>Presents client applications with a single point of access to data in globally distributed caches.</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../../topics/images/xsite.svg" alt="xsite">
+<img src="../../topics/images/cross-site-replication.svg" alt="Cross-site replication with a Infinispan deployment.">
 </div>
-</div>
-<div class="paragraph">
-<p><strong>LON</strong> is a datacenter in London, England.<br>
-<strong>NYC</strong> is a datacenter in New York City, USA.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Infinispan can form global clusters across two or more sites.</p>
-</div>
-<div class="paragraph">
-<p>For example, configure a third Infinispan cluster running in San Francisco,
-<strong>SFO</strong>, as backup location for <strong>LON</strong> and <strong>NYC</strong>.</p>
-</div>
-</td>
-</tr>
-</table>
+<div class="title">Figure 1. Cross-site replication</div>
 </div>
 </div>
 <div class="sect2">
@@ -2099,7 +2068,7 @@ Server clusters, manage sites, and push state transfer to backup locations.</p>
 <p>Check if backup locations are online or offline with the <code class="command">site status</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site status --cache=cacheName --site=NYC</pre>
+<pre class="highlight nowrap"><code>site status --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -2140,7 +2109,7 @@ locations.</p>
 <p>Bring backup locations online with the <code class="command">bring-online</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site bring-online --cache=customers --site=NYC</pre>
+<pre class="highlight nowrap"><code>site bring-online --cache=customers --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2148,7 +2117,7 @@ locations.</p>
 <p>Take backup locations offline with the <code class="command">take-offline</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site take-offline --cache=customers --site=NYC</pre>
+<pre class="highlight nowrap"><code>site take-offline --cache=customers --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2200,23 +2169,22 @@ Alternatively you can use the default mode, which is to manually perform state t
 <p>Retrieve the current state transfer mode.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site state-transfer-mode get --cache=cacheName --site=NYC
-"MANUAL"</pre>
+<pre class="highlight nowrap"><code>site state-transfer-mode get --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Configure automatic state transfer operations for a cache and backup location.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>site state-transfer-mode set --cache=cacheName --site=NYC --mode=AUTO</code></pre>
+</div>
+</div>
 </li>
 </ul>
 </div>
 </li>
 </ol>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[//containers/default]&gt; site state-transfer-mode set --cache=cacheName --site=NYC --mode=AUTO</pre>
-</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2253,7 +2221,7 @@ Alternatively you can use the default mode, which is to manually perform state t
 <p>Use the <code class="command">site push-site-state</code> command to push state transfer, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site push-site-state --cache=cacheName --site=NYC</pre>
+<pre class="highlight nowrap"><code>site push-site-state --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2286,7 +2254,7 @@ Alternatively you can use the default mode, which is to manually perform state t
 <p>Infinispan Server provides a REST endpoint that exposes methods for performing cross-site operations.</p>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_sites_status"><a class="anchor" href="#rest_v2_xsite_sites_status"></a>4.1. Getting status of all backup locations</h3>
+<h3 id="rest_v2_xsite_sites_status_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_sites_status_cross-site-operations-rest"></a>4.1. Getting status of all backup locations</h3>
 <div class="paragraph">
 <p>Retrieve the status of all backup locations with <code>GET</code> requests.</p>
 </div>
@@ -2346,7 +2314,7 @@ in the following example:</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_site_status"><a class="anchor" href="#rest_v2_xsite_site_status"></a>4.2. Getting status of specific backup locations</h3>
+<h3 id="rest_v2_xsite_site_status_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_site_status_cross-site-operations-rest"></a>4.2. Getting status of specific backup locations</h3>
 <div class="paragraph">
 <p>Retrieve the status of a backup location with <code>GET</code> requests.</p>
 </div>
@@ -2396,7 +2364,7 @@ format, as in the following example:</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_take_site_offline"><a class="anchor" href="#rest_v2_xsite_take_site_offline"></a>4.3. Taking backup locations offline</h3>
+<h3 id="rest_v2_xsite_take_site_offline_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_take_site_offline_cross-site-operations-rest"></a>4.3. Taking backup locations offline</h3>
 <div class="paragraph">
 <p>Take backup locations offline with <code>POST</code> requests and the
 <code>?action=take-offline</code> parameter.</p>
@@ -2408,7 +2376,7 @@ format, as in the following example:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_bring_backup_online"><a class="anchor" href="#rest_v2_xsite_bring_backup_online"></a>4.4. Bringing backup locations online</h3>
+<h3 id="rest_v2_xsite_bring_backup_online_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_bring_backup_online_cross-site-operations-rest"></a>4.4. Bringing backup locations online</h3>
 <div class="paragraph">
 <p>Bring backup locations online with the <code>?action=bring-online</code> parameter.</p>
 </div>
@@ -2419,7 +2387,7 @@ format, as in the following example:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_start_push"><a class="anchor" href="#rest_v2_xsite_start_push"></a>4.5. Pushing state to backup locations</h3>
+<h3 id="rest_v2_xsite_start_push_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_start_push_cross-site-operations-rest"></a>4.5. Pushing state to backup locations</h3>
 <div class="paragraph">
 <p>Push cache state to a backup location with the <code>?action=start-push-state</code>
 parameter.</p>
@@ -2431,7 +2399,7 @@ parameter.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_cancel_state_push"><a class="anchor" href="#rest_v2_xsite_cancel_state_push"></a>4.6. Canceling state transfer</h3>
+<h3 id="rest_v2_xsite_cancel_state_push_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_cancel_state_push_cross-site-operations-rest"></a>4.6. Canceling state transfer</h3>
 <div class="paragraph">
 <p>Cancel state transfer operations with the <code>?action=cancel-push-state</code> parameter.</p>
 </div>
@@ -2442,7 +2410,7 @@ parameter.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_state_push"><a class="anchor" href="#rest_v2_xsite_state_push"></a>4.7. Getting state transfer status</h3>
+<h3 id="rest_v2_xsite_state_push_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_state_push_cross-site-operations-rest"></a>4.7. Getting state transfer status</h3>
 <div class="paragraph">
 <p>Retrieve status of state transfer operations with the
 <code>?action=push-state-status</code> parameter.</p>
@@ -2497,7 +2465,7 @@ in JSON format, as in the following example:</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_clear_transfer_status"><a class="anchor" href="#rest_v2_xsite_clear_transfer_status"></a>4.8. Clearing state transfer status</h3>
+<h3 id="rest_v2_xsite_clear_transfer_status_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_clear_transfer_status_cross-site-operations-rest"></a>4.8. Clearing state transfer status</h3>
 <div class="paragraph">
 <p>Clear state transfer status for sending sites with the
 <code>?action=clear-push-state-status</code> parameter.</p>
@@ -2509,7 +2477,7 @@ in JSON format, as in the following example:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_tuning_takeoffline"><a class="anchor" href="#rest_v2_xsite_tuning_takeoffline"></a>4.9. Modifying take offline conditions</h3>
+<h3 id="rest_v2_xsite_tuning_takeoffline_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_tuning_takeoffline_cross-site-operations-rest"></a>4.9. Modifying take offline conditions</h3>
 <div class="paragraph">
 <p>Sites go offline if certain conditions are met. Modify the take offline
 parameters to control when backup locations automatically go offline.</p>
@@ -2553,7 +2521,7 @@ follows:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_xsite_cancel_receive_state"><a class="anchor" href="#rest_v2_xsite_cancel_receive_state"></a>4.10. Canceling state transfer from receiving sites</h3>
+<h3 id="rest_v2_xsite_cancel_receive_state_cross-site-operations-rest"><a class="anchor" href="#rest_v2_xsite_cancel_receive_state_cross-site-operations-rest"></a>4.10. Canceling state transfer from receiving sites</h3>
 <div class="paragraph">
 <p>If the connection between two backup locations breaks, you can cancel state
 transfer on the site that is receiving the push.</p>
@@ -2569,7 +2537,7 @@ local cache with the <code>?action=cancel-receive-state</code> parameter.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_cache_manager_site_status"><a class="anchor" href="#rest_v2_cache_manager_site_status"></a>4.11. Getting status of backup locations</h3>
+<h3 id="rest_v2_cache_manager_site_status_cross-site-operations-rest"><a class="anchor" href="#rest_v2_cache_manager_site_status_cross-site-operations-rest"></a>4.11. Getting status of backup locations</h3>
 <div class="paragraph">
 <p>Retrieve the status of all backup locations from Cache Managers with <code>GET</code>
 requests.</p>
@@ -2640,7 +2608,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_cache_manager_take_offline"><a class="anchor" href="#rest_v2_cache_manager_take_offline"></a>4.12. Taking backup locations offline</h3>
+<h3 id="rest_v2_cache_manager_take_offline_cross-site-operations-rest"><a class="anchor" href="#rest_v2_cache_manager_take_offline_cross-site-operations-rest"></a>4.12. Taking backup locations offline</h3>
 <div class="paragraph">
 <p>Take backup locations offline with the <code>?action=take-offline</code> parameter.</p>
 </div>
@@ -2651,7 +2619,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_cache_manager_bring_online"><a class="anchor" href="#rest_v2_cache_manager_bring_online"></a>4.13. Bringing backup locations online</h3>
+<h3 id="rest_v2_cache_manager_bring_online_cross-site-operations-rest"><a class="anchor" href="#rest_v2_cache_manager_bring_online_cross-site-operations-rest"></a>4.13. Bringing backup locations online</h3>
 <div class="paragraph">
 <p>Bring backup locations online with the <code>?action=bring-online</code> parameter.</p>
 </div>
@@ -2662,7 +2630,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_cache_manager_get_state_transfer_mode"><a class="anchor" href="#rest_v2_cache_manager_get_state_transfer_mode"></a>4.14. Retrieving the state transfer mode</h3>
+<h3 id="rest_v2_cache_manager_get_state_transfer_mode_cross-site-operations-rest"><a class="anchor" href="#rest_v2_cache_manager_get_state_transfer_mode_cross-site-operations-rest"></a>4.14. Retrieving the state transfer mode</h3>
 <div class="paragraph">
 <p>Check the state transfer mode with <code>GET</code> requests.</p>
 </div>
@@ -2673,7 +2641,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_cache_manager_set_state_transfer_mode"><a class="anchor" href="#rest_v2_cache_manager_set_state_transfer_mode"></a>4.15. Setting the state transfer mode</h3>
+<h3 id="rest_v2_cache_manager_set_state_transfer_mode_cross-site-operations-rest"><a class="anchor" href="#rest_v2_cache_manager_set_state_transfer_mode_cross-site-operations-rest"></a>4.15. Setting the state transfer mode</h3>
 <div class="paragraph">
 <p>Configure the state transfer mode with the <code>?action=set</code> parameter.</p>
 </div>
@@ -2684,7 +2652,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_cache_manager_start_push"><a class="anchor" href="#rest_v2_cache_manager_start_push"></a>4.16. Starting state transfer</h3>
+<h3 id="rest_v2_cache_manager_start_push_cross-site-operations-rest"><a class="anchor" href="#rest_v2_cache_manager_start_push_cross-site-operations-rest"></a>4.16. Starting state transfer</h3>
 <div class="paragraph">
 <p>Push state of all caches to remote sites with the <code>?action=start-push-state</code> parameter.</p>
 </div>
@@ -2695,7 +2663,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rest_v2_cache_manager_cancel_push"><a class="anchor" href="#rest_v2_cache_manager_cancel_push"></a>4.17. Canceling state transfer</h3>
+<h3 id="rest_v2_cache_manager_cancel_push_cross-site-operations-rest"><a class="anchor" href="#rest_v2_cache_manager_cancel_push_cross-site-operations-rest"></a>4.17. Canceling state transfer</h3>
 <div class="paragraph">
 <p>Cancel ongoing state transfer operations with the <code>?action=cancel-push-state</code> parameter.</p>
 </div>
@@ -2869,118 +2837,16 @@ and statistics, see the <em>Infinispan JMX Components</em> documentation.</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="cross-site-replication-logs"><a class="anchor" href="#cross-site-replication-logs"></a>6. Cross-site replication log messages</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan includes an <code>org.infinispan.XSITE</code> log category to help you troubleshoot cross-site replication operations.</p>
+<p>Unresolved directive in stories.adoc - include::../../stories/assembly_xsite_logs.adoc[leveloffset=+1]</p>
 </div>
-<div class="sect2">
-<h3 id="cross-site-replication-log-messages_cross-site-replication-logs"><a class="anchor" href="#cross-site-replication-log-messages_cross-site-replication-logs"></a>6.1. Infinispan log messages for cross-site replication</h3>
-<div class="paragraph">
-<p>Find user actions for log messages related to cross-site replication.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3335%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Log level</th>
-<th class="tableblock halign-left valign-top">Identifier</th>
-<th class="tableblock halign-left valign-top">Message</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DEBUG</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000400</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Node &lt;site-name&gt; was suspected</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Infinispan prints this message when it cannot reach backup locations. Ensure that sites are online and check network status.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">INFO</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000439</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Received new x-site view: &lt;site-name&gt;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Infinispan prints this message when sites join and leave the global cluster.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">INFO</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN100005</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Site &lt;site-name&gt; is online.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Infinispan prints this message when a site comes online.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">INFO</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN100006</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Site &lt;site-name&gt; is offline.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Infinispan prints this message when a site goes offline.
-If you did not take the site offline manually, this message could indicate a failure has occurred. Check network status and try to bring the site back online.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WARN</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000202</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Problems backing up data for cache &lt;cache-name&gt; to site &lt;site-name&gt;:</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Infinispan prints this message when issues occur with state transfer operations along with the exception. If necessary adjust Infinispan logging to get more fine-grained logging messages.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WARN</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000289</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unable to send X-Site state chunk to &lt;site-name&gt;.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates that Infinispan cannot transfer a batch of cache entries during a state transfer operation. Ensure that sites are online and check network status.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WARN</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000291</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unable to apply X-Site state chunk.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates that Infinispan cannot apply a batch of cache entries during a state transfer operation. Ensure that sites are online and check network status.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WARN</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000322</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unable to re-start x-site state transfer to site &lt;site-name&gt;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates that Infinispan cannot resume a state transfer operation to a backup location. Ensure that sites are online and check network status.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ERROR</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000477</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unable to perform operation &lt;operation-name&gt; for site &lt;site-name&gt;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates that Infinispan cannot successfully complete an operation on a backup location. If necessary adjust Infinispan logging to get more fine-grained logging messages.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">FATAL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000449</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">XSite state transfer timeout must be higher or equals than 1 (one).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Results when the value of the <code>timeout</code> attribute is <code>0</code> or a negative number. Specify a value of at least <code>1</code> for the <code>timeout</code> attribute in the state transfer configuration for your cache definition.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">FATAL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000450</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">XSite state transfer waiting time between retries must be higher or equals than 1 (one).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Results when the value of the <code>wait-time</code> attribute is <code>0</code> or a negative number. Specify a value of at least <code>1</code> for the <code>wait-time</code> attribute in the state transfer configuration for your cache definition.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">FATAL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ISPN000576</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-site Replication not available for local cache.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-site replication does not work with the local cache mode. Either remove the backup configuration from the local cache definition or use a distributed or replicated cache mode.</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

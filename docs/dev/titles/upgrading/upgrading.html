@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Upgrading Infinispan 14.0</title>
+<title>Upgrading Infinispan deployments</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/upgrading/upgrading.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,7 +525,7 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Upgrading Infinispan 14.0</h1>
+<h1>Upgrading Infinispan deployments</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -530,13 +533,21 @@ $(addBlockSwitches);
 <ul class="sectlevel2">
 <li><a href="#upgrading_from_13_0_to_14_0">1.1. Upgrading from 13.0 to 14.0</a>
 <ul class="sectlevel3">
-<li><a href="#scattered_cache_deprecation">1.1.1. Scattered cache deprecation</a></li>
-<li><a href="#cross_site_replication">1.1.2. Cross Site Replication</a>
+<li><a href="#security_authorization_spi">1.1.1. Security authorization SPI</a></li>
+<li><a href="#scattered_cache_deprecation">1.1.2. Scattered cache deprecation</a></li>
+<li><a href="#cross_site_replication">1.1.3. Cross Site Replication</a>
 <ul class="sectlevel4">
 <li><a href="#asynchronous_backup_strategy_logging">Asynchronous backup strategy logging</a></li>
 </ul>
 </li>
-<li><a href="#store_properties">1.1.3. Store properties</a></li>
+<li><a href="#store_properties">1.1.4. Store properties</a></li>
+<li><a href="#fetch_persistent_state_remove">1.1.5. Fetch Persistent State Remove</a></li>
+<li><a href="#rocksdb_store">1.1.6. RocksDB store</a></li>
+<li><a href="#micrometer_metrics">1.1.7. Micrometer Metrics</a></li>
+<li><a href="#jakarta_ee_compatible_jars_available">1.1.8. Jakarta EE compatible jars available</a></li>
+<li><a href="#hibernate_6_0_2lc_update">1.1.9. Hibernate 6.0 2LC Update</a></li>
+<li><a href="#jpastore_has_been_removed">1.1.10. JPAStore has been removed</a></li>
+<li><a href="#protodoc_annotations_are_no_longer_necessary">1.1.11. ProtoDoc annotations are no longer necessary</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_12_1_to_13_0">1.2. Upgrading from 12.1 to 13.0</a>
@@ -896,6 +907,14 @@ $(addBlockSwitches);
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Learn how to upgrade and migrate your Infinispan deployments to the latest version or between later versions.
+This guide also explains how to perform rolling upgrades of Infinispan Server deployments and migrate persistent cache stores.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="upgrading"><a class="anchor" href="#upgrading"></a>1. Infinispan Version Details</h2>
 <div class="sectionbody">
@@ -905,13 +924,19 @@ $(addBlockSwitches);
 <div class="sect2">
 <h3 id="upgrading_from_13_0_to_14_0"><a class="anchor" href="#upgrading_from_13_0_to_14_0"></a>1.1. Upgrading from 13.0 to 14.0</h3>
 <div class="sect3">
-<h4 id="scattered_cache_deprecation"><a class="anchor" href="#scattered_cache_deprecation"></a>1.1.1. Scattered cache deprecation</h4>
+<h4 id="security_authorization_spi"><a class="anchor" href="#security_authorization_spi"></a>1.1.1. Security authorization SPI</h4>
+<div class="paragraph">
+<p><code>org.infinispan.security.PrincipalRoleMapperContext</code> is deprecated in 14.0 and replaced by <code>org.infinispan.security.AuthorizationMapperContext</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="scattered_cache_deprecation"><a class="anchor" href="#scattered_cache_deprecation"></a>1.1.2. Scattered cache deprecation</h4>
 <div class="paragraph">
 <p>The scattered cache mode is deprecated in 14.0 and will be removed in 16.0.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="cross_site_replication"><a class="anchor" href="#cross_site_replication"></a>1.1.2. Cross Site Replication</h4>
+<h4 id="cross_site_replication"><a class="anchor" href="#cross_site_replication"></a>1.1.3. Cross Site Replication</h4>
 <div class="sect4">
 <h5 id="asynchronous_backup_strategy_logging"><a class="anchor" href="#asynchronous_backup_strategy_logging"></a>Asynchronous backup strategy logging</h5>
 <div class="paragraph">
@@ -926,7 +951,7 @@ To disable exceptions for async backup operations, set <code>failure-policy="IGN
 </div>
 </div>
 <div class="sect3">
-<h4 id="store_properties"><a class="anchor" href="#store_properties"></a>1.1.3. Store properties</h4>
+<h4 id="store_properties"><a class="anchor" href="#store_properties"></a>1.1.4. Store properties</h4>
 <div class="paragraph">
 <p>Store provided properties are no longer allowed to override store explicit configuration.</p>
 </div>
@@ -957,6 +982,114 @@ The same configuration should be changed to the following instead.</p>
   &lt;/file-store&gt;
 &lt;/persistence&gt;</pre>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="fetch_persistent_state_remove"><a class="anchor" href="#fetch_persistent_state_remove"></a>1.1.5. Fetch Persistent State Remove</h4>
+<div class="paragraph">
+<p>The store property named fetch-persistent-state has been deprecated and removed from xml configuration.
+Instead the first configured non shared store that allows for bulk loading will be used for state transfer of entries.
+This reduces configuration complexity and does not allow for a configuration that could lose data due to not
+transferring entries stored in a store.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This change has no effect for shared stores
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rocksdb_store"><a class="anchor" href="#rocksdb_store"></a>1.1.6. RocksDB store</h4>
+<div class="paragraph">
+<p>The RocksDB implementation is no longer included by default with the server. It can be installed via the CLI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>cli.sh install org.rocksdb:rocksdbjni:6.22.1.1</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="micrometer_metrics"><a class="anchor" href="#micrometer_metrics"></a>1.1.7. Micrometer Metrics</h4>
+<div class="paragraph">
+<p>Microprofile metrics are no longer supported, available output metrics are now Prometheus and OpenMetrics.</p>
+</div>
+<div class="paragraph">
+<p>The implementation relies on Micrometer library, for more information see
+the <a href="../server/server.html#configuring-metrics_statistics-jmx">Configuring Infinispan metrics</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jakarta_ee_compatible_jars_available"><a class="anchor" href="#jakarta_ee_compatible_jars_available"></a>1.1.8. Jakarta EE compatible jars available</h4>
+<div class="paragraph">
+<p>We now distribute Jakarta EE based jars for users.
+This is in addition to the javax compatible jars.</p>
+</div>
+<div class="paragraph">
+<p>Some modules that have Jakarta based jars are the following (note there are quite a few more, just some prime examples)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>infinispan-commons</p>
+</li>
+<li>
+<p>infinispan-core</p>
+</li>
+<li>
+<p>infinispan-multimap</p>
+</li>
+<li>
+<p>infinispan-query</p>
+</li>
+<li>
+<p>infinispan-client-hotrod</p>
+</li>
+<li>
+<p>infinispan-api</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If your application requires using the jakarta instead of javax namespace all you need to do is change your maven
+dependency to use the jakarta scope</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+   &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
+   &lt;artifactId&gt;infinispan-client-hotrod&lt;/artifactId&gt;
+   &lt;classifier&gt;jakarta&lt;/classifier&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="hibernate_6_0_2lc_update"><a class="anchor" href="#hibernate_6_0_2lc_update"></a>1.1.9. Hibernate 6.0 2LC Update</h4>
+<div class="paragraph">
+<p>Hibernate 6.0 is now supported and is the only implementation supported moving forward.
+If Hibernate 5.3 support is needed, you must use an older version of Infinispan.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jpastore_has_been_removed"><a class="anchor" href="#jpastore_has_been_removed"></a>1.1.10. JPAStore has been removed</h4>
+<div class="paragraph">
+<p>The JPAStore has been removed in Infinispan 14.0.
+It is suggested instead to use the new SQL Table or Query Stores that were added in Infinispan 13.0.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="protodoc_annotations_are_no_longer_necessary"><a class="anchor" href="#protodoc_annotations_are_no_longer_necessary"></a>1.1.11. ProtoDoc annotations are no longer necessary</h4>
+<div class="paragraph">
+<p>It is no longer necessary to wrap annotations, such as those required for indexing, within <code>@ProtoDoc</code> annotations.
+Any annotations will simply be copied as comments to the generated <code>.proto</code> files.</p>
 </div>
 </div>
 </div>
@@ -1103,7 +1236,6 @@ b.persistence()
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;persistence passivation="false"&gt;
   &lt;single-file-store shared="false"
                      preload="true"
-                     fetch-state="true"
                      read-only="false"/&gt;
 &lt;/persistence&gt;</code></pre>
 </div>
@@ -3219,7 +3351,7 @@ builder.transaction().useSynchronization(false).recovery().enabled(false)</code>
 <div class="sect3">
 <h4 id="api"><a class="anchor" href="#api"></a>1.20.1. API</h4>
 <div class="paragraph">
-<p>The cache and cache manager hierarchies have changed slightly in 5.1 with the introduction of
+<p>The cache and Cache Manager hierarchies have changed slightly in 5.1 with the introduction of
 <a href="https://docs.jboss.org/infinispan/5.1/apidocs/org/infinispan/api/BasicCache.html"><code>BasicCache</code></a>
 and
 <a href="https://docs.jboss.org/infinispan/5.1/apidocs/org/infinispan/api/BasicCacheContainer.html"><code>BasicCacheContainer</code></a>
@@ -3499,7 +3631,7 @@ Depending on your environment you can also use different network interfaces and 
 <p>CLI: Use the <code class="command">migrate cluster connect</code> command on the target cluster.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
+<pre class="highlight nowrap"><code>[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
 </div>
 </div>
 </li>
@@ -3569,7 +3701,7 @@ You must perform the synchronization for each cache that you want to migrate to 
 <p>CLI: Use the <code class="command">migrate cluster synchronize</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[//containers/default]&gt; migrate cluster synchronize -c myCache</code></pre>
+<pre class="highlight nowrap"><code>migrate cluster synchronize -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -3596,7 +3728,7 @@ entries copied to the target cluster.</p>
 <p>CLI: Use the <code class="command">migrate cluster disconnect</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[//containers/default]&gt; migrate cluster disconnect -c myCache</code></pre>
+<pre class="highlight nowrap"><code>migrate cluster disconnect -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -3674,8 +3806,7 @@ the target version for the patch you want to create.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -3683,7 +3814,7 @@ the target version for the patch you want to create.</p>
 <p>Use the <code>patch create</code> command to generate a patch archive and include the <code>-q</code> option with a meaningful qualifier to describe the patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch create -q "this is my test patch" path/to/mypatch.zip \
+<pre class="highlight nowrap"><code>patch create -q "this is my test patch" path/to/mypatch.zip \
 path/to/target/server/home path/to/source/server/home</code></pre>
 </div>
 </div>
@@ -3703,7 +3834,7 @@ Paths are relative to <code>$ISPN_HOME</code> for the target server.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch create -q "this is my test patch" path/to/mypatch.zip \
+<pre class="highlight nowrap"><code>patch create -q "this is my test patch" path/to/mypatch.zip \
 path/to/target/server/home \
 path/to/source/server1/home path/to/source/server2/home</code></pre>
 </div>
@@ -3721,9 +3852,12 @@ install "mypatch.zip".</p>
 <p>Describe the generated patch archive.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch describe path/to/mypatch.zip
-
-Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
+<pre class="highlight nowrap"><code>patch describe path/to/mypatch.zip</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -3786,8 +3920,7 @@ patching.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -3816,7 +3949,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is installed.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/server.sh
+<pre class="highlight nowrap"><code>bin/server.sh
 ...
 ISPN080001: Infinispan Server $version</code></pre>
 </div>
@@ -3840,7 +3973,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch install path/to/patch.zip --server=path/to/server/home</code></pre>
+<pre class="highlight nowrap"><code>patch install path/to/patch.zip --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -3885,8 +4018,7 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -3894,9 +4026,12 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>List the installed patches.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch ls
-
-Infinispan patch target=$target_version source=$source_version
+<pre class="highlight nowrap"><code>patch ls</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>Infinispan patch target=$target_version source=$source_version
 created=$timestamp installed=$timestamp</code></pre>
 </div>
 </div>
@@ -3915,7 +4050,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Roll back the last installed patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch rollback</code></pre>
+<pre class="highlight nowrap"><code>patch rollback</code></pre>
 </div>
 </div>
 </li>
@@ -3923,7 +4058,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Quit the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; quit</code></pre>
+<pre class="highlight nowrap"><code>quit</code></pre>
 </div>
 </div>
 </li>
@@ -3931,9 +4066,12 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is rolled back to the previous version.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>$ bin/server.sh
-...
-ISPN080001: Infinispan Server $version</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>ISPN080001: Infinispan Server $version</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3955,7 +4093,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; patch rollback --server=path/to/server/home</code></pre>
+<pre class="highlight nowrap"><code>patch rollback --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -4114,7 +4252,7 @@ file.</p>
 <p>Prepend all configuration properties with <code>source.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">source.type=SOFT_INDEX_FILE_STORE
+<pre class="highlight nowrap"><code>source.type=SOFT_INDEX_FILE_STORE
 source.cache_name=myCache
 source.location=/path/to/source/sifs
 source.version=&lt;version&gt;</code></pre>
@@ -4132,7 +4270,7 @@ source.version=&lt;version&gt;</code></pre>
 <p>Prepend all configuration properties with <code>target.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">target.type=SINGLE_FILE_STORE
+<pre class="highlight nowrap"><code>target.type=SINGLE_FILE_STORE
 target.cache_name=myCache
 target.location=/path/to/target/sfs.dat</code></pre>
 </div>
@@ -4520,7 +4658,7 @@ repository, run the following command:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

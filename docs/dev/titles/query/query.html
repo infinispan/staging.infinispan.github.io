@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Querying Infinispan Caches</title>
+<title>Querying Infinispan caches</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/query/query.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,7 +525,7 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Querying Infinispan Caches</h1>
+<h1>Querying Infinispan caches</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -533,6 +536,7 @@ $(addBlockSwitches);
 <li><a href="#indexing-configuration_indexing-caches">1.1.1. Index configuration</a>
 <ul class="sectlevel4">
 <li><a href="#index_storage">Index storage</a></li>
+<li><a href="#index_startup_mode">Index startup mode</a></li>
 <li><a href="#index_reader">Index reader</a></li>
 <li><a href="#index_writer">Index writer</a></li>
 </ul>
@@ -620,7 +624,8 @@ $(addBlockSwitches);
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan lets you perform queries with embedded and remote caches to efficiently and quickly look up values in your data set.</p>
+<p>Use the Ickle query language with Infinispan caches to efficiently and quickly gain real-time insights into your data.
+Learn how to configure indexing and perform queries on remote and embedded caches.</p>
 </div>
 </div>
 </div>
@@ -821,6 +826,56 @@ You should store indexes in JVM heap memory only for small datasets.</p>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
   &lt;indexing storage="local-heap"&gt;
+    &lt;!-- Additional indexing configuration goes here. --&gt;
+  &lt;/indexing&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="index_startup_mode"><a class="anchor" href="#index_startup_mode"></a>Index startup mode</h5>
+<div class="paragraph">
+<p>When Infinispan starts caches it can perform operations to ensure the index is consistent with data in the cache.
+By default no indexing operation takes place when a cache starts but you can configure Infinispan to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Clear the index when the cache starts.</p>
+</li>
+<li>
+<p>Reindex the cache when it starts.</p>
+</li>
+<li>
+<p>Automatically clear or reindex the cache.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If data is volatile and the index is persistent then the cache is cleared when it starts.</p>
+</li>
+<li>
+<p>If data is persistent and the index is volatile then the cache is reindexed when it starts.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Clear the index when the cache starts</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;indexing storage="filesystem" startup-mode="purge"&gt;
+    &lt;!-- Additional indexing configuration goes here. --&gt;
+  &lt;/indexing&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Rebuild the index when the cache starts</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;indexing storage="local-heap" startup-mode="reindex"&gt;
     &lt;!-- Additional indexing configuration goes here. --&gt;
   &lt;/indexing&gt;
 &lt;/distributed-cache&gt;</code></pre>
@@ -1049,7 +1104,7 @@ You also need to provide Infinispan with a structured representation of the enti
 <div class="ulist">
 <ul>
 <li>
-<p>Annotate your Java classes directly with <code>@ProtoDoc("@Indexed")</code> and <code>@ProtoDoc("@Field(&#8230;&#8203;)")</code>.<br>
+<p>Annotate your Java classes directly with <code>@Indexed</code> and <code>@Field(&#8230;&#8203;)</code>.<br>
 You then generate Protobuf schema, <code>.proto</code> files, before uploading them to Infinispan Server.</p>
 </li>
 <li>
@@ -1822,7 +1877,7 @@ This procedure explains how to index query a remote cache that stores <code>Book
 </ul>
 </div>
 <div class="paragraph">
-<p>Infinispan provides this processor for the <code>@ProtoField</code> and <code>@ProtoDoc</code> annotations so you can generate Protobuf schemas and perform queries.</p>
+<p>Infinispan provides this processor for the <code>@ProtoField</code> annotations so you can generate Protobuf schemas and perform queries.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1854,22 +1909,27 @@ This procedure explains how to index query a remote cache that stores <code>Book
 <div class="listingblock">
 <div class="title">Book.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import org.infinispan.protostream.annotations.ProtoDoc;
+<pre class="highlight"><code class="language-java" data-lang="java">import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
-@ProtoDoc("@Indexed")
+@Indexed
 public class Book {
 
-   @ProtoDoc("@Field(index=Index.YES, analyze = Analyze.YES, store = Store.NO)")
+   @Field(index=Index.YES, analyze = Analyze.YES, store = Store.NO)
    @ProtoField(number = 1)
    final String title;
 
-   @ProtoDoc("@Field(index=Index.YES, analyze = Analyze.YES, store = Store.NO)")
+   @Field(index=Index.YES, analyze = Analyze.YES, store = Store.NO)
    @ProtoField(number = 2)
    final String description;
 
-   @ProtoDoc("@Field(index=Index.YES, analyze = Analyze.YES, store = Store.NO)")
+   @Field(index=Index.YES, store = Store.NO)
    @ProtoField(number = 3, defaultValue = "0")
    final int publicationYear;
 
@@ -1890,7 +1950,7 @@ public class Book {
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Reference the class that includes the <code>@ProtoField</code> and <code>@ProtoDoc</code> annotations with the <code>includeClasses</code> parameter.</p>
+<p>Reference the class that includes the <code>@ProtoField</code> annotations with the <code>includeClasses</code> parameter.</p>
 </li>
 <li>
 <p>Define a name for the Protobuf schema that you generate and filesystem path with the <code>schemaFileName</code> and <code>schemaFilePath</code> parameters.</p>
@@ -2078,7 +2138,7 @@ message Person {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; schema --upload=person.proto person.proto</code></pre>
+<pre class="highlight nowrap"><code>schema --upload=person.proto person.proto</code></pre>
 </div>
 </div>
 </li>
@@ -2104,7 +2164,7 @@ message Person {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default]&gt; create cache --file=people.xml people</code></pre>
+<pre class="highlight nowrap"><code>create cache --file=people.xml people</code></pre>
 </div>
 </div>
 </li>
@@ -2155,7 +2215,7 @@ For this example procedure, create entries that use the following JSON values:</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default/caches/people]&gt; put --encoding=application/json --file=personone.json personone</code></pre>
+<pre class="highlight nowrap"><code>put --encoding=application/json --file=personone.json personone</code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -2180,7 +2240,7 @@ For this example procedure, create entries that use the following JSON values:</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[//containers/default/caches/people]&gt; query "from org.infinispan.example.Person p WHERE p.name='Person' ORDER BY p.age ASC"</code></pre>
+<pre class="highlight nowrap"><code>query "from org.infinispan.example.Person p WHERE p.name='Person' ORDER BY p.age ASC"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2232,11 +2292,11 @@ message TestEntity {
 <div class="listingblock secondary">
 <div class="title">Java classes</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-java" data-lang="java">@ProtoDoc("@Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = \"keyword\"))")
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">@Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "keyword"))
 @ProtoField(1)
 final String id;
 
-@ProtoDoc("@Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = \"simple\"))")
+@Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "simple"))
 @ProtoField(2)
 final String description;</code></pre>
 </div>
@@ -2285,6 +2345,10 @@ final String description;</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>filename</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Splits text fields into larger size tokens than the <code>standard</code> analyzer, treating whitespace as a delimiter and converts all letters to lowercase characters.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lowercase</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts all the letters of the text to lowercase characters, the text is not tokenized (normalizer).</p></td>
 </tr>
 </tbody>
 </table>
@@ -2923,7 +2987,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

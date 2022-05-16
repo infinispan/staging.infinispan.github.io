@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Security Guide for Infinispan 14.0</title>
+<title>Infinispan Security Guide</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,12 +437,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/index.html">
+<link rel="canonical" href="https://infinispan.org/docs/stable/titles/security/security.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -522,62 +525,107 @@ $(addBlockSwitches);
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Security Guide for Infinispan 14.0</h1>
+<h1>Infinispan Security Guide</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#security">1. Infinispan Security</a></li>
-<li><a href="#security-authorization">2. Configuring user roles and permissions</a>
+<li><a href="#security-authorization">2. Security authorization with role-based access control</a>
 <ul class="sectlevel2">
-<li><a href="#security-authorization_security-authorization">2.1. Security authorization</a>
+<li><a href="#default-user-roles_security-authorization">2.1. Infinispan user roles and permissions</a>
 <ul class="sectlevel3">
-<li><a href="#user-roles-permissions_security-authorization">2.1.1. User roles and permissions</a></li>
-<li><a href="#user-permissions_security-authorization">2.1.2. Permissions</a>
-<ul class="sectlevel4">
-<li><a href="#cache_manager_permissions">Cache Manager permissions</a></li>
-<li><a href="#cache_permissions">Cache permissions</a></li>
+<li><a href="#user-permissions_security-authorization">2.1.1. Permissions</a></li>
+<li><a href="#role-mappers_security-authorization">2.1.2. Role and permission mappers</a></li>
+<li><a href="#configuring-role-mappers_security-authorization">2.1.3. Configuring role mappers</a></li>
 </ul>
 </li>
-<li><a href="#role-mappers_security-authorization">2.1.3. Role mappers</a>
-<ul class="sectlevel4">
-<li><a href="#cluster_role_mappers">Cluster role mappers</a></li>
-<li><a href="#identity_role_mappers">Identity role mappers</a></li>
-<li><a href="#commonname_role_mappers">CommonName role mappers</a></li>
-<li><a href="#custom_role_mappers">Custom role mappers</a></li>
+<li><a href="#configuring-cache-authorization_security-authorization">2.2. Configuring caches with security authorization</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#acl-cache_security-authorization">2.2. Access control list (ACL) cache</a></li>
-<li><a href="#customizing-authorization_security-authorization">2.3. Customizing roles and permissions</a></li>
-<li><a href="#configuring-cache-authorization_security-authorization">2.4. Configuring caches with security authorization</a></li>
-<li><a href="#disabling-authorization_security-authorization">2.5. Disabling security authorization</a></li>
-<li><a href="#configuring-authorization-programmatically_security-authorization">2.6. Programmatically configuring authorization</a></li>
-<li><a href="#code-execution-security-authorization_security-authorization">2.7. Code execution with securirty authorization</a></li>
-</ul>
-</li>
-<li><a href="#secure-cluster-transport">3. Encrypting cluster transport</a>
+<li><a href="#security-realms">3. Security realms</a>
 <ul class="sectlevel2">
-<li><a href="#securing-cluster-transport-tls-identities_secure-cluster-transport">3.1. Securing cluster transport with TLS identities</a></li>
-<li><a href="#jgroups-encryption-protocols_secure-cluster-transport">3.2. JGroups encryption protocols</a></li>
-<li><a href="#configuring-jgroups-asym-encrypt_secure-cluster-transport">3.3. Securing cluster transport with asymmetric encryption</a></li>
-<li><a href="#configuring-jgroups-sym-encrypt_secure-cluster-transport">3.4. Securing cluster transport with symmetric encryption</a></li>
-</ul>
-</li>
-<li><a href="#ports_protocols">4. Infinispan Ports and Protocols</a>
-<ul class="sectlevel2">
-<li><a href="#server-ports-protocols_network">4.1. Infinispan Server ports and protocols</a>
+<li><a href="#creating-security-realms_security-realms">3.1. Creating security realms</a></li>
+<li><a href="#setting-up-kerberos-identities_security-realms">3.2. Setting up Kerberos identities</a></li>
+<li><a href="#property-security-realms_security-realms">3.3. Property realms</a></li>
+<li><a href="#ldap-security-realms_security-realms">3.4. LDAP realms</a>
 <ul class="sectlevel3">
-<li><a href="#configuring-firewalls_network">4.1.1. Configuring network firewalls for Infinispan traffic</a></li>
+<li><a href="#ldap-realm-principal-rewriting_security-realms">3.4.1. LDAP realm principal re-writing</a></li>
 </ul>
 </li>
-<li><a href="#jgroups-ports_network">4.2. TCP and UDP ports for cluster traffic</a></li>
+<li><a href="#token-security-realms_security-realms">3.5. Token realms</a></li>
+<li><a href="#trust-store-security-realms_security-realms">3.6. Trust store realms</a></li>
+<li><a href="#distributed-security-realms_security-realms">3.7. Distributed security realms</a></li>
+</ul>
+</li>
+<li><a href="#authentication-mechanisms">4. Endpoint authentication mechanisms</a>
+<ul class="sectlevel2">
+<li><a href="#server-authentication_endpoint-authentication">4.1. Infinispan Server authentication</a></li>
+<li><a href="#configuring-server-authentication_endpoint-authentication">4.2. Configuring Infinispan Server authentication mechanisms</a>
+<ul class="sectlevel3">
+<li><a href="#disabling-authentication_endpoint-authentication">4.2.1. Disabling authentication</a></li>
+</ul>
+</li>
+<li><a href="#server-endpoint-authentication-mechanisms_endpoint-authentication">4.3. Infinispan Server authentication mechanisms</a>
+<ul class="sectlevel3">
+<li><a href="#sasl-authentication-mechanisms_endpoint-authentication">4.3.1. SASL authentication mechanisms</a></li>
+<li><a href="#sasl-quality-of-protection_endpoint-authentication">4.3.2. SASL quality of protection (QoP)</a></li>
+<li><a href="#sasl-policies-hot-rod-authentication_endpoint-authentication">4.3.3. SASL policies</a></li>
+<li><a href="#rest-authentication-mechanisms_endpoint-authentication">4.3.4. HTTP authentication mechanisms</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#configuring-encryption">5. Configuring TLS/SSL encryption</a>
+<ul class="sectlevel2">
+<li><a href="#configuring-server-keystores_endpoint-security">5.1. Configuring Infinispan Server keystores</a>
+<ul class="sectlevel3">
+<li><a href="#generating-server-keystores_endpoint-security">5.1.1. Generating Infinispan Server keystores</a></li>
+<li><a href="#configuring-ssl-engine_endpoint-security">5.1.2. Configuring TLS versions and cipher suites</a></li>
+</ul>
+</li>
+<li><a href="#configuring-server-fips_endpoint-security">5.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</a></li>
+<li><a href="#configuring-client-certificate-authentication_endpoint-security">5.3. Configuring client certificate authentication</a></li>
+<li><a href="#configuring-client-certificate-authorization_endpoint-security">5.4. Configuring authorization with client certificates</a></li>
+</ul>
+</li>
+<li><a href="#credential-keystores">6. Storing Infinispan Server credentials in keystores</a>
+<ul class="sectlevel2">
+<li><a href="#setting-up-credential-keystores_credential-keystores">6.1. Setting up credential keystores</a></li>
+<li><a href="#securing-passwords-credential-keystores_credential-keystores">6.2. Securing passwords for credential keystores</a></li>
+<li><a href="#credential-keystore-configuration_credential-keystores">6.3. Credential keystore configuration</a></li>
+<li><a href="#credential-keystore-references_credential-keystores">6.4. Credential keystore references</a></li>
+</ul>
+</li>
+<li><a href="#secure-cluster-transport">7. Encrypting cluster transport</a>
+<ul class="sectlevel2">
+<li><a href="#securing-cluster-transport-tls-identities_secure-cluster-transport">7.1. Securing cluster transport with TLS identities</a></li>
+<li><a href="#jgroups-encryption-protocols_secure-cluster-transport">7.2. JGroups encryption protocols</a></li>
+<li><a href="#configuring-jgroups-asym-encrypt_secure-cluster-transport">7.3. Securing cluster transport with asymmetric encryption</a></li>
+<li><a href="#configuring-jgroups-sym-encrypt_secure-cluster-transport">7.4. Securing cluster transport with symmetric encryption</a></li>
+</ul>
+</li>
+<li><a href="#ports_protocols">8. Infinispan ports and protocols</a>
+<ul class="sectlevel2">
+<li><a href="#server-ports-protocols_network">8.1. Infinispan Server ports and protocols</a>
+<ul class="sectlevel3">
+<li><a href="#configuring-firewalls_network">8.1.1. Configuring network firewalls for Infinispan traffic</a></li>
+</ul>
+</li>
+<li><a href="#jgroups-ports_network">8.2. TCP and UDP ports for cluster traffic</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Securing the environment and restricting access to clusters is of critical importance for any deployment that stores sensitive data.
+This guide provides information and security best practices to help you protect Infinispan caches against network intrusion and unauthorized access.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="security"><a class="anchor" href="#security"></a>1. Infinispan Security</h2>
 <div class="sectionbody">
@@ -611,68 +659,39 @@ to readily integrate with enterprise-level security frameworks.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="security-authorization"><a class="anchor" href="#security-authorization"></a>2. Configuring user roles and permissions</h2>
+<h2 id="security-authorization"><a class="anchor" href="#security-authorization"></a>2. Security authorization with role-based access control</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Authorization is a security feature that requires users to have certain permissions before they can access caches or interact with Infinispan resources.
-You assign roles to users that provide different levels of permissions, from read-only access to full, super user privileges.</p>
+<p>Role-based access control (RBAC) capabilities use different permissions levels to restrict user interactions with Infinispan.</p>
 </div>
-<div class="sect2">
-<h3 id="security-authorization_security-authorization"><a class="anchor" href="#security-authorization_security-authorization"></a>2.1. Security authorization</h3>
-<div class="paragraph">
-<p>Infinispan authorization secures your deployment by restricting user access.</p>
-</div>
-<div class="paragraph">
-<p>User applications or clients must belong to a role that is assigned with sufficient permissions before they can perform operations on Cache Managers or caches.</p>
-</div>
-<div class="paragraph">
-<p>For example, you configure authorization on a specific cache instance so that invoking <code>Cache.get()</code> requires an identity to be assigned a role with read permission while <code>Cache.put()</code> requires a role with write permission.</p>
-</div>
-<div class="paragraph">
-<p>In this scenario, if a user application or client with the <code>io</code> role attempts to write an entry, Infinispan denies the request and throws a security exception.
-If a user application or client with the <code>writer</code> role sends a write request, Infinispan validates authorization and issues a token for subsequent operations.</p>
-</div>
-<div class="paragraph">
-<div class="title">Identities</div>
-<p>Identities are security Principals of type <code>java.security.Principal</code>.
-Subjects, implemented with the <code>javax.security.auth.Subject</code> class, represent a group of security Principals.
-In other words, a Subject represents a user and all groups to which it belongs.</p>
-</div>
-<div class="paragraph">
-<div class="title">Identities to roles</div>
-<p>Infinispan uses role mappers so that security principals correspond to roles,
-which you assign one or more permissions.</p>
-</div>
-<div class="paragraph">
-<p>The following image illustrates how security principals correspond to roles:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../../topics/images/SecurityRolesPermissions.svg" alt="Roles/Permissions mapping">
-</div>
-</div>
-<div class="sect3">
-<h4 id="user-roles-permissions_security-authorization"><a class="anchor" href="#user-roles-permissions_security-authorization"></a>2.1.1. User roles and permissions</h4>
-<div class="paragraph">
-<p>Infinispan includes a default set of roles that grant users with permissions to access data and interact with Infinispan resources.</p>
-</div>
-<div class="paragraph">
-<p><code>ClusterRoleMapper</code> is the default mechanism that Infinispan uses to associate security principals to authorization roles.</p>
-</div>
-<div class="admonitionblock important">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 <div class="paragraph">
-<p><code>ClusterRoleMapper</code> matches principal names to role names.
-A user named <code>admin</code> gets <code>admin</code> permissions automatically, a user named <code>deployer</code> gets <code>deployer</code> permissions, and so on.</p>
+<p>For information on creating users and configuring authorization specific to remote or embedded caches, see:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../server/server.html#rbac-remote">Configuring user roles and permissions with Infinispan Server</a></p>
+</li>
+<li>
+<p><a href="../embedding/embedding.html#rbac-embedded">Programmatically configuring user roles and permissions</a></p>
+</li>
+</ul>
 </div>
 </td>
 </tr>
 </table>
+</div>
+<div class="sect2">
+<h3 id="default-user-roles_security-authorization"><a class="anchor" href="#default-user-roles_security-authorization"></a>2.1. Infinispan user roles and permissions</h3>
+<div class="paragraph">
+<p>Infinispan includes several roles that provide users with permissions to access caches and Infinispan resources.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -715,40 +734,35 @@ A user named <code>admin</code> gets <code>admin</code> permissions automaticall
 </tr>
 </tbody>
 </table>
-<div class="ulist">
-<div class="title">Reference</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs">org.infinispan.security.AuthorizationPermission Enumeration</a></p>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/AuthorizationPermission.html">org.infinispan.security.AuthorizationPermission Enum</a></p>
 </li>
 <li>
 <p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
 </li>
 </ul>
 </div>
-</div>
 <div class="sect3">
-<h4 id="user-permissions_security-authorization"><a class="anchor" href="#user-permissions_security-authorization"></a>2.1.2. Permissions</h4>
+<h4 id="user-permissions_security-authorization"><a class="anchor" href="#user-permissions_security-authorization"></a>2.1.1. Permissions</h4>
 <div class="paragraph">
-<p>Authorization roles have different permissions with varying levels of access to Infinispan.
-Permissions let you restrict user access to both Cache Managers and caches.</p>
+<p>User roles are sets of permissions with different access levels.</p>
 </div>
-<div class="sect4">
-<h5 id="cache_manager_permissions"><a class="anchor" href="#cache_manager_permissions"></a>Cache Manager permissions</h5>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<caption class="title">Table 1. Cache Manager permissions</caption>
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col>
+<col>
+<col>
 </colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Permission</th>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permission</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CONFIGURATION</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>defineConfiguration</code></p></td>
@@ -781,23 +795,19 @@ Permissions let you restrict user access to both Cache Managers and caches.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect4">
-<h5 id="cache_permissions"><a class="anchor" href="#cache_permissions"></a>Cache permissions</h5>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<caption class="title">Table 2. Cache permissions</caption>
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col>
+<col>
+<col>
 </colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Permission</th>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permission</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">READ</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>get</code>, <code>contains</code></p></td>
@@ -869,78 +879,34 @@ Permissions let you restrict user access to both Cache Managers and caches.</p>
 </ul>
 </div>
 </div>
-</div>
 <div class="sect3">
-<h4 id="role-mappers_security-authorization"><a class="anchor" href="#role-mappers_security-authorization"></a>2.1.3. Role mappers</h4>
+<h4 id="role-mappers_security-authorization"><a class="anchor" href="#role-mappers_security-authorization"></a>2.1.2. Role and permission mappers</h4>
 <div class="paragraph">
-<p>Infinispan includes a <code>PrincipalRoleMapper</code> API that maps security Principals in a Subject to authorization roles that you can assign to users.</p>
-</div>
-<div class="sect4">
-<h5 id="cluster_role_mappers"><a class="anchor" href="#cluster_role_mappers"></a>Cluster role mappers</h5>
-<div class="paragraph">
-<p><code>ClusterRoleMapper</code> uses a persistent replicated cache to dynamically store principal-to-role mappings for the default roles and permissions.</p>
+<p>Infinispan users are implemented with the <code>javax.security.auth.Subject</code> class and represent a grouping of security principals of type <code>java.security.Principal</code>.</p>
 </div>
 <div class="paragraph">
-<p>By default uses the Principal name as the role name and implements <code>org.infinispan.security.MutableRoleMapper</code> which exposes methods to change role mappings at runtime.</p>
+<p>Infinispan includes the <code>PrincipalRoleMapper</code> API to associate security principals to roles and the <code>RolePermissionMapper</code> API to associate roles with sets of permissions.
+Infinispan also provides the following role and permission mapper implementations:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Java class: <code>org.infinispan.security.mappers.ClusterRoleMapper</code></p>
-</li>
-<li>
-<p>Declarative configuration: <code>&lt;cluster-role-mapper /&gt;</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="identity_role_mappers"><a class="anchor" href="#identity_role_mappers"></a>Identity role mappers</h5>
-<div class="paragraph">
-<p><code>IdentityRoleMapper</code> uses the Principal name as the role name.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Java class: <code>org.infinispan.security.mappers.IdentityRoleMapper</code></p>
-</li>
-<li>
-<p>Declarative configuration: <code>&lt;identity-role-mapper /&gt;</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="commonname_role_mappers"><a class="anchor" href="#commonname_role_mappers"></a>CommonName role mappers</h5>
-<div class="paragraph">
-<p><code>CommonNameRoleMapper</code> uses the Common Name (CN) as the role name if the
-Principal name is a Distinguished Name (DN).</p>
-</div>
-<div class="paragraph">
-<p>For example this DN, <code>cn=managers,ou=people,dc=example,dc=com</code>, maps to the <code>managers</code> role.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Java class: <code>org.infinispan.security.mappers.CommonRoleMapper</code></p>
-</li>
-<li>
-<p>Declarative configuration: <code>&lt;common-name-role-mapper /&gt;</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="custom_role_mappers"><a class="anchor" href="#custom_role_mappers"></a>Custom role mappers</h5>
-<div class="paragraph">
-<p>Custom role mappers are implementations of <code>org.infinispan.security.PrincipalRoleMapper</code>.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Declarative configuration: <code>&lt;custom-role-mapper class="my.custom.RoleMapper" /&gt;</code></p>
-</li>
-</ul>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Cluster role mapper</dt>
+<dd>
+<p>Stores principal to role mappings in the cluster registry.</p>
+</dd>
+<dt class="hdlist1">Cluster permission mapper</dt>
+<dd>
+<p>Stores role to permission mappings in the cluster registry and allows you to dynamically modify user roles and permissions.</p>
+</dd>
+<dt class="hdlist1">Identity role mapper</dt>
+<dd>
+<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
+</dd>
+<dt class="hdlist1">Common name role mapper</dt>
+<dd>
+<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory that contains Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
+</dd>
+</dl>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -951,107 +917,53 @@ Principal name is a Distinguished Name (DN).</p>
 <li>
 <p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/PrincipalRoleMapper.html">org.infinispan.security.PrincipalRoleMapper</a></p>
 </li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="acl-cache_security-authorization"><a class="anchor" href="#acl-cache_security-authorization"></a>2.2. Access control list (ACL) cache</h3>
-<div class="paragraph">
-<p>Infinispan caches roles that you grant to users internally for optimal performance.
-Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to ensure user permissions are applied correctly.</p>
-</div>
-<div class="paragraph">
-<p>If necessary, you can disable the ACL cache or configure it with the <code>cache-size</code> and <code>cache-timeout</code> attributes.</p>
-</div>
-<div class="listingblock primary">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
-  &lt;cache-container name="acl-cache-configuration"&gt;
-    &lt;security cache-size="1000"
-              cache-timeout="300000"&gt;
-      &lt;authorization/&gt;
-    &lt;/security&gt;
-  &lt;/cache-container&gt;
-&lt;/infinispan&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">JSON</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "infinispan" : {
-    "cache-container" : {
-      "name" : "acl-cache-configuration",
-      "security" : {
-        "cache-size" : "1000",
-        "cache-timeout" : "300000",
-        "authorization" : {}
-      }
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">YAML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
-  cacheContainer:
-    name: "acl-cache-configuration"
-    security:
-      cache-size: "1000"
-      cache-timeout: "300000"
-      authorization: ~</code></pre>
-</div>
-</div>
-<div class="ulist _additional-resources">
-<div class="title">Additional resources</div>
-<ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/RolePermissionMapper.html">org.infinispan.security.RolePermissionMapper</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/mappers/IdentityRoleMapper.html">org.infinispan.security.mappers.IdentityRoleMapper</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/mappers/CommonNameRoleMapper.html">org.infinispan.security.mappers.CommonNameRoleMapper</a></p>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="customizing-authorization_security-authorization"><a class="anchor" href="#customizing-authorization_security-authorization"></a>2.3. Customizing roles and permissions</h3>
+<div class="sect3">
+<h4 id="configuring-role-mappers_security-authorization"><a class="anchor" href="#configuring-role-mappers_security-authorization"></a>2.1.3. Configuring role mappers</h4>
 <div class="paragraph">
-<p>You can customize authorization settings in your Infinispan configuration to use role mappers with different combinations of roles and permissions.</p>
+<p>Infinispan enables the cluster role mapper and cluster permission mapper by default.
+You should configure role mappers if you want to use the identity role mapper, Common Name (CN) role mapper, or a custom implementation.
+For example, if your deployment integrates with an LDAP directory and you want to use the Distinguished Name (DN) as the security principal you can configure Infinispan to use the Common Name (CN) role mapper.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Declare a role mapper and a set of custom roles and permissions in the Cache Manager configuration.</p>
+<p>Open your Infinispan configuration for editing.</p>
 </li>
 <li>
-<p>Configure authorization for caches to restrict access based on user roles.</p>
+<p>Declare the role mapper as part of the security authorization in the Cache Manager configuration.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
 </li>
 </ol>
 </div>
-<h4 id="custom_roles_and_permissions_configuration" class="discrete">Custom roles and permissions configuration</h4>
+<div class="paragraph">
+<p>With embedded caches you can programmatically configure role and permission mappers with the <code>principalRoleMapper()</code> and <code>rolePermissionMapper()</code> methods.</p>
+</div>
+<h5 id="role_mapper_configuration" class="discrete">Role mapper configuration</h5>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
-  &lt;cache-container name="custom-authorization"&gt;
-    &lt;security&gt;
-      &lt;authorization&gt;
-        &lt;!-- Declare a role mapper that associates a security principal
-             to each role. --&gt;
-        &lt;identity-role-mapper /&gt;
-        &lt;!-- Specify user roles and corresponding permissions. --&gt;
-        &lt;role name="admin" permissions="ALL" /&gt;
-        &lt;role name="reader" permissions="READ" /&gt;
-        &lt;role name="writer" permissions="WRITE" /&gt;
-        &lt;role name="supervisor" permissions="READ WRITE EXEC"/&gt;
-      &lt;/authorization&gt;
-    &lt;/security&gt;
-  &lt;/cache-container&gt;
-&lt;/infinispan&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache-container&gt;
+  &lt;security&gt;
+    &lt;authorization&gt;
+      &lt;common-name-role-mapper /&gt;
+    &lt;/authorization&gt;
+  &lt;/security&gt;
+&lt;/cache-container&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -1060,32 +972,9 @@ Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to e
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
   "infinispan" : {
     "cache-container" : {
-      "name" : "custom-authorization",
       "security" : {
         "authorization" : {
-          "identity-role-mapper" : null,
-          "roles" : {
-            "reader" : {
-              "role" : {
-                "permissions" : "READ"
-              }
-            },
-            "admin" : {
-              "role" : {
-                "permissions" : "ALL"
-              }
-            },
-            "writer" : {
-              "role" : {
-                "permissions" : "WRITE"
-              }
-            },
-            "supervisor" : {
-              "role" : {
-                "permissions" : "READ WRITE EXEC"
-              }
-            }
-          }
+          "common-name-role-mapper": {}
         }
       }
     }
@@ -1098,43 +987,32 @@ Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to e
 <div class="content">
 <pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
   cacheContainer:
-    name: "custom-authorization"
     security:
       authorization:
-        identityRoleMapper: "null"
-        roles:
-          reader:
-            role:
-              permissions: "READ"
-          admin:
-            role:
-              permissions: "ALL"
-          writer:
-            role:
-              permissions: "WRITE"
-          supervisor:
-            role:
-              permissions: "READ WRITE EXEC"</code></pre>
+        commonNameRoleMapper: ~</code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-cache-authorization_security-authorization"><a class="anchor" href="#configuring-cache-authorization_security-authorization"></a>2.4. Configuring caches with security authorization</h3>
+<h3 id="configuring-cache-authorization_security-authorization"><a class="anchor" href="#configuring-cache-authorization_security-authorization"></a>2.2. Configuring caches with security authorization</h3>
 <div class="paragraph">
-<p>Use authorization in your cache configuration to restrict user access.
-Before they can read or write cache entries, or create and delete caches, users must have a role with a sufficient level of permission.</p>
+<p>Add security authorization to caches to enforce role-based access control (RBAC).
+This requires Infinispan users to have a role with a sufficient level of permission to perform cache operations.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Ensure the <code>authorization</code> element is included in the <code>security</code> section of the <code>cache-container</code> configuration.</p>
-<div class="paragraph">
-<p>Infinispan enables security authorization in the Cache Manager by default and provides a global set of roles and permissions for caches.</p>
-</div>
-</li>
-<li>
-<p>If necessary, declare custom roles and permissions in the Cache Manager configuration.</p>
+<p>Create Infinispan users and either grant them with roles or assign them to groups.</p>
 </li>
 </ul>
 </div>
@@ -1142,26 +1020,32 @@ Before they can read or write cache entries, or create and delete caches, users 
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Open your cache configuration for editing.</p>
+<p>Open your Infinispan configuration for editing.</p>
 </li>
 <li>
-<p>Add the <code>authorization</code> element to caches to restrict user access based on their roles and permissions.</p>
+<p>Add a <code>security</code> section to the configuration.</p>
+</li>
+<li>
+<p>Specify roles that users must have to perform cache operations with the <code>authorization</code> element.</p>
+<div class="paragraph">
+<p>You can implicitly add all roles defined in the Cache Manager or explicitly define a subset of roles.</p>
+</div>
 </li>
 <li>
 <p>Save the changes to your configuration.</p>
 </li>
 </ol>
 </div>
-<h4 id="authorization_configuration" class="discrete">Authorization configuration</h4>
+<h4 id="implicit_role_configuration" class="discrete">Implicit role configuration</h4>
 <div class="paragraph">
-<p>The following configuration shows how to use implicit authorization configuration with default roles and permissions:</p>
+<p>The following configuration implicitly adds every role defined in the Cache Manager:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
   &lt;security&gt;
-    &lt;!-- Inherit authorization settings from the cache-container. --&gt; &lt;authorization/&gt;
+    &lt;authorization/&gt;
   &lt;/security&gt;
 &lt;/distributed-cache&gt;</code></pre>
 </div>
@@ -1189,7 +1073,11 @@ Before they can read or write cache entries, or create and delete caches, users 
       enabled: true</code></pre>
 </div>
 </div>
-<h4 id="custom_roles_and_permissions" class="discrete">Custom roles and permissions</h4>
+<h4 id="explicit_role_configuration" class="discrete">Explicit role configuration</h4>
+<div class="paragraph">
+<p>The following configuration explicitly adds a subset of roles defined in the Cache Manager.
+In this case Infinispan denies cache operations for any users that do not have one of the configured roles.</p>
+</div>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
@@ -1226,23 +1114,2819 @@ Before they can read or write cache entries, or create and delete caches, users 
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="disabling-authorization_security-authorization"><a class="anchor" href="#disabling-authorization_security-authorization"></a>2.5. Disabling security authorization</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="security-realms"><a class="anchor" href="#security-realms"></a>3. Security realms</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>In local development environments you can disable authorization so that users do not need roles and permissions.
-Disabling security authorization means that any user can access data and interact with Infinispan resources.</p>
+<p>Security realms integrate Infinispan Server deployments with the network protocols and infrastructure in your environment that control access and verify user identities.</p>
+</div>
+<div class="sect2">
+<h3 id="creating-security-realms_security-realms"><a class="anchor" href="#creating-security-realms_security-realms"></a>3.1. Creating security realms</h3>
+<div class="paragraph">
+<p>Add security realms to Infinispan Server configuration to control access to deployments.
+You can add one or more security realm to your configuration.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When you add security realms to your configuration, Infinispan Server automatically enables the matching authentication mechanisms for the Hot Rod and REST endpoints.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Add socket bindings to your Infinispan Server configuration as required.</p>
+</li>
+<li>
+<p>Create keystores, or have a PEM file, to configure the security realm with TLS/SSL encryption.</p>
+<div class="paragraph">
+<p>Infinispan Server can also generate keystores at startup.</p>
+</div>
+</li>
+<li>
+<p>Provision the resources or services that the security realm configuration relies on.<br>
+For example, if you add a token realm, you need to provision OAuth services.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This procedure demonstrates how to configure multiple property realms.
+Before you begin, you need to create properties files that add users and assign permissions with the Command Line Interface (CLI).
+Use the <code class="command">user create</code> commands as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
+     --users-file=application-users.properties \
+     --groups-file=application-groups.properties
+
+user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
+     --users-file=management-users.properties \
+     --groups-file=management-groups.properties</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Run <code class="command">user create --help</code> for examples and more information.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Adding credentials to a properties realm with the CLI creates the user only on the server instance to which you are connected.
+You must manually synchronize credentials in a properties realm to each node in the cluster.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Open your Infinispan configuration for editing.</p>
+<p>Open your Infinispan Server configuration for editing.</p>
 </li>
 <li>
-<p>Remove any <code>authorization</code> elements from the <code>security</code> configuration for the Cache Manager.</p>
+<p>Use the <code>security-realms</code> element in the <code>security</code> configuration to contain create multiple security realms.</p>
 </li>
 <li>
-<p>Remove any <code>authorization</code> configuration from your caches.</p>
+<p>Add a security realm with the <code>security-realm</code> element and give it a unique name with the <code>name</code> attribute.</p>
+<div class="paragraph">
+<p>To follow the example, create one security realm named <code>application-realm</code> and another named <code>management-realm</code>.</p>
+</div>
+</li>
+<li>
+<p>Provide the TLS/SSL identify for Infinispan Server with the <code>server-identities</code> element and configure a keystore as required.</p>
+</li>
+<li>
+<p>Specify the type of security realm by adding one the following elements or fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>properties-realm</code></p>
+</li>
+<li>
+<p><code>ldap-realm</code></p>
+</li>
+<li>
+<p><code>token-realm</code></p>
+</li>
+<li>
+<p><code>truststore-realm</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Specify properties for the type of security realm you are configuring as appropriate.</p>
+<div class="paragraph">
+<p>To follow the example, specify the <code>*.properties</code> files you created with the CLI using the <code>path</code> attribute on the <code>user-properties</code> and <code>group-properties</code> elements or fields.</p>
+</div>
+</li>
+<li>
+<p>If you add multiple different types of security realm to your configuration, include the <code>distributed-realm</code> element or field so that Infinispan Server uses the realms in combination with each other.</p>
+</li>
+<li>
+<p>Configure Infinispan Server endpoints to use the security realm with the with the <code>security-realm</code> attribute.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="multiple_property_realms" class="discrete">Multiple property realms</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="application-realm"&gt;
+        &lt;properties-realm groups-attribute="Roles"&gt;
+          &lt;user-properties path="application-users.properties"/&gt;
+          &lt;group-properties path="application-groups.properties"/&gt;
+        &lt;/properties-realm&gt;
+      &lt;/security-realm&gt;
+      &lt;security-realm name="management-realm"&gt;
+        &lt;properties-realm groups-attribute="Roles"&gt;
+          &lt;user-properties path="management-users.properties"/&gt;
+          &lt;group-properties path="management-groups.properties"/&gt;
+        &lt;/properties-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "management-realm",
+        "properties-realm": {
+          "groups-attribute": "Roles",
+          "user-properties": {
+            "digest-realm-name": "management-realm",
+            "path": "management-users.properties"
+          },
+          "group-properties": {
+            "path": "management-groups.properties"
+          }
+        }
+      }, {
+        "name": "application-realm",
+        "properties-realm": {
+          "groups-attribute": "Roles",
+          "user-properties": {
+            "digest-realm-name": "application-realm",
+            "path": "application-users.properties"
+          },
+          "group-properties": {
+            "path": "application-groups.properties"
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "management-realm"
+        propertiesRealm:
+          groupsAttribute: "Roles"
+          userProperties:
+            digestRealmName: "management-realm"
+            path: "management-users.properties"
+          groupProperties:
+            path: "management-groups.properties"
+      - name: "application-realm"
+        propertiesRealm:
+          groupsAttribute: "Roles"
+          userProperties:
+            digestRealmName: "application-realm"
+            path: "application-users.properties"
+          groupProperties:
+            path: "application-groups.properties"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setting-up-kerberos-identities_security-realms"><a class="anchor" href="#setting-up-kerberos-identities_security-realms"></a>3.2. Setting up Kerberos identities</h3>
+<div class="paragraph">
+<p>Add Kerberos identities to a security realm in your Infinispan Server configuration to use <em>keytab</em> files that contain service principal names and encrypted keys, derived from Kerberos passwords.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have Kerberos service account principals.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><em>keytab</em> files can contain both user and service account principals.
+However, Infinispan Server uses service account principals only which means it can provide identity to clients and allow clients to authenticate with Kerberos servers.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In most cases, you create unique principals for the Hot Rod and REST endpoints.
+For example, if you have a "datagrid" server in the "INFINISPAN.ORG" domain you should create the following service principals:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>hotrod/datagrid@INFINISPAN.ORG</code> identifies the Hot Rod service.</p>
+</li>
+<li>
+<p><code>HTTP/datagrid@INFINISPAN.ORG</code> identifies the REST service.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create keytab files for the Hot Rod and REST services.</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Linux</dt>
+<dd>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>ktutil
+ktutil:  addent -password -p datagrid@INFINISPAN.ORG -k 1 -e aes256-cts
+Password for datagrid@INFINISPAN.ORG: [enter your password]
+ktutil:  wkt http.keytab
+ktutil:  quit</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Microsoft Windows</dt>
+<dd>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>ktpass -princ HTTP/datagrid@INFINISPAN.ORG -pass * -mapuser INFINISPAN\USER_NAME
+ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>Copy the keytab files to the <code>server/conf</code> directory of your Infinispan Server installation.</p>
+</li>
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add a <code>server-identities</code> definition to the Infinispan server security realm.</p>
+</li>
+<li>
+<p>Specify the location of keytab files that provide service principals to Hot Rod and REST connectors.</p>
+</li>
+<li>
+<p>Name the Kerberos service principals.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="kerberos_identity_configuration" class="discrete">Kerberos identity configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="kerberos-realm"&gt;
+        &lt;server-identities&gt;
+          &lt;!-- Specifies a keytab file that provides a Kerberos identity. --&gt;
+          &lt;!-- Names the Kerberos service principal for the Hot Rod endpoint. --&gt;
+          &lt;!-- The required="true" attribute specifies that the keytab file must be present when the server starts. --&gt;
+          &lt;kerberos keytab-path="hotrod.keytab"
+                    principal="hotrod/datagrid@INFINISPAN.ORG"
+                    required="true"/&gt;
+          &lt;!-- Specifies a keytab file and names the Kerberos service principal for the REST endpoint. --&gt;
+          &lt;kerberos keytab-path="http.keytab"
+                    principal="HTTP/localhost@INFINISPAN.ORG"
+                    required="true"/&gt;
+        &lt;/server-identities&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+  &lt;endpoints&gt;
+    &lt;endpoint socket-binding="default"
+              security-realm="kerberos-realm"&gt;
+     &lt;hotrod-connector&gt;
+        &lt;authentication&gt;
+           &lt;sasl server-name="datagrid"
+                 server-principal="hotrod/datagrid@INFINISPAN.ORG"/&gt;
+        &lt;/authentication&gt;
+     &lt;/hotrod-connector&gt;
+     &lt;rest-connector&gt;
+       &lt;authentication server-principal="HTTP/localhost@INFINISPAN.ORG"/&gt;
+     &lt;/rest-connector&gt;
+   &lt;/endpoint&gt;
+  &lt;/endpoints&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "kerberos-realm",
+        "server-identities": [{
+          "kerberos": {
+            "principal": "hotrod/datagrid@INFINISPAN.ORG",
+            "keytab-path": "hotrod.keytab",
+            "required": true
+          },
+          "kerberos": {
+            "principal": "HTTP/localhost@INFINISPAN.ORG",
+            "keytab-path": "http.keytab",
+            "required": true
+          }
+        }]
+      }]
+    },
+    "endpoints": {
+      "endpoint": {
+        "socket-binding": "default",
+        "security-realm": "kerberos-realm",
+        "hotrod-connector": {
+          "authentication": {
+            "security-realm": "kerberos-realm",
+            "sasl": {
+              "server-name": "datagrid",
+              "server-principal": "hotrod/datagrid@INFINISPAN.ORG"
+            }
+          }
+        },
+        "rest-connector": {
+          "authentication": {
+            "server-principal": "HTTP/localhost@INFINISPAN.ORG"
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "kerberos-realm"
+        serverIdentities:
+          - kerberos:
+              principal: "hotrod/datagrid@INFINISPAN.ORG"
+              keytabPath: "hotrod.keytab"
+              required: "true"
+          - kerberos:
+              principal: "HTTP/localhost@INFINISPAN.ORG"
+              keytabPath: "http.keytab"
+              required: "true"
+  endpoints:
+    endpoint:
+      socketBinding: "default"
+      securityRealm: "kerberos-realm"
+      hotrodConnector:
+        authentication:
+          sasl:
+            serverName: "datagrid"
+            serverPrincipal: "hotrod/datagrid@INFINISPAN.ORG"
+      restConnector:
+        authentication:
+          securityRealm: "kerberos-realm"
+          serverPrincipal" : "HTTP/localhost@INFINISPAN.ORG"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="property-security-realms_security-realms"><a class="anchor" href="#property-security-realms_security-realms"></a>3.3. Property realms</h3>
+<div class="paragraph">
+<p>Property realms use property files to define users and groups.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>users.properties</code> contains Infinispan user credentials.
+Passwords can be pre-digested with the <code>DIGEST-MD5</code> and <code>DIGEST</code> authentication mechanisms.</p>
+</li>
+<li>
+<p><code>groups.properties</code> associates users with roles and permissions.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Properties files contain headers that associate them with security realms in Infinispan Server configuration.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">users.properties</div>
+<div class="content">
+<pre class="highlight nowrap"><code>myuser=a_password
+user2=another_password</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">groups.properties</div>
+<div class="content">
+<pre class="highlight nowrap"><code>myuser=supervisor,reader,writer
+user2=supervisor</code></pre>
+</div>
+</div>
+<h4 id="property_realm_configuration" class="discrete">Property realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="default"&gt;
+        &lt;!-- groups-attribute configures the "groups.properties" file to contain security authorization roles. --&gt;
+        &lt;properties-realm groups-attribute="Roles"&gt;
+          &lt;user-properties path="users.properties"
+                           relative-to="infinispan.server.config.path"
+                           plain-text="true"/&gt;
+          &lt;group-properties path="groups.properties"
+                            relative-to="infinispan.server.config.path"/&gt;
+        &lt;/properties-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "default",
+        "properties-realm": {
+          "groups-attribute": "Roles",
+          "user-properties": {
+            "digest-realm-name": "default",
+            "path": "users.properties",
+            "relative-to": "infinispan.server.config.path",
+            "plain-text": true
+          },
+          "group-properties": {
+            "path": "groups.properties",
+            "relative-to": "infinispan.server.config.path"
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "default"
+        propertiesRealm:
+          # groupsAttribute configures the "groups.properties" file
+          # to contain security authorization roles.
+          groupsAttribute: "Roles"
+          userProperties:
+            digestRealmName: "default"
+            path: "users.properties"
+            relative-to: 'infinispan.server.config.path'
+            plainText: "true"
+          groupProperties:
+            path: "groups.properties"
+            relative-to: 'infinispan.server.config.path'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ldap-security-realms_security-realms"><a class="anchor" href="#ldap-security-realms_security-realms"></a>3.4. LDAP realms</h3>
+<div class="paragraph">
+<p>LDAP realms connect to LDAP servers, such as OpenLDAP, Red Hat Directory
+Server, Apache Directory Server, or Microsoft Active Directory, to authenticate
+users and obtain membership information.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>LDAP servers can have different entry layouts, depending on the type of server and deployment.
+It is beyond the scope of this document to provide examples for all possible configurations.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The principal for LDAP connections must have necessary privileges to perform
+LDAP queries and access specific attributes.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>As an alternative to verifying user credentials with the <code>direct-verification</code> attribute, you can specify an LDAP attribute that validates passwords with the <code>user-password-mapper</code> element.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You cannot use endpoint authentication mechanisms that perform hashing with the <code>direct-verification</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Because Active Directory does not expose the <code>password</code> attribute you can use the <code>direct-verification</code> attribute only and not the <code>user-password-mapper</code> element.
+As a result you must use the <code>BASIC</code> authentication mechanism with the REST endpoint and <code>PLAIN</code> with the Hot Rod endpoint to integrate with Active Directory Server.
+A more secure alternative is to use Kerberos, which allows the <code>SPNEGO</code>, <code>GSSAPI</code>, and <code>GS2-KRB5</code> authentication mechanisms.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>rdn-identifier</code> attribute specifies an LDAP attribute that finds the user entry based on a provided identifier, which is typically a username; for example, the <code>uid</code> or <code>sAMAccountName</code> attribute.
+Add <code>search-recursive="true"</code> to the configuration to search the directory recursively.
+By default, the search for the user entry uses the <code>(rdn_identifier={0})</code> filter.
+Specify a different filter with the <code>filter-name</code> attribute.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>The `attribute-mapping` element retrieves all the groups of which the user is a member. There are typically two ways in which membership information is stored:</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Under group entries that usually have class <code>groupOfNames</code> in the <code>member</code> attribute. In this case, you can use an attribute filter as in the preceding example configuration. This filter searches for entries that match the supplied filter, which locates groups with a <code>member</code> attribute equal to the user&#8217;s DN. The filter then extracts the group entry&#8217;s CN as specified by <code>from</code>, and adds it to the user&#8217;s <code>Roles</code>.</p>
+</li>
+<li>
+<p>In the user entry in the <code>memberOf</code> attribute. In this case you should use an attribute reference such as the following:</p>
+<div class="paragraph">
+<p><code>&lt;attribute-reference reference="memberOf" from="cn" to="Roles" /&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>This reference gets all <code>memberOf</code> attributes from the user&#8217;s entry, extracts the CN as specified by <code>from</code>, and adds them to the user&#8217;s <code>Roles</code>.</p>
+</div>
+</li>
+</ul>
+</div>
+<h4 id="ldap_realm_configuration" class="discrete">LDAP realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="ldap-realm"&gt;
+        &lt;!-- Specifies connection properties. --&gt;
+        &lt;ldap-realm url="ldap://my-ldap-server:10389"
+                    principal="uid=admin,ou=People,dc=infinispan,dc=org"
+                    credential="strongPassword"
+                    connection-timeout="3000"
+                    read-timeout="30000"
+                    connection-pooling="true"
+                    referral-mode="ignore"
+                    page-size="30"
+                    direct-verification="true"&gt;
+          &lt;!-- Defines how principals are mapped to LDAP entries. --&gt;
+          &lt;identity-mapping rdn-identifier="uid"
+                            search-dn="ou=People,dc=infinispan,dc=org"
+                            search-recursive="false"&gt;
+            &lt;!-- Retrieves all the groups of which the user is a member. --&gt;
+            &lt;attribute-mapping&gt;
+              &lt;attribute from="cn" to="Roles"
+                         filter="(&amp;amp;(objectClass=groupOfNames)(member={1}))"
+                         filter-dn="ou=Roles,dc=infinispan,dc=org"/&gt;
+            &lt;/attribute-mapping&gt;
+          &lt;/identity-mapping&gt;
+        &lt;/ldap-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "ldap-realm",
+        "ldap-realm": {
+          "url": "ldap://my-ldap-server:10389",
+          "principal": "uid=admin,ou=People,dc=infinispan,dc=org",
+          "credential": "strongPassword",
+          "connection-timeout": "3000",
+          "read-timeout": "30000",
+          "connection-pooling": "true",
+          "referral-mode": "ignore",
+          "page-size": "30",
+          "direct-verification": "true",
+          "identity-mapping": {
+            "rdn-identifier": "uid",
+            "search-dn": "ou=People,dc=infinispan,dc=org",
+            "search-recursive": "false",
+            "attribute-mapping": [{
+              "from": "cn",
+              "to": "Roles",
+              "filter": "(&amp;(objectClass=groupOfNames)(member={1}))",
+              "filter-dn": "ou=Roles,dc=infinispan,dc=org"
+            }]
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: ldap-realm
+        ldapRealm:
+          url: 'ldap://my-ldap-server:10389'
+          principal: 'uid=admin,ou=People,dc=infinispan,dc=org'
+          credential: strongPassword
+          connectionTimeout': '3000'
+          readTimeout': '30000'
+          connectionPooling': true
+          referralMode': ignore
+          pageSize': '30'
+          directVerification': true
+          identityMapping:
+            rdnIdentifier: uid
+            searchDn: 'ou=People,dc=infinispan,dc=org'
+            searchRecursive: false
+            attributeMapping:
+              - filter: '(&amp;(objectClass=groupOfNames)(member={1}))'
+                filterDn: 'ou=Roles,dc=infinispan,dc=org'
+                from: cn
+                to: Roles</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ldap-realm-principal-rewriting_security-realms"><a class="anchor" href="#ldap-realm-principal-rewriting_security-realms"></a>3.4.1. LDAP realm principal re-writing</h4>
+<div class="paragraph">
+<p>SASL authentication mechanisms such as <code>GSSAPI</code>, <code>GS2-KRB5</code> and <code>Negotiate</code> include a username that needs to be <em>cleaned up</em> before you can use
+it to search LDAP directories.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="ldap-realm"&gt;
+        &lt;ldap-realm url="ldap://${org.infinispan.test.host.address}:10389"
+                    principal="uid=admin,ou=People,dc=infinispan,dc=org"
+                    credential="strongPassword"&gt;
+          &lt;name-rewriter&gt;
+            &lt;!-- Defines a rewriter that extracts the username from the principal using a regular expression. --&gt;
+            &lt;regex-principal-transformer name="domain-remover"
+                                         pattern="(.*)@INFINISPAN\.ORG"
+                                         replacement="$1"/&gt;
+          &lt;/name-rewriter&gt;
+          &lt;identity-mapping rdn-identifier="uid"
+                            search-dn="ou=People,dc=infinispan,dc=org"&gt;
+            &lt;attribute-mapping&gt;
+              &lt;attribute from="cn" to="Roles"
+                         filter="(&amp;amp;(objectClass=groupOfNames)(member={1}))"
+                         filter-dn="ou=Roles,dc=infinispan,dc=org"/&gt;
+            &lt;/attribute-mapping&gt;
+            &lt;user-password-mapper from="userPassword"/&gt;
+          &lt;/identity-mapping&gt;
+        &lt;/ldap-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "ldap-realm",
+        "ldap-realm": {
+          "principal": "uid=admin,ou=People,dc=infinispan,dc=org",
+          "url": "ldap://${org.infinispan.test.host.address}:10389",
+          "credential": "strongPassword",
+          "name-rewriter": {
+            "regex-principal-transformer": {
+              "pattern": "(.*)@INFINISPAN\\.ORG",
+              "replacement": "$1"
+            }
+          },
+          "identity-mapping": {
+            "rdn-identifier": "uid",
+            "search-dn": "ou=People,dc=infinispan,dc=org",
+            "attribute-mapping": {
+              "attribute": {
+                "filter": "(&amp;(objectClass=groupOfNames)(member={1}))",
+                "filter-dn": "ou=Roles,dc=infinispan,dc=org",
+                "from": "cn",
+                "to": "Roles"
+              }
+            },
+            "user-password-mapper": {
+              "from": "userPassword"
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "ldap-realm"
+        ldapRealm:
+          principal: "uid=admin,ou=People,dc=infinispan,dc=org"
+          url: "ldap://${org.infinispan.test.host.address}:10389"
+          credential: "strongPassword"
+          nameRewriter:
+            regexPrincipalTransformer:
+              pattern: (.*)@INFINISPAN\.ORG
+              replacement: "$1"
+          identityMapping:
+            rdnIdentifier: "uid"
+            searchDn: "ou=People,dc=infinispan,dc=org"
+            attributeMapping:
+              attribute:
+                filter: "(&amp;(objectClass=groupOfNames)(member={1}))"
+                filterDn: "ou=Roles,dc=infinispan,dc=org"
+                from: "cn"
+                to: "Roles"
+            userPasswordMapper:
+              from: "userPassword"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="token-security-realms_security-realms"><a class="anchor" href="#token-security-realms_security-realms"></a>3.5. Token realms</h3>
+<div class="paragraph">
+<p>Token realms use external services to validate tokens and require providers
+that are compatible with RFC-7662 (OAuth2 Token Introspection), such as
+KeyCloak.</p>
+</div>
+<h4 id="token_realm_configuration" class="discrete">Token realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="token-realm"&gt;
+        &lt;!-- Specifies the URL of the authentication server. --&gt;
+        &lt;token-realm name="token"
+                     auth-server-url="https://oauth-server/auth/"&gt;
+          &lt;!-- Specifies the URL of the token introspection endpoint. --&gt;
+          &lt;oauth2-introspection introspection-url="https://oauth-server/auth/realms/infinispan/protocol/openid-connect/token/introspect"
+                                client-id="infinispan-server"
+                                client-secret="1fdca4ec-c416-47e0-867a-3d471af7050f"/&gt;
+        &lt;/token-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "token-realm",
+        "token-realm": {
+          "auth-server-url": "https://oauth-server/auth/",
+          "oauth2-introspection": {
+            "client-id": "infinispan-server",
+            "client-secret": "1fdca4ec-c416-47e0-867a-3d471af7050f",
+            "introspection-url": "https://oauth-server/auth/realms/infinispan/protocol/openid-connect/token/introspect"
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: token-realm
+        tokenRealm:
+          authServerUrl: 'https://oauth-server/auth/'
+          oauth2Introspection:
+            clientId: infinispan-server
+            clientSecret: '1fdca4ec-c416-47e0-867a-3d471af7050f'
+            introspectionUrl: 'https://oauth-server/auth/realms/infinispan/protocol/openid-connect/token/introspect'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="trust-store-security-realms_security-realms"><a class="anchor" href="#trust-store-security-realms_security-realms"></a>3.6. Trust store realms</h3>
+<div class="paragraph">
+<p>Trust store realms use certificates, or certificates chains, that verify Infinispan Server and client identities when they negotiate connections.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Keystores</dt>
+<dd>
+<p>Contain server certificates that provide a Infinispan Server identity to clients. If you configure a keystore with server certificates, Infinispan Server encrypts traffic using industry standard SSL/TLS protocols.</p>
+</dd>
+<dt class="hdlist1">Trust stores</dt>
+<dd>
+<p>Contain client certificates, or certificate chains, that clients present to Infinispan Server. Client trust stores are optional and allow Infinispan Server to perform client certificate authentication.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<div class="title">Client certificate authentication</div>
+<p>You must add the <code>require-ssl-client-auth="true"</code> attribute to the endpoint configuration if you want Infinispan Server to validate or authenticate client certificates.</p>
+</div>
+<h4 id="trust_store_realm_configuration" class="discrete">Trust store realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="trust-store-realm"&gt;
+        &lt;server-identities&gt;
+          &lt;ssl&gt;
+            &lt;!-- Provides an SSL/TLS identity with a keystore that contains server certificates. --&gt;
+            &lt;keystore path="server.p12"
+                      relative-to="infinispan.server.config.path"
+                      keystore-password="secret"
+                      alias="server"/&gt;
+            &lt;!-- Configures a trust store that contains client certificates or part of a certificate chain. --&gt;
+            &lt;truststore path="trust.p12"
+                        relative-to="infinispan.server.config.path"
+                        password="secret"/&gt;
+          &lt;/ssl&gt;
+        &lt;/server-identities&gt;
+        &lt;!-- Authenticates client certificates against the trust store. If you configure this, the trust store must contain the public certificates for all clients. --&gt;
+        &lt;truststore-realm/&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "trust-store-realm",
+        "server-identities": {
+          "ssl": {
+            "keystore": {
+              "path": "server.p12",
+              "relative-to": "infinispan.server.config.path",
+              "keystore-password": "secret",
+              "alias": "server"
+            },
+            "truststore": {
+              "path": "trust.p12",
+              "relative-to": "infinispan.server.config.path",
+              "password": "secret"
+            }
+          }
+        },
+        "truststore-realm": {}
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "trust-store-realm"
+        serverIdentities:
+          ssl:
+            keystore:
+              path: "server.p12"
+              relative-to: "infinispan.server.config.path"
+              keystore-password: "secret"
+              alias: "server"
+            truststore:
+              path: "trust.p12"
+              relative-to: "infinispan.server.config.path"
+              password: "secret"
+        truststoreRealm: ~</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="distributed-security-realms_security-realms"><a class="anchor" href="#distributed-security-realms_security-realms"></a>3.7. Distributed security realms</h3>
+<div class="paragraph">
+<p>Distributed realms combine multiple different types of security realms.
+When users attempt to access the Hot Rod or REST endpoints, Infinispan Server uses each security realm in turn until it finds one that can perform the authentication.</p>
+</div>
+<h4 id="distributed_realm_configuration" class="discrete">Distributed realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="distributed-realm"&gt;
+        &lt;ldap-realm url="ldap://my-ldap-server:10389"
+                    principal="uid=admin,ou=People,dc=infinispan,dc=org"
+                    credential="strongPassword"&gt;
+          &lt;identity-mapping rdn-identifier="uid"
+                            search-dn="ou=People,dc=infinispan,dc=org"
+                            search-recursive="false"&gt;
+            &lt;attribute-mapping&gt;
+              &lt;attribute from="cn" to="Roles"
+                         filter="(&amp;amp;(objectClass=groupOfNames)(member={1}))"
+                         filter-dn="ou=Roles,dc=infinispan,dc=org"/&gt;
+            &lt;/attribute-mapping&gt;
+          &lt;/identity-mapping&gt;
+        &lt;/ldap-realm&gt;
+        &lt;properties-realm groups-attribute="Roles"&gt;
+          &lt;user-properties path="users.properties"
+                           relative-to="infinispan.server.config.path"/&gt;
+          &lt;group-properties path="groups.properties"
+                            relative-to="infinispan.server.config.path"/&gt;
+        &lt;/properties-realm&gt;
+        &lt;distributed-realm/&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "distributed-realm",
+        "ldap-realm": {
+          "principal": "uid=admin,ou=People,dc=infinispan,dc=org",
+          "url": "ldap://my-ldap-server:10389",
+          "credential": "strongPassword",
+          "identity-mapping": {
+            "rdn-identifier": "uid",
+            "search-dn": "ou=People,dc=infinispan,dc=org",
+            "search-recursive": false,
+            "attribute-mapping": {
+              "attribute": {
+                "filter": "(&amp;(objectClass=groupOfNames)(member={1}))",
+                "filter-dn": "ou=Roles,dc=infinispan,dc=org",
+                "from": "cn",
+                "to": "Roles"
+              }
+            }
+          }
+        },
+        "properties-realm": {
+          "groups-attribute": "Roles",
+          "user-properties": {
+            "digest-realm-name": "distributed-realm",
+            "path": "users.properties"
+          },
+          "group-properties": {
+            "path": "groups.properties"
+          }
+        },
+        "distributed-realm": {}
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "distributed-realm"
+        ldapRealm:
+          principal: "uid=admin,ou=People,dc=infinispan,dc=org"
+          url: "ldap://my-ldap-server:10389"
+          credential: "strongPassword"
+          identityMapping:
+            rdnIdentifier: "uid"
+            searchDn: "ou=People,dc=infinispan,dc=org"
+            searchRecursive: "false"
+            attributeMapping:
+              attribute:
+                filter: "(&amp;(objectClass=groupOfNames)(member={1}))"
+                filterDn: "ou=Roles,dc=infinispan,dc=org"
+                from: "cn"
+                to: "Roles"
+        propertiesRealm:
+          groupsAttribute: "Roles"
+          userProperties:
+            digestRealmName: "distributed-realm"
+            path: "users.properties"
+          groupProperties:
+            path: "groups.properties"
+        distributedRealm: ~</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="authentication-mechanisms"><a class="anchor" href="#authentication-mechanisms"></a>4. Endpoint authentication mechanisms</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Infinispan Server can use custom SASL and HTTP authentication mechanisms for Hot Rod and REST endpoints.</p>
+</div>
+<div class="sect2">
+<h3 id="server-authentication_endpoint-authentication"><a class="anchor" href="#server-authentication_endpoint-authentication"></a>4.1. Infinispan Server authentication</h3>
+<div class="paragraph">
+<p>Authentication restricts user access to endpoints as well as the Infinispan Console and Command Line Interface (CLI).</p>
+</div>
+<div class="paragraph">
+<p>Infinispan Server includes a "default" security realm that enforces user authentication.
+Default authentication uses a property realm with user credentials stored in the <code>server/conf/users.properties</code> file.
+Infinispan Server also enables security authorization by default so you must assign users with permissions stored in the <code>server/conf/groups.properties</code> file.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use the <code class="command">user create</code> command with the Command Line Interface (CLI) to add users and assign permissions.
+Run <code class="command">user create --help</code> for examples and more information.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-server-authentication_endpoint-authentication"><a class="anchor" href="#configuring-server-authentication_endpoint-authentication"></a>4.2. Configuring Infinispan Server authentication mechanisms</h3>
+<div class="paragraph">
+<p>You can explicitly configure Hot Rod and REST endpoints to use specific authentication mechanisms.
+Configuring authentication mechanisms is required only if you need to explicitly override the default mechanisms for a security realm.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Each <code>endpoint</code> section in your configuration must include <code>hotrod-connector</code> and <code>rest-connector</code> elements or fields.
+For example, if you explicitly declare a <code>hotrod-connector</code> you must also declare a <code>rest-connector</code> even if it does not configure an authentication mechanism.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Add security realms to your Infinispan Server configuration as required.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add an <code>endpoint</code> element or field and specify the security realm that it uses with the <code>security-realm</code> attribute.</p>
+</li>
+<li>
+<p>Add a <code>hotrod-connector</code> element or field to configure the Hot Rod endpoint.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add an <code>authentication</code> element or field.</p>
+</li>
+<li>
+<p>Specify SASL authentication mechanisms for the Hot Rod endpoint to use with the <code>sasl mechanisms</code> attribute.</p>
+</li>
+<li>
+<p>If applicable, specify SASL quality of protection settings with the <code>qop</code> attribute.</p>
+</li>
+<li>
+<p>Specify the Infinispan Server identity with the <code>server-name</code> attribute if necessary.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Add a <code>rest-connector</code> element or field to configure the REST endpoint.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add an <code>authentication</code> element or field.</p>
+</li>
+<li>
+<p>Specify HTTP authentication mechanisms for the REST endpoint to use with the <code>mechanisms</code> attribute.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="authentication_mechanism_configuration" class="discrete">Authentication mechanism configuration</h4>
+<div class="paragraph">
+<p>The following configuration specifies SASL mechanisms for the Hot Rod endpoint to use for authentication:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;endpoints&gt;
+    &lt;endpoint socket-binding="default"
+              security-realm="my-realm"&gt;
+      &lt;hotrod-connector&gt;
+        &lt;authentication&gt;
+           &lt;sasl mechanisms="SCRAM-SHA-512 SCRAM-SHA-384 SCRAM-SHA-256
+                             SCRAM-SHA-1 DIGEST-SHA-512 DIGEST-SHA-384
+                             DIGEST-SHA-256 DIGEST-SHA DIGEST-MD5 PLAIN"
+                 server-name="infinispan"
+                 qop="auth"/&gt;
+        &lt;/authentication&gt;
+      &lt;/hotrod-connector&gt;
+      &lt;rest-connector&gt;
+        &lt;authentication mechanisms="DIGEST BASIC"/&gt;
+      &lt;/rest-connector&gt;
+    &lt;/endpoint&gt;
+  &lt;/endpoints&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "endpoints": {
+      "endpoint": {
+        "socket-binding": "default",
+        "security-realm": "my-realm",
+        "hotrod-connector": {
+          "authentication": {
+            "security-realm": "default",
+            "sasl": {
+              "server-name": "infinispan",
+              "mechanisms": ["SCRAM-SHA-512", "SCRAM-SHA-384", "SCRAM-SHA-256", "SCRAM-SHA-1", "DIGEST-SHA-512", "DIGEST-SHA-384", "DIGEST-SHA-256", "DIGEST-SHA", "DIGEST-MD5", "PLAIN"],
+              "qop": ["auth"]
+            }
+          }
+        },
+        "rest-connector": {
+          "authentication": {
+            "mechanisms": ["DIGEST", "BASIC"],
+            "security-realm": "default"
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">server:
+  endpoints:
+    endpoint:
+      socketBinding: "default"
+      securityRealm: "my-realm"
+      hotrodConnector:
+        authentication:
+          securityRealm: "default"
+          sasl:
+            serverName: "infinispan"
+            mechanisms:
+              - "SCRAM-SHA-512"
+              - "SCRAM-SHA-384"
+              - "SCRAM-SHA-256"
+              - "SCRAM-SHA-1"
+              - "DIGEST-SHA-512"
+              - "DIGEST-SHA-384"
+              - "DIGEST-SHA-256"
+              - "DIGEST-SHA"
+              - "DIGEST-MD5"
+              - "PLAIN"
+            qop:
+              - "auth"
+      restConnector:
+        authentication:
+          mechanisms:
+            - "DIGEST"
+            - "BASIC"
+          securityRealm: "default"</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="disabling-authentication_endpoint-authentication"><a class="anchor" href="#disabling-authentication_endpoint-authentication"></a>4.2.1. Disabling authentication</h4>
+<div class="paragraph">
+<p>In local development environments or on isolated networks you can configure Infinispan to allow unauthenticated client requests.
+When you disable user authentication you should also disable authorization in your Infinispan security configuration.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Remove the <code>security-realm</code> attribute from the <code>endpoints</code> element or field.</p>
+</li>
+<li>
+<p>Remove any <code>authorization</code> elements from the <code>security</code> configuration for the <code>cache-container</code> and each cache configuration.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;endpoints socket-binding="default"/&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "endpoints": {
+      "endpoint": {
+        "socket-binding": "default"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">server:
+  endpoints:
+    endpoint:
+      socketBinding: "default"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="server-endpoint-authentication-mechanisms_endpoint-authentication"><a class="anchor" href="#server-endpoint-authentication-mechanisms_endpoint-authentication"></a>4.3. Infinispan Server authentication mechanisms</h3>
+<div class="paragraph">
+<p>Infinispan Server automatically configures endpoints with authentication mechanisms that match your security realm configuration.
+For example, if you add a Kerberos security realm then Infinispan Server enables the <code>GSSAPI</code> and <code>GS2-KRB5</code> authentication mechanisms for the Hot Rod endpoint.</p>
+</div>
+<div class="paragraph">
+<div class="title">Hot Rod endpoints</div>
+<p>Infinispan Server enables the following SASL authentication mechanisms for Hot Rod endpoints when your configuration includes the corresponding security realm:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Security realm</th>
+<th class="tableblock halign-left valign-top">SASL authentication mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SCRAM-*, DIGEST-*, <code>SCRAM-*</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OAUTHBEARER</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EXTERNAL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GSSAPI, GS2-KRB5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PLAIN</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<div class="title">REST endpoints</div>
+<p>Infinispan Server enables the following HTTP authentication mechanisms for REST endpoints when your configuration includes the corresponding security realm:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Security realm</th>
+<th class="tableblock halign-left valign-top">HTTP authentication mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIGEST</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BEARER_TOKEN</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CLIENT_CERT</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SPNEGO</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BASIC</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="sasl-authentication-mechanisms_endpoint-authentication"><a class="anchor" href="#sasl-authentication-mechanisms_endpoint-authentication"></a>4.3.1. SASL authentication mechanisms</h4>
+<div class="paragraph">
+<p>Infinispan Server supports the following SASL authentications mechanisms with Hot Rod endpoints:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Authentication mechanism</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Security realm type</th>
+<th class="tableblock halign-left valign-top">Related details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PLAIN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses credentials in plain-text format. You should use <code>PLAIN</code> authentication with encrypted connections only.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>BASIC</code> HTTP mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DIGEST-*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses hashing algorithms and nonce values. Hot Rod connectors support <code>DIGEST-MD5</code>, <code>DIGEST-SHA</code>, <code>DIGEST-SHA-256</code>, <code>DIGEST-SHA-384</code>, and <code>DIGEST-SHA-512</code> hashing algorithms, in order of strength.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>Digest</code> HTTP mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SCRAM-*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses <em>salt</em> values in addition to hashing algorithms and nonce values. Hot Rod connectors support <code>SCRAM-SHA</code>, <code>SCRAM-SHA-256</code>, <code>SCRAM-SHA-384</code>, and <code>SCRAM-SHA-512</code> hashing algorithms, in order of strength.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>Digest</code> HTTP mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GSSAPI</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses Kerberos tickets and requires a Kerberos Domain Controller. You must add a corresponding <code>kerberos</code> server identity in the realm configuration. In most cases, you also specify an <code>ldap-realm</code> to provide user membership information.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>SPNEGO</code> HTTP mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GS2-KRB5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses Kerberos tickets and requires a Kerberos Domain Controller. You must add a corresponding <code>kerberos</code> server identity in the realm configuration. In most cases, you also specify an <code>ldap-realm</code> to provide user membership information.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>SPNEGO</code> HTTP mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXTERNAL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses client certificates.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trust store realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>CLIENT_CERT</code> HTTP mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OAUTHBEARER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses OAuth tokens and requires a <code>token-realm</code> configuration.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>BEARER_TOKEN</code> HTTP mechanism.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="sasl-quality-of-protection_endpoint-authentication"><a class="anchor" href="#sasl-quality-of-protection_endpoint-authentication"></a>4.3.2. SASL quality of protection (QoP)</h4>
+<div class="paragraph">
+<p>If SASL mechanisms support integrity and privacy protection (QoP) settings, you can add them to your Hot Rod endpoint configuration with the <code>qop</code> attribute.</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">QoP setting</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>auth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authentication only.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>auth-int</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authentication with integrity protection.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>auth-conf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authentication with integrity and privacy protection.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="sasl-policies-hot-rod-authentication_endpoint-authentication"><a class="anchor" href="#sasl-policies-hot-rod-authentication_endpoint-authentication"></a>4.3.3. SASL policies</h4>
+<div class="paragraph">
+<p>SASL policies provide fine-grain control over Hot Rod authentication mechanisms.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan cache authorization restricts access to caches based on roles and
+permissions.
+Configure cache authorization and then set <code>&lt;no-anonymous value=false /&gt;</code> to allow anonymous login and delegate access logic to cache authorization.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Policy</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>forward-secrecy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use only SASL mechanisms that support forward secrecy between sessions. This means that breaking into one session does not automatically provide information for breaking into future sessions.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pass-credentials</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use only SASL mechanisms that require client credentials.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>no-plain-text</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Do not use SASL mechanisms that are susceptible to simple plain passive attacks.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>no-active</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Do not use SASL mechanisms that are susceptible to active, non-dictionary, attacks.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>no-dictionary</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Do not use SASL mechanisms that are susceptible to passive dictionary attacks.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>no-anonymous</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Do not use SASL mechanisms that accept anonymous logins.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+</tr>
+</tbody>
+</table>
+<h5 id="sasl_policy_configuration" class="discrete">SASL policy configuration</h5>
+<div class="paragraph">
+<p>In the following configuration the Hot Rod endpoint uses the <code>GSSAPI</code> mechanism for authentication because it is the only mechanism that complies with all SASL policies:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;endpoints&gt;
+    &lt;endpoint socket-binding="default"
+              security-realm="default"&gt;
+      &lt;hotrod-connector&gt;
+        &lt;authentication&gt;
+          &lt;sasl mechanisms="PLAIN DIGEST-MD5 GSSAPI EXTERNAL"
+                server-name="infinispan"
+                qop="auth"
+                policy="no-active no-plain-text"/&gt;
+        &lt;/authentication&gt;
+      &lt;/hotrod-connector&gt;
+      &lt;rest-connector/&gt;
+    &lt;/endpoint&gt;
+  &lt;/endpoints&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "endpoints" : {
+      "endpoint" : {
+        "socket-binding" : "default",
+        "security-realm" : "default",
+        "hotrod-connector" : {
+          "authentication" : {
+            "sasl" : {
+              "server-name" : "infinispan",
+              "mechanisms" : [ "PLAIN","DIGEST-MD5","GSSAPI","EXTERNAL" ],
+              "qop" : [ "auth" ],
+              "policy" : [ "no-active","no-plain-text" ]
+            }
+          }
+        },
+        "rest-connector" : ""
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  endpoints:
+    endpoint:
+      socketBinding: "default"
+      securityRealm: "default"
+      hotrodConnector:
+        authentication:
+          sasl:
+            serverName: "infinispan"
+            mechanisms:
+              - "PLAIN"
+              - "DIGEST-MD5"
+              - "GSSAPI"
+              - "EXTERNAL"
+            qop:
+              - "auth"
+            policy:
+              - "no-active"
+              - "no-plain-text"
+      restConnector: ~</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rest-authentication-mechanisms_endpoint-authentication"><a class="anchor" href="#rest-authentication-mechanisms_endpoint-authentication"></a>4.3.4. HTTP authentication mechanisms</h4>
+<div class="paragraph">
+<p>Infinispan Server supports the following HTTP authentication mechanisms with REST endpoints:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Authentication mechanism</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Security realm type</th>
+<th class="tableblock halign-left valign-top">Related details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BASIC</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses credentials in plain-text format. You should use <code>BASIC</code> authentication with encrypted connections only.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Corresponds to the <code>Basic</code> HTTP authentication scheme and is similar to the <code>PLAIN</code> SASL mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DIGEST</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses hashing algorithms and nonce values. REST connectors support <code>SHA-512</code>, <code>SHA-256</code> and <code>MD5</code> hashing algorithms.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Corresponds to the <code>Digest</code> HTTP authentication scheme and is similar to <code>DIGEST-*</code> SASL mechanisms.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SPNEGO</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses Kerberos tickets and requires a Kerberos Domain Controller. You must add a corresponding <code>kerberos</code> server identity in the realm configuration. In most cases, you also specify an <code>ldap-realm</code> to provide user membership information.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Corresponds to the <code>Negotiate</code> HTTP authentication scheme and is similar to the <code>GSSAPI</code> and <code>GS2-KRB5</code> SASL mechanisms.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BEARER_TOKEN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses OAuth tokens and requires a <code>token-realm</code> configuration.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Corresponds to the <code>Bearer</code> HTTP authentication scheme and is similar to <code>OAUTHBEARER</code> SASL mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CLIENT_CERT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses client certificates.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trust store realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Similar to the <code>EXTERNAL</code> SASL mechanism.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuring-encryption"><a class="anchor" href="#configuring-encryption"></a>5. Configuring TLS/SSL encryption</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can secure Infinispan Server connections using SSL/TLS encryption by configuring a keystore that contains public and private keys for Infinispan.
+You can also configure client certificate authentication if you require mutual TLS.</p>
+</div>
+<div class="sect2">
+<h3 id="configuring-server-keystores_endpoint-security"><a class="anchor" href="#configuring-server-keystores_endpoint-security"></a>5.1. Configuring Infinispan Server keystores</h3>
+<div class="paragraph">
+<p>Add keystores to Infinispan Server and configure it to present SSL/TLS certificates that verify its identity to clients.
+If a security realm contains TLS/SSL identities, it encrypts any connections to Infinispan Server endpoints that use that security realm.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Create a keystore that contains certificates, or certificate chains, for Infinispan Server.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Infinispan Server supports the following keystore formats: JKS, JCEKS, PKCS12/PFX and PEM.
+BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle.org/">Bouncy Castle</a> library is present.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In production environments, server certificates should be signed by a trusted Certificate Authority, either Root or Intermediate CA.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can use PEM files as keystores if they contain both of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A private key in PKCS#1 or PKCS#8 format.</p>
+</li>
+<li>
+<p>One or more certificates.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You should also configure PEM file keystores with an empty password (<code>password=""</code>).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add the keystore that contains SSL/TLS identities for Infinispan Server to the <code>$ISPN_HOME/server/conf</code> directory.</p>
+</li>
+<li>
+<p>Add a <code>server-identities</code> definition to the Infinispan Server security realm.</p>
+</li>
+<li>
+<p>Specify the keystore file name with the <code>path</code> attribute.</p>
+</li>
+<li>
+<p>Provide the keystore password and certificate alias with the <code>keystore-password</code> and <code>alias</code> attributes.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Next steps</div>
+<p>Configure clients with a trust store so they can verify SSL/TLS identities for Infinispan Server.</p>
+</div>
+<h4 id="keystore_configuration" class="discrete">Keystore configuration</h4>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="default"&gt;
+        &lt;server-identities&gt;
+          &lt;ssl&gt;
+            &lt;!-- Adds a keystore that contains server certificates that provide SSL/TLS identities to clients. --&gt;
+            &lt;keystore path="server.p12"
+                      relative-to="infinispan.server.config.path"
+                      password="secret"
+                      alias="my-server"/&gt;
+          &lt;/ssl&gt;
+        &lt;/server-identities&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "default",
+        "server-identities": {
+          "ssl": {
+            "keystore": {
+              "alias": "my-server",
+              "path": "server.p12",
+              "password": "secret"
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "default"
+        serverIdentities:
+          ssl:
+            keystore:
+              alias: "my-server"
+              path: "server.p12"
+              password: "secret"</code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../hotrod_java/hotrod_java.html#configuring-hotrod-encryption_hotrod-client-configuration">Configuring Hot Rod client encryption</a></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="generating-server-keystores_endpoint-security"><a class="anchor" href="#generating-server-keystores_endpoint-security"></a>5.1.1. Generating Infinispan Server keystores</h4>
+<div class="paragraph">
+<p>Configure Infinispan Server to automatically generate keystores at startup.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Automatically generated keystores:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Should not be used in production environments.</p>
+</li>
+<li>
+<p>Are generated whenever necessary; for example, while obtaining the first connection from a client.</p>
+</li>
+<li>
+<p>Contain certificates that you can use directly in Hot Rod clients.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Include the <code>generate-self-signed-certificate-host</code> attribute for the <code>keystore</code> element in the server configuration.</p>
+</li>
+<li>
+<p>Specify a hostname for the server certificate as the value.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h5 id="generated_keystore_configuration" class="discrete">Generated keystore configuration</h5>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="generated-keystore"&gt;
+        &lt;server-identities&gt;
+          &lt;ssl&gt;
+            &lt;!-- Generates a keystore that includes a self-signed certificate with the specified hostname. --&gt;
+            &lt;keystore path="server.p12"
+                      relative-to="infinispan.server.config.path"
+                      password="secret"
+                      alias="server"
+                      generate-self-signed-certificate-host="localhost"/&gt;
+          &lt;/ssl&gt;
+        &lt;/server-identities&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "generated-keystore",
+        "server-identities": {
+          "ssl": {
+            "keystore": {
+              "alias": "server",
+              "generate-self-signed-certificate-host": "localhost",
+              "path": "server.p12",
+              "password": "secret"
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "generated-keystore"
+        serverIdentities:
+          ssl:
+            keystore:
+              alias: "server"
+              generateSelfSignedCertificateHost: "localhost"
+              path: "server.p12"
+              password: "secret"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="configuring-ssl-engine_endpoint-security"><a class="anchor" href="#configuring-ssl-engine_endpoint-security"></a>5.1.2. Configuring TLS versions and cipher suites</h4>
+<div class="paragraph">
+<p>When using SSL/TLS encryption to secure your deployment, you can configure Infinispan Server to use specific versions of the TLS protocol as well as specific cipher suites within the protocol.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add the <code>engine</code> element to the SSL configuration for Infinispan Server.</p>
+</li>
+<li>
+<p>Configure Infinispan to use one or more TLS versions with the <code>enabled-protocols</code> attribute.</p>
+<div class="paragraph">
+<p>Infinispan Server supports TLS version 1.2 and 1.3 by default.
+If appropriate you can set <code>TLSv1.3</code> only to restrict the security protocol for client connections.
+Infinispan does not recommend enabling <code>TLSv1.1</code> because it is an older protocol with limited support and provides weak security.
+You should never enable any version of TLS older than 1.1.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you modify the SSL <code>engine</code> configuration for Infinispan Server you must explicitly configure TLS versions with the <code>enabled-protocols</code> attribute.
+Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;engine enabled-protocols="TLSv1.3 TLSv1.2" /&gt;</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Configure Infinispan to use one or more cipher suites with the <code>enabled-ciphersuites</code> attribute.</p>
+<div class="paragraph">
+<p>You must ensure that you set a cipher suite that supports any protocol features you plan to use; for example <code>HTTP/2 ALPN</code>.</p>
+</div>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h5 id="ssl_engine_configuration" class="discrete">SSL engine configuration</h5>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="default"&gt;
+        &lt;server-identities&gt;
+          &lt;ssl&gt;
+            &lt;keystore path="server.p12"
+                      relative-to="infinispan.server.config.path"
+                      password="secret"
+                      alias="server"/&gt;
+            &lt;!-- Configures Infinispan Server to use specific TLS versions and cipher suites. --&gt;
+            &lt;engine enabled-protocols="TLSv1.3"
+                    enabled-ciphersuites="TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"/&gt;
+          &lt;/ssl&gt;
+        &lt;/server-identities&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "default",
+        "server-identities": {
+          "ssl": {
+            "keystore": {
+              "alias": "server",
+              "path": "server.p12",
+              "password": "secret"
+            },
+            "engine": {
+              "enabled-protocols": ["TLSv1.3"],
+              "enabled-ciphersuites": "TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "default"
+        serverIdentities:
+          ssl:
+            keystore:
+              alias: "server"
+              path: "server.p12"
+              password: "secret"
+            engine:
+              enabledProtocols:
+                - "TLSv1.3"
+              enabledCiphersuites: "TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-server-fips_endpoint-security"><a class="anchor" href="#configuring-server-fips_endpoint-security"></a>5.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</h3>
+<div class="paragraph">
+<p>It is possible to configure Infinispan Server to present SSL/TLS certificates that verify its identity to clients.
+If a security realm contains TLS/SSL identities, it encrypts any connections to Infinispan Server endpoints that use that security realm.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>A system in FIPS mode. Execute <code>fips-mode-setup --check</code> to ensure it is enabled.</p>
+</li>
+<li>
+<p>A correctly initialized NSS database.</p>
+</li>
+<li>
+<p>A JDK installation with the <code>java.security</code> file configured to enable the <code>SunPKCS11</code> provider pointing to the NSS database and the SSL provider initialized with the <code>SunPKCS11-nss-fips</code> argument.</p>
+</li>
+<li>
+<p>A certificate installed in the NSS database.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The OpenSSL provider requires a private key, but it is not possible to retrieve a private key from the PKCS11 store. FIPS does not allow the export of unencrypted keys from FIPS compliant cryptographic module. Therefore it is not possible to use the OpenSSL provider for TLS when in FIPS mode. Start the server with the <code>-Dorg.infinispan.openssl=false</code> argument to disable OpenSSL.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add a <code>server-identities</code> definition to the Infinispan Server security realm.</p>
+</li>
+<li>
+<p>Specify the PKCS11 keystore with the <code>SunPKCS11-NSS-FIPS</code> provider.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="keystore_configuration_2" class="discrete">Keystore configuration</h4>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+   &lt;security&gt;
+      &lt;security-realms&gt;
+         &lt;security-realm name="default"&gt;
+            &lt;server-identities&gt;
+               &lt;ssl&gt;
+                  &lt;!-- Adds a keystore that reads certificates from the NSS database. --&gt;
+                  &lt;keystore provider="SunPKCS11-NSS-FIPS" type="PKCS11"/&gt;
+               &lt;/ssl&gt;
+            &lt;/server-identities&gt;
+         &lt;/security-realm&gt;
+      &lt;/security-realms&gt;
+   &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "default",
+        "server-identities": {
+          "ssl": {
+            "keystore": {
+              "provider": "SunPKCS11-NSS-FIPS",
+              "type": "PKCS11"
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "default"
+        serverIdentities:
+          ssl:
+            keystore:
+              provider: "SunPKCS11-NSS-FIPS"
+              type: "PKCS11"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-client-certificate-authentication_endpoint-security"><a class="anchor" href="#configuring-client-certificate-authentication_endpoint-security"></a>5.3. Configuring client certificate authentication</h3>
+<div class="paragraph">
+<p>Configure Infinispan Server to use mutual TLS to secure client connections.</p>
+</div>
+<div class="paragraph">
+<p>You can configure Infinispan to verify client identities from certificates in a trust store in two ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Require a trust store that contains only the signing certificate, which is typically a Certificate Authority (CA). Any client that presents a certificate signed by the CA can connect to Infinispan.</p>
+</li>
+<li>
+<p>Require a trust store that contains all client certificates in addition to the signing certificate. Only clients that present a signed certificate that is present in the trust store can connect to Infinispan.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Alternatively to providing trust stores you can use shared system certificates.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Create a client trust store that contains either the CA certificate or all public certificates.</p>
+</li>
+<li>
+<p>Create a keystore for Infinispan Server and configure an SSL/TLS identity.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>PEM files can be used as trust stores provided they contain one or more certificates.
+These trust stores should be configured with an empty password: <code>password=""</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add the <code>require-ssl-client-auth="true"</code> parameter to your <code>endpoints</code> configuration.</p>
+</li>
+<li>
+<p>Add the client trust store to the <code>$ISPN_HOME/server/conf</code> directory.</p>
+</li>
+<li>
+<p>Specify the <code>path</code> and <code>password</code> attributes for the <code>truststore</code> element in the Infinispan Server security realm configuration.</p>
+</li>
+<li>
+<p>Add the <code>&lt;truststore-realm/&gt;</code> element to the security realm if you want Infinispan Server to authenticate each client certificate.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Next steps</div>
+<ul>
+<li>
+<p>Set up authorization with client certificates in the Infinispan Server configuration if you control access with security roles and permissions.</p>
+</li>
+<li>
+<p>Configure clients to negotiate SSL/TLS connections with Infinispan Server.</p>
+</li>
+</ul>
+</div>
+<h4 id="client_certificate_authentication_configuration" class="discrete">Client certificate authentication configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="trust-store-realm"&gt;
+        &lt;server-identities&gt;
+          &lt;ssl&gt;
+            &lt;!-- Provides an SSL/TLS identity with a keystore that
+                 contains server certificates. --&gt;
+            &lt;keystore path="server.p12"
+                      relative-to="infinispan.server.config.path"
+                      keystore-password="secret"
+                      alias="server"/&gt;
+            &lt;!-- Configures a trust store that contains client certificates
+                 or part of a certificate chain. --&gt;
+            &lt;truststore path="trust.p12"
+                        relative-to="infinispan.server.config.path"
+                        password="secret"/&gt;
+          &lt;/ssl&gt;
+        &lt;/server-identities&gt;
+        &lt;!-- Authenticates client certificates against the trust store. If you configure this, the trust store must contain the public certificates for all clients. --&gt;
+        &lt;truststore-realm/&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+  &lt;endpoints&gt;
+    &lt;endpoint socket-binding="default"
+              security-realm="trust-store-realm"
+              require-ssl-client-auth="true"&gt;
+      &lt;hotrod-connector&gt;
+        &lt;authentication&gt;
+          &lt;sasl mechanisms="EXTERNAL"
+                server-name="infinispan"
+                qop="auth"/&gt;
+        &lt;/authentication&gt;
+      &lt;/hotrod-connector&gt;
+      &lt;rest-connector&gt;
+        &lt;authentication mechanisms="CLIENT_CERT"/&gt;
+      &lt;/rest-connector&gt;
+    &lt;/endpoint&gt;
+  &lt;/endpoints&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "trust-store-realm",
+        "server-identities": {
+          "ssl": {
+            "keystore": {
+              "path": "server.p12",
+              "relative-to": "infinispan.server.config.path",
+              "keystore-password": "secret",
+              "alias": "server"
+            },
+            "truststore": {
+              "path": "trust.p12",
+              "relative-to": "infinispan.server.config.path",
+              "password": "secret"
+            }
+          }
+        },
+        "truststore-realm": {}
+      }]
+    },
+    "endpoints": [{
+      "socket-binding": "default",
+      "security-realm": "trust-store-realm",
+      "require-ssl-client-auth": "true",
+      "connectors": {
+        "hotrod": {
+          "hotrod-connector": {
+            "authentication": {
+              "sasl": {
+                "mechanisms": "EXTERNAL",
+                "server-name": "infinispan",
+                "qop": "auth"
+              }
+            }
+          },
+          "rest": {
+            "rest-connector": {
+              "authentication": {
+                "mechanisms": "CLIENT_CERT"
+              }
+            }
+          }
+        }
+      }
+    }]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "trust-store-realm"
+        serverIdentities:
+          ssl:
+            keystore:
+              path: "server.p12"
+              relative-to: "infinispan.server.config.path"
+              keystore-password: "secret"
+              alias: "server"
+            truststore:
+              path: "trust.p12"
+              relative-to: "infinispan.server.config.path"
+              password: "secret"
+        truststoreRealm: ~
+  endpoints:
+    socketBinding: "default"
+    securityRealm: "trust-store-realm"
+    requireSslClientAuth: "true"
+    connectors:
+      - hotrod:
+          hotrodConnector:
+            authentication:
+              sasl:
+                mechanisms: "EXTERNAL"
+                serverName: "infinispan"
+                qop: "auth"
+      - rest:
+          restConnector:
+            authentication:
+              mechanisms: "CLIENT_CERT"</code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../hotrod_java/hotrod_java.html#configuring-hotrod-encryption_hotrod-client-configuration">Configuring Hot Rod client encryption</a></p>
+</li>
+<li>
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-shared-system-certificates">Using Shared System Certificates</a> (Red Hat Enterprise Linux 7 Security Guide)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-client-certificate-authorization_endpoint-security"><a class="anchor" href="#configuring-client-certificate-authorization_endpoint-security"></a>5.4. Configuring authorization with client certificates</h3>
+<div class="paragraph">
+<p>Enabling client certificate authentication means you do not need to specify Infinispan user credentials in client configuration, which means you must associate roles with the Common Name (CN) field in the client certificate(s).</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Provide clients with a Java keystore that contains either their public certificates or part of the certificate chain, typically a public CA certificate.</p>
+</li>
+<li>
+<p>Configure Infinispan Server to perform client certificate authentication.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Enable the <code>common-name-role-mapper</code> in the security authorization configuration.</p>
+</li>
+<li>
+<p>Assign the Common Name (<code>CN</code>) from the client certificate a role with the appropriate permissions.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h4 id="client_certificate_authorization_configuration" class="discrete">Client certificate authorization configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
+  &lt;cache-container name="certificate-authentication" statistics="true"&gt;
+    &lt;security&gt;
+      &lt;authorization&gt;
+        &lt;!-- Declare a role mapper that associates the common name (CN) field in client certificate trust stores with authorization roles. --&gt;
+        &lt;common-name-role-mapper/&gt;
+        &lt;!-- In this example, if a client certificate contains `CN=Client1` then clients with matching certificates get ALL permissions. --&gt;
+        &lt;role name="Client1" permissions="ALL"/&gt;
+      &lt;/authorization&gt;
+    &lt;/security&gt;
+  &lt;/cache-container&gt;
+&lt;/infinispan&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "infinispan": {
+    "cache-container": {
+      "name": "certificate-authentication",
+      "security": {
+        "authorization": {
+          "common-name-role-mapper": null,
+          "roles": {
+            "Client1": {
+              "role": {
+                "permissions": "ALL"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  cacheContainer:
+    name: "certificate-authentication"
+    security:
+      authorization:
+        commonNameRoleMapper: ~
+        roles:
+          Client1:
+            role:
+              permissions: "ALL"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="credential-keystores"><a class="anchor" href="#credential-keystores"></a>6. Storing Infinispan Server credentials in keystores</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>External services require credentials to authenticate with Infinispan Server.
+To protect sensitive text strings such as passwords, add them to a credential keystore rather than directly in Infinispan Server configuration files.</p>
+</div>
+<div class="paragraph">
+<p>You can then configure Infinispan Server to decrypt passwords for establishing connections with services such as databases or LDAP directories.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Plain-text passwords in <code>$ISPN_HOME/server/conf</code> are unencrypted.
+Any user account with read access to the host filesystem can view plain-text passwords.</p>
+</div>
+<div class="paragraph">
+<p>While credential keystores are password-protected store encrypted passwords, any user account with write access to the host filesystem can tamper with the keystore itself.</p>
+</div>
+<div class="paragraph">
+<p>To completely secure Infinispan Server credentials, you should grant read-write access only to user accounts that can configure and run Infinispan Server.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="setting-up-credential-keystores_credential-keystores"><a class="anchor" href="#setting-up-credential-keystores_credential-keystores"></a>6.1. Setting up credential keystores</h3>
+<div class="paragraph">
+<p>Create keystores that encrypt credential for Infinispan Server access.</p>
+</div>
+<div class="paragraph">
+<p>A credential keystore contains at least one alias that is associated with an encrypted password.
+After you create a keystore, you specify the alias in a connection configuration such as a database connection pool.
+Infinispan Server then decrypts the password for that alias from the keystore when the service attempts authentication.</p>
+</div>
+<div class="paragraph">
+<p>You can create as many credential keystores with as many aliases as required.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>As a security best practice, keystores should be readable only by the user who runs the process for Infinispan Server.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open a terminal in <code>$ISPN_HOME</code>.</p>
+</li>
+<li>
+<p>Create a keystore and add credentials to it with the <code class="command">credentials</code> command.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>By default, keystores are of type PKCS12.
+Run <code class="command">help credentials</code> for details on changing keystore defaults.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following example shows how to create a keystore that contains an alias of "dbpassword" for the password "changeme".
+When you create a keystore you also specify a password to access the keystore with the <code>-p</code> argument.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Linux</dt>
+<dd>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin/cli.sh credentials add dbpassword -c changeme -p "secret1234!"</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Microsoft Windows</dt>
+<dd>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin\cli.bat credentials add dbpassword -c changeme -p "secret1234!"</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>Check that the alias is added to the keystore.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin/cli.sh credentials ls -p "secret1234!"
+dbpassword</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Configure Infinispan to use the credential keystore.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add a <code>credential-stores</code> section to the <code>security</code> configuration.</p>
+</li>
+<li>
+<p>Specify the name and location of the credential keystore.</p>
+</li>
+<li>
+<p>Specify the password to access the credential keystore with the <code>clear-text-credential</code> configuration.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Instead of adding a clear-text password for the credential keystore to your Infinispan Server configuration you can use an external command or masked password for additional security.</p>
+</div>
+<div class="paragraph">
+<p>You can also use a password in one credential store as the master password for another credential store.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Reference the credential keystore in configuration that Infinispan Server uses to connect with an external system such as a datasource or LDAP server.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add a <code>credential-reference</code> section.</p>
+</li>
+<li>
+<p>Specify the name of the credential keystore with the <code>store</code> attribute.</p>
+</li>
+<li>
+<p>Specify the password alias with the <code>alias</code> attribute.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Attributes in the <code>credential-reference</code> configuration are optional.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>store</code> is required only if you have multiple keystores.</p>
+</li>
+<li>
+<p><code>alias</code> is required only if the keystore contains multiple password aliases.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
 </li>
 <li>
 <p>Save the changes to your configuration.</p>
@@ -1251,163 +3935,373 @@ Disabling security authorization means that any user can access data and interac
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-authorization-programmatically_security-authorization"><a class="anchor" href="#configuring-authorization-programmatically_security-authorization"></a>2.6. Programmatically configuring authorization</h3>
+<h3 id="securing-passwords-credential-keystores_credential-keystores"><a class="anchor" href="#securing-passwords-credential-keystores_credential-keystores"></a>6.2. Securing passwords for credential keystores</h3>
 <div class="paragraph">
-<p>When using embedded caches, you can configure authorization with the <code>GlobalSecurityConfigurationBuilder</code> and <code>ConfigurationBuilder</code> classes.</p>
+<p>Infinispan Server requires a password to access credential keystores.
+You can add that password to Infinispan Server configuration in clear text or, as an added layer of security, you can use an external command for the password or you can mask the password.</p>
 </div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Construct a <code>GlobalConfigurationBuilder</code> that enables authorization, specifies a role mapper, and defines a set of roles and permissions.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">GlobalConfigurationBuilder global = new GlobalConfigurationBuilder();
-global
-   .security()
-      .authorization().enable() <i class="conum" data-value="1"></i><b>(1)</b>
-         .principalRoleMapper(new IdentityRoleMapper()) <i class="conum" data-value="2"></i><b>(2)</b>
-         .role("admin") <i class="conum" data-value="3"></i><b>(3)</b>
-            .permission(AuthorizationPermission.ALL)
-         .role("reader")
-            .permission(AuthorizationPermission.READ)
-         .role("writer")
-            .permission(AuthorizationPermission.WRITE)
-         .role("supervisor")
-            .permission(AuthorizationPermission.READ)
-            .permission(AuthorizationPermission.WRITE)
-            .permission(AuthorizationPermission.EXEC);</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Enables Infinispan authorization for the Cache Manager.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Specifies an implementation of <code>PrincipalRoleMapper</code> that maps Principals
-to roles.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Defines roles and their associated permissions.</td>
-</tr>
-</table>
-</div>
-</li>
-<li>
-<p>Enable authorization in the <code>ConfigurationBuilder</code> for caches to restrict access based on user roles.</p>
-<div class="listingblock">
-<div class="content">
-<pre>ConfigurationBuilder config = new ConfigurationBuilder();
-config
-   .security()
-      .authorization()
-         .enable(); <i class="conum" data-value="1"></i><b>(1)</b></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Implicitly adds all roles from the global configuration.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>If you do not want to apply all roles to a cache, explicitly define the roles
-that are authorized for caches as follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>ConfigurationBuilder config = new ConfigurationBuilder();
-config
-   .security()
-      .authorization()
-         .enable()
-         .role("admin") <i class="conum" data-value="1"></i><b>(1)</b>
-         .role("supervisor")
-         .role("reader");</pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Defines authorized roles for the cache. In this example, users who have the <code>writer</code> role only are not authorized for the "secured" cache. Infinispan denies any access requests from those users.</td>
-</tr>
-</table>
-</div>
-</li>
-</ol>
-</div>
-<div class="ulist _additional-resources">
-<div class="title">Additional resources</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/configuration/global/GlobalSecurityConfigurationBuilder.html">org.infinispan.configuration.global.GlobalSecurityConfigurationBuilder</a></p>
+<p>Set up a credential keystore for Infinispan Server.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Do one of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use the <code class="command">credentials mask</code> command to obscure the password, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin/cli.sh credentials mask -i 100 -s pepper99 "secret1234!"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Masked passwords use Password Based Encryption (PBE) and must be in the following format in your Infinispan Server configuration: &lt;MASKED_VALUE;SALT;ITERATION&gt;.</p>
+</div>
 </li>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/configuration/cache/ConfigurationBuilder.html">org.infinispan.configuration.cache.ConfigurationBuilder</a></p>
+<p>Use an external command that provides the password as standard output.</p>
+<div class="paragraph">
+<p>An external command can be any executable, such as a shell script or binary, that uses <code>java.lang.Runtime#exec(java.lang.String)</code>.<br>
+If the command requires parameters, provide them as a space-separated list of strings.</p>
+</div>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="code-execution-security-authorization_security-authorization"><a class="anchor" href="#code-execution-security-authorization_security-authorization"></a>2.7. Code execution with securirty authorization</h3>
+<h3 id="credential-keystore-configuration_credential-keystores"><a class="anchor" href="#credential-keystore-configuration_credential-keystores"></a>6.3. Credential keystore configuration</h3>
 <div class="paragraph">
-<p>When you configure security authorization for embedded caches and then construct a <code>DefaultCacheManager</code>, it returns a <code>SecureCache</code> that checks the security context before invoking any operations.
-A <code>SecureCache</code> also ensures that applications cannot retrieve lower-level insecure objects such as <code>DataContainer</code>.
-For this reason, you must execute code with an identity that has the required authorization.</p>
+<p>You can add credential keystores to Infinispan Server configuration and use clear-text passwords, masked passwords, or external commands that supply passwords.</p>
 </div>
-<div class="paragraph">
-<p>In Java, executing code with a specific identity usually means wrapping the code to be executed within a <code>PrivilegedAction</code> as follows:</p>
-</div>
-<div class="listingblock">
+<h4 id="credential_keystore_with_a_clear_text_password" class="discrete">Credential keystore with a clear text password</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import org.infinispan.security.Security;
-
-Security.doAs(subject, new PrivilegedExceptionAction&lt;Void&gt;() {
-public Void run() throws Exception {
-    cache.put("key", "value");
-}
-});</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials" path="credentials.pfx"&gt;
+        &lt;clear-text-credential clear-text="secret1234!"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>With Java 8, you can simplify the preceding call as follows:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock secondary">
+<div class="title">JSON</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Security.doAs(mySubject, PrivilegedAction&lt;String&gt;() -&gt; cache.put("key", "value"));</code></pre>
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "clear-text-credential": {
+          "clear-text": "secret1234!"
+        }
+      }]
+    }
+  }
+}</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>The preceding call uses the <code>Security.doAs()</code> method instead of <code>Subject.doAs()</code>.
-You can use either method with Infinispan, however <code>Security.doAs()</code> provides better performance.</p>
-</div>
-<div class="paragraph">
-<p>If you need the current Subject, use the following call to retrieve it from the Infinispan context or from the AccessControlContext:</p>
-</div>
-<div class="listingblock">
+<div class="listingblock secondary">
+<div class="title">YAML</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Security.getSubject();</code></pre>
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        clearTextCredential:
+          clearText: "secret1234!"</code></pre>
+</div>
+</div>
+<h4 id="credential_keystore_with_a_masked_password" class="discrete">Credential keystore with a masked password</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials"
+                        path="credentials.pfx"&gt;
+        &lt;masked-credential masked="1oTMDZ5JQj6DVepJviXMnX;pepper99;100"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "masked-credential": {
+          "masked": "1oTMDZ5JQj6DVepJviXMnX;pepper99;100"
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        maskedCredential:
+          masked: "1oTMDZ5JQj6DVepJviXMnX;pepper99;100"</code></pre>
+</div>
+</div>
+<h4 id="external_command_passwords" class="discrete">External command passwords</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials"
+                        path="credentials.pfx"&gt;
+        &lt;command-credential command="/path/to/executable.sh arg1 arg2"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "command-credential": {
+          "command": "/path/to/executable.sh arg1 arg2"
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        commandCredential:
+          command: "/path/to/executable.sh arg1 arg2"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="credential-keystore-references_credential-keystores"><a class="anchor" href="#credential-keystore-references_credential-keystores"></a>6.4. Credential keystore references</h3>
+<div class="paragraph">
+<p>After you add credential keystores to Infinispan Server you can reference them in connection configurations.</p>
+</div>
+<h4 id="datasource_connections" class="discrete">Datasource connections</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials"
+                        path="credentials.pfx"&gt;
+        &lt;clear-text-credential clear-text="secret1234!"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+  &lt;/security&gt;
+  &lt;data-sources&gt;
+    &lt;data-source name="postgres"
+                 jndi-name="jdbc/postgres"&gt;
+      &lt;!-- Specifies the database username in the connection factory. --&gt;
+      &lt;connection-factory driver="org.postgresql.Driver"
+                          username="dbuser"
+                          url="${org.infinispan.server.test.postgres.jdbcUrl}"&gt;
+        &lt;!-- Specifies the credential keystore that contains an encrypted password and the alias for it. --&gt;
+        &lt;credential-reference store="credentials"
+                              alias="dbpassword"/&gt;
+      &lt;/connection-factory&gt;
+      &lt;connection-pool max-size="10"
+                       min-size="1"
+                       background-validation="1000"
+                       idle-removal="1"
+                       initial-size="1"
+                       leak-detection="10000"/&gt;
+    &lt;/data-source&gt;
+  &lt;/data-sources&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "clear-text-credential": {
+          "clear-text": "secret1234!"
+        }
+      }],
+      "data-sources": [{
+        "name": "postgres",
+        "jndi-name": "jdbc/postgres",
+        "connection-factory": {
+          "driver": "org.postgresql.Driver",
+          "username": "dbuser",
+          "url": "${org.infinispan.server.test.postgres.jdbcUrl}",
+          "credential-reference": {
+            "store": "credentials",
+            "alias": "dbpassword"
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        clearTextCredential:
+          clearText: "secret1234!"
+  dataSources:
+    - name: postgres
+      jndiName: jdbc/postgres
+      connectionFactory:
+        driver: org.postgresql.Driver
+        username: dbuser
+        url: '${org.infinispan.server.test.postgres.jdbcUrl}'
+        credentialReference:
+          store: credentials
+          alias: dbpassword</code></pre>
+</div>
+</div>
+<h4 id="ldap_connections" class="discrete">LDAP connections</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+  &lt;security&gt;
+    &lt;credential-stores&gt;
+      &lt;credential-store name="credentials"
+                        path="credentials.pfx"&gt;
+        &lt;clear-text-credential clear-text="secret1234!"/&gt;
+      &lt;/credential-store&gt;
+    &lt;/credential-stores&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="default"&gt;
+        &lt;!-- Specifies the LDAP principal in the connection factory. --&gt;
+        &lt;ldap-realm name="ldap"
+                    url="ldap://my-ldap-server:10389"
+                    principal="uid=admin,ou=People,dc=infinispan,dc=org"&gt;
+          &lt;!-- Specifies the credential keystore that contains an encrypted password and the alias for it. --&gt;
+          &lt;credential-reference store="credentials"
+                                alias="ldappassword"/&gt;
+        &lt;/ldap-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "credential-stores": [{
+        "name": "credentials",
+        "path": "credentials.pfx",
+        "clear-text-credential": {
+          "clear-text": "secret1234!"
+        }
+      }],
+      "security-realms": [{
+        "name": "default",
+        "ldap-realm": {
+          "name": "ldap",
+          "url": "ldap://my-ldap-server:10389",
+          "principal": "uid=admin,ou=People,dc=infinispan,dc=org",
+          "credential-reference": {
+            "store": "credentials",
+            "alias": "ldappassword"
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    credentialStores:
+      - name: credentials
+        path: credentials.pfx
+        clearTextCredential:
+          clearText: "secret1234!"
+    securityRealms:
+      - name: "default"
+        ldapRealm:
+          name: ldap
+          url: 'ldap://my-ldap-server:10389'
+          principal: 'uid=admin,ou=People,dc=infinispan,dc=org'
+          credentialReference:
+            store: credentials
+            alias: ldappassword</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="secure-cluster-transport"><a class="anchor" href="#secure-cluster-transport"></a>3. Encrypting cluster transport</h2>
+<h2 id="secure-cluster-transport"><a class="anchor" href="#secure-cluster-transport"></a>7. Encrypting cluster transport</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Secure cluster transport so that nodes communicate with encrypted messages.
 You can also configure Infinispan clusters to perform certificate authentication so that only nodes with valid identities can join.</p>
 </div>
 <div class="sect2">
-<h3 id="securing-cluster-transport-tls-identities_secure-cluster-transport"><a class="anchor" href="#securing-cluster-transport-tls-identities_secure-cluster-transport"></a>3.1. Securing cluster transport with TLS identities</h3>
+<h3 id="securing-cluster-transport-tls-identities_secure-cluster-transport"><a class="anchor" href="#securing-cluster-transport-tls-identities_secure-cluster-transport"></a>7.1. Securing cluster transport with TLS identities</h3>
 <div class="paragraph">
 <p>Add SSL/TLS identities to a Infinispan Server security realm and use them to secure cluster transport.
 Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to encrypt JGroups messages, including RELAY messages if you configure cross-site replication.</p>
@@ -1504,12 +4398,12 @@ Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to enc
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
+<pre class="highlight nowrap"><code>[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="jgroups-encryption-protocols_secure-cluster-transport"><a class="anchor" href="#jgroups-encryption-protocols_secure-cluster-transport"></a>3.2. JGroups encryption protocols</h3>
+<h3 id="jgroups-encryption-protocols_secure-cluster-transport"><a class="anchor" href="#jgroups-encryption-protocols_secure-cluster-transport"></a>7.2. JGroups encryption protocols</h3>
 <div class="paragraph">
 <p>To secure cluster traffic, you can configure Infinispan nodes to encrypt JGroups message payloads with secret keys.</p>
 </div>
@@ -1601,7 +4495,7 @@ Users are responsible for generating and distributing the secret keys that nodes
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-jgroups-asym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-asym-encrypt_secure-cluster-transport"></a>3.3. Securing cluster transport with asymmetric encryption</h3>
+<h3 id="configuring-jgroups-asym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-asym-encrypt_secure-cluster-transport"></a>7.3. Securing cluster transport with asymmetric encryption</h3>
 <div class="paragraph">
 <p>Configure Infinispan clusters to generate and distribute secret keys that encrypt JGroups messages.</p>
 </div>
@@ -1661,7 +4555,7 @@ Users are responsible for generating and distributing the secret keys that nodes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1670,7 +4564,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
+<pre class="highlight nowrap"><code>[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -1686,7 +4580,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-jgroups-sym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-sym-encrypt_secure-cluster-transport"></a>3.4. Securing cluster transport with symmetric encryption</h3>
+<h3 id="configuring-jgroups-sym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-sym-encrypt_secure-cluster-transport"></a>7.4. Securing cluster transport with symmetric encryption</h3>
 <div class="paragraph">
 <p>Configure Infinispan clusters to encrypt JGroups messages with secret keys from keystores that you provide.</p>
 </div>
@@ -1739,7 +4633,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1766,7 +4660,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="ports_protocols"><a class="anchor" href="#ports_protocols"></a>4. Infinispan Ports and Protocols</h2>
+<h2 id="ports_protocols"><a class="anchor" href="#ports_protocols"></a>8. Infinispan ports and protocols</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>As Infinispan distributes data across your network and can establish
@@ -1780,7 +4674,7 @@ Infinispan nodes use for cluster communication to prevent conflicts or network
 issues.</p>
 </div>
 <div class="sect2">
-<h3 id="server-ports-protocols_network"><a class="anchor" href="#server-ports-protocols_network"></a>4.1. Infinispan Server ports and protocols</h3>
+<h3 id="server-ports-protocols_network"><a class="anchor" href="#server-ports-protocols_network"></a>8.1. Infinispan Server ports and protocols</h3>
 <div class="paragraph">
 <p>Infinispan Server provides network endpoints that allow client access with different protocols.</p>
 </div>
@@ -1849,7 +4743,7 @@ Infinispan uses WildFly OpenSSL bindings for Java.</p>
 <p>Client requests that include Hot Rod headers automatically route to Hot Rod endpoints.</p>
 </div>
 <div class="sect3">
-<h4 id="configuring-firewalls_network"><a class="anchor" href="#configuring-firewalls_network"></a>4.1.1. Configuring network firewalls for Infinispan traffic</h4>
+<h4 id="configuring-firewalls_network"><a class="anchor" href="#configuring-firewalls_network"></a>8.1.1. Configuring network firewalls for Infinispan traffic</h4>
 <div class="paragraph">
 <p>Adjust firewall rules to allow traffic between Infinispan Server and client applications.</p>
 </div>
@@ -1860,7 +4754,7 @@ traffic to port <code>11222</code> with firewalld as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash"># firewall-cmd --add-port=11222/tcp --permanent
+<pre class="highlight nowrap"><code># firewall-cmd --add-port=11222/tcp --permanent
 success
 # firewall-cmd --list-ports | grep 11222
 11222/tcp</code></pre>
@@ -1873,7 +4767,7 @@ nftables utility.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="jgroups-ports_network"><a class="anchor" href="#jgroups-ports_network"></a>4.2. TCP and UDP ports for cluster traffic</h3>
+<h3 id="jgroups-ports_network"><a class="anchor" href="#jgroups-ports_network"></a>8.2. TCP and UDP ports for cluster traffic</h3>
 <div class="paragraph">
 <p>Infinispan uses the following ports for cluster transport messages:</p>
 </div>
@@ -1929,7 +4823,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-01 12:40:45 -0500
+Last updated 2022-05-16 14:09:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
