@@ -2451,25 +2451,25 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
+import org.infinispan.api.annotations.indexing.*;
 
 // Annotate values with @Indexed to add them to indexes
 // Annotate each fields according to how you want to index it
 @Indexed
 public class Book {
-   @FullTextField
+   @Keyword
    String title;
 
-   @FullTextField
+   @Text
    String description;
 
-   @KeywordField
+   @Keyword
    String isbn;
 
-   @GenericField
+   @Basic
    LocalDate publicationDate;
 
-   @IndexedEmbedded
+   @Embedded
    Set&lt;Author&gt; authors = new HashSet&lt;Author&gt;();
 }</code></pre>
 </div>
@@ -2479,13 +2479,13 @@ public class Book {
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">package org.infinispan.sample;
 
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.infinispan.api.annotations.indexing.Text;
 
 public class Author {
-   @FullTextField
+   @Text
    String name;
 
-   @FullTextField
+   @Text
    String surname;
 }</code></pre>
 </div>
@@ -2987,7 +2987,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-16 14:09:44 UTC
+Last updated 2022-05-18 07:26:24 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
