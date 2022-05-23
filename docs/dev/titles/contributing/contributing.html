@@ -690,8 +690,7 @@ $(addBlockSwitches);
 <li><a href="#debugging_thread_leaks">5.1.3. Debugging thread leaks</a></li>
 <li><a href="#running_tests_using_parameters">5.1.4. Running tests using <code>@Parameters</code></a></li>
 <li><a href="#enabling_trace_in_test_logs">5.1.5. Enabling TRACE in test logs</a></li>
-<li><a href="#running_tests_with_jdk_8">5.1.6. Running tests with JDK 8</a></li>
-<li><a href="#enabling_code_coverage_generation">5.1.7. Enabling code coverage generation</a></li>
+<li><a href="#enabling_code_coverage_generation">5.1.6. Enabling code coverage generation</a></li>
 </ul>
 </li>
 <li><a href="#test_groups">5.2. Test groups</a>
@@ -2764,27 +2763,7 @@ This file is not fully closed, so to extract the log file, execute:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="running_tests_with_jdk_8"><a class="anchor" href="#running_tests_with_jdk_8"></a>5.1.6. Running tests with JDK 8</h4>
-<div class="paragraph">
-<p>While building requires at least JDK 11, the testsuite can be run with JDK 8. In order to do so, you should set the
-<code>JAVA8_HOME</code> environment variable to point to your JDK 8 installation, e.g.:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>$ export JAVA8_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>And enable the <code>java8-test</code> maven profile:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>$ mvn -Pjava8-test test</pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="enabling_code_coverage_generation"><a class="anchor" href="#enabling_code_coverage_generation"></a>5.1.7. Enabling code coverage generation</h4>
+<h4 id="enabling_code_coverage_generation"><a class="anchor" href="#enabling_code_coverage_generation"></a>5.1.6. Enabling code coverage generation</h4>
 <div class="paragraph">
 <p>When you run tests, you can enable code coverage recorder for calculating and analysing the Infinispan code coverage.
 You can do this using <code>coverage</code> and <code>jacocoReport</code> profiles. As a code coverage evaluation tool, the JaCoCo is used.</p>
@@ -3869,7 +3848,7 @@ Use with common phrases like "full-text search" in conjunction with Infinispan Q
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-18 07:26:24 UTC
+Last updated 2022-05-23 09:27:34 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
