@@ -614,6 +614,7 @@ $(addBlockSwitches);
 <li><a href="#hr_transactions_ex_use_config">4.7.5. Using the Configured Transaction Manager and Transaction Mode</a></li>
 </ul>
 </li>
+<li><a href="#remotecache_multimapcachemanager-hotrod-client-api">4.8. Counter API</a></li>
 </ul>
 </li>
 <li><a href="#jcache">5. Using the JCache API</a>
@@ -3318,6 +3319,35 @@ tm.commit();</code></pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="remotecache_multimapcachemanager-hotrod-client-api"><a class="anchor" href="#remotecache_multimapcachemanager-hotrod-client-api"></a>4.8. Counter API</h3>
+<div class="paragraph">
+<p>The <code>MultimapCacheManager</code> interface is the entry point to get a <code>RemoteMultimapCache</code>.</p>
+</div>
+<div class="paragraph">
+<p>Hot Rod clients can retrieve the <code>MultimapCacheManager</code> interface as in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">// create or obtain your RemoteCacheManager
+RemoteCacheManager manager = ...;
+
+// retrieve the MultimapCacheManager
+MultimapCacheManager multimapCacheManager = RemoteMultimapCacheManagerFactory.from(manager);
+
+// retrieve the RemoteMultimapCache
+RemoteMultimapCache&lt;Integer, String&gt; people = multimapCacheManager.get("people");
+
+// add key - values
+people.put("coders", "Will");
+people.put("coders", "Auri");
+people.put("coders", "Pedro");
+
+// retrieve single key with multiple values
+Collection&lt;String&gt; coders = people.get("coders").join();</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3712,7 +3742,7 @@ container.start();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-23 09:27:34 UTC
+Last updated 2022-05-23 10:41:30 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

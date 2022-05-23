@@ -5869,8 +5869,47 @@ This version of the protocol is implemented since Infinispan 9.2
 </table>
 </div>
 <div class="paragraph">
-<p>This Hot Rod protocol version adds support for transaction operations.
-It includes 3 new operations:</p>
+<p>This Hot Rod protocol version adds support for transaction operations and multimap caches.</p>
+</div>
+<div class="paragraph">
+<p>It includes 9 new operations to manipulate multimap caches:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>request 0x67 - response 0x68 = Get a key and retrieve multiple values</p>
+</li>
+<li>
+<p>request 0x69 - response 0x6A = Get a key with metadata and retrieve multiple values</p>
+</li>
+<li>
+<p>request 0x6B - response 0x6C = Put a key/value</p>
+</li>
+<li>
+<p>request 0x6D - response 0x6E = Remove a key</p>
+</li>
+<li>
+<p>request 0x6F - response 0x70 = Remove an entry</p>
+</li>
+<li>
+<p>request 0x71 - response 0x72 = Get the cache size</p>
+</li>
+<li>
+<p>request 0x73 - response 0x74 = Contains entry</p>
+</li>
+<li>
+<p>request 0x75 - response 0x76 = Contains key</p>
+</li>
+<li>
+<p>request 0x77 - response 0x78 = Contains value</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Multimap operations request and response follow the cache operations request and response formats.</p>
+</div>
+<div class="paragraph">
+<p>It includes 3 new operations for transactions:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -8073,7 +8112,7 @@ to not send a notification on many false positives.</p></td>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-23 09:27:34 UTC
+Last updated 2022-05-23 10:41:30 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
