@@ -1436,6 +1436,117 @@ Configuration in JSON format must follow the structure of an XML configuration, 
     # Persistent storage configuration.</code></pre>
 </div>
 </div>
+<h6 id="multiple_caches" class="discrete">Multiple caches</h6>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:infinispan:config:14.0 https://infinispan.org/schemas/infinispan-config-14.0.xsd
+                          urn:infinispan:server:14.0 https://infinispan.org/schemas/infinispan-server-14.0.xsd"
+      xmlns="urn:infinispan:config:14.0"
+      xmlns:server="urn:infinispan:server:14.0"&gt;
+  &lt;cache-container name="default"
+                   statistics="true"&gt;
+    &lt;distributed-cache name="mycacheone"
+                       mode="ASYNC"
+                       statistics="true"&gt;
+      &lt;encoding media-type="application/x-protostream"/&gt;
+      &lt;expiration lifespan="300000"/&gt;
+      &lt;memory max-size="400MB"
+              when-full="REMOVE"/&gt;
+    &lt;/distributed-cache&gt;
+    &lt;distributed-cache name="mycachetwo"
+                       mode="SYNC"
+                       statistics="true"&gt;
+      &lt;encoding media-type="application/x-protostream"/&gt;
+      &lt;expiration lifespan="300000"/&gt;
+      &lt;memory max-size="400MB"
+              when-full="REMOVE"/&gt;
+    &lt;/distributed-cache&gt;
+  &lt;/cache-container&gt;
+&lt;/infinispan&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  cacheContainer:
+    name: "default"
+    statistics: "true"
+    caches:
+      mycacheone:
+       distributedCache:
+          mode: "ASYNC"
+          statistics: "true"
+          encoding:
+            mediaType: "application/x-protostream"
+          expiration:
+            lifespan: "300000"
+          memory:
+            maxSize: "400MB"
+            whenFull: "REMOVE"
+      mycachetwo:
+        distributedCache:
+          mode: "SYNC"
+          statistics: "true"
+          encoding:
+            mediaType: "application/x-protostream"
+          expiration:
+            lifespan: "300000"
+          memory:
+            maxSize: "400MB"
+            whenFull: "REMOVE"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "infinispan" : {
+    "cache-container" : {
+      "name" : "default",
+      "statistics" : "true",
+      "caches" : {
+        "mycacheone" : {
+          "distributed-cache" : {
+            "mode": "ASYNC",
+            "statistics": "true",
+            "encoding": {
+              "media-type": "application/x-protostream"
+            },
+            "expiration" : {
+              "lifespan" : "300000"
+            },
+            "memory": {
+              "max-size": "400MB",
+              "when-full": "REMOVE"
+            }
+          }
+        },
+        "mycachetwo" : {
+          "distributed-cache" : {
+            "mode": "SYNC",
+            "statistics": "true",
+            "encoding": {
+              "media-type": "application/x-protostream"
+            },
+            "expiration" : {
+              "lifespan" : "300000"
+            },
+            "memory": {
+              "max-size": "400MB",
+              "when-full": "REMOVE"
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -6331,7 +6442,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-23 10:41:30 UTC
+Last updated 2022-05-23 15:17:37 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
