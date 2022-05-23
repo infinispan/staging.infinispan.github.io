@@ -7044,6 +7044,9 @@ spec:
 <p>When downloading files, Infinispan Operator can automatically detect the file type.
 Infinispan Operator also extracts archived files, such as <code>zip</code> or <code>tgz</code>, to the filesystem after the download completes.</p>
 </div>
+<div class="paragraph">
+<p>You can also download Maven artifacts using the <code>groupId:artifactId:version</code> format, for example <code>org.postgresql:postgresql:42.3.1</code>.</p>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -7052,8 +7055,7 @@ Infinispan Operator also extracts archived files, such as <code>zip</code> or <c
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Each time Infinispan Operator creates a Infinispan node it downloads the artifacts to the node.
-The download also occurs when Infinispan Operator recreates pods after terminating them.</p>
+<p>Each time Infinispan Operator creates a Infinispan node it downloads the artifacts to the node.</p>
 </div>
 </td>
 </tr>
@@ -7063,7 +7065,7 @@ The download also occurs when Infinispan Operator recreates pods after terminati
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Host your code artifacts on an HTTP or FTP server.</p>
+<p>Host your code artifacts on an HTTP or FTP server or publish them to a maven repository.</p>
 </li>
 </ul>
 </div>
@@ -7072,35 +7074,24 @@ The download also occurs when Infinispan Operator recreates pods after terminati
 <ol class="arabic">
 <li>
 <p>Add the <code>spec.dependencies.artifacts</code> field to your <code>Infinispan</code> CR.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
+</li>
+<li>
+<p>Do one of the following:</p>
+<div class="ulist">
+<ul>
 <li>
 <p>Specify the location of the file to download via <code>HTTP</code> or <code>FTP</code> as the value of the <code>spec.dependencies.artifacts.url</code> field.</p>
+</li>
+<li>
+<p>Provide the Maven artifact to download with the <code>groupId:artifactId:version</code> format as the value of the <code>spec.dependencies.artifacts.maven</code> field.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Optionally specify a checksum to verify the integrity of the download with the <code>spec.dependencies.artifacts.hash</code> field.</p>
 <div class="paragraph">
 <p>The <code>hash</code> field requires a value is in the format of <code>&lt;algorithm&gt;:&lt;checksum&gt;</code> where <code>&lt;algorithm&gt;</code> is <code>sha1|sha224|sha256|sha384|sha512|md5</code>.</p>
-</div>
-</li>
-<li>
-<p>Set the file type, if necessary, with the <code>spec.dependencies.artifacts.type</code> field.</p>
-<div class="paragraph">
-<p>You should explicitly set the file type if it is not included in the URL or if the file type is actually different to the extension in the URL.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>If you set <code>type: file</code>, Infinispan Operator downloads the file as-is without extracting it to the filesystem.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7114,13 +7105,9 @@ spec:
     artifacts:
       - url: http://example.com:8080/path
         hash: sha256:596408848b56b5a23096baa110cd8b633c9a9aef2edd6b38943ade5b4edcd686
-        type: zip
   service:
     type: DataGrid</code></pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 </li>
 <li>
@@ -7724,7 +7711,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-16 14:00:07 UTC
+Last updated 2022-05-23 17:30:32 UTC
 </div>
 </div>
 <script>
