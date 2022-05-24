@@ -2505,7 +2505,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;config xmlns="urn:org:jgroups"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-4.2.xsd"&gt;
+        xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-5.2.xsd"&gt;
     &lt;UDP bind_addr="${jgroups.bind_addr:127.0.0.1}"
          mcast_addr="${jgroups.udp.mcast_addr:192.0.2.0}"
          mcast_port="${jgroups.udp.mcast_port:46655}"
@@ -2514,9 +2514,9 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
          ucast_send_buf_size="640000"
          mcast_recv_buf_size="25000000"
          mcast_send_buf_size="640000"
-         max_bundle_size="64000"
+         bundler.max_size="64000"
          ip_ttl="${jgroups.udp.ip_ttl:2}"
-         enable_diagnostics="false"
+         diag.enabled="false"
          thread_naming_pattern="pl"
          thread_pool.enabled="true"
          thread_pool.min_threads="2"
@@ -2751,7 +2751,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 <p><a href="http://www.jgroups.org/manual4/index.html">JGroups 4 Manual</a></p>
 </li>
 <li>
-<p><a href="http://www.jgroups.org/schema/jgroups-4.2.xsd">JGroups 4.2 Schema</a></p>
+<p><a href="http://www.jgroups.org/schema/jgroups-5.2.xsd">JGroups 4.2 Schema</a></p>
 </li>
 </ul>
 </div>
@@ -2829,7 +2829,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 <p><a href="http://www.jgroups.org/manual4/index.html">JGroups 4 Manual</a></p>
 </li>
 <li>
-<p><a href="http://www.jgroups.org/schema/jgroups-4.2.xsd">JGroups 4.2 Schema</a></p>
+<p><a href="http://www.jgroups.org/schema/jgroups-5.2.xsd">JGroups 4.2 Schema</a></p>
 </li>
 </ul>
 </div>
@@ -6526,7 +6526,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-24 09:43:25 UTC
+Last updated 2022-05-24 15:29:01 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
