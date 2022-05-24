@@ -548,6 +548,7 @@ $(addBlockSwitches);
 <li><a href="#hibernate_6_0_2lc_update">1.1.9. Hibernate 6.0 2LC Update</a></li>
 <li><a href="#jpastore_has_been_removed">1.1.10. JPAStore has been removed</a></li>
 <li><a href="#protodoc_annotations_are_no_longer_necessary">1.1.11. ProtoDoc annotations are no longer necessary</a></li>
+<li><a href="#the_undocumented_server_filesystem_realm_has_been_removed">1.1.12. The (undocumented) server filesystem-realm has been removed</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_12_1_to_13_0">1.2. Upgrading from 12.1 to 13.0</a>
@@ -1090,6 +1091,12 @@ It is suggested instead to use the new SQL Table or Query Stores that were added
 <div class="paragraph">
 <p>It is no longer necessary to wrap annotations, such as those required for indexing, within <code>@ProtoDoc</code> annotations.
 Any annotations will simply be copied as comments to the generated <code>.proto</code> files.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="the_undocumented_server_filesystem_realm_has_been_removed"><a class="anchor" href="#the_undocumented_server_filesystem_realm_has_been_removed"></a>1.1.12. The (undocumented) server filesystem-realm has been removed</h4>
+<div class="paragraph">
+<p>The <code>filesystem-realm</code>, an experimental feature which has never been documented, has been removed.</p>
 </div>
 </div>
 </div>
@@ -4658,7 +4665,7 @@ repository, run the following command:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-23 15:17:37 UTC
+Last updated 2022-05-24 09:43:25 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
