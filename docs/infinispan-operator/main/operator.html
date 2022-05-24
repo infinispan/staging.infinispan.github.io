@@ -1571,117 +1571,6 @@ Each time you modify the Infinispan configuration in the <code>ConfigMap</code>,
 }</code></pre>
 </div>
 </div>
-<h4 id="_multiple_caches" class="discrete">Multiple caches</h4>
-<div class="listingblock">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="urn:infinispan:config:13.0 https://infinispan.org/schemas/infinispan-config-13.0.xsd
-                          urn:infinispan:server:13.0 https://infinispan.org/schemas/infinispan-server-13.0.xsd"
-      xmlns="urn:infinispan:config:13.0"
-      xmlns:server="urn:infinispan:server:13.0"&gt;
-  &lt;cache-container name="default"
-                   statistics="true"&gt;
-    &lt;distributed-cache name="mycacheone"
-                       mode="ASYNC"
-                       statistics="true"&gt;
-      &lt;encoding media-type="application/x-protostream"/&gt;
-      &lt;expiration lifespan="300000"/&gt;
-      &lt;memory max-size="400MB"
-              when-full="REMOVE"/&gt;
-    &lt;/distributed-cache&gt;
-    &lt;distributed-cache name="mycachetwo"
-                       mode="SYNC"
-                       statistics="true"&gt;
-      &lt;encoding media-type="application/x-protostream"/&gt;
-      &lt;expiration lifespan="300000"/&gt;
-      &lt;memory max-size="400MB"
-              when-full="REMOVE"/&gt;
-    &lt;/distributed-cache&gt;
-  &lt;/cache-container&gt;
-&lt;/infinispan&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">YAML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
-  cacheContainer:
-    name: "default"
-    statistics: "true"
-    caches:
-      mycacheone:
-       distributedCache:
-          mode: "ASYNC"
-          statistics: "true"
-          encoding:
-            mediaType: "application/x-protostream"
-          expiration:
-            lifespan: "300000"
-          memory:
-            maxSize: "400MB"
-            whenFull: "REMOVE"
-      mycachetwo:
-        distributedCache:
-          mode: "SYNC"
-          statistics: "true"
-          encoding:
-            mediaType: "application/x-protostream"
-          expiration:
-            lifespan: "300000"
-          memory:
-            maxSize: "400MB"
-            whenFull: "REMOVE"</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">JSON</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "infinispan" : {
-    "cache-container" : {
-      "name" : "default",
-      "statistics" : "true",
-      "caches" : {
-        "mycacheone" : {
-          "distributed-cache" : {
-            "mode": "ASYNC",
-            "statistics": "true",
-            "encoding": {
-              "media-type": "application/x-protostream"
-            },
-            "expiration" : {
-              "lifespan" : "300000"
-            },
-            "memory": {
-              "max-size": "400MB",
-              "when-full": "REMOVE"
-            }
-          }
-        },
-        "mycachetwo" : {
-          "distributed-cache" : {
-            "mode": "SYNC",
-            "statistics": "true",
-            "encoding": {
-              "media-type": "application/x-protostream"
-            },
-            "expiration" : {
-              "lifespan" : "300000"
-            },
-            "memory": {
-              "max-size": "400MB",
-              "when-full": "REMOVE"
-            }
-          }
-        }
-      }
-    }
-  }
-}</code></pre>
-</div>
-</div>
 <h4 id="_logging_configuration" class="discrete">Logging configuration</h4>
 <div class="paragraph">
 <p>You can also include Apache Log4j configuration in XML format as part of your <code>ConfigMap</code>.</p>
@@ -1733,6 +1622,14 @@ data:
          &lt;/Loggers&gt;
      &lt;/Configuration&gt;</code></pre>
 </div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="{config_docs}#cache-configuration_cache-configuration">Custom Infinispan configuration</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -7711,7 +7608,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-23 17:30:32 UTC
+Last updated 2022-05-24 08:17:51 UTC
 </div>
 </div>
 <script>
