@@ -1618,7 +1618,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>default-jgroups-ec2.xml</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ec2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Uses TCP for transport and <code>NATIVE_S3_PING</code> for discovery. Suitable for Amazon EC2 nodes where UDP multicast is not available. Requires additional dependencies.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses TCP for transport and <code>aws.S3_PING</code> for discovery. Suitable for Amazon EC2 nodes where UDP multicast is not available. Requires additional dependencies.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>default-jgroups-google.xml</code></p></td>
@@ -1889,10 +1889,10 @@ in Kubernetes environments such as OKD and Red Hat OpenShift.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NATIVE_S3_PING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.S3_PING</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>default-jgroups-ec2.xml</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.jgroups.aws.s3:native-s3-ping</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.0.0.Final</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.jgroups.aws:jgroups-aws</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.0.1.Final</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>GOOGLE_PING2</code></p></td>
@@ -1901,16 +1901,16 @@ in Kubernetes environments such as OKD and Red Hat OpenShift.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.0.0.Final</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AZURE_PING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>azure.AZURE_PING</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>default-jgroups-azure.xml</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.jgroups.azure:jgroups-azure</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.3.0.Final</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.0.0.Final</code></p></td>
 </tr>
 </tbody>
 </table>
 <h5 id="providing_dependencies_for_cloud_discovery_protocols" class="discrete">Providing dependencies for cloud discovery protocols</h5>
 <div class="paragraph">
-<p>To use <code>NATIVE_S3_PING</code>, <code>GOOGLE_PING2</code>, or <code>AZURE_PING</code> cloud discovery protocols, you need to provide dependent libraries to Infinispan.</p>
+<p>To use <code>aws.S3_PING</code>, <code>GOOGLE_PING2</code>, or <code>azure.AZURE_PING</code> cloud discovery protocols, you need to provide dependent libraries to Infinispan.</p>
 </div>
 <div class="ulist">
 <div class="title">Procedure</div>
@@ -1927,13 +1927,13 @@ in Kubernetes environments such as OKD and Red Hat OpenShift.</p>
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://github.com/jgroups-extras/native-s3-ping">JGroups NATIVE_S3_PING</a></p>
+<p><a href="https://github.com/jgroups-extras/jgroups-aws">JGroups aws.S3_PING</a></p>
 </li>
 <li>
 <p><a href="https://github.com/jgroups-extras/jgroups-google">JGroups GOOGLE_PING2</a></p>
 </li>
 <li>
-<p><a href="https://github.com/jgroups-extras/jgroups-azure">JGroups AZURE_PING</a></p>
+<p><a href="https://github.com/jgroups-extras/jgroups-azure">JGroups azure.AZURE_PING</a></p>
 </li>
 </ul>
 </div>
@@ -2266,7 +2266,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
 <div class="sect4">
 <h5 id="amazon_ec2"><a class="anchor" href="#amazon_ec2"></a>Amazon EC2</h5>
 <div class="paragraph">
-<p>System properties for configuring <code>NATIVE_S3_PING</code>.</p>
+<p>System properties for configuring <code>aws.S3_PING</code>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2332,7 +2332,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
 <div class="sect4">
 <h5 id="azure"><a class="anchor" href="#azure"></a>Azure</h5>
 <div class="paragraph">
-<p>System properties for <code>AZURE_PING</code>.</p>
+<p>System properties for azure.AZURE_PING`.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -6532,7 +6532,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-25 13:17:17 UTC
+Last updated 2022-05-27 12:12:43 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -715,7 +715,7 @@ $(addBlockSwitches);
 <li><a href="#performasync_header_removed_from_rest">1.8.18. performAsync header removed from REST</a></li>
 <li><a href="#rest_status_code_change">1.8.19. REST status code change</a></li>
 <li><a href="#default_jgroups_stacks_in_the_xml_configuration">1.8.20. Default JGroups stacks in the XML configuration</a></li>
-<li><a href="#jgroups_s3_ping_replaced_with_native_s3_ping">1.8.21. JGroups S3_PING replaced with NATIVE_S3_PING</a></li>
+<li><a href="#jgroups_legacy_s3_ping_replaced_with_aws_s3_ping">1.8.21. JGroups legacy S3_PING replaced with aws.S3_PING</a></li>
 <li><a href="#cache_and_cache_manager_listeners_can_now_be_configured_to_be_non_blocking">1.8.22. Cache and Cache Manager Listeners can now be configured to be non blocking</a></li>
 <li><a href="#distributed_streams_operations_no_longer_support_null_values">1.8.23. Distributed Streams operations no longer support null values</a></li>
 <li><a href="#removed_the_infinispan_cloud_module">1.8.24. Removed the infinispan-cloud module</a></li>
@@ -2512,10 +2512,10 @@ your own configurations to avoid the conflict.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="jgroups_s3_ping_replaced_with_native_s3_ping"><a class="anchor" href="#jgroups_s3_ping_replaced_with_native_s3_ping"></a>1.8.21. JGroups S3_PING replaced with NATIVE_S3_PING</h4>
+<h4 id="jgroups_legacy_s3_ping_replaced_with_aws_s3_ping"><a class="anchor" href="#jgroups_legacy_s3_ping_replaced_with_aws_s3_ping"></a>1.8.21. JGroups legacy S3_PING replaced with aws.S3_PING</h4>
 <div class="paragraph">
-<p>Because of changes in AWS&#8217;s access policy regarding signatures, S3_PING will not work in newer regions and will stop working in older regions too.
-For this reason, you should migrate to using NATIVE_S3_PING instead.</p>
+<p>Because of changes in AWS&#8217;s access policy regarding signatures, legacy S3_PING will not work in newer regions and will stop working in older regions too.
+For this reason, you should migrate to using aws.S3_PING instead.</p>
 </div>
 </div>
 <div class="sect3">
@@ -4665,7 +4665,7 @@ repository, run the following command:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-25 13:17:17 UTC
+Last updated 2022-05-27 12:12:43 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
