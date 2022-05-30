@@ -504,7 +504,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Use the <code>ConfigurationBuilder</code> API to configure Hot Rod .NET/C# client connections and the <code>RemoteCacheManager</code> API to obtain and configure remote caches.</p>
 </div>
 <div class="listingblock">
-<div class="title">Configuration builder</div>
+<div class="title">Basic configuration</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-c#" data-lang="c#">using Infinispan.HotRod;
 using Infinispan.HotRod.Config;
@@ -538,11 +538,39 @@ namespace simpleapp
 </div>
 </div>
 <div class="listingblock">
-<div class="title">Cross-site replication</div>
+<div class="title">Authentication</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-c#" data-lang="c#">ConfigurationBuilder builder = new ConfigurationBuilder();
+// Add a server with specific connection timeouts
+builder.AddServer().Host("127.0.0.1").Port(11222).ConnectionTimeout(90000).SocketTimeout(900);
+// ConfigurationBuilder has fluent interface, options can be appended in chain.
+// Enabling authentication with server name "node0",
+// sasl mech "PLAIN", user "supervisor", password "aPassword", security realm "aRealm"
+builder.Security().Authentication().Enable().ServerFQDN("node0")
+    .SaslMechanism("PLAIN").SetupCallback("supervisor", "aPassword", "aRealm");
+Configuration c = conf.Build();</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Encryption</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-c#" data-lang="c#">ConfigurationBuilder builder = new ConfigurationBuilder();
+builder.AddServer().Host("127.0.0.1").Port(11222);
+// Get configuration builder for encryption
+SslConfigurationBuilder sslBuilder = conf.Ssl();
+// Enable encryption and provide client certificate
+sslBuilder.Enable().ClientCertificateFile("clientCertFilename");
+// Provide server cert if server needs to be verified
+sslBuilder.ServerCAFile("serverCertFilename");
+Configuration c = conf.Build();</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Cross-site failover</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-c#" data-lang="c#">ConfigurationBuilder builder = new ConfigurationBuilder();
   builder.AddServer().Host("127.0.0.1").Port(11222);
-  // Configure a remote cluster and node when using cross-site replication.
+  // Configure a remote cluster and node when using cross-site failover.
   builder.AddCluster("nyc").AddClusterNode("192.0.2.0", 11322);</code></pre>
 </div>
 </div>
@@ -561,7 +589,7 @@ namespace simpleapp
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-12-22 08:01:16 UTC
+Last updated 2022-05-04 08:27:32 -0400
 </div>
 </div>
 </body>

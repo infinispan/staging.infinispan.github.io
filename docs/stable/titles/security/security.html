@@ -439,12 +439,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/security/security.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
-<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
-<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
-<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -1512,7 +1509,7 @@ Use the <code class="command">user create</code> commands as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
      --users-file=application-users.properties \
      --groups-file=application-groups.properties
 
@@ -1742,7 +1739,7 @@ For example, if you have a "datagrid" server in the "INFINISPAN.ORG" domain you 
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>ktutil
+<pre class="CodeRay highlight nowrap"><code>$ ktutil
 ktutil:  addent -password -p datagrid@INFINISPAN.ORG -k 1 -e aes256-cts
 Password for datagrid@INFINISPAN.ORG: [enter your password]
 ktutil:  wkt http.keytab
@@ -1754,8 +1751,8 @@ ktutil:  quit</code></pre>
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>ktpass -princ HTTP/datagrid@INFINISPAN.ORG -pass * -mapuser INFINISPAN\USER_NAME
-ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ ktpass -princ HTTP/datagrid@INFINISPAN.ORG -pass * -mapuser INFINISPAN\USER_NAME
+$ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
 </div>
 </div>
 </dd>
@@ -4157,7 +4154,7 @@ When you create a keystore you also specify a password for the keystore with the
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin/cli.sh credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
 </div>
 </div>
 </dd>
@@ -4165,7 +4162,7 @@ When you create a keystore you also specify a password for the keystore with the
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin\cli.bat credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ bin\cli.bat credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
 </div>
 </div>
 </dd>
@@ -4176,7 +4173,7 @@ When you create a keystore you also specify a password for the keystore with the
 <p>Check that the alias is added to the keystore.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin/cli.sh credentials ls -p &quot;secret1234!&quot;
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh credentials ls -p &quot;secret1234!&quot;
 dbpassword</code></pre>
 </div>
 </div>
@@ -4526,7 +4523,7 @@ Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to enc
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -4683,7 +4680,7 @@ Users are responsible for generating and distributing the secret keys that nodes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4692,7 +4689,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -4761,7 +4758,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4882,7 +4879,7 @@ traffic to port <code>11222</code> with firewalld as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code># firewall-cmd --add-port=11222/tcp --permanent
+<pre class="CodeRay highlight nowrap"><code data-lang="bash"># firewall-cmd --add-port=11222/tcp --permanent
 success
 # firewall-cmd --list-ports | grep 11222
 11222/tcp</code></pre>
@@ -4951,7 +4948,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-13 18:08:03 +0100
+Last updated 2022-04-29 05:04:07 -0400
 </div>
 </div>
 <style>

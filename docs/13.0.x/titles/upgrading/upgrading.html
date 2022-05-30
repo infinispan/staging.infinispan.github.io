@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta name="robots" content="noindex">
+<head><meta name="robots" content="noindex">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -440,12 +439,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/upgrading/upgrading.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
-<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
-<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
-<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -3441,7 +3437,7 @@ Depending on your environment you can also use different network interfaces and 
 <p>CLI: Use the <code class="command">migrate cluster connect</code> command on the target cluster.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
 </div>
 </div>
 </li>
@@ -3511,7 +3507,7 @@ You must perform the synchronization for each cache that you want to migrate to 
 <p>CLI: Use the <code class="command">migrate cluster synchronize</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>migrate cluster synchronize -c myCache</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">[//containers/default]&gt; migrate cluster synchronize -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -3538,7 +3534,7 @@ entries copied to the target cluster.</p>
 <p>CLI: Use the <code class="command">migrate cluster disconnect</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>migrate cluster disconnect -c myCache</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">[//containers/default]&gt; migrate cluster disconnect -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -3616,7 +3612,8 @@ the target version for the patch you want to create.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
+[disconnected]&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -3624,7 +3621,7 @@ the target version for the patch you want to create.</p>
 <p>Use the <code>patch create</code> command to generate a patch archive and include the <code>-q</code> option with a meaningful qualifier to describe the patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
 path/to/target/server/home path/to/source/server/home</code></pre>
 </div>
 </div>
@@ -3644,7 +3641,7 @@ Paths are relative to <code>$ISPN_HOME</code> for the target server.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
 path/to/target/server/home \
 path/to/source/server1/home path/to/source/server2/home</code></pre>
 </div>
@@ -3662,12 +3659,9 @@ install "mypatch.zip".</p>
 <p>Describe the generated patch archive.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>patch describe path/to/mypatch.zip</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight nowrap"><code>Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch describe path/to/mypatch.zip
+
+Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -3730,7 +3724,8 @@ patching.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
+[disconnected]&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -3759,7 +3754,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is installed.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin/server.sh
+<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh
 ...
 ISPN080001: Infinispan Server $version</code></pre>
 </div>
@@ -3783,7 +3778,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>patch install path/to/patch.zip --server=path/to/server/home</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch install path/to/patch.zip --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -3828,7 +3823,8 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
+[disconnected]&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -3836,12 +3832,9 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>List the installed patches.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>patch ls</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight nowrap"><code>Infinispan patch target=$target_version source=$source_version
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch ls
+
+Infinispan patch target=$target_version source=$source_version
 created=$timestamp installed=$timestamp</code></pre>
 </div>
 </div>
@@ -3860,7 +3853,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Roll back the last installed patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>patch rollback</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch rollback</code></pre>
 </div>
 </div>
 </li>
@@ -3868,7 +3861,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Quit the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>quit</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; quit</code></pre>
 </div>
 </div>
 </li>
@@ -3876,12 +3869,9 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is rolled back to the previous version.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>bin/server.sh</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight nowrap"><code>ISPN080001: Infinispan Server $version</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh
+...
+ISPN080001: Infinispan Server $version</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3903,7 +3893,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>patch rollback --server=path/to/server/home</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch rollback --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -4062,7 +4052,7 @@ file.</p>
 <p>Prepend all configuration properties with <code>source.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>source.type=SOFT_INDEX_FILE_STORE
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">source.type=SOFT_INDEX_FILE_STORE
 source.cache_name=myCache
 source.location=/path/to/source/sifs
 source.version=&lt;version&gt;</code></pre>
@@ -4080,7 +4070,7 @@ source.version=&lt;version&gt;</code></pre>
 <p>Prepend all configuration properties with <code>target.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>target.type=SINGLE_FILE_STORE
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">target.type=SINGLE_FILE_STORE
 target.cache_name=myCache
 target.location=/path/to/target/sfs.dat</code></pre>
 </div>
@@ -4468,7 +4458,7 @@ repository, run the following command:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-13 18:08:03 +0100
+Last updated 2022-04-29 05:04:07 -0400
 </div>
 </div>
 <style>
