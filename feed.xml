@@ -1,4 +1,150 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2022-05-30T08:57:59-04:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 14.0.0.Dev03</title><link href="https://infinispan.org/blog/2022/05/30/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Dev03" /><published>2022-05-30T08:00:00-04:00</published><updated>2022-05-30T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/05/30/infinispan-14.0.0.Dev03</id><content type="html" xml:base="https://infinispan.org/blog/2022/05/30/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2022-06-15T03:34:59-04:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 14 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news" rel="alternate" type="text/html" title="Infinispan 14 indexing &amp;amp; query news" /><published>2022-06-14T14:00:00-04:00</published><updated>2022-06-14T14:00:00-04:00</updated><id>https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news</id><content type="html" xml:base="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dear Infinispan community,&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;with the Infinispan 14 development release 03 we introduced some news on indexing and search capabilities.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;infinispan-indexing-annotations&quot;&gt;Infinispan indexing annotations&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Hibernate annotations are going to be replaced with the new Infinispan indexing annotations, that will be used in the same exact way
+for both embedded and remote queries.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here is an example of two annotated POJOs:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Poem.java&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Indexed
+public class Poem {
+
+   private Author author;
+   private String description;
+   private Integer year;
+
+   @Embedded(includeDepth = 2, structure = Structure.NESTED)
+   public Author getAuthor() {
+      return author;
+   }
+
+   @Text(projectable = true, analyzer = &quot;whitespace&quot;, termVector = TermVector.WITH_OFFSETS)
+   public String getDescription() {
+      return description;
+   }
+
+   @Basic(projectable = true, sortable = true, indexNullAs = &quot;1800&quot;)
+   public Integer getYear() {
+      return year;
+   }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Author.java&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;@Indexed
+public class Author {
+
+   private String name;
+
+   public Author(String name) {
+      this.name = name;
+   }
+
+   @Keyword(projectable = true, sortable = true, normalizer = &quot;lowercase&quot;, indexNullAs = &quot;unnamed&quot;, norms = false)
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Indexed fields without any special string/text transformation will be annotated as &lt;code&gt;@Basic&lt;/code&gt;.
+If we need to apply a normalizer to a String field, we will opt for a &lt;code&gt;@Keyword&lt;/code&gt; annotation.
+If we need to apply an analyzer to a String field, we will opt for a &lt;code&gt;@Text&lt;/code&gt; annotation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The new annotations allow setting with the same annotation if the field should be sortable, or projectable, or its normalizer or its analyzer.
+However, not all the combinations will be possible, for instance the attribute sortable is not present on the &lt;code&gt;@Text&lt;/code&gt; annotation,
+since an analyzed field cannot be used to sort the result set.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;code&gt;indexNullAs&lt;/code&gt; attribute allow now to define a default value to use on index in case the corresponding entity values was null.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Embedded indexes are defined using the &lt;code&gt;@Embedded&lt;/code&gt; annotation, and it is possible to choose between the &lt;code&gt;NESTED&lt;/code&gt; structure which
+preserves the original object relationship structure and &lt;code&gt;FLATTENED&lt;/code&gt; structure which makes the leaf fields multi-valued
+fields of the parent entity.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;index-startup-mode&quot;&gt;Index startup mode&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Sometimes indexes can be persistent and cache data not or vice versa, for those cases it can be useful
+to perform some operations to ensure the index will be consistent with data in the cache.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We introduced the &lt;code&gt;startup-mode&lt;/code&gt; configuration. Here is an example:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;distributed-cache&amp;gt;
+  &amp;lt;indexing storage=&quot;filesystem&quot; startup-mode=&quot;purge&quot;&amp;gt;
+    &amp;lt;!-- Additional indexing configuration goes here. --&amp;gt;
+  &amp;lt;/indexing&amp;gt;
+&amp;lt;/distributed-cache&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With this configuration every time the cache is started, the indexes will be purged.
+Possible values are: &lt;code&gt;purge&lt;/code&gt;, &lt;code&gt;reindex&lt;/code&gt;, &lt;code&gt;none&lt;/code&gt; and &lt;code&gt;auto&lt;/code&gt;, with the latter Infinispan will decide if and in case which operation
+to perform according to how indexes ad cache data are configured.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;index-schema-update&quot;&gt;Index schema update&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This should be considered an advanced feature to be used only in case your model needs to be evolved time to time, and you need to
+continue to query your cache data without the aid of some data migrations or reindexing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For a comprehensive guide about when to use schema update instead of migrate or reindex the data please refer to the documentation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The command can be triggered from the HotRod remote administration API:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;remoteCacheManager.administration().updateIndexSchema(CACHE_NAME);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;or using the REST API, targeting the uri:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST .../v2/caches/{cacheName}/search/indexes?action=updateSchema&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;or using the Infinispan cli by running &lt;code&gt;update-schema&lt;/code&gt; on the runtime cache instance.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Fabio Massimo Ercoli</name></author><category term="indexing" /><category term="query" /><category term="schema" /><category term="startup" /><category term="annotations" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14.0.0.Dev03</title><link href="https://infinispan.org/blog/2022/05/30/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Dev03" /><published>2022-05-30T08:00:00-04:00</published><updated>2022-05-30T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/05/30/infinispan-14.0.0.Dev03</id><content type="html" xml:base="https://infinispan.org/blog/2022/05/30/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan community,&lt;/p&gt;
@@ -1054,47 +1200,4 @@ connected.then(function (client) {
 &lt;p&gt;Jira tracker for this client is available &lt;a href=&quot;https://issues.redhat.com/projects/HRJS&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Katia Aresti</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><summary type="html">Node.js Client 0.9.0</summary></entry><entry><title type="html">An Infinispan .Net Core client over the Hot Rod protocol</title><link href="https://infinispan.org/blog/2021/06/21/infinispan-dotnet-core-client" rel="alternate" type="text/html" title="An Infinispan .Net Core client over the Hot Rod protocol" /><published>2021-06-21T08:00:00-04:00</published><updated>2021-06-21T08:00:00-04:00</updated><id>https://infinispan.org/blog/2021/06/21/dotnet-core-client</id><content type="html" xml:base="https://infinispan.org/blog/2021/06/21/infinispan-dotnet-core-client">&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispanners,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The Infinispan team would like to share a new project we&amp;#8217;re working on: &lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core&quot;&gt;Infinispan.Hotrod.Core&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Our current .NET client is based on the C&amp;#43;&amp;#43; core implementation, which is a solution that has its pros and cons.
-It makes it easier to guarantee parity between the C&amp;#43;&amp;#43; and C# clients over the time, but has the drawback of tying clients to specific a architecture.
-In turn that complicates portability and distribution, making the release lifecycle for those clients more onerous and sluggish.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The &lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core&quot;&gt;Infinispan.Hotrod.Core&lt;/a&gt; is a 100% C# Hot Rod client designed with the aim of being portable across
-systems via the .Net Core platform and easier to deploy and consume via the Nuget platform.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you are involved with the .NET Core ecosystem we hope you will find this project of interest. Entry points for the project are:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core&quot;&gt;Infinispan.Hotrod.Core&lt;/a&gt;, current status and news;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core/tree/main/Infinispan.Hotrod.Core.XUnitTest&quot;&gt;XUnit test&lt;/a&gt;, this will contain the same testsuite of the
-current &lt;a href=&quot;https://github.com/infinispan/dotnet-client&quot;&gt;.NET client&lt;/a&gt; project with the aim of making it easier to compare with the .NET core client as it matures.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core/tree/main/Infinispan.Hotrod.Application&quot;&gt;Sample Application&lt;/a&gt;, an example of project which uses the client package.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.nuget.org/packages/Infinispan.Hotrod.Core/&quot;&gt;Nuget&lt;/a&gt; is where the package is published.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Hope this will makes C# developers happy!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Please let us know your thoughts, a good place for them is the &lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core/issues&quot;&gt;issues&lt;/a&gt; page.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The Infinispan Team&lt;/p&gt;
-&lt;/div&gt;</content><author><name>Vittorio Rigamonti</name></author><category term="hotrod" /><category term=".Net Core" /><category term="client" /><category term="C#" /><summary type="html">Dear Infinispanners,</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Katia Aresti</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><summary type="html">Node.js Client 0.9.0</summary></entry></feed>
