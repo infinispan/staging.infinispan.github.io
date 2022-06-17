@@ -4520,11 +4520,11 @@ Users are responsible for generating and distributing the secret keys that nodes
     &lt;!-- Creates a secure JGroups stack named "encrypt-tcp" that extends the default TCP stack. --&gt;
     &lt;stack name="encrypt-tcp" extends="tcp"&gt;
       &lt;!-- Adds a keystore that nodes use to perform certificate authentication. --&gt;
-      &lt;!-- Uses the stack.combine and stack.position attributes to insert SSL_KEY_EXCHANGE into the default TCP stack after VERIFY_SUSPECT. --&gt;
+      &lt;!-- Uses the stack.combine and stack.position attributes to insert SSL_KEY_EXCHANGE into the default TCP stack after VERIFY_SUSPECT2. --&gt;
       &lt;SSL_KEY_EXCHANGE keystore_name="mykeystore.jks"
                         keystore_password="changeit"
                         stack.combine="INSERT_AFTER"
-                        stack.position="VERIFY_SUSPECT"/&gt;
+                        stack.position="VERIFY_SUSPECT2"/&gt;
       &lt;!-- Configures ASYM_ENCRYPT --&gt;
       &lt;!-- Uses the stack.combine and stack.position attributes to insert ASYM_ENCRYPT into the default TCP stack before pbcast.NAKACK2. --&gt;
       &lt;!-- The use_external_key_exchange = "true" attribute configures nodes to use the `SSL_KEY_EXCHANGE` protocol for certificate authentication. --&gt;
@@ -4608,14 +4608,14 @@ Otherwise the following message is written to Infinispan logs:</p>
     &lt;!-- Creates a secure JGroups stack named "encrypt-tcp" that extends the default TCP stack. --&gt;
     &lt;stack name="encrypt-tcp" extends="tcp"&gt;
       &lt;!-- Adds a keystore from which nodes obtain secret keys. --&gt;
-      &lt;!-- Uses the stack.combine and stack.position attributes to insert SYM_ENCRYPT into the default TCP stack after VERIFY_SUSPECT. --&gt;
+      &lt;!-- Uses the stack.combine and stack.position attributes to insert SYM_ENCRYPT into the default TCP stack after VERIFY_SUSPECT2. --&gt;
       &lt;SYM_ENCRYPT keystore_name="myKeystore.p12"
                    keystore_type="PKCS12"
                    store_password="changeit"
                    key_password="changeit"
                    alias="myKey"
                    stack.combine="INSERT_AFTER"
-                   stack.position="VERIFY_SUSPECT"/&gt;
+                   stack.position="VERIFY_SUSPECT2"/&gt;
     &lt;/stack&gt;
   &lt;/jgroups&gt;
   &lt;cache-container name="default" statistics="true"&gt;
@@ -4823,7 +4823,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-27 12:27:27 -0400
+Last updated 2022-06-17 16:12:26 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -4062,9 +4062,7 @@ If you want to remotely access Infinispan Server via JMX you must enable a remot
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>-Dcom.sun.management.jmxremote
--Dcom.sun.management.jmxremote.port=9999
--Dcom.sun.management.jmxremote.authenticate=false
--Dcom.sun.management.jmxremote.ssl=false</code></pre>
+-Dcom.sun.management.jmxremote.port=9999</code></pre>
 </div>
 </div>
 </li>
@@ -9296,7 +9294,7 @@ This can happen not only when there is a network failure but also for other reas
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>FD_ALL.timeout + FD_ALL.interval + VERIFY_SUSPECT.timeout + GMS.view_ack_collection_timeout</code></pre>
+<pre class="highlight"><code>FD_ALL[2|3].timeout + FD_ALL[2|3].interval + VERIFY_SUSPECT[2].timeout + GMS.view_ack_collection_timeout</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -12208,7 +12206,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-27 12:27:27 -0400
+Last updated 2022-06-17 16:12:26 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
