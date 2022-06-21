@@ -3184,7 +3184,7 @@ When you delete the <code>Infinispan</code> CR, Kubernetes also automatically de
 <pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">spec:
   security:
     endpointEncryption:
-        type: Service
+        type: Secret
         certSecretName: tls-secret
         clientCert: Validate
         clientCertSecretName: infinispan-client-cert-secret</code></pre>
@@ -7724,7 +7724,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-15 08:49:02 UTC
+Last updated 2022-06-21 11:26:53 UTC
 </div>
 </div>
 <script>
