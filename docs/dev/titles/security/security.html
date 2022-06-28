@@ -1579,7 +1579,9 @@ Passwords can be pre-digested with the <code>DIGEST-MD5</code> and <code>DIGEST<
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Properties files contain headers that associate them with security realms in Infinispan Server configuration.</p>
+<p>You can avoid authentication issues that relate to a property file by using the Infinispan CLI to enter the correct security realm name to the file.
+You can find the correct security realm name of your Infinispan Server by opening the <code>infinispan.xml</code> file and navigating to the <code>&lt;security-realm name&gt;</code> property.
+When you copy a property file from one Infinispan Server to another, make sure that the security realm name appropriates to the correct authentication mechanism for the target endpoint.</p>
 </div>
 </td>
 </tr>
@@ -4823,7 +4825,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-17 16:12:26 UTC
+Last updated 2022-06-28 12:29:48 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
