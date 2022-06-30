@@ -9009,16 +9009,6 @@ Set the value that matches the Infinispan major version of the source cluster. F
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.major_version</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the database major version.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.minor_version</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the database minor version.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.disable_upsert</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disables database upsert.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
@@ -9090,8 +9080,6 @@ target.connection_pool.connection_url=jdbc:postgresql:postgres
 target.connection_pool.driver_class=org.postrgesql.Driver
 target.connection_pool.username=postgres
 target.connection_pool.password=redhat
-target.db.major_version=9
-target.db.minor_version=5
 target.db.disable_upsert=false
 target.db.disable_indexing=false
 target.table.string.table_name_prefix=tablePrefix
@@ -12206,7 +12194,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-30 12:19:02 UTC
+Last updated 2022-06-30 15:54:27 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
