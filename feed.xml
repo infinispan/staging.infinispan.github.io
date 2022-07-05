@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2022-06-15T03:34:59-04:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 14 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news" rel="alternate" type="text/html" title="Infinispan 14 indexing &amp;amp; query news" /><published>2022-06-14T14:00:00-04:00</published><updated>2022-06-14T14:00:00-04:00</updated><id>https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news</id><content type="html" xml:base="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2022-07-05T03:16:40-04:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 14 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news" rel="alternate" type="text/html" title="Infinispan 14 indexing &amp;amp; query news" /><published>2022-06-14T14:00:00-04:00</published><updated>2022-06-14T14:00:00-04:00</updated><id>https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news</id><content type="html" xml:base="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan community,&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;with the Infinispan 14 development release 03 we introduced some news on indexing and search capabilities.&lt;/p&gt;
+&lt;p&gt;with the Infinispan 14 development release 03 we introduced improvements on indexing and search capabilities.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -12,11 +12,11 @@
 &lt;h2 id=&quot;infinispan-indexing-annotations&quot;&gt;Infinispan indexing annotations&lt;/h2&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Hibernate annotations are going to be replaced with the new Infinispan indexing annotations, that will be used in the same exact way
-for both embedded and remote queries.&lt;/p&gt;
+&lt;p&gt;We are going to replace Hibernate annotations with Infinispan indexing annotations.
+The new annotations can be used in the same way for both embedded and remote queries.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Here is an example of two annotated POJOs:&lt;/p&gt;
+&lt;p&gt;Here are examples of two annotated POJOs:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;listingblock&quot;&gt;
 &lt;div class=&quot;title&quot;&gt;Poem.java&lt;/div&gt;
@@ -69,22 +69,20 @@ public class Author {
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Indexed fields without any special string/text transformation will be annotated as &lt;code&gt;@Basic&lt;/code&gt;.
-If we need to apply a normalizer to a String field, we will opt for a &lt;code&gt;@Keyword&lt;/code&gt; annotation.
-If we need to apply an analyzer to a String field, we will opt for a &lt;code&gt;@Text&lt;/code&gt; annotation.&lt;/p&gt;
+&lt;p&gt;Use the &lt;code&gt;@Basic&lt;/code&gt; annotation for indexed fields without any special string/text transformation.
+When you apply a normalizer to a String field, use the &lt;code&gt;@Keyword&lt;/code&gt; annotation.
+When you apply an analyzer to a String field, use the &lt;code&gt;@Text&lt;/code&gt; annotation.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The new annotations allow setting with the same annotation if the field should be sortable, or projectable, or its normalizer or its analyzer.
-However, not all the combinations will be possible, for instance the attribute sortable is not present on the &lt;code&gt;@Text&lt;/code&gt; annotation,
-since an analyzed field cannot be used to sort the result set.&lt;/p&gt;
+&lt;p&gt;The new annotations allow you to set a single annotation per indexed field if the field should be &lt;code&gt;sortable&lt;/code&gt; or &lt;code&gt;projectable&lt;/code&gt; and if you want to use an &lt;code&gt;analyzer&lt;/code&gt; or &lt;code&gt;normalizer&lt;/code&gt; on the field.
+However, the combination of an attribute and the annotation must be supported, for instance the attribute &lt;code&gt;sortable&lt;/code&gt; cannot be used with the &lt;code&gt;@Text&lt;/code&gt; annotation, since an analyzed field cannot be used to sort the result set.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;indexNullAs&lt;/code&gt; attribute allow now to define a default value to use on index in case the corresponding entity values was null.&lt;/p&gt;
+&lt;p&gt;When indexing entities with null values, define a default value with the &lt;code&gt;indexNullAs&lt;/code&gt; attribute.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Embedded indexes are defined using the &lt;code&gt;@Embedded&lt;/code&gt; annotation, and it is possible to choose between the &lt;code&gt;NESTED&lt;/code&gt; structure which
-preserves the original object relationship structure and &lt;code&gt;FLATTENED&lt;/code&gt; structure which makes the leaf fields multi-valued
-fields of the parent entity.&lt;/p&gt;
+&lt;p&gt;For embedded indexes use the &lt;code&gt;@Embedded&lt;/code&gt; annotation and choose between two structures.
+The &lt;code&gt;NESTED&lt;/code&gt; structure preserves the original object relationship structure and the &lt;code&gt;FLATTENED&lt;/code&gt; structure makes the leaf fields multi-valued of the parent entity, so the embedded entity will not be present in the index.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -92,8 +90,8 @@ fields of the parent entity.&lt;/p&gt;
 &lt;h2 id=&quot;index-startup-mode&quot;&gt;Index startup mode&lt;/h2&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Sometimes indexes can be persistent and cache data not or vice versa, for those cases it can be useful
-to perform some operations to ensure the index will be consistent with data in the cache.&lt;/p&gt;
+&lt;p&gt;Indexes can be persistent and cache data can be volatile and vice versa.
+You can perform some operations to keep the index consistent with data in the cache.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;We introduced the &lt;code&gt;startup-mode&lt;/code&gt; configuration. Here is an example:&lt;/p&gt;
@@ -109,8 +107,8 @@ to perform some operations to ensure the index will be consistent with data in t
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;With this configuration every time the cache is started, the indexes will be purged.
-Possible values are: &lt;code&gt;purge&lt;/code&gt;, &lt;code&gt;reindex&lt;/code&gt;, &lt;code&gt;none&lt;/code&gt; and &lt;code&gt;auto&lt;/code&gt;, with the latter Infinispan will decide if and in case which operation
-to perform according to how indexes ad cache data are configured.&lt;/p&gt;
+Possible values are: &lt;code&gt;purge&lt;/code&gt;, &lt;code&gt;reindex&lt;/code&gt;, &lt;code&gt;none&lt;/code&gt;, and &lt;code&gt;auto&lt;/code&gt;.
+When you choose &lt;code&gt;auto&lt;/code&gt; mode, Infinispan decides what is the right operation to run to align cache data and indexes.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -118,11 +116,10 @@ to perform according to how indexes ad cache data are configured.&lt;/p&gt;
 &lt;h2 id=&quot;index-schema-update&quot;&gt;Index schema update&lt;/h2&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This should be considered an advanced feature to be used only in case your model needs to be evolved time to time, and you need to
-continue to query your cache data without the aid of some data migrations or reindexing.&lt;/p&gt;
+&lt;p&gt;This is an advanced feature to be used only in case your model needs to be evolved while continuing querying the cache data without data migrations or re-indexing.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For a comprehensive guide about when to use schema update instead of migrate or reindex the data please refer to the documentation.&lt;/p&gt;
+&lt;p&gt;For a comprehensive guide about when to use schema update instead of migrating or re-indexing the data refer to the documentation.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;The command can be triggered from the HotRod remote administration API:&lt;/p&gt;
@@ -141,7 +138,7 @@ continue to query your cache data without the aid of some data migrations or rei
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;or using the Infinispan cli by running &lt;code&gt;update-schema&lt;/code&gt; on the runtime cache instance.&lt;/p&gt;
+&lt;p&gt;or using the Infinispan CLI by running &lt;code&gt;update-schema&lt;/code&gt; on the runtime cache instance.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;</content><author><name>Fabio Massimo Ercoli</name></author><category term="indexing" /><category term="query" /><category term="schema" /><category term="startup" /><category term="annotations" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14.0.0.Dev03</title><link href="https://infinispan.org/blog/2022/05/30/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Dev03" /><published>2022-05-30T08:00:00-04:00</published><updated>2022-05-30T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/05/30/infinispan-14.0.0.Dev03</id><content type="html" xml:base="https://infinispan.org/blog/2022/05/30/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
@@ -360,7 +357,91 @@ Which brings us to the&amp;#8230;&amp;#8203;&lt;/p&gt;
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">.Net Core Client version 0.0.3-beta</title><link href="https://infinispan.org/blog/2022/03/22/dotnetcore-0-0-3-beta" rel="alternate" type="text/html" title=".Net Core Client version 0.0.3-beta" /><published>2022-03-22T08:00:00-04:00</published><updated>2022-03-22T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/03/22/dotnet-core-0.0.3-beta</id><content type="html" xml:base="https://infinispan.org/blog/2022/03/22/dotnetcore-0-0-3-beta">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Crucial DSO server</title><link href="https://infinispan.org/blog/2022/04/07/crucial-dso" rel="alternate" type="text/html" title="Crucial DSO server" /><published>2022-04-07T08:00:00-04:00</published><updated>2022-04-07T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/04/07/crucial-dso</id><content type="html" xml:base="https://infinispan.org/blog/2022/04/07/crucial-dso">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Traditionally, an object-relational mapping (ORM) converts the data between the application and storage tiers. The ORM materializes the frontier between the two tiers, and it reduces the coupling. However, it also forces to repeatedly convert the objects between their in-memory and their serialized representations back and forth. This negatively impacts performance and increases execution costs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/crucial-project/dso&quot;&gt;Crucial DSO&lt;/a&gt; is a general-purpose synchronization and data sharing framework. With DSO, instead of fetching objects from storage, the application directly calls them. DSO ensures that the objects are persisted and shared consistently among several client machines.
+DSO is built on top of Infinispan and leverages its extensibility.
+The work was done in the context of the &lt;a href=&quot;https://cloudbutton.eu&quot;&gt;CloudButton&lt;/a&gt; project, which aims to build a serverless platform for quickly deploying
+workloads to the cloud, but the advantages are available to everyone using Infinispan!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;programming-with-dso&quot;&gt;Programming with DSO&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;DSO offers several client-side programming libraries. The most complete one is for the Java language. To declare a DSO object in Java, the programmer uses the &lt;code&gt;@Shared&lt;/code&gt; keyword on the field of an object. As an example, consider the following two classes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Example.py&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;class Hero {
+    @Shared Room location;
+}
+
+class Room {
+    Treasure loot();
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The &lt;code&gt;Hero&lt;/code&gt; class contains a &lt;code&gt;location&lt;/code&gt; field annotated with &lt;code&gt;@Shared&lt;/code&gt;. This tells DSO to push the location to the storage tier, allowing several instances of Hero on several application machines to access the same location object transparently.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;DSO ensures that the objects are strongly consistent over time. In the example above, this means for instance that if two heroes stand in the same room, only one of them may loot the treasure. More precisely, the synchronization contract of every DSO object &lt;code&gt;o&lt;/code&gt; is that &lt;code&gt;o&lt;/code&gt; is atomic, aka. linearizable. In Java, this is equivalent to guarding every method &lt;code&gt;m&lt;/code&gt; of some object &lt;code&gt;o&lt;/code&gt; with &lt;code&gt;synchronized(o) { o.m }&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;DSO includes a library of shared objects (counter, integer, list, maps, barrier, etc.).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;DSO follows a standard client-server architecture.
+The server component is built as an Infinispan Server extension. To quickly setup a DSO-enabled Infinispan Server on Kubernetes using the Infinispan Operator, we can use the &lt;a href=&quot;https://infinispan.org/docs/infinispan-operator/2.2.x/operator.html#deploying-code&quot;&gt;code deployment capabilities&lt;/a&gt;. Until an official release of DSO is published, you will need to build it yourself and make the generated artifacts available from a local Maven repository or a simple web server.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;dso.yaml&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: infinispan
+spec:
+  replicas: 2
+  dependencies:
+    artifacts:
+      - url: https://repo1.maven.org/maven2/com/fasterxml/uuid/java-uuid-generator/3.3.0/java-uuid-generator-3.3.0.jar
+        type: file
+      - url: https://repo1.maven.org/maven2/com/google/guava/guava/18.0/guava-18.0.jar
+        type: file
+      - url: http://example.com/dso-core-2.0.jar
+        type: file
+      - url: http://example.com/dso-server-2.0.jar
+        type: file
+  service:
+    type: DataGrid&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;(We will soon make a bundle available for simpler installation)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When the server starts, you should see the following log:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;INFO  (main) [org.crucial.dso.Factory] Factory[Cache &apos;__dso&apos;@kashyyyk-4890] Created
+INFO  (main) [org.crucial.dso.Factory] Factory singleton  is Factory[Cache &apos;__dso&apos;@kashyyyk-4890]
+INFO  (main) [org.infinispan.CONTAINER] DSO cache initialized&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Head over to Crucial&amp;#8217;s &lt;a href=&quot;https://github.com/crucial-project/dso&quot;&gt;DSO&lt;/a&gt; page for code, examples and more details about this exciting project.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="crucial" /><category term="dso" /><category term="cloudbutton" /><summary type="html">Traditionally, an object-relational mapping (ORM) converts the data between the application and storage tiers. The ORM materializes the frontier between the two tiers, and it reduces the coupling. However, it also forces to repeatedly convert the objects between their in-memory and their serialized representations back and forth. This negatively impacts performance and increases execution costs.</summary></entry><entry><title type="html">.Net Core Client version 0.0.3-beta</title><link href="https://infinispan.org/blog/2022/03/22/dotnetcore-0-0-3-beta" rel="alternate" type="text/html" title=".Net Core Client version 0.0.3-beta" /><published>2022-03-22T08:00:00-04:00</published><updated>2022-03-22T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/03/22/dotnet-core-0.0.3-beta</id><content type="html" xml:base="https://infinispan.org/blog/2022/03/22/dotnetcore-0-0-3-beta">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispanners and .NET Core lovers,&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -469,7 +550,91 @@ We are fixing the issue by upgrading to Log4J 2.15.0.&lt;/p&gt;
 &lt;h1 id=&quot;mitigation-strategies&quot; class=&quot;sect0&quot;&gt;Mitigation strategies&lt;/h1&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;If you cannot upgrade, there are a several &lt;a href=&quot;https://www.lunasec.io/docs/blog/log4j-zero-day-mitigation-guide/&quot;&gt;mitigation strategies&lt;/a&gt; you can apply. But upgrading is always the best solution.&lt;/p&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan Operator 2.2.0.Final</title><link href="https://infinispan.org/blog/2021/10/27/infinispan-operator-2-2-final" rel="alternate" type="text/html" title="Infinispan Operator 2.2.0.Final" /><published>2021-10-27T08:00:00-04:00</published><updated>2021-10-27T08:00:00-04:00</updated><id>https://infinispan.org/blog/2021/10/27/operator-2.2.0</id><content type="html" xml:base="https://infinispan.org/blog/2021/10/27/infinispan-operator-2-2-final">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Lithops Hot Rod storage backend</title><link href="https://infinispan.org/blog/2021/12/01/lithops" rel="alternate" type="text/html" title="Lithops Hot Rod storage backend" /><published>2021-12-01T07:00:00-05:00</published><updated>2021-12-01T07:00:00-05:00</updated><id>https://infinispan.org/blog/2021/12/01/lithops-hotrod</id><content type="html" xml:base="https://infinispan.org/blog/2021/12/01/lithops">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We are very happy to announce a Hot Rod storage backend for &lt;a href=&quot;https://lithops-cloud.github.io/&quot;&gt;Lithops&lt;/a&gt;, an open source framework for big data analytics
+and embarrassingly parallel jobs, that provides an universal API for building parallel applications in the cloud.
+The work was done in the context of the &lt;a href=&quot;https://cloudbutton.eu&quot;&gt;CloudButton&lt;/a&gt; project, which aims to build a serverless platform for quickly deploying
+workloads to the cloud, but the advantages are available to everyone using Infinispan!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/assets/images/blog/lithops.png&quot; alt=&quot;Lithops&quot; width=&quot;252&quot; height=&quot;205&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lithops is a Python multi-cloud distributed computing framework. It allows you to run unmodified local python code at massive scale in the main serverless
+computing platforms. Lithops delivers the user’s code into the cloud without requiring knowledge of how it is deployed and run. Moreover, its
+multicloud-agnostic architecture ensures portability across cloud providers.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lithops has multiple storage backends and, up until now, it was able to access an Infinispan Server via its REST API.
+While the REST API is functional, it doesn&amp;#8217;t offer all of the advantages that Hot Rod, our native protocol, provides, such as topology awareness and
+client-side intelligence to automatically locate the owner of an entry, thus avoiding extra network hops.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-new-hot-rod-python-client&quot;&gt;The new Hot Rod Python client&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We used to have a Hot Rod Python client that lied in semi-abandoned state for a long time. We decided it was time to get back on track.
+The &lt;a href=&quot;https://github.com/infinispan/python-client&quot;&gt;Hot Rod Python client&lt;/a&gt; repository has been completely overhauled with our brand new implementation, which
+supports modern Infinispan features such as authentication, cache creation, etc.
+This is now installable using PIP, the Python Package Installer. The following is a short example that shows how to connect to a secure Infinispan server and manipulate an entry:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Example.py&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;from Infinispan import Infinispan
+conf=Infinispan.Configuration()
+conf.addServer(&quot;localhost&quot;,11222)
+conf.setProtocol(&quot;2.4&quot;)
+conf.setSasl(&quot;PLAIN&quot;, &quot;node0&quot;, &quot;writer&quot;, &quot;somePassword&quot;)
+manager=Infinispan.RemoteCacheManager(conf)
+manager.start()
+key=Infinispan.UCharVector()
+key.push_back(56)
+value=Infinispan.UCharVector()
+value.push_back(8)
+cache=Infinispan.RemoteCache(manager)
+cache.put(key,value)
+res=cache.get(key)
+print (res.pop())
+manager.stop()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-lithops-backend&quot;&gt;The Lithops backend&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enabling the Lithops Hot Rod storage backend is very simple, as demonstrated by the code snippet below:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;LithopsStorageHotRod.py&lt;/div&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;from lithops import Storage
+
+if __name__ == &quot;__main__&quot;:
+    st = Storage(backend=&apos;infinispan_hotrod&apos;)
+    st.put_object(bucket=&apos;mybucket&apos;,
+                  key=&apos;test.txt&apos;,
+                  body=&apos;Hello World&apos;)
+
+    print(st.get_object(bucket=&apos;mybucket&apos;,
+                        key=&apos;test.txt&apos;))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="lithops" /><category term="python" /><category term="cloudbutton" /><summary type="html">We are very happy to announce a Hot Rod storage backend for Lithops, an open source framework for big data analytics and embarrassingly parallel jobs, that provides an universal API for building parallel applications in the cloud. The work was done in the context of the CloudButton project, which aims to build a serverless platform for quickly deploying workloads to the cloud, but the advantages are available to everyone using Infinispan!</summary></entry><entry><title type="html">Infinispan Operator 2.2.0.Final</title><link href="https://infinispan.org/blog/2021/10/27/infinispan-operator-2-2-final" rel="alternate" type="text/html" title="Infinispan Operator 2.2.0.Final" /><published>2021-10-27T08:00:00-04:00</published><updated>2021-10-27T08:00:00-04:00</updated><id>https://infinispan.org/blog/2021/10/27/operator-2.2.0</id><content type="html" xml:base="https://infinispan.org/blog/2021/10/27/infinispan-operator-2-2-final">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;We&amp;#8217;re pleased to announce
 &lt;a href=&quot;https://operatorhub.io/operator/infinispan&quot;&gt;version 2.2.0.Final of the Infinispan Operator&lt;/a&gt;
 for Kubernetes and Red Hat OpenShift.&lt;/p&gt;
@@ -913,291 +1078,4 @@ data: }&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Be sure to read through &lt;a href=&quot;https://infinispan.org/docs/13.0.x/titles/upgrading/upgrading.html&quot;&gt;Upgrading Infinispan&lt;/a&gt; before getting started with lucky 13.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><summary type="html">Triskaidekaphobia (/ˌtrɪskaɪˌdɛkəˈfoʊbiə/ TRIS-kye-DEK-ə-FOH-bee-ə, /ˌtrɪskə-/ TRIS-kə-; from Ancient Greek τρεισκαίδεκα (treiskaídeka) &apos;thirteen&apos;, and Ancient Greek φόβος (phóbos) &apos;fear&apos;) is fear or avoidance of the number 13.</summary></entry><entry><title type="html">Infinispan 13.0.0.CR1</title><link href="https://infinispan.org/blog/2021/09/23/infinispan-13-cr1" rel="alternate" type="text/html" title="Infinispan 13.0.0.CR1" /><published>2021-09-23T08:00:00-04:00</published><updated>2021-09-23T08:00:00-04:00</updated><id>https://infinispan.org/blog/2021/09/23/infinispan-13.0.0.CR1</id><content type="html" xml:base="https://infinispan.org/blog/2021/09/23/infinispan-13-cr1">&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispan community,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We&amp;#8217;ve just released 13.0.0.CR1 which brings you several new features along with a number of enhancements and bug fixes.
-Here is a non-exhaustive list of Infinispan 13 has in store:&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;mutable-cache-configuration&quot;&gt;Mutable cache configuration&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can now update cache configuration at runtime with the CLI.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;improved-cluster-upgrades&quot;&gt;Improved cluster upgrades&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We&amp;#8217;ve done quite a lot of work on rolling upgrade operations in Infinispan 13, making the process smoother from the REST API, CLI, and with our Kubernetes Operator.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;re-balancing-operations&quot;&gt;Re-balancing operations&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Control cluster topology re-balancing from the REST API, CLI, and Console.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;persistent-storage-improvements&quot;&gt;Persistent storage improvements&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;File-based caches stores now default to SoftIndexFileStore.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;We&amp;#8217;ve added a new SQL cache store.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;cross-site-replication&quot;&gt;Cross-site replication&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For global Infinispan clusters, this release brings a number of improvements:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Cross-site replication operations from the Console.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Additional statistics for increased observability.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Better logging details for cross-site cluster views.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;simplified-server-cluster-security&quot;&gt;Simplified server cluster security&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Infinispan Server can automatically enable SSL for the cluster transport.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;queries&quot;&gt;Queries&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Added support for local query operations.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;helm-charts&quot;&gt;Helm charts&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We&amp;#8217;ve added an Infinispan Helm chart for deploying clusters to Kubernetes.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;documentation-and-tutorials&quot;&gt;Documentation and tutorials&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We&amp;#8217;ve made a number of documentation improvements this release, including:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;A new guide for Hot Rod JS clients.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Better organization and documentation for Infinispan simple tutorials.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Replaced the Integration Guide with a dedicated guide for Spring users as well as a guide for Hibernate caches.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;A brand new guide for Indexing and Querying.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Overhauled and updated Configuration Guide.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Additional JSON and YAML configuration examples.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Katia Aresti</name></author><category term="release" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan Node.js client supports authentication</title><link href="https://infinispan.org/blog/2021/06/29/infinispan-js-client" rel="alternate" type="text/html" title="Infinispan Node.js client supports authentication" /><published>2021-06-29T08:00:00-04:00</published><updated>2021-06-29T08:00:00-04:00</updated><id>https://infinispan.org/blog/2021/06/29/js-client</id><content type="html" xml:base="https://infinispan.org/blog/2021/06/29/infinispan-js-client">&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;node-js-client-0-9-0&quot;&gt;Node.js Client 0.9.0&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Infinispan Node.js client version 0.9.0 was released last week with added support for different SASL authentication mechanisms.
-Up to now, our Node.js client could connect to Infinispan Server security realms with disabled authentication.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect4&quot;&gt;
-&lt;h5 id=&quot;digest-md5&quot;&gt;DIGEST-MD5&lt;/h5&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Uses the MD5 hashing algorithm in addition to nonces to encrypt credentials.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect4&quot;&gt;
-&lt;h5 id=&quot;scram&quot;&gt;SCRAM&lt;/h5&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Uses salt values in addition to hashing algorithms and nonce values to encrypt credentials. Hot Rod endpoints support SCRAM-SHA-1, SCRAM-SHA-256, SCRAM-SHA-384, SCRAM-SHA-512 hashing algorithms, in order of strength.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect4&quot;&gt;
-&lt;h5 id=&quot;external&quot;&gt;EXTERNAL&lt;/h5&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Uses client certificates to provide valid identities to Infinispan Server and enable encryption.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect4&quot;&gt;
-&lt;h5 id=&quot;oauthbearer&quot;&gt;OAUTHBEARER&lt;/h5&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Uses tokens obtained via an OAuth 2.0 provider to securely connect to Infinispan Server.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect4&quot;&gt;
-&lt;h5 id=&quot;plain&quot;&gt;PLAIN:&lt;/h5&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Sends credentials in plain text (unencrypted) over the wire in a way that is similar to HTTP BASIC authentication.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;admonitionblock warning&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Warning&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-To secure Infinispan credentials, you should use PLAIN authentication only in combination with TLS encryption.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;run-the-infinispan-server&quot;&gt;Run the Infinispan Server&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Run the Infinispan Server with Docker or Podman&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;docker run -it -p 11222:11222 -e USER=&quot;admin&quot; -e PASS=&quot;password&quot; quay.io/infinispan/server:12.1
-
-podman run -it -p 11222:11222 -e USER=&quot;admin&quot; -e PASS=&quot;password&quot; --net=host quay.io/infinispan/server:12.1&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;admonitionblock important&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Important&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-If you are using Docker for Mac, there is a known limitation. You will need to &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download
-the server distribution&lt;/a&gt; and run the server manually.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Run the Infinispan Server from the file system&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./bin/cli.sh user create admin -p password
-./bin/server.sh&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;create-a-cache-from-infinispan-console&quot;&gt;Create a cache from Infinispan Console&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Access the Infinispan Console in &lt;a href=&quot;http://localhost:11222/&quot;&gt;http://localhost:11222/&lt;/a&gt; and create a text based
-cache, named it &apos;my-cache&apos; with the provided configuration.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Connect to Infinispan&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;{
-  &quot;distributed-cache&quot;: {
-    &quot;mode&quot;: &quot;SYNC&quot;,
-    &quot;encoding&quot;: {
-      &quot;media-type&quot;: &quot;text/plain&quot;
-    },
-    &quot;statistics&quot;: true
-  }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;use-the-node-js-client-in-your-application&quot;&gt;Use the Node.js client in your application&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Add the dependency to your project.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;package.json&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&quot;dependencies&quot;: {
-&quot;infinispan&quot;: &quot;^0.9.0&quot;
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Configure the Infinispan Node.js client to connect with authentication and then check the created cache entry from the console.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;application.js&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlight&quot;&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;var connected = infinispan.client({port: 11222, host: &apos;127.0.0.1&apos;},
-{
-    cacheName: &apos;my-cache&apos;,
-    authentication: {
-        enabled: true,
-        saslMechanism: &apos;DIGEST-MD5&apos;,
-        userName: &apos;admin&apos;,
-        password: &apos;password&apos;
-    }
-});
-
-connected.then(function (client) {
-    return client.put(&apos;key&apos;, &apos;value&apos;)
-    .finally(function() {
-    return client.disconnect();
-  });
-});&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;to-go-further&quot;&gt;To go further&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Full client documentation is now available in the
-&lt;a href=&quot;https://infinispan.org/docs/hotrod-clients/js/latest/js_client.html&quot;&gt;Hot Rod JS Client Guide&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Jira tracker for this client is available &lt;a href=&quot;https://issues.redhat.com/projects/HRJS&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Katia Aresti</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><summary type="html">Node.js Client 0.9.0</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><summary type="html">Triskaidekaphobia (/ˌtrɪskaɪˌdɛkəˈfoʊbiə/ TRIS-kye-DEK-ə-FOH-bee-ə, /ˌtrɪskə-/ TRIS-kə-; from Ancient Greek τρεισκαίδεκα (treiskaídeka) &apos;thirteen&apos;, and Ancient Greek φόβος (phóbos) &apos;fear&apos;) is fear or avoidance of the number 13.</summary></entry></feed>

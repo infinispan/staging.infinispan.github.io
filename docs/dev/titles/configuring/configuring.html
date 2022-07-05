@@ -4054,28 +4054,17 @@ If you want to remotely access Infinispan Server via JMX you must enable a remot
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<div class="title">Procedure</div>
-<p>Start the server with JMX remoting enabled using one of the supported ways:</p>
-</div>
 <div class="ulist">
+<div class="title">Procedure</div>
 <ul>
 <li>
-<p>Using the <code>--jmx</code> option. This will enable JMX remoting on port <code>9999</code> without SSL and requiring authentication
-to the default security realm. Users authenticating to JMX should have either the <code>controlRole</code> (for read/write access)
-or the <code>monitorRole</code> (for read-only access). Users not belonging to either of those roles will not be able to access
-any JMX resources. If there is no default security realm, access will always be denied.</p>
+<p>Pass the following system properties to Infinispan at startup:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Using any of the standard JMX remoting system properties Infinispan at startup. Refer to the <a href="https://docs.oracle.com/en/java/javase/11/management/monitoring-and-management-using-jmx-technology.html#GUID-F08985BB-629A-4FBF-A0CB-8762DF7590E0">JDK Monitoring and Management using JMX technology</a> guide for details.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999</code></pre>
+<pre class="highlight nowrap"><code>-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=9999
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false</code></pre>
 </div>
 </div>
 </li>
@@ -9022,6 +9011,16 @@ Set the value that matches the Infinispan major version of the source cluster. F
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.major_version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the database major version.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.minor_version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the database minor version.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.disable_upsert</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disables database upsert.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
@@ -9093,6 +9092,8 @@ target.connection_pool.connection_url=jdbc:postgresql:postgres
 target.connection_pool.driver_class=org.postrgesql.Driver
 target.connection_pool.username=postgres
 target.connection_pool.password=redhat
+target.db.major_version=9
+target.db.minor_version=5
 target.db.disable_upsert=false
 target.db.disable_indexing=false
 target.table.string.table_name_prefix=tablePrefix
@@ -9295,7 +9296,7 @@ This can happen not only when there is a network failure but also for other reas
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>FD_ALL[2|3].timeout + FD_ALL[2|3].interval + VERIFY_SUSPECT[2].timeout + GMS.view_ack_collection_timeout</code></pre>
+<pre class="highlight"><code>FD_ALL.timeout + FD_ALL.interval + VERIFY_SUSPECT.timeout + GMS.view_ack_collection_timeout</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -12207,7 +12208,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-04 08:17:21 UTC
+Last updated 2022-05-27 12:27:27 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
