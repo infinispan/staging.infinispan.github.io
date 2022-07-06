@@ -829,8 +829,9 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#name_26">8.26.1. NAME</a></li>
 <li><a href="#synopsis_27">8.26.2. SYNOPSIS</a></li>
-<li><a href="#examples_16">8.26.3. EXAMPLES</a></li>
-<li><a href="#see_also_21">8.26.4. SEE ALSO</a></li>
+<li><a href="#options_7">8.26.3. OPTIONS</a></li>
+<li><a href="#examples_16">8.26.4. EXAMPLES</a></li>
+<li><a href="#see_also_21">8.26.5. SEE ALSO</a></li>
 </ul>
 </li>
 <li><a href="#migrate1">8.27. MIGRATE(1)</a>
@@ -861,7 +862,7 @@ $(addBlockSwitches);
 <li><a href="#name_29">8.29.1. NAME</a></li>
 <li><a href="#description_9">8.29.2. DESCRIPTION</a></li>
 <li><a href="#synopsis_30">8.29.3. SYNOPSIS</a></li>
-<li><a href="#options_7">8.29.4. OPTIONS</a></li>
+<li><a href="#options_8">8.29.4. OPTIONS</a></li>
 <li><a href="#examples_18">8.29.5. EXAMPLES</a></li>
 <li><a href="#see_also_22">8.29.6. SEE ALSO</a></li>
 </ul>
@@ -870,7 +871,7 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#name_30">8.30.1. NAME</a></li>
 <li><a href="#synopsis_31">8.30.2. SYNOPSIS</a></li>
-<li><a href="#options_8">8.30.3. OPTIONS</a></li>
+<li><a href="#options_9">8.30.3. OPTIONS</a></li>
 <li><a href="#examples_19">8.30.4. EXAMPLES</a></li>
 <li><a href="#see_also_23">8.30.5. SEE ALSO</a></li>
 </ul>
@@ -894,7 +895,7 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#name_33">8.33.1. NAME</a></li>
 <li><a href="#synopsis_34">8.33.2. SYNOPSIS</a></li>
-<li><a href="#options_9">8.33.3. OPTIONS</a></li>
+<li><a href="#options_10">8.33.3. OPTIONS</a></li>
 <li><a href="#example_12">8.33.4. EXAMPLE</a></li>
 <li><a href="#see_also_25">8.33.5. SEE ALSO</a></li>
 </ul>
@@ -939,7 +940,7 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#name_38">8.38.1. NAME</a></li>
 <li><a href="#synopsis_39">8.38.2. SYNOPSIS</a></li>
-<li><a href="#options_10">8.38.3. OPTIONS</a></li>
+<li><a href="#options_11">8.38.3. OPTIONS</a></li>
 <li><a href="#state_transfer_mode_options">8.38.4. STATE TRANSFER MODE OPTIONS</a></li>
 <li><a href="#examples_23">8.38.5. EXAMPLES</a></li>
 </ul>
@@ -957,7 +958,7 @@ $(addBlockSwitches);
 <li><a href="#name_40">8.40.1. NAME</a></li>
 <li><a href="#synopsis_41">8.40.2. SYNOPSIS</a></li>
 <li><a href="#examples_25">8.40.3. EXAMPLES</a></li>
-<li><a href="#options_11">8.40.4. OPTIONS</a></li>
+<li><a href="#options_12">8.40.4. OPTIONS</a></li>
 <li><a href="#see_also_30">8.40.5. SEE ALSO</a></li>
 </ul>
 </li>
@@ -4834,7 +4835,58 @@ Sets the log level for the <code>org.infinispan</code> logger to <code>DEBUG</co
 </div>
 </div>
 <div class="sect3">
-<h4 id="examples_16"><a class="anchor" href="#examples_16"></a>8.26.3. EXAMPLES</h4>
+<h4 id="options_7"><a class="anchor" href="#options_7"></a>8.26.3. OPTIONS</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>-f, --format</strong>='[NAMES|VALUES|FULL]'</dt>
+<dd>
+<p>This option currently only applies when listing caches.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>NAMES</code>: only show the keys</p>
+</li>
+<li>
+<p><code>VALUES</code>: show the keys and values</p>
+</li>
+<li>
+<p><code>FULL</code>: show keys, values and metadata</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-l</strong></dt>
+<dd>
+<p>This option only applies when listing caches.
+Shortcut for <code>-f FULL</code>.</p>
+</dd>
+<dt class="hdlist1"><strong>-p, --pretty-print</strong>='[TABLE|CSV|JSON]'</dt>
+<dd>
+<p>Prints the output using one of the following layouts:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TABLE</code>: tabular format. The column sizes are determined by the terminal width. This is the default.</p>
+</li>
+<li>
+<p><code>CSV</code>: comma-separated values.</p>
+</li>
+<li>
+<p><code>JSON</code>: JSON format.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1"><strong>-m, --max-items</strong>='num'</dt>
+<dd>
+<p>This option only applies when listing caches.
+The maximum number of items to show. Defaults to -1 (unlimited).</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="examples_16"><a class="anchor" href="#examples_16"></a>8.26.4. EXAMPLES</h4>
 <div class="paragraph">
 <p><code>ls caches</code><br>
 Lists the available caches.</p>
@@ -4843,9 +4895,13 @@ Lists the available caches.</p>
 <p><code>ls ../</code><br>
 Lists parent resources.</p>
 </div>
+<div class="paragraph">
+<p><code>ls -l --pretty-print=CSV /containers/default/caches/mycache &gt; mycache.csv</code><br>
+Lists the content of a cache, including keys, values and metadata and redirects the contents to a file.</p>
+</div>
 </div>
 <div class="sect3">
-<h4 id="see_also_21"><a class="anchor" href="#see_also_21"></a>8.26.4. SEE ALSO</h4>
+<h4 id="see_also_21"><a class="anchor" href="#see_also_21"></a>8.26.5. SEE ALSO</h4>
 <div class="paragraph">
 <p>cd(1)</p>
 </div>
@@ -5122,7 +5178,7 @@ previous version.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="options_7"><a class="anchor" href="#options_7"></a>8.29.4. OPTIONS</h4>
+<h4 id="options_8"><a class="anchor" href="#options_8"></a>8.29.4. OPTIONS</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>-c, --cache</strong>='NAME'</dt>
@@ -5193,7 +5249,7 @@ maximum idle of <code>500</code> seconds.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="options_8"><a class="anchor" href="#options_8"></a>8.30.3. OPTIONS</h4>
+<h4 id="options_9"><a class="anchor" href="#options_9"></a>8.30.3. OPTIONS</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>-c, --cache</strong>='NAME'</dt>
@@ -5318,7 +5374,7 @@ Disables automatic rebalancing for the cache named <code>mycache</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="options_9"><a class="anchor" href="#options_9"></a>8.33.3. OPTIONS</h4>
+<h4 id="options_10"><a class="anchor" href="#options_10"></a>8.33.3. OPTIONS</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>--cache</strong>='NAME'</dt>
@@ -5656,7 +5712,7 @@ Stops the data container without terminating the server process. Stores cluster 
 </div>
 </div>
 <div class="sect3">
-<h4 id="options_10"><a class="anchor" href="#options_10"></a>8.38.3. OPTIONS</h4>
+<h4 id="options_11"><a class="anchor" href="#options_11"></a>8.38.3. OPTIONS</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>-c, --cache</strong>='CACHE_NAME'</dt>
@@ -5819,7 +5875,7 @@ of <code>world</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="options_11"><a class="anchor" href="#options_11"></a>8.40.4. OPTIONS</h4>
+<h4 id="options_12"><a class="anchor" href="#options_12"></a>8.40.4. OPTIONS</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>-P, --parameters</strong>='PARAMETERS'</dt>
@@ -6098,7 +6154,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-27 12:27:27 -0400
+Last updated 2022-07-06 06:42:11 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

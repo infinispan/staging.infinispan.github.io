@@ -543,12 +543,13 @@ $(addBlockSwitches);
 <li><a href="#store_properties">1.1.4. Store properties</a></li>
 <li><a href="#fetch_persistent_state_remove">1.1.5. Fetch Persistent State Remove</a></li>
 <li><a href="#rocksdb_store">1.1.6. RocksDB store</a></li>
-<li><a href="#micrometer_metrics">1.1.7. Micrometer Metrics</a></li>
-<li><a href="#jakarta_ee_compatible_jars_available">1.1.8. Jakarta EE compatible jars available</a></li>
-<li><a href="#hibernate_6_0_2lc_update">1.1.9. Hibernate 6.0 2LC Update</a></li>
-<li><a href="#jpastore_has_been_removed">1.1.10. JPAStore has been removed</a></li>
-<li><a href="#protodoc_annotations_are_no_longer_necessary">1.1.11. ProtoDoc annotations are no longer necessary</a></li>
-<li><a href="#the_undocumented_server_filesystem_realm_has_been_removed">1.1.12. The (undocumented) server filesystem-realm has been removed</a></li>
+<li><a href="#jdbc_store_database_versions_configuration_deprecated">1.1.7. JDBC Store database versions configuration deprecated</a></li>
+<li><a href="#micrometer_metrics">1.1.8. Micrometer Metrics</a></li>
+<li><a href="#jakarta_ee_compatible_jars_available">1.1.9. Jakarta EE compatible jars available</a></li>
+<li><a href="#hibernate_6_0_2lc_update">1.1.10. Hibernate 6.0 2LC Update</a></li>
+<li><a href="#jpastore_has_been_removed">1.1.11. JPAStore has been removed</a></li>
+<li><a href="#protodoc_annotations_are_no_longer_necessary">1.1.12. ProtoDoc annotations are no longer necessary</a></li>
+<li><a href="#the_undocumented_server_filesystem_realm_has_been_removed">1.1.13. The (undocumented) server filesystem-realm has been removed</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_12_1_to_13_0">1.2. Upgrading from 12.1 to 13.0</a>
@@ -1018,7 +1019,15 @@ This change has no effect for shared stores
 </div>
 </div>
 <div class="sect3">
-<h4 id="micrometer_metrics"><a class="anchor" href="#micrometer_metrics"></a>1.1.7. Micrometer Metrics</h4>
+<h4 id="jdbc_store_database_versions_configuration_deprecated"><a class="anchor" href="#jdbc_store_database_versions_configuration_deprecated"></a>1.1.7. JDBC Store database versions configuration deprecated</h4>
+<div class="paragraph">
+<p>Prior we allowed a user to specify the database major and minor versions when configuring the database parameters.
+These two options are now deprecated and ignored as we always retrieve them from the JDBC metadata directly.
+This affects all three of the JDBC based stores (string-keyed-jdbc-store, table-jdbc-store and query-jdbc-store).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="micrometer_metrics"><a class="anchor" href="#micrometer_metrics"></a>1.1.8. Micrometer Metrics</h4>
 <div class="paragraph">
 <p>Microprofile metrics are no longer supported, available output metrics are now Prometheus and OpenMetrics.</p>
 </div>
@@ -1028,7 +1037,7 @@ the <a href="../server/server.html#configuring-metrics_statistics-jmx">Configuri
 </div>
 </div>
 <div class="sect3">
-<h4 id="jakarta_ee_compatible_jars_available"><a class="anchor" href="#jakarta_ee_compatible_jars_available"></a>1.1.8. Jakarta EE compatible jars available</h4>
+<h4 id="jakarta_ee_compatible_jars_available"><a class="anchor" href="#jakarta_ee_compatible_jars_available"></a>1.1.9. Jakarta EE compatible jars available</h4>
 <div class="paragraph">
 <p>We now distribute Jakarta EE based jars for users.
 This is in addition to the javax compatible jars.</p>
@@ -1073,28 +1082,28 @@ dependency to use the jakarta scope</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="hibernate_6_0_2lc_update"><a class="anchor" href="#hibernate_6_0_2lc_update"></a>1.1.9. Hibernate 6.0 2LC Update</h4>
+<h4 id="hibernate_6_0_2lc_update"><a class="anchor" href="#hibernate_6_0_2lc_update"></a>1.1.10. Hibernate 6.0 2LC Update</h4>
 <div class="paragraph">
 <p>Hibernate 6.0 is now supported and is the only implementation supported moving forward.
 If Hibernate 5.3 support is needed, you must use an older version of Infinispan.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="jpastore_has_been_removed"><a class="anchor" href="#jpastore_has_been_removed"></a>1.1.10. JPAStore has been removed</h4>
+<h4 id="jpastore_has_been_removed"><a class="anchor" href="#jpastore_has_been_removed"></a>1.1.11. JPAStore has been removed</h4>
 <div class="paragraph">
 <p>The JPAStore has been removed in Infinispan 14.0.
 It is suggested instead to use the new SQL Table or Query Stores that were added in Infinispan 13.0.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="protodoc_annotations_are_no_longer_necessary"><a class="anchor" href="#protodoc_annotations_are_no_longer_necessary"></a>1.1.11. ProtoDoc annotations are no longer necessary</h4>
+<h4 id="protodoc_annotations_are_no_longer_necessary"><a class="anchor" href="#protodoc_annotations_are_no_longer_necessary"></a>1.1.12. ProtoDoc annotations are no longer necessary</h4>
 <div class="paragraph">
 <p>It is no longer necessary to wrap annotations, such as those required for indexing, within <code>@ProtoDoc</code> annotations.
 Any annotations will simply be copied as comments to the generated <code>.proto</code> files.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="the_undocumented_server_filesystem_realm_has_been_removed"><a class="anchor" href="#the_undocumented_server_filesystem_realm_has_been_removed"></a>1.1.12. The (undocumented) server filesystem-realm has been removed</h4>
+<h4 id="the_undocumented_server_filesystem_realm_has_been_removed"><a class="anchor" href="#the_undocumented_server_filesystem_realm_has_been_removed"></a>1.1.13. The (undocumented) server filesystem-realm has been removed</h4>
 <div class="paragraph">
 <p>The <code>filesystem-realm</code>, an experimental feature which has never been documented, has been removed.</p>
 </div>
@@ -4417,16 +4426,6 @@ Set the value that matches the Infinispan major version of the source cluster. F
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.major_version</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the database major version.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.minor_version</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the database minor version.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>db.disable_upsert</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disables database upsert.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
@@ -4498,8 +4497,6 @@ target.connection_pool.connection_url=jdbc:postgresql:postgres
 target.connection_pool.driver_class=org.postrgesql.Driver
 target.connection_pool.username=postgres
 target.connection_pool.password=redhat
-target.db.major_version=9
-target.db.minor_version=5
 target.db.disable_upsert=false
 target.db.disable_indexing=false
 target.table.string.table_name_prefix=tablePrefix
@@ -4665,7 +4662,7 @@ repository, run the following command:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-27 12:27:27 -0400
+Last updated 2022-07-06 06:42:11 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

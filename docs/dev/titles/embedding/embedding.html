@@ -842,7 +842,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;14.0.0.Dev03&lt;/version.infinispan&gt;
+  &lt;version.infinispan&gt;14.0.0.Dev02&lt;/version.infinispan&gt;
 &lt;/properties&gt;
 
 &lt;dependencyManagement&gt;
@@ -1436,17 +1436,28 @@ You must also enable statistics otherwise Infinispan provides <code>0</code> val
 <div class="paragraph">
 <p>Provide unique remote JMX ports to expose Infinispan MBeans through connections in JMXServiceURL format.</p>
 </div>
-<div class="ulist">
+<div class="paragraph">
 <div class="title">Procedure</div>
+<p>Start the server with JMX remoting enabled using one of the supported ways:</p>
+</div>
+<div class="ulist">
 <ul>
 <li>
-<p>Pass the following system properties to Infinispan at startup:</p>
+<p>Using the <code>--jmx</code> option. This will enable JMX remoting on port <code>9999</code> without SSL and requiring authentication
+to the default security realm. Users authenticating to JMX should have either the <code>controlRole</code> (for read/write access)
+or the <code>monitorRole</code> (for read-only access). Users not belonging to either of those roles will not be able to access
+any JMX resources. If there is no default security realm, access will always be denied.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>-Dcom.sun.management.jmxremote
--Dcom.sun.management.jmxremote.port=9999
--Dcom.sun.management.jmxremote.authenticate=false
--Dcom.sun.management.jmxremote.ssl=false</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Using any of the standard JMX remoting system properties Infinispan at startup. Refer to the <a href="https://docs.oracle.com/en/java/javase/11/management/monitoring-and-management-using-jmx-technology.html#GUID-F08985BB-629A-4FBF-A0CB-8762DF7590E0">JDK Monitoring and Management using JMX technology</a> guide for details.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999</code></pre>
 </div>
 </div>
 </li>
@@ -1583,7 +1594,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>4.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.Dev03.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.Dev02.jar</code> file.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2034,11 +2045,11 @@ You can inherit properties from the default stacks while combining, removing, an
       &lt;TCPGOSSIP initial_hosts="${jgroups.tunnel.gossip_router_hosts:localhost[12001]}"
              stack.combine="REPLACE"
              stack.position="MPING" /&gt;
-      &lt;!-- Removes the FD_SOCK protocol from the stack. --&gt;
-      &lt;FD_SOCK stack.combine="REMOVE"/&gt;
-      &lt;!-- Modifies the timeout value for the VERIFY_SUSPECT protocol. --&gt;
-      &lt;VERIFY_SUSPECT timeout="2000"/&gt;
-      &lt;!-- Adds SYM_ENCRYPT to the stack after VERIFY_SUSPECT. --&gt;
+      &lt;!-- Removes the FD_SOCK2 protocol from the stack. --&gt;
+      &lt;FD_SOCK2 stack.combine="REMOVE"/&gt;
+      &lt;!-- Modifies the timeout value for the VERIFY_SUSPECT2 protocol. --&gt;
+      &lt;VERIFY_SUSPECT2 timeout="2000"/&gt;
+      &lt;!-- Adds SYM_ENCRYPT to the stack after VERIFY_SUSPECT2. --&gt;
       &lt;SYM_ENCRYPT sym_algorithm="AES"
                    keystore_name="mykeystore.p12"
                    keystore_type="PKCS12"
@@ -2046,7 +2057,7 @@ You can inherit properties from the default stacks while combining, removing, an
                    key_password="changeit"
                    alias="myKey"
                    stack.combine="INSERT_AFTER"
-                   stack.position="VERIFY_SUSPECT" /&gt;
+                   stack.position="VERIFY_SUSPECT2" /&gt;
     &lt;/stack&gt;
     &lt;cache-container name="default" statistics="true"&gt;
       &lt;!-- Uses "my-stack" for cluster transport. --&gt;
@@ -2239,9 +2250,9 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jgroups.fd.port</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bind port for the FD (failure detection protocol) socket.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>57600</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jgroups.fd.port-offset</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Offset from <code>jgroups.bind.port</code> port for the FD (failure detection protocol) socket.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>50000</code> (port <code>57800</code> )</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
 </tbody>
@@ -2428,9 +2439,9 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
              num_discovery_runs="3"
              ip_ttl="${jgroups.udp.ip_ttl:2}"/&gt;
       &lt;MERGE3 /&gt;
-      &lt;FD_SOCK /&gt;
+      &lt;FD_SOCK2 /&gt;
       &lt;FD_ALL3 timeout="3000" interval="1000" timeout_check_interval="1000" /&gt;
-      &lt;VERIFY_SUSPECT timeout="1000" /&gt;
+      &lt;VERIFY_SUSPECT2 timeout="1000" /&gt;
       &lt;pbcast.NAKACK2 use_mcast_xmit="false" xmit_interval="200" xmit_table_num_rows="50"
                       xmit_table_msgs_per_row="1024" xmit_table_max_compaction_time="30000" /&gt;
       &lt;UNICAST3 conn_close_timeout="5000" xmit_interval="200" xmit_table_num_rows="50"
@@ -2439,7 +2450,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
       &lt;pbcast.GMS print_local_addr="false" join_timeout="${jgroups.join_timeout:2000}" /&gt;
       &lt;UFC max_credits="4m" min_threshold="0.40" /&gt;
       &lt;MFC max_credits="4m" min_threshold="0.40" /&gt;
-      &lt;FRAG3 /&gt;
+      &lt;FRAG4 /&gt;
     &lt;/stack&gt;
   &lt;/jgroups&gt;
   &lt;cache-container default-cache="replicatedCache"&gt;
@@ -2703,11 +2714,11 @@ Users are responsible for generating and distributing the secret keys that nodes
     &lt;!-- Creates a secure JGroups stack named "encrypt-tcp" that extends the default TCP stack. --&gt;
     &lt;stack name="encrypt-tcp" extends="tcp"&gt;
       &lt;!-- Adds a keystore that nodes use to perform certificate authentication. --&gt;
-      &lt;!-- Uses the stack.combine and stack.position attributes to insert SSL_KEY_EXCHANGE into the default TCP stack after VERIFY_SUSPECT. --&gt;
+      &lt;!-- Uses the stack.combine and stack.position attributes to insert SSL_KEY_EXCHANGE into the default TCP stack after VERIFY_SUSPECT2. --&gt;
       &lt;SSL_KEY_EXCHANGE keystore_name="mykeystore.jks"
                         keystore_password="changeit"
                         stack.combine="INSERT_AFTER"
-                        stack.position="VERIFY_SUSPECT"/&gt;
+                        stack.position="VERIFY_SUSPECT2"/&gt;
       &lt;!-- Configures ASYM_ENCRYPT --&gt;
       &lt;!-- Uses the stack.combine and stack.position attributes to insert ASYM_ENCRYPT into the default TCP stack before pbcast.NAKACK2. --&gt;
       &lt;!-- The use_external_key_exchange = "true" attribute configures nodes to use the `SSL_KEY_EXCHANGE` protocol for certificate authentication. --&gt;
@@ -2791,14 +2802,14 @@ Otherwise the following message is written to Infinispan logs:</p>
     &lt;!-- Creates a secure JGroups stack named "encrypt-tcp" that extends the default TCP stack. --&gt;
     &lt;stack name="encrypt-tcp" extends="tcp"&gt;
       &lt;!-- Adds a keystore from which nodes obtain secret keys. --&gt;
-      &lt;!-- Uses the stack.combine and stack.position attributes to insert SYM_ENCRYPT into the default TCP stack after VERIFY_SUSPECT. --&gt;
+      &lt;!-- Uses the stack.combine and stack.position attributes to insert SYM_ENCRYPT into the default TCP stack after VERIFY_SUSPECT2. --&gt;
       &lt;SYM_ENCRYPT keystore_name="myKeystore.p12"
                    keystore_type="PKCS12"
                    store_password="changeit"
                    key_password="changeit"
                    alias="myKey"
                    stack.combine="INSERT_AFTER"
-                   stack.position="VERIFY_SUSPECT"/&gt;
+                   stack.position="VERIFY_SUSPECT2"/&gt;
     &lt;/stack&gt;
   &lt;/jgroups&gt;
   &lt;cache-container name="default" statistics="true"&gt;
@@ -6532,7 +6543,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-27 12:27:27 -0400
+Last updated 2022-07-06 06:42:11 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
