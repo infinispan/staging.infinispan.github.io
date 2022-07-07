@@ -683,11 +683,26 @@ requests directly to those nodes, which reduces latency.</p>
 <div class="sect2">
 <h3 id="hotrod-client-intelligence_hotrod-java-client"><a class="anchor" href="#hotrod-client-intelligence_hotrod-java-client"></a>1.2. Client Intelligence</h3>
 <div class="paragraph">
-<p>Hot Rod clients use intelligence mechanisms to efficiently send requests to Infinispan Server clusters.</p>
+<p>Hot Rod clients use intelligence mechanisms to efficiently send requests to Infinispan Server clusters.
+By default, the Hot Rod protocol has the <code>HASH_DISTRIBUTION_AWARE</code> intelligence mechanism enabled.</p>
 </div>
 <div class="paragraph">
 <div class="title"><code>BASIC</code> intelligence</div>
 <p>Clients do not receive topology change events for Infinispan clusters, such as nodes joining or leaving, and use only the list of Infinispan Server network locations that you add to the client configuration.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enable <code>BASIC</code> intelligence to use the Hot Rod client configuration when a Infinispan Server cluster does not send internal and hidden cluster topology to the Hot Rod client.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <div class="title"><code>TOPOLOGY_AWARE</code> intelligence</div>
@@ -3742,7 +3757,7 @@ container.start();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-06 06:42:11 UTC
+Last updated 2022-07-07 15:30:48 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
