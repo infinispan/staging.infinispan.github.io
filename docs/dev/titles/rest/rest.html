@@ -642,6 +642,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_update_protobuf">2.3.3. Updating Protobuf Schemas</a></li>
 <li><a href="#rest_v2_delete_protobuf">2.3.4. Deleting Protobuf Schemas</a></li>
 <li><a href="#rest_v2_list_protobuf">2.3.5. Listing Protobuf Schemas</a></li>
+<li><a href="#rest_v2_list_protobuf_types">2.3.6. Listing Protobuf Types</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_cache_managers">2.4. Working with Cache Managers</a>
@@ -3949,6 +3950,25 @@ Infinispan updates the schema and returns the error in the response body.</p>
 </ul>
 </div>
 </div>
+<div class="sect3">
+<h4 id="rest_v2_list_protobuf_types"><a class="anchor" href="#rest_v2_list_protobuf_types"></a>2.3.6. Listing Protobuf Types</h4>
+<div class="paragraph">
+<p>List all available Protobuf types with <code>GET</code> requests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/schemas?action=types</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan responds with a list of all types available on the cluster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">["org.infinispan.Person", "org.infinispan.Phone"]</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="rest_v2_cache_managers"><a class="anchor" href="#rest_v2_cache_managers"></a>2.4. Working with Cache Managers</h3>
@@ -6498,7 +6518,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-07 15:30:48 UTC
+Last updated 2022-07-12 16:08:04 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
