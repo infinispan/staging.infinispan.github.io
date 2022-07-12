@@ -1584,71 +1584,19 @@ Each time you modify the Infinispan configuration in the <code>ConfigMap</code>,
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
-  &lt;cache-container&gt;
-    &lt;distributed-cache-configuration name="base-template"&gt;
-      &lt;expiration lifespan="5000"/&gt;
-    &lt;/distributed-cache-configuration&gt;
-    &lt;distributed-cache-configuration name="extended-template"
-                                     configuration="base-template"&gt;
-      &lt;encoding media-type="application/x-protostream"/&gt;
-      &lt;expiration lifespan="10000"
-                  max-idle="1000"/&gt;
-    &lt;/distributed-cache-configuration&gt;
-  &lt;/cache-container&gt;
-&lt;/infinispan&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">Unresolved directive in ../topics/ref_infinispan_config.adoc - include::sync/xml/cache_template_inheritance.xml[]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">YAML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
-  cacheContainer:
-    caches:
-      base-template:
-        distributedCacheConfiguration:
-          expiration:
-            lifespan: "5000"
-      extended-template:
-        distributedCacheConfiguration:
-          configuration: "base-template"
-          encoding:
-            mediaType: "application/x-protostream"
-          expiration:
-            lifespan: "10000"
-            maxIdle: "1000"</code></pre>
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">Unresolved directive in ../topics/ref_infinispan_config.adoc - include::sync/yaml/cache_template_inheritance.yaml[]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">JSON</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "infinispan" : {
-    "cache-container" : {
-      "caches" : {
-        "base-template" : {
-          "distributed-cache-configuration" : {
-            "expiration" : {
-              "lifespan" : "5000"
-            }
-          }
-        },
-        "extended-template" : {
-          "distributed-cache-configuration" : {
-            "configuration" : "base-template",
-            "encoding": {
-              "media-type": "application/x-protostream"
-              },
-            "expiration" : {
-              "lifespan" : "10000",
-              "max-idle" : "1000"
-            }
-          }
-        }
-      }
-    }
-  }
-}</code></pre>
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">Unresolved directive in ../topics/ref_infinispan_config.adoc - include::sync/json/cache_template_inheritance.json[]</code></pre>
 </div>
 </div>
 <h4 id="_logging_configuration" class="discrete">Logging configuration</h4>
@@ -7762,7 +7710,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-12 11:40:37 UTC
+Last updated 2022-07-12 12:25:24 UTC
 </div>
 </div>
 <script>
