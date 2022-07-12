@@ -7444,30 +7444,32 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div class="paragraph">
 <div class="title">Client intelligence</div>
-<p>The Hot Rod protocol includes a mechanism that provides clients with an up to date view of the cache topology.
+<p>The Hot Rod protocol includes a mechanism that provides clients with an up-to-date view of the cache topology.
 Client intelligence improves performance by reducing the number of network hops for read and write operations.</p>
 </div>
 <div class="paragraph">
-<p>Clients running in the same Kubernetes cluster can access internal IP addresses for Infinispan pods so you can use any client intelligence.
-The default intelligence, <code>HASH_DISTRIBUTION_AWARE</code>, is recommended because it allows clients to route requests to primary owners, which improves performance.</p>
+<p>Clients running in the same Kubernetes cluster can access internal IP addresses for Infinispan pods so you can use any client intelligence.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
+<div class="paragraph">
+<p><code>HASH_DISTRIBUTION_AWARE</code> is the default intelligence mechanism and enables clients to route requests to primary owners, which provides the best performance for Hot Rod clients.</p>
+</div>
+<div class="paragraph">
+<div class="title"><code>BASIC</code> intelligence</div>
+<p>Hot Rod clients must use <code>BASIC</code> intelligence in the following situations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Connecting to Infinispan through a <code>LoadBalancer</code>, <code>NodePort</code>, or OpenShift <code>Route</code>.</p>
+</li>
+<li>
+<p>Failing over to a different Kubernetes cluster when using cross-site replication.</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>Kubernetes cluster administrators can define network policies that restrict traffic to Infinispan.
 In some cases network isolation policies can require you to use <code>BASIC</code> intelligence even when clients are running in the same Kubernetes cluster but a different namespace.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Hot Rod clients must use <code>BASIC</code> intelligence when connecting to Infinispan through a <code>LoadBalancer</code>, <code>NodePort</code>, or OpenShift <code>Route</code>.</p>
 </div>
 <div class="sect3">
 <h4 id="hotrod-configuration-builder_clients"><a class="anchor" href="#hotrod-configuration-builder_clients"></a>21.4.1. Hot Rod client configuration API</h4>
@@ -7751,7 +7753,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-12 15:49:42 UTC
+Last updated 2022-07-12 15:51:15 UTC
 </div>
 </div>
 <script>
