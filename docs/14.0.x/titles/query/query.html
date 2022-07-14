@@ -881,6 +881,26 @@ By default no indexing operation takes place when a cache starts but you can con
 &lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The clear (purge) operation is performed synchronously, so the cache will be available only when the purge completes.</p>
+</div>
+<div class="paragraph">
+<p>The reindex operation is performed asynchronously, since it may take a longer time to finish, dependent upon the size of the cache.</p>
+</div>
+<div class="paragraph">
+<p>To check if the reindexing operation is still in progress, check the <code>reindexing</code> attribute of the index statistics.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect4">
 <h5 id="index_reader"><a class="anchor" href="#index_reader"></a>Index reader</h5>
@@ -2987,7 +3007,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-27 12:27:27 -0400
+Last updated 2022-07-13 12:57:55 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
