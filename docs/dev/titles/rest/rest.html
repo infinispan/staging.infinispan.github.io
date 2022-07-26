@@ -674,7 +674,8 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_restore_manager_head">2.4.20. Checking Restore Progress</a></li>
 <li><a href="#rest_v2_restore_manager_delete">2.4.21. Deleting Restore Metadata</a></li>
 <li><a href="#rest_v2_container_configuration_listen">2.4.22. Listening to container configuration events</a></li>
-<li><a href="#rest_v2_xsite_cache_manager">2.4.23. Cross-Site Operations with Cache Managers</a>
+<li><a href="#rest_v2_container_listen">2.4.23. Listening to container events</a></li>
+<li><a href="#rest_v2_xsite_cache_manager">2.4.24. Cross-Site Operations with Cache Managers</a>
 <ul class="sectlevel4">
 <li><a href="#rest_v2_cache_manager_site_status_rest">Getting status of backup locations</a></li>
 <li><a href="#rest_v2_cache_manager_take_offline_rest">Taking backup locations offline</a></li>
@@ -5019,7 +5020,22 @@ The <code>data</code> value will contain the declarative configuration of the en
 </table>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_xsite_cache_manager"><a class="anchor" href="#rest_v2_xsite_cache_manager"></a>2.4.23. Cross-Site Operations with Cache Managers</h4>
+<h4 id="rest_v2_container_listen"><a class="anchor" href="#rest_v2_container_listen"></a>2.4.23. Listening to container events</h4>
+<div class="paragraph">
+<p>Receive events from the container using <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">Server-Sent Events</a>.
+The emitted events come from logged information, so each event contains an identifier associated with the message.
+The <code>event</code> value will be <code>lifecycle-event</code>. The <code>data</code> has the logged information, which includes the <code>message</code>,
+<code>category</code>, <code>level</code>, <code>timestamp</code>, <code>owner</code>, <code>context</code>, and <code>scope</code>, some of which may be empty.
+Currently, we expose only <code>LIFECYCLE</code> events.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/container?action=listen</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rest_v2_xsite_cache_manager"><a class="anchor" href="#rest_v2_xsite_cache_manager"></a>2.4.24. Cross-Site Operations with Cache Managers</h4>
 <div class="paragraph">
 <p>Perform cross-site operations with Cache Managers to apply the operations to
 all caches.</p>
@@ -6518,7 +6534,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-13 12:57:55 -0400
+Last updated 2022-07-26 08:13:02 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
