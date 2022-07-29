@@ -1757,7 +1757,7 @@ However, you can also use MPING with UDP stacks.</p>
 <div class="listingblock">
 <div class="title">MPING configuration example</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;MPING mcast_addr="${jgroups.mcast_addr:228.6.7.8}"
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;MPING mcast_addr="${jgroups.mcast_addr:239.6.7.8}"
        mcast_port="${jgroups.mcast_port:46655}"
        num_discovery_runs="3"
        ip_ttl="${jgroups.udp.ip_ttl:2}"/&gt;</code></pre>
@@ -2210,7 +2210,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jgroups.mcast_addr</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">IP address for multicast, both discovery and inter-cluster communication. The IP address must be a valid "class D" address that is suitable for IP multicast.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>228.6.7.8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>239.6.7.8</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
 <tr>
@@ -2434,7 +2434,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
       &lt;TCP bind_port="7800" port_range="30" recv_buf_size="20000000" send_buf_size="640000"/&gt;
       &lt;RED/&gt;
       &lt;MPING break_on_coord_rsp="true"
-             mcast_addr="${jgroups.mping.mcast_addr:228.2.4.6}"
+             mcast_addr="${jgroups.mping.mcast_addr:239.2.4.6}"
              mcast_port="${jgroups.mping.mcast_port:43366}"
              num_discovery_runs="3"
              ip_ttl="${jgroups.udp.ip_ttl:2}"/&gt;
@@ -2524,7 +2524,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-5.2.xsd"&gt;
     &lt;UDP bind_addr="${jgroups.bind_addr:127.0.0.1}"
-         mcast_addr="${jgroups.udp.mcast_addr:192.0.2.0}"
+         mcast_addr="${jgroups.udp.mcast_addr:239.0.2.0}"
          mcast_port="${jgroups.udp.mcast_port:46655}"
          tos="8"
          ucast_recv_buf_size="20000000"
@@ -6543,7 +6543,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-26 08:13:02 UTC
+Last updated 2022-07-29 14:49:28 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
