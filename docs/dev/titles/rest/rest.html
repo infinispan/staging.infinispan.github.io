@@ -722,6 +722,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_restore_cluster_list">2.6.9. Listing Restores</a></li>
 <li><a href="#rest_v2_restore_cluster_head">2.6.10. Checking Restore Progress</a></li>
 <li><a href="#rest_v2_restore_cluster_delete">2.6.11. Deleting Restore Metadata</a></li>
+<li><a href="#rest_v2_cluster_distribution">2.6.12. Checking Cluster Distribution</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_logging">2.7. Infinispan Server logging configuration</a>
@@ -5818,6 +5819,62 @@ A <code>202</code> response indicates that the restore operation is in progress 
 completes.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="rest_v2_cluster_distribution"><a class="anchor" href="#rest_v2_cluster_distribution"></a>2.6.12. Checking Cluster Distribution</h4>
+<div class="paragraph">
+<p>Retrieve the distribution details about all servers in the Infinispan cluster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/cluster?action=distribution</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Returns a JSON array of each Infinispan server statistics in the cluster with the format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">[
+  {
+    "node_name": "NodeA",
+    "node_addresses": [
+      "127.0.0.1:39313"
+    ],
+    "memory_available": 466180016,
+    "memory_used": 56010832
+  },
+  {
+    "node_name": "NodeB",
+    "node_addresses": [
+      "127.0.0.1:47477"
+    ],
+    "memory_available": 467548568,
+    "memory_used": 54642280
+  }
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each element in the array represents an Infinispan node. If the statistics collection is
+disabled, information about memory usage values is -1. The properties are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>node_name</code> is the node name.</p>
+</li>
+<li>
+<p><code>node_addresses</code> is a list with all the node&#8217;s physical addresses.</p>
+</li>
+<li>
+<p><code>memory_available</code> the node available memory in bytes.</p>
+</li>
+<li>
+<p><code>memory_used</code> the node used memory in bytes.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="rest_v2_logging"><a class="anchor" href="#rest_v2_logging"></a>2.7. Infinispan Server logging configuration</h3>
@@ -6556,7 +6613,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-01 14:30:55 UTC
+Last updated 2022-08-01 16:44:13 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
