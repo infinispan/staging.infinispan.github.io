@@ -2612,10 +2612,26 @@ Server, the CLI can validate server certificates to verify the identity.</p>
 </div>
 </li>
 <li>
-<p>Define the key store password, if necessary, as follows:</p>
+<p><em>Optional:</em> Define a trust store password. The following example sets <code>secret</code> as the trust store password:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/cli.sh config set truststore-password secret</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><em>Optional:</em> If you require client certificate authentication for your server, specify the location of the client key store. Considering the following example, replace <code>&lt;path&gt;</code> with the absolute directory path to your key store file, and replace <code>&lt;key_store_file&gt;</code> with the name of your key store file:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin/cli.sh config set keystore /&lt;em&gt;&lt;path&gt;&lt;/em&gt;/&lt;em&gt;&lt;key_store_file&gt;&lt;/em&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><em>Optional:</em> Define a key store password. The following example sets <code>secret</code> as the key store password:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>bin/cli.sh config set keystore-password secret</code></pre>
 </div>
 </div>
 </li>
@@ -3981,6 +3997,14 @@ Removes all entries from <code>mycache</code>.</p>
 </dd>
 <dt class="hdlist1"><strong>truststore-password</strong></dt>
 <dd>
+<p>Specifies a password to access the truststore.</p>
+</dd>
+<dt class="hdlist1"><strong>keystore</strong></dt>
+<dd>
+<p>Defines a path to the keystore, which contains a certificate. The certificate identifies the client. Use the <code>keystore</code> property when the server requires client certificate authentication.</p>
+</dd>
+<dt class="hdlist1"><strong>keystore-password</strong></dt>
+<dd>
 <p>Specifies a password to access the keystore.</p>
 </dd>
 </dl>
@@ -4060,6 +4084,34 @@ authentication is required.</p>
 <dt class="hdlist1"><strong>-p, --password</strong>='PASSWORD'</dt>
 <dd>
 <p>Specifies passwords.</p>
+</dd>
+<dt class="hdlist1"><strong>-t, --truststore</strong>='PATH'</dt>
+<dd>
+<p>Specifies a truststore.</p>
+</dd>
+<dt class="hdlist1"><strong>-s, --truststore-password</strong>='PASSWORD'</dt>
+<dd>
+<p>Specifies a password for the truststore.</p>
+</dd>
+<dt class="hdlist1"><strong>-k, --keystore</strong>='PATH'</dt>
+<dd>
+<p>Specifies a keystore that contains a client certificate.</p>
+</dd>
+<dt class="hdlist1"><strong>-w, --keystore-password</strong>='PASSWORD'</dt>
+<dd>
+<p>Specifies a password for the keystore.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p><strong>--hostname-verifier</strong>='REGEX'
+A regular expression that matches hostnames during a connection to an SSL/TLS-enabled server.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>--trustall</strong></dt>
+<dd>
+<p>Trusts all certificates.</p>
 </dd>
 </dl>
 </div>
@@ -6154,7 +6206,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-01 14:25:43 UTC
+Last updated 2022-08-01 14:30:55 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
