@@ -2378,7 +2378,7 @@ Specifying a single value sets both the limit and request.</p>
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Specify JVM options with the <code>spec.container.extraJvmOpts</code> field.</p>
+<p>Configure JVM options with the <code>spec.container</code> filed in your <code>Infinispan</code> CR.</p>
 </li>
 <li>
 <p>Apply your <code>Infinispan</code> CR.</p>
@@ -2389,12 +2389,41 @@ Specifying a single value sets both the limit and request.</p>
 </ol>
 </div>
 <div class="listingblock">
+<div class="title">JVM options</div>
 <div class="content">
 <pre class="highlight nowrap"><code>spec:
   container:
-    extraJvmOpts: "-XX:NativeMemoryTracking=summary"</code></pre>
+    extraJvmOpts: "-&lt;option&gt;=&lt;value&gt;"
+    routerExtraJvmOpts: "-&lt;option&gt;=&lt;value&gt;"
+    cliExtraJvmOpts: "-&lt;option&gt;=&lt;value&gt;"</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.container.extraJvmOpts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies additional JVM options for the Infinispan Server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.container.routerExtraJvmOpts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies additional JVM options for the Gossip router.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.container.cliExtraJvmOpts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies additional JVM options for the Infinispan CLI.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
 <h3 id="configuring-logging_services"><a class="anchor" href="#configuring-logging_services"></a>7.6. Adjusting log levels</h3>
@@ -7753,7 +7782,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-02 16:47:23 UTC
+Last updated 2022-08-04 06:52:41 UTC
 </div>
 </div>
 <script>
