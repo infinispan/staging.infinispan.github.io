@@ -918,7 +918,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.0.Dev04.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.0.CR1.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7984,7 +7984,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.Dev04.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.CR1.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -8150,7 +8150,7 @@ However, you can also use MPING with UDP stacks.</p>
 <div class="listingblock">
 <div class="title">MPING configuration example</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;MPING mcast_addr="${jgroups.mcast_addr:228.6.7.8}"
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;MPING mcast_addr="${jgroups.mcast_addr:239.6.7.8}"
        mcast_port="${jgroups.mcast_port:46655}"
        num_discovery_runs="3"
        ip_ttl="${jgroups.udp.ip_ttl:2}"/&gt;</code></pre>
@@ -8586,7 +8586,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>jgroups.mcast_addr</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">IP address for multicast, both discovery and inter-cluster communication. The IP address must be a valid "class D" address that is suitable for IP multicast.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>228.6.7.8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>239.6.7.8</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
 <tr>
@@ -8810,7 +8810,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
       &lt;TCP bind_port="7800" port_range="30" recv_buf_size="20000000" send_buf_size="640000"/&gt;
       &lt;RED/&gt;
       &lt;MPING break_on_coord_rsp="true"
-             mcast_addr="${jgroups.mping.mcast_addr:228.2.4.6}"
+             mcast_addr="${jgroups.mping.mcast_addr:239.2.4.6}"
              mcast_port="${jgroups.mping.mcast_port:43366}"
              num_discovery_runs="3"
              ip_ttl="${jgroups.udp.ip_ttl:2}"/&gt;

@@ -698,7 +698,7 @@ By default, the Hot Rod protocol has the <code>HASH_DISTRIBUTION_AWARE</code> in
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Enable <code>BASIC</code> intelligence to use the Hot Rod client configuration when a Infinispan Server cluster does not send internal and hidden cluster topology to the Hot Rod client.</p>
+<p>Enable <code>BASIC</code> intelligence to use the Hot Rod client configuration when a Infinispan Server does not send internal and hidden cluster topology to the Hot Rod client.</p>
 </div>
 </td>
 </tr>
@@ -726,6 +726,9 @@ Clients can then connect directly to that node to perform read and write operati
 Another benefit is that Infinispan Server responds to client requests more quickly because they do not need to make additional network roundtrips.</p>
 </div>
 <h4 id="configuration" class="discrete">Configuration</h4>
+<div class="paragraph">
+<p>By default, Hot Rod client uses the intelligence that you configure globally for all the Infinispan clusters.</p>
+</div>
 <div class="listingblock primary">
 <div class="title">ConfigurationBuilder</div>
 <div class="content">
@@ -737,6 +740,22 @@ builder.clientIntelligence(ClientIntelligence.BASIC);</code></pre>
 <div class="title">hotrod-client.properties</div>
 <div class="content">
 <pre class="highlight nowrap"><code>infinispan.client.hotrod.client_intelligence=BASIC</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When you configure Hot Rod client to use multiple Infinispan clusters you can use different intelligence for each of the clusters.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">ConfigurationBuilder</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">ConfigurationBuilder builder = new ConfigurationBuilder();
+builder.addCluster("NYC").clusterClientIntelligence(ClientIntelligence.BASIC);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">hotrod-client.properties</div>
+<div class="content">
+<pre class="highlight nowrap"><code>infinispan.client.hotrod.cluster.intelligence.NYC=BASIC</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -918,7 +937,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;14.0.0.Dev04&lt;/version.infinispan&gt;
+  &lt;version.infinispan&gt;14.0.0.CR1&lt;/version.infinispan&gt;
 &lt;/properties&gt;
 
 &lt;dependencyManagement&gt;
