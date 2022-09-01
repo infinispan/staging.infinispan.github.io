@@ -1438,29 +1438,89 @@ You must also enable statistics otherwise Infinispan provides <code>0</code> val
 <p>Provide unique remote JMX ports to expose Infinispan MBeans through connections in JMXServiceURL format.</p>
 </div>
 <div class="paragraph">
-<div class="title">Procedure</div>
-<p>Start the server with JMX remoting enabled using one of the supported ways:</p>
+<p>You can enable remote JMX ports using one of the following approaches:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Using the <code>--jmx</code> option. This will enable JMX remoting on port <code>9999</code> without SSL and requiring authentication
-to the default security realm. Users authenticating to JMX should have either the <code>controlRole</code> (for read/write access)
-or the <code>monitorRole</code> (for read-only access). Users not belonging to either of those roles will not be able to access
-any JMX resources. If there is no default security realm, access will always be denied.</p>
+<p>Enable remote JMX ports that require authentication to one of the Infinispan Server security realms.</p>
+</li>
+<li>
+<p>Enable remote JMX ports manually using the standard Java management configuration options.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>For remote JMX with authentication, define user roles using the default security realm.
+Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
+* Enable remote JMX through port <code>9999</code>.</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
 </div>
 </div>
-</li>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Using remote JMX with SSL disabled is not intended for production environments.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
 <li>
-<p>Using any of the standard JMX remoting system properties Infinispan at startup. Refer to the <a href="https://docs.oracle.com/en/java/javase/11/management/monitoring-and-management-using-jmx-technology.html#GUID-F08985BB-629A-4FBF-A0CB-8762DF7590E0">JDK Monitoring and Management using JMX technology</a> guide for details.</p>
+<p>Pass the following system properties to Infinispan Server at startup.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enabling remote JMX with no authentication or SSL is not secure and not recommended in any environment.
+Disabling authentication and SSL allows unauthorized users to connect to your server and access the data hosted there.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../server/server.html#creating-security-realms_security-realms">Creating security realms</a></p>
 </li>
 </ul>
 </div>
@@ -6627,7 +6687,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-24 16:17:56 UTC
+Last updated 2022-09-01 16:27:19 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
