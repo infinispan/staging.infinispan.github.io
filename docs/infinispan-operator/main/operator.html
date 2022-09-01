@@ -593,14 +593,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#configuring-sites-manually_cross-site">13.3. Manually configuring cross-site connections</a></li>
-<li><a href="#cross-site-resources-automatic_cross-site">13.4. Resources for configuring cross-site replication</a></li>
-<li><a href="#securing-cross-site-connections_cross-site">13.5. Securing cross-site connections</a>
+<li><a href="#disabling-gossip-router-cross-site_cross-site">13.4. Disabling local Gossip router and service</a></li>
+<li><a href="#cross-site-resources-automatic_cross-site">13.5. Resources for configuring cross-site replication</a></li>
+<li><a href="#securing-cross-site-connections_cross-site">13.6. Securing cross-site connections</a>
 <ul class="sectlevel3">
-<li><a href="#cross-site-encryption-resources_cross-site">13.5.1. Resources for configuring cross-site encryption</a></li>
-<li><a href="#cross-site-encryption-secrets_cross-site">13.5.2. Cross-site encryption secrets</a></li>
+<li><a href="#cross-site-encryption-resources_cross-site">13.6.1. Resources for configuring cross-site encryption</a></li>
+<li><a href="#cross-site-encryption-secrets_cross-site">13.6.2. Cross-site encryption secrets</a></li>
 </ul>
 </li>
-<li><a href="#configuring-sites-in-clusters_cross-site">13.6. Configuring sites in the same Kubernetes cluster</a></li>
+<li><a href="#configuring-sites-in-clusters_cross-site">13.7. Configuring sites in the same Kubernetes cluster</a></li>
 </ul>
 </li>
 <li><a href="#monitoring-services">14. Monitoring Infinispan services</a>
@@ -4869,7 +4870,105 @@ This prevents a large number of log files from uses container storage.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="cross-site-resources-automatic_cross-site"><a class="anchor" href="#cross-site-resources-automatic_cross-site"></a>13.4. Resources for configuring cross-site replication</h3>
+<h3 id="disabling-gossip-router-cross-site_cross-site"><a class="anchor" href="#disabling-gossip-router-cross-site_cross-site"></a>13.4. Disabling local Gossip router and service</h3>
+<div class="paragraph _abstract">
+<p>The Infinispan Operator starts a Gossip router on each site, but you only need a single Gossip router to manage traffic between the Infinispan cluster members.
+You can disable the additional Gossip routers to save resources.</p>
+</div>
+<div class="paragraph">
+<p>For example, you have Infinispan clusters in <strong>LON</strong> and <strong>NYC</strong> sites.
+The following procedure shows how you can disable Gossip router in <strong>LON</strong> site and connect to <strong>NYC</strong> that has the Gossip router enabled.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create an <code>Infinispan</code> CR for each Infinispan cluster.</p>
+</li>
+<li>
+<p>Specify the name of the local site with the <code>spec.service.sites.local.name</code> field.</p>
+</li>
+<li>
+<p>For the <strong>LON</strong> cluster, set <code>false</code> as the value for the <code>spec.service.sites.local.discovery.launchGossipRouter</code> field.</p>
+</li>
+<li>
+<p>For the <strong>LON</strong> cluster, specify the <code>url</code> with the <code>spec.service.sites.locations.url</code> to connect to the <strong>NYC</strong>.</p>
+</li>
+<li>
+<p>In the <strong>NYC</strong> configuration, do not specify the <code>spec.service.sites.locations.url</code>.</p>
+<div class="listingblock">
+<div class="title">LON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: infinispan
+spec:
+  replicas: 3
+  service:
+    type: DataGrid
+    sites:
+      local:
+        name: LON
+        discovery:
+          launchGossipRouter: false
+      locations:
+        - name: NYC
+          url: infinispan+xsite://infinispan-nyc.myhost.com:7900</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">NYC</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: infinispan
+spec:
+  replicas: 3
+  service:
+    type: DataGrid
+    sites:
+      local:
+        name: NYC
+      locations:
+        - name: LON</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you have three or more sites, Infinispan recommends to keep the Gossip router enabled on all the remote sites.
+When you have multiple Gossip routers and one of them becomes unavailable, the remaining routers continue exchanging messages.
+If a single Gossip router is defined, and it becomes unavailable, the connection between the remote sites breaks.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Next steps</div>
+<p>If your clusters have formed a cross-site view, you can start adding backup locations to caches.</p>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://infinispan.org/docs/stable/titles/xsite/xsite.html">Infinispan cross-site replication</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cross-site-resources-automatic_cross-site"><a class="anchor" href="#cross-site-resources-automatic_cross-site"></a>13.5. Resources for configuring cross-site replication</h3>
 <div class="paragraph _abstract">
 <p>The following tables provides fields and descriptions for cross-site resources.</p>
 </div>
@@ -4910,6 +5009,14 @@ This prevents a large number of log files from uses container storage.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Names the local site where a Infinispan cluster runs.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.maxRelayNodes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of pods that can send RELAY messages for cross-site replication. The default value is <code>1</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.discovery.launchGossipRouter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>false</code>, the cross-site services and the Gossip Router pod are not created in the local site. The default value is <code>true</code>.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.expose.type</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the network service for cross-site replication. Infinispan clusters use this service to communicate and perform backup operations. You can set the value to <code>NodePort</code>, <code>LoadBalancer</code>, or <code>Route</code>.</p></td>
 </tr>
@@ -4924,10 +5031,6 @@ This prevents a large number of log files from uses container storage.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.expose.routeHostName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a custom hostname if you expose Infinispan through an OpenShift <code>Route</code>. If you do not set a value then OpenShift generates a hostname.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.maxRelayNodes</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the maximum number of pods that can send RELAY messages for cross-site replication. The default value is <code>1</code>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -5016,7 +5119,7 @@ If you set up cross-site on Kubernetes this field specifies the access secret fo
 </div>
 </div>
 <div class="sect2">
-<h3 id="securing-cross-site-connections_cross-site"><a class="anchor" href="#securing-cross-site-connections_cross-site"></a>13.5. Securing cross-site connections</h3>
+<h3 id="securing-cross-site-connections_cross-site"><a class="anchor" href="#securing-cross-site-connections_cross-site"></a>13.6. Securing cross-site connections</h3>
 <div class="paragraph _abstract">
 <p>Add keystores and trust stores so that Infinispan clusters can secure cross-site replication traffic.</p>
 </div>
@@ -5102,7 +5205,7 @@ spec:
 </ol>
 </div>
 <div class="sect3">
-<h4 id="cross-site-encryption-resources_cross-site"><a class="anchor" href="#cross-site-encryption-resources_cross-site"></a>13.5.1. Resources for configuring cross-site encryption</h4>
+<h4 id="cross-site-encryption-resources_cross-site"><a class="anchor" href="#cross-site-encryption-resources_cross-site"></a>13.6.1. Resources for configuring cross-site encryption</h4>
 <div class="paragraph _abstract">
 <p>The following tables provides fields and descriptions for encrypting cross-site connections.</p>
 </div>
@@ -5224,7 +5327,7 @@ The default value is <code>truststore.p12</code>.</p></td>
 </table>
 </div>
 <div class="sect3">
-<h4 id="cross-site-encryption-secrets_cross-site"><a class="anchor" href="#cross-site-encryption-secrets_cross-site"></a>13.5.2. Cross-site encryption secrets</h4>
+<h4 id="cross-site-encryption-secrets_cross-site"><a class="anchor" href="#cross-site-encryption-secrets_cross-site"></a>13.6.2. Cross-site encryption secrets</h4>
 <div class="paragraph _abstract">
 <p>Cross-site replication encryption secrets add keystores and optional trust stores for securing cross-site connections.</p>
 </div>
@@ -5272,7 +5375,7 @@ data:
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-sites-in-clusters_cross-site"><a class="anchor" href="#configuring-sites-in-clusters_cross-site"></a>13.6. Configuring sites in the same Kubernetes cluster</h3>
+<h3 id="configuring-sites-in-clusters_cross-site"><a class="anchor" href="#configuring-sites-in-clusters_cross-site"></a>13.7. Configuring sites in the same Kubernetes cluster</h3>
 <div class="paragraph _abstract">
 <p>For evaluation and demonstration purposes, you can configure Infinispan to back up between pods in the same Kubernetes cluster.</p>
 </div>
@@ -7791,7 +7894,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-31 14:07:58 UTC
+Last updated 2022-09-01 15:41:26 UTC
 </div>
 </div>
 <script>
