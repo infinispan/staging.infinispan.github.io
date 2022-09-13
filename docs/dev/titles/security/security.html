@@ -583,12 +583,7 @@ $(addBlockSwitches);
 <li><a href="#configuring-ssl-engine_endpoint-security">5.1.2. Configuring TLS versions and cipher suites</a></li>
 </ul>
 </li>
-<li><a href="#configuring-server-fips_endpoint-security">5.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</a>
-<ul class="sectlevel3">
-<li><a href="#configuring_the_pkcs11_cryptographic_provider">5.2.1. Configuring the PKCS11 cryptographic provider</a></li>
-<li><a href="#configuring_the_bouncy_castle_fips_cryptographic_provider">5.2.2. Configuring the Bouncy Castle FIPS cryptographic provider</a></li>
-</ul>
-</li>
+<li><a href="#configuring-server-fips_endpoint-security">5.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</a></li>
 <li><a href="#configuring-client-certificate-authentication_endpoint-security">5.3. Configuring client certificate authentication</a></li>
 <li><a href="#configuring-client-certificate-authorization_endpoint-security">5.4. Configuring authorization with client certificates</a></li>
 </ul>
@@ -3214,7 +3209,7 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
 </div>
 </li>
 <li>
-<p>Configure Infinispan to use one or more cipher suites with the <code>enabled-ciphersuites</code> attribute (for TLSv1.2 and below) and the <code>enabled-ciphersuites-tls13</code> attribute (for TLSv1.3).</p>
+<p>Configure Infinispan to use one or more cipher suites with the <code>enabled-ciphersuites</code> attribute.</p>
 <div class="paragraph">
 <p>You must ensure that you set a cipher suite that supports any protocol features you plan to use; for example <code>HTTP/2 ALPN</code>.</p>
 </div>
@@ -3239,9 +3234,8 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
                       password="secret"
                       alias="server"/&gt;
             &lt;!-- Configures Infinispan Server to use specific TLS versions and cipher suites. --&gt;
-            &lt;engine enabled-protocols="TLSv1.3 TLSv1.2"
-                    enabled-ciphersuites="TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"
-                    enabled-ciphersuites-tls13="TLS_AES_256_GCM_SHA384"/&gt;
+            &lt;engine enabled-protocols="TLSv1.3"
+                    enabled-ciphersuites="TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"/&gt;
           &lt;/ssl&gt;
         &lt;/server-identities&gt;
       &lt;/security-realm&gt;
@@ -3267,8 +3261,7 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
             },
             "engine": {
               "enabled-protocols": ["TLSv1.3"],
-              "enabled-ciphersuites": "TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256",
-              "enabled-ciphersuites-tls13": "TLS_AES_256_GCM_SHA384"
+              "enabled-ciphersuites": "TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"
             }
           }
         }
@@ -3294,8 +3287,7 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
             engine:
               enabledProtocols:
                 - "TLSv1.3"
-              enabledCiphersuites: "TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"
-              enabledCiphersuitesTls13: "TLS_AES_256_GCM_SHA384"</code></pre>
+              enabledCiphersuites: "TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256"</code></pre>
 </div>
 </div>
 </div>
@@ -3303,43 +3295,23 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
 <div class="sect2">
 <h3 id="configuring-server-fips_endpoint-security"><a class="anchor" href="#configuring-server-fips_endpoint-security"></a>5.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</h3>
 <div class="paragraph">
-<p>FIPS (Federal Information Processing Standards) are standards and guidelines for US federal computer systems.
-Although FIPS are developed for use by the US federal government, many in the private sector voluntarily use these standards.</p>
-</div>
-<div class="paragraph">
-<p>FIPS 140-2 defines security requirements for cryptographic modules.
-You can configure your Infinispan Server to use encryption ciphers that adhere to the FIPS 140-2 specification by using alternative JDK security providers.</p>
-</div>
-<div class="ulist">
-<div class="title">Additional resources</div>
-<ul>
-<li>
-<p><a href="https://docs.oracle.com/en/java/javase/11/security/pkcs11-reference-guide1.html">Java PKCS#11 cryptographic provider</a></p>
-</li>
-<li>
-<p><a href="https://www.bouncycastle.org/fips_faq.html">The Legion of the Bouncy Castle cryptographic provider</a></p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="configuring_the_pkcs11_cryptographic_provider"><a class="anchor" href="#configuring_the_pkcs11_cryptographic_provider"></a>5.2.1. Configuring the PKCS11 cryptographic provider</h4>
-<div class="paragraph">
-<p>You can configure the PKCS11 cryptographic provider by specifying the PKCS11 keystore with the <code>SunPKCS11-NSS-FIPS</code> provider.</p>
+<p>It is possible to configure Infinispan Server to present SSL/TLS certificates that verify its identity to clients.
+If a security realm contains TLS/SSL identities, it encrypts any connections to Infinispan Server endpoints that use that security realm.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Configure your system for FIPS mode. You can check if your system has FIPS Mode enabled by issuing the <code>fips-mode-setup --check</code> command in your Infinispan command-line Interface (CLI)</p>
+<p>A system in FIPS mode. Execute <code>fips-mode-setup --check</code> to ensure it is enabled.</p>
 </li>
 <li>
-<p>Initialize the system-wide NSS database by using the <code>certutil</code> tool.</p>
+<p>A correctly initialized NSS database.</p>
 </li>
 <li>
-<p>Install the JDK with the <code>java.security</code> file configured to enable the <code>SunPKCS11</code> provider. This provider points to the NSS database and the SSL provider.</p>
+<p>A JDK installation with the <code>java.security</code> file configured to enable the <code>SunPKCS11</code> provider pointing to the NSS database and the SSL provider initialized with the <code>SunPKCS11-nss-fips</code> argument.</p>
 </li>
 <li>
-<p>Install a certificate in the NSS database.</p>
+<p>A certificate installed in the NSS database.</p>
 </li>
 </ul>
 </div>
@@ -3351,9 +3323,7 @@ You can configure your Infinispan Server to use encryption ciphers that adhere t
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The OpenSSL provider requires a private key, but you cannot retrieve a private key from the PKCS#11 store.
-FIPS blocks the export of unencrypted keys from a FIPS-compliant cryptographic module, so you cannot use the OpenSSL provider for TLS when in FIPS mode.
-You can disable the OpenSSL provider at startup with the <code>-Dorg.infinispan.openssl=false</code> argument.</p>
+<p>The OpenSSL provider requires a private key, but it is not possible to retrieve a private key from the PKCS11 store. FIPS does not allow the export of unencrypted keys from FIPS compliant cryptographic module. Therefore it is not possible to use the OpenSSL provider for TLS when in FIPS mode. Start the server with the <code>-Dorg.infinispan.openssl=false</code> argument to disable OpenSSL.</p>
 </div>
 </td>
 </tr>
@@ -3376,7 +3346,7 @@ You can disable the OpenSSL provider at startup with the <code>-Dorg.infinispan.
 </li>
 </ol>
 </div>
-<h5 id="keystore_configuration_2" class="discrete">Keystore configuration</h5>
+<h4 id="keystore_configuration_2" class="discrete">Keystore configuration</h4>
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
@@ -3430,114 +3400,6 @@ You can disable the OpenSSL provider at startup with the <code>-Dorg.infinispan.
             keystore:
               provider: "SunPKCS11-NSS-FIPS"
               type: "PKCS11"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="configuring_the_bouncy_castle_fips_cryptographic_provider"><a class="anchor" href="#configuring_the_bouncy_castle_fips_cryptographic_provider"></a>5.2.2. Configuring the Bouncy Castle FIPS cryptographic provider</h4>
-<div class="paragraph">
-<p>You can configure the Bouncy Castle FIPS (Federal Information Processing Standards) cryptographic provider in your Infinispan server&#8217;s configuration.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Configure your system for FIPS mode. You can check if your system has FIPS Mode enabled by issuing the <code>fips-mode-setup --check</code> command in your Infinispan command-line Interface (CLI).</p>
-</li>
-<li>
-<p>Create a keystore in BCFKS format that contains a certificate.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Download the Bouncy Castle FIPS JAR file, and add the file to the <code>server/lib</code> directory of your Infinispan Server installation.</p>
-</li>
-<li>
-<p>To install Bouncy Castle, issue the <code>install</code> command:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>[disconnected]&gt; install org.bouncycastle:bc-fips:1.0.2.3</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Open your Infinispan Server configuration for editing.</p>
-</li>
-<li>
-<p>Add a <code>server-identities</code> definition to the Infinispan Server security realm.</p>
-</li>
-<li>
-<p>Specify the BCFKS keystore with the <code>BCFIPS</code> provider.</p>
-</li>
-<li>
-<p>Save the changes to your configuration.</p>
-</li>
-</ol>
-</div>
-<h5 id="keystore_configuration_3" class="discrete">Keystore configuration</h5>
-<div class="listingblock">
-<div class="title">XML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
-   &lt;security&gt;
-      &lt;security-realms&gt;
-         &lt;security-realm name="default"&gt;
-            &lt;server-identities&gt;
-               &lt;ssl&gt;
-                  &lt;!-- Adds a keystore that reads certificates from the BCFKS keystore. --&gt;
-                  &lt;keystore path="server.bcfks" password="secret" alias="server" provider="BCFIPS" type="BCFKS"/&gt;
-               &lt;/ssl&gt;
-            &lt;/server-identities&gt;
-         &lt;/security-realm&gt;
-      &lt;/security-realms&gt;
-   &lt;/security&gt;
-&lt;/server&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">JSON</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "server": {
-    "security": {
-      "security-realms": [{
-        "name": "default",
-        "server-identities": {
-          "ssl": {
-            "keystore": {
-              "path": "server.bcfks",
-              "password": "secret",
-              "alias": "server",
-              "provider": "BCFIPS",
-              "type": "BCFKS"
-            }
-          }
-        }
-      }]
-    }
-  }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">YAML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
-  security:
-    securityRealms:
-      - name: "default"
-        serverIdentities:
-          ssl:
-            keystore:
-              path: "server.bcfks"
-              password: "secret"
-              alias: "server"
-              provider: "BCFIPS"
-              type: "BCFKS"</code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -4964,7 +4826,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-08 08:10:25 UTC
+Last updated 2022-07-13 12:57:55 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/rest/rest.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -1042,7 +1045,7 @@ specific header <em>Key-Content-Type</em> for keys in different formats.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">curl -u user:password -X POST --data-binary @./schema.proto http://127.0.0.1:11222/rest/v2/caches/___protobuf_metadata/schema.proto</code></pre>
+<pre class="CodeRay highlight"><code>curl -u user:password -X POST --data-binary @./schema.proto http://127.0.0.1:11222/rest/v2/caches/___protobuf_metadata/schema.proto</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1431,6 +1434,117 @@ Configuration in JSON format must follow the structure of an XML configuration, 
     <span class="comment"># Persistent storage configuration.</span></code></pre>
 </div>
 </div>
+<h6 id="multiple_caches" class="discrete">Multiple caches</h6>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;infinispan</span>
+      <span class="attribute-name">xmlns:xsi</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/2001/XMLSchema-instance</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">xsi:schemaLocation</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:config:13.0 https://infinispan.org/schemas/infinispan-config-13.0.xsd</span>
+                          <span class="content">urn:infinispan:server:13.0 https://infinispan.org/schemas/infinispan-server-13.0.xsd</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:config:13.0</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">xmlns:server</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;cache-container</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>
+                   <span class="attribute-name">statistics</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;distributed-cache</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mycacheone</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">mode</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">statistics</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;encoding</span> <span class="attribute-name">media-type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;expiration</span> <span class="attribute-name">lifespan</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;memory</span> <span class="attribute-name">max-size</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+              <span class="attribute-name">when-full</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/distributed-cache&gt;</span>
+    <span class="tag">&lt;distributed-cache</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mycachetwo</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">mode</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">SYNC</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">statistics</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;encoding</span> <span class="attribute-name">media-type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;expiration</span> <span class="attribute-name">lifespan</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;memory</span> <span class="attribute-name">max-size</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+              <span class="attribute-name">when-full</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/distributed-cache&gt;</span>
+  <span class="tag">&lt;/cache-container&gt;</span>
+<span class="tag">&lt;/infinispan&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">infinispan</span>:
+  <span class="key">cacheContainer</span>:
+    <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>
+    <span class="key">statistics</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>
+    <span class="key">caches</span>:
+      <span class="key">mycacheone</span>:
+       <span class="key">distributedCache</span>:
+          <span class="key">mode</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span>
+          <span class="key">statistics</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>
+          <span class="key">encoding</span>:
+            <span class="key">mediaType</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+          <span class="key">expiration</span>:
+            <span class="key">lifespan</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+          <span class="key">memory</span>:
+            <span class="key">maxSize</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+            <span class="key">whenFull</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span>
+      <span class="key">mycachetwo</span>:
+        <span class="key">distributedCache</span>:
+          <span class="key">mode</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SYNC</span><span class="delimiter">&quot;</span></span>
+          <span class="key">statistics</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>
+          <span class="key">encoding</span>:
+            <span class="key">mediaType</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+          <span class="key">expiration</span>:
+            <span class="key">lifespan</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+          <span class="key">memory</span>:
+            <span class="key">maxSize</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+            <span class="key">whenFull</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">infinispan</span><span class="delimiter">&quot;</span></span> : {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">cache-container</span><span class="delimiter">&quot;</span></span> : {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">statistics</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">caches</span><span class="delimiter">&quot;</span></span> : {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">mycacheone</span><span class="delimiter">&quot;</span></span> : {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">distributed-cache</span><span class="delimiter">&quot;</span></span> : {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">mode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">statistics</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">encoding</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">media-type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">expiration</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">lifespan</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">memory</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">max-size</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">when-full</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span>
+            }
+          }
+        },
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">mycachetwo</span><span class="delimiter">&quot;</span></span> : {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">distributed-cache</span><span class="delimiter">&quot;</span></span> : {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">mode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SYNC</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">statistics</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">encoding</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">media-type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">expiration</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">lifespan</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">memory</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">max-size</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">when-full</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span>
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -1591,7 +1705,7 @@ For example, the following command converts the replicated cache configuration f
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ curl localhost:11222/rest/v2/caches?action=convert \
+<pre class="CodeRay highlight nowrap"><code>curl localhost:11222/rest/v2/caches?action=convert \
 --digest -u username:password \
 -X POST -H &quot;Accept: application/yaml&quot; -H &quot;Content-Type: application/xml&quot; \
 -d '&lt;replicated-cache mode=&quot;SYNC&quot; statistics=&quot;false&quot;&gt;&lt;encoding media-type=&quot;application/x-protostream&quot;/&gt;&lt;expiration lifespan=&quot;300000&quot; /&gt;&lt;memory max-size=&quot;400MB&quot; when-full=&quot;REMOVE&quot;/&gt;&lt;/replicated-cache&gt;'</code></pre>
@@ -6310,7 +6424,7 @@ print(resp.read().decode(<span class="string"><span class="delimiter">'</span><s
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <style>

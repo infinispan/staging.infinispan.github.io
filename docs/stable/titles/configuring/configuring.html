@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/configuring/configuring.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -2423,6 +2426,117 @@ Configuration in JSON format must follow the structure of an XML configuration, 
     <span class="comment"># Persistent storage configuration.</span></code></pre>
 </div>
 </div>
+<h5 id="multiple_caches" class="discrete">Multiple caches</h5>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;infinispan</span>
+      <span class="attribute-name">xmlns:xsi</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/2001/XMLSchema-instance</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">xsi:schemaLocation</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:config:13.0 https://infinispan.org/schemas/infinispan-config-13.0.xsd</span>
+                          <span class="content">urn:infinispan:server:13.0 https://infinispan.org/schemas/infinispan-server-13.0.xsd</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:config:13.0</span><span class="delimiter">&quot;</span></span>
+      <span class="attribute-name">xmlns:server</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;cache-container</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>
+                   <span class="attribute-name">statistics</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;distributed-cache</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mycacheone</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">mode</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">statistics</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;encoding</span> <span class="attribute-name">media-type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;expiration</span> <span class="attribute-name">lifespan</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;memory</span> <span class="attribute-name">max-size</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+              <span class="attribute-name">when-full</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/distributed-cache&gt;</span>
+    <span class="tag">&lt;distributed-cache</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mycachetwo</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">mode</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">SYNC</span><span class="delimiter">&quot;</span></span>
+                       <span class="attribute-name">statistics</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;encoding</span> <span class="attribute-name">media-type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;expiration</span> <span class="attribute-name">lifespan</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+      <span class="tag">&lt;memory</span> <span class="attribute-name">max-size</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+              <span class="attribute-name">when-full</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/distributed-cache&gt;</span>
+  <span class="tag">&lt;/cache-container&gt;</span>
+<span class="tag">&lt;/infinispan&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">infinispan</span>:
+  <span class="key">cacheContainer</span>:
+    <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>
+    <span class="key">statistics</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>
+    <span class="key">caches</span>:
+      <span class="key">mycacheone</span>:
+       <span class="key">distributedCache</span>:
+          <span class="key">mode</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span>
+          <span class="key">statistics</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>
+          <span class="key">encoding</span>:
+            <span class="key">mediaType</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+          <span class="key">expiration</span>:
+            <span class="key">lifespan</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+          <span class="key">memory</span>:
+            <span class="key">maxSize</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+            <span class="key">whenFull</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span>
+      <span class="key">mycachetwo</span>:
+        <span class="key">distributedCache</span>:
+          <span class="key">mode</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SYNC</span><span class="delimiter">&quot;</span></span>
+          <span class="key">statistics</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>
+          <span class="key">encoding</span>:
+            <span class="key">mediaType</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+          <span class="key">expiration</span>:
+            <span class="key">lifespan</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+          <span class="key">memory</span>:
+            <span class="key">maxSize</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>
+            <span class="key">whenFull</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">infinispan</span><span class="delimiter">&quot;</span></span> : {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">cache-container</span><span class="delimiter">&quot;</span></span> : {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">statistics</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">caches</span><span class="delimiter">&quot;</span></span> : {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">mycacheone</span><span class="delimiter">&quot;</span></span> : {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">distributed-cache</span><span class="delimiter">&quot;</span></span> : {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">mode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ASYNC</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">statistics</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">encoding</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">media-type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">expiration</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">lifespan</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">memory</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">max-size</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">when-full</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span>
+            }
+          }
+        },
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">mycachetwo</span><span class="delimiter">&quot;</span></span> : {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">distributed-cache</span><span class="delimiter">&quot;</span></span> : {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">mode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SYNC</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">statistics</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">encoding</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">media-type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application/x-protostream</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">expiration</span><span class="delimiter">&quot;</span></span> : {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">lifespan</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">300000</span><span class="delimiter">&quot;</span></span>
+            },
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">memory</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">max-size</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">400MB</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">when-full</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">REMOVE</span><span class="delimiter">&quot;</span></span>
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -2845,7 +2959,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Run the <code class="command">describe</code> command in the default container.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">[//containers/default]&gt; describe</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe</code></pre>
 </div>
 </div>
 </dd>
@@ -2974,7 +3088,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Start the CLI and enter your credentials when prompted.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -2985,7 +3099,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; create cache --file=mycache.xml mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>create cache --file=mycache.xml mycache</code></pre>
 </div>
 </div>
 </li>
@@ -2998,7 +3112,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>List all remote caches with the <code class="command">ls</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; ls caches
+<pre class="CodeRay highlight nowrap"><code>ls caches
 mycache</code></pre>
 </div>
 </div>
@@ -3007,7 +3121,7 @@ mycache</code></pre>
 <p>View cache configuration with the <code class="command">describe</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe caches/mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>describe caches/mycache</code></pre>
 </div>
 </div>
 </li>
@@ -3576,26 +3690,97 @@ You must also enable statistics otherwise Infinispan provides <code>0</code> val
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Infinispan Server does not expose JMX remotely via the single port endpoint.
-If you want to remotely access Infinispan Server via JMX you must enable a remote port.</p>
+<p>Infinispan Server does not expose JMX remotely by using the single port endpoint.
+If you want to remotely access the Infinispan Server through JMX, you must enable a remote port.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can enable remote JMX ports using one of the following approaches:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enable remote JMX ports that require authentication to one of the Infinispan Server security realms.</p>
+</li>
+<li>
+<p>Enable remote JMX ports manually using the standard Java management configuration options.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>For remote JMX with authentication, define user roles using the default security realm.
+Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
+* Enable remote JMX through port <code>9999</code>.</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Using remote JMX with SSL disabled is not intended for production environments.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="ulist">
-<div class="title">Procedure</div>
 <ul>
 <li>
-<p>Pass the following system properties to Infinispan at startup:</p>
+<p>Pass the following system properties to Infinispan Server at startup.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>-Dcom.sun.management.jmxremote
--Dcom.sun.management.jmxremote.port=9999
--Dcom.sun.management.jmxremote.authenticate=false
--Dcom.sun.management.jmxremote.ssl=false</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enabling remote JMX with no authentication or SSL is not secure and not recommended in any environment.
+Disabling authentication and SSL allows unauthorized users to connect to your server and access the data hosted there.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../server/server.html#creating-security-realms_security-realms">Creating security realms</a></p>
 </li>
 </ul>
 </div>
@@ -5959,7 +6144,7 @@ You can then specify the JDNI name of the managed datasources in your caches, wh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -6039,7 +6224,7 @@ configuration.</p>
 <p>Start a CLI session.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -6047,7 +6232,7 @@ configuration.</p>
 <p>List all datasources and confirm the one you created is available.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server datasource ls</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server datasource ls</code></pre>
 </div>
 </div>
 </li>
@@ -6055,7 +6240,7 @@ configuration.</p>
 <p>Test a datasource connection.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server datasource test my-datasource</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server datasource test my-datasource</code></pre>
 </div>
 </div>
 </li>
@@ -6754,7 +6939,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -6979,7 +7164,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -8626,7 +8811,7 @@ file.</p>
 <p>Prepend all configuration properties with <code>source.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">source.type=SOFT_INDEX_FILE_STORE
+<pre class="CodeRay highlight nowrap"><code>source.type=SOFT_INDEX_FILE_STORE
 source.cache_name=myCache
 source.location=/path/to/source/sifs
 source.version=&lt;version&gt;</code></pre>
@@ -8644,7 +8829,7 @@ source.version=&lt;version&gt;</code></pre>
 <p>Prepend all configuration properties with <code>target.</code> as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">target.type=SINGLE_FILE_STORE
+<pre class="CodeRay highlight nowrap"><code>target.type=SINGLE_FILE_STORE
 target.cache_name=myCache
 target.location=/path/to/target/sfs.dat</code></pre>
 </div>
@@ -10194,16 +10379,22 @@ Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to e
         <span class="key">roles</span>:
           <span class="key">reader</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
           <span class="key">admin</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span>
           <span class="key">writer</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
           <span class="key">supervisor</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">READ WRITE EXEC</span><span class="delimiter">&quot;</span></span></code></pre>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">EXEC</span><span class="delimiter">&quot;</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -10491,7 +10682,7 @@ You can use either method with Infinispan, however <code>Security.doAs()</code> 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <style>

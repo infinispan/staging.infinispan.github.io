@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/hotrod_protocol/hotrod_protocol.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -7619,7 +7622,7 @@ entries live.</p>
 <div class="paragraph">
 <p>In Infinispan 4.2 and earlier, the hash space was hardcoded to 10240, but
 since 5.0, the hash space is
-<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html#MAX_VALUE">Integer.MAX_INT</a> .
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/lang/Integer.html#MAX_VALUE">Integer.MAX_INT</a> .
 Please note that since Hot Rod clients should not assume a particular hash
 space by default, every time a hash-topology change is detected, this value is
 sent back to the client via the Hot Rod protocol.</p>
@@ -7904,7 +7907,7 @@ possible version understood by the server for all subsequent requests.</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">opRequestCode1</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock">1 byte</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">1 short</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Request opcode of the first operation</p></td>
 </tr>
 <tr>
@@ -8015,7 +8018,7 @@ to not send a notification on many false positives.</p></td>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <style>

@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/getting_started/getting_started.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -626,7 +629,7 @@ in a few easy steps.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ git clone git@github.com:infinispan/infinispan-simple-tutorials.git</pre>
+<pre>git clone git@github.com:infinispan/infinispan-simple-tutorials.git</pre>
 </div>
 </div>
 </div>
@@ -662,9 +665,9 @@ Infinispan capabilities.</p>
 <p>Generate projects from Infinispan archetypes with the following command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>$ mvn archetype:generate -DarchetypeGroupId=org.infinispan.archetypes \
-    -DarchetypeArtifactId=&lt;archetype-name&gt; \ <i class="conum" data-value="1"></i><b>(1)</b>
-    -DarchetypeVersion=&lt;infinispan-version&gt; <i class="conum" data-value="2"></i><b>(2)</b></pre>
+<pre>mvn archetype:generate -DarchetypeGroupId=org.infinispan.archetypes \
+  -DarchetypeArtifactId=&lt;archetype-name&gt; \ <i class="conum" data-value="1"></i><b>(1)</b>
+  -DarchetypeVersion=&lt;infinispan-version&gt; <i class="conum" data-value="2"></i><b>(2)</b></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -693,7 +696,7 @@ Infinispan capabilities.</p>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Specifies the Infinispan version to use, for example:
 <div class="paragraph">
-<p><code>-DarchetypeVersion=13.0.10.Final</code></p>
+<p><code>-DarchetypeVersion=13.0.11.Final</code></p>
 </div></td>
 </tr>
 </table>
@@ -709,7 +712,7 @@ Infinispan capabilities.</p>
 <p>Run your project application from the directory where the <code>pom.xml</code> file resides as follows:</p>
 <div class="listingblock">
 <div class="content">
-<pre>$ mvn package exec:java</pre>
+<pre>mvn package exec:java</pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -743,7 +746,7 @@ Infinispan capabilities.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/hotrod_java/hotrod_java.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -539,7 +542,7 @@ $(addBlockSwitches);
 <li><a href="#configuring-pom-xml_configuring-maven-repository">2.1. Configuring your Infinispan POM</a></li>
 </ul>
 </li>
-<li><a href="#hotrod-client-configuration_{context}">3. Hot Rod Java Client Configuration</a>
+<li><a href="#hotrod-client-configuration_hot_rod">3. Hot Rod Java Client Configuration</a>
 <ul class="sectlevel2">
 <li><a href="#adding-hotrod-client-dependencies_hotrod-client-configuration">3.1. Adding Hot Rod Java Client Dependencies</a></li>
 <li><a href="#configuring-hotrod-java-clients_hotrod-client-configuration">3.2. Configuring Hot Rod Client Connections</a>
@@ -566,7 +569,7 @@ $(addBlockSwitches);
 <li><a href="#creating-caches-hotrod_hotrod-client-configuration">3.8. Creating remote caches from Hot Rod clients</a></li>
 </ul>
 </li>
-<li><a href="#hotrod-client-api_{context}">4. Hot Rod Client API</a>
+<li><a href="#hotrod-client-api_hot_rod">4. Hot Rod Client API</a>
 <ul class="sectlevel2">
 <li><a href="#remotecache_api">4.1. RemoteCache API</a>
 <ul class="sectlevel3">
@@ -666,11 +669,26 @@ requests directly to those nodes, which reduces latency.</p>
 <div class="sect2">
 <h3 id="hotrod-client-intelligence_hotrod-java-client"><a class="anchor" href="#hotrod-client-intelligence_hotrod-java-client"></a>1.2. Client Intelligence</h3>
 <div class="paragraph">
-<p>Hot Rod clients use intelligence mechanisms to efficiently send requests to Infinispan Server clusters.</p>
+<p>Hot Rod clients use intelligence mechanisms to efficiently send requests to Infinispan Server clusters.
+By default, the Hot Rod protocol has the <code>HASH_DISTRIBUTION_AWARE</code> intelligence mechanism enabled.</p>
 </div>
 <div class="paragraph">
 <div class="title"><code>BASIC</code> intelligence</div>
 <p>Clients do not receive topology change events for Infinispan clusters, such as nodes joining or leaving, and use only the list of Infinispan Server network locations that you add to the client configuration.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enable <code>BASIC</code> intelligence to use the Hot Rod client configuration when a Infinispan Server does not send internal and hidden cluster topology to the Hot Rod client.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <div class="title"><code>TOPOLOGY_AWARE</code> intelligence</div>
@@ -889,7 +907,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;properties&gt;</span>
-  <span class="tag">&lt;version.infinispan&gt;</span>13.0.10.Final<span class="tag">&lt;/version.infinispan&gt;</span>
+  <span class="tag">&lt;version.infinispan&gt;</span>13.0.11.Final<span class="tag">&lt;/version.infinispan&gt;</span>
 <span class="tag">&lt;/properties&gt;</span>
 
 <span class="tag">&lt;dependencyManagement&gt;</span>
@@ -913,7 +931,7 @@ artifact you add as a dependency to your project.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="hotrod-client-configuration_{context}"><a class="anchor" href="#hotrod-client-configuration_{context}"></a>3. Hot Rod Java Client Configuration</h2>
+<h2 id="hotrod-client-configuration_hot_rod"><a class="anchor" href="#hotrod-client-configuration_hot_rod"></a>3. Hot Rod Java Client Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan provides a Hot Rod Java client configuration API that exposes configuration properties.</p>
@@ -1951,7 +1969,7 @@ infinispan.client.hotrod.cache.[my.other.cache].configuration_uri=file:///path/t
 </div>
 </div>
 <div class="sect1">
-<h2 id="hotrod-client-api_{context}"><a class="anchor" href="#hotrod-client-api_{context}"></a>4. Hot Rod Client API</h2>
+<h2 id="hotrod-client-api_hot_rod"><a class="anchor" href="#hotrod-client-api_hot_rod"></a>4. Hot Rod Client API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan Hot Rod client API provides interfaces for creating caches
@@ -2050,10 +2068,10 @@ value objects.</p>
 <p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a></p>
 </li>
 <li>
-<p><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html">UnsupportedOperationException</a></p>
+<p><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/lang/UnsupportedOperationException.html">UnsupportedOperationException</a></p>
 </li>
 <li>
-<p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html">ConcurrentMap</a></p>
+<p><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html">ConcurrentMap</a></p>
 </li>
 </ul>
 </div>
@@ -2970,10 +2988,10 @@ receive events for the contents of the entire cache.</p>
 <div class="sect2">
 <h3 id="hotrod_transactions"><a class="anchor" href="#hotrod_transactions"></a>4.7. Hot Rod Java Client Transactions</h3>
 <div class="paragraph">
-<p>You can configure and use Hot Rod clients in JTA <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Transaction.html">Transaction</a>s.</p>
+<p>You can configure and use Hot Rod clients in JTA <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/Transaction.html">Transaction</a>s.</p>
 </div>
 <div class="paragraph">
-<p>To participate in a transaction, the Hot Rod client requires the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a> with which it interacts and whether it participates in the transaction through the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Synchronization.html">Synchronization</a> or <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/xa/XAResource.html">XAResource</a> interface.</p>
+<p>To participate in a transaction, the Hot Rod client requires the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a> with which it interacts and whether it participates in the transaction through the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/Synchronization.html">Synchronization</a> or <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/xa/XAResource.html">XAResource</a> interface.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -2993,7 +3011,7 @@ To avoid data inconsistency, be sure to read about <a href="#hr_transactions_for
 <div class="sect3">
 <h4 id="hr_transactions_config_server"><a class="anchor" href="#hr_transactions_config_server"></a>4.7.1. Configuring the Server</h4>
 <div class="paragraph">
-<p>Caches in the server must also be transactional for clients to participate in JTA <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Transaction.html">Transaction</a>s.</p>
+<p>Caches in the server must also be transactional for clients to participate in JTA <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/Transaction.html">Transaction</a>s.</p>
 </div>
 <div class="paragraph">
 <p>The following server configuration is required, otherwise transactions rollback only:</p>
@@ -3062,7 +3080,7 @@ infinispan.client.hotrod.transaction.timeout = 60000</code></pre>
 <div class="sect4">
 <h5 id="hr_transactions_tmlookup"><a class="anchor" href="#hr_transactions_tmlookup"></a>TransactionManagerLookup Interface</h5>
 <div class="paragraph">
-<p><code>TransactionManagerLookup</code> provides an entry point to fetch a <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>.</p>
+<p><code>TransactionManagerLookup</code> provides an entry point to fetch a <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a>.</p>
 </div>
 <div class="paragraph">
 <p>Available implementations of <code>TransactionManagerLookup</code>:</p>
@@ -3071,8 +3089,8 @@ infinispan.client.hotrod.transaction.timeout = 60000</code></pre>
 <dl>
 <dt class="hdlist1"><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/transaction/lookup/GenericTransactionManagerLookup.html">GenericTransactionManagerLookup</a></dt>
 <dd>
-<p>A lookup class that locates <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>s running in Java EE application servers.
-Defaults to the <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/transaction/manager/RemoteTransactionManager.html">RemoteTransactionManager</a> if it cannot find a <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>.
+<p>A lookup class that locates <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a>s running in Java EE application servers.
+Defaults to the <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/transaction/manager/RemoteTransactionManager.html">RemoteTransactionManager</a> if it cannot find a <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a>.
 This is the default for Hot Rod Java clients.</p>
 </dd>
 </dl>
@@ -3086,7 +3104,7 @@ This is the default for Hot Rod Java clients.</p>
 <td class="content">
 <div class="paragraph">
 <p>In most cases, <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/transaction/lookup/GenericTransactionManagerLookup.html">GenericTransactionManagerLookup</a> is suitable.
-However, you can implement the <code>TransactionManagerLookup</code> interface if you need to integrate a custom <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>.</p>
+However, you can implement the <code>TransactionManagerLookup</code> interface if you need to integrate a custom <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a>.</p>
 </div>
 </td>
 </tr>
@@ -3096,7 +3114,7 @@ However, you can implement the <code>TransactionManagerLookup</code> interface i
 <dl>
 <dt class="hdlist1"><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/transaction/lookup/RemoteTransactionManagerLookup.html">RemoteTransactionManagerLookup</a></dt>
 <dd>
-<p>A basic, and volatile, <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a> if no other implementation is available.
+<p>A basic, and volatile, <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a> if no other implementation is available.
 Note that this implementation has significant limitations when handling concurrent transactions and recovery.</p>
 </dd>
 </dl>
@@ -3106,7 +3124,7 @@ Note that this implementation has significant limitations when handling concurre
 <div class="sect3">
 <h4 id="hr_transactions_modes"><a class="anchor" href="#hr_transactions_modes"></a>4.7.3. Transaction Modes</h4>
 <div class="paragraph">
-<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/configuration/TransactionMode.html">TransactionMode</a> controls how a <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>.</p>
+<p><a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/configuration/TransactionMode.html">TransactionMode</a> controls how a <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -3131,21 +3149,21 @@ Use the following modes with your client, see the Infinispan configuration schem
 <dl>
 <dt class="hdlist1"><code>NONE</code></dt>
 <dd>
-<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> does not interact with the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>.
+<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> does not interact with the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a>.
 This is the default mode and is non-transactional.</p>
 </dd>
 <dt class="hdlist1"><code>NON_XA</code></dt>
 <dd>
-<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a> via <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Synchronization.html">Synchronization</a>.</p>
+<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a> via <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/Synchronization.html">Synchronization</a>.</p>
 </dd>
 <dt class="hdlist1"><code>NON_DURABLE_XA</code></dt>
 <dd>
-<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a> via <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/xa/XAResource.html">XAResource</a>.
+<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a> via <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/xa/XAResource.html">XAResource</a>.
 Recovery capabilities are disabled.</p>
 </dd>
 <dt class="hdlist1"><code>FULL_XA</code></dt>
 <dd>
-<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a> via <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/xa/XAResource.html">XAResource</a>.
+<p>The <a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/client/hotrod/RemoteCache.html">RemoteCache</a> interacts with the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a> via <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/xa/XAResource.html">XAResource</a>.
 Recovery capabilities are enabled.
 Invoke the <code>XaResource.recover()</code> method to retrieve transactions to recover.</p>
 </dd>
@@ -3183,11 +3201,11 @@ It has the following values:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>If <code>true</code>, the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a> fetches the most recent value from the server before performing write operations.
+<p>If <code>true</code>, the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a> fetches the most recent value from the server before performing write operations.
 However, the <code>forceReturnValue</code> parameter applies only to write operations that access the key for the first time.</p>
 </li>
 <li>
-<p>If <code>false</code>, the <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a> does not fetch the most recent value from the server before performing write operations.</p>
+<p>If <code>false</code>, the <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a> does not fetch the most recent value from the server before performing write operations.</p>
 </li>
 </ul>
 </div>
@@ -3393,7 +3411,7 @@ container.start();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <style>

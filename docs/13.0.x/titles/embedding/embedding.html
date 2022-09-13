@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/embedding/embedding.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -651,7 +654,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;properties&gt;</span>
-  <span class="tag">&lt;version.infinispan&gt;</span>13.0.10.Final<span class="tag">&lt;/version.infinispan&gt;</span>
+  <span class="tag">&lt;version.infinispan&gt;</span>13.0.11.Final<span class="tag">&lt;/version.infinispan&gt;</span>
 <span class="tag">&lt;/properties&gt;</span>
 
 <span class="tag">&lt;dependencyManagement&gt;</span>
@@ -999,19 +1002,90 @@ You must also enable statistics otherwise Infinispan provides <code>0</code> val
 <div class="paragraph">
 <p>Provide unique remote JMX ports to expose Infinispan MBeans through connections in JMXServiceURL format.</p>
 </div>
+<div class="paragraph">
+<p>You can enable remote JMX ports using one of the following approaches:</p>
+</div>
 <div class="ulist">
-<div class="title">Procedure</div>
 <ul>
 <li>
-<p>Pass the following system properties to Infinispan at startup:</p>
+<p>Enable remote JMX ports that require authentication to one of the Infinispan Server security realms.</p>
+</li>
+<li>
+<p>Enable remote JMX ports manually using the standard Java management configuration options.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>For remote JMX with authentication, define user roles using the default security realm.
+Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
+* Enable remote JMX through port <code>9999</code>.</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>-Dcom.sun.management.jmxremote
--Dcom.sun.management.jmxremote.port=9999
--Dcom.sun.management.jmxremote.authenticate=false
--Dcom.sun.management.jmxremote.ssl=false</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Using remote JMX with SSL disabled is not intended for production environments.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Pass the following system properties to Infinispan Server at startup.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enabling remote JMX with no authentication or SSL is not secure and not recommended in any environment.
+Disabling authentication and SSL allows unauthorized users to connect to your server and access the data hosted there.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../server/server.html#creating-security-realms_security-realms">Creating security realms</a></p>
 </li>
 </ul>
 </div>
@@ -1146,7 +1220,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>4.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.10.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.11.Final.jar</code> file.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1705,7 +1779,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ java -cp ... -Djgroups.bind.port=1234 -Djgroups.bind.address=192.0.2.0</code></pre>
+<pre class="CodeRay highlight nowrap"><code>java -cp ... -Djgroups.bind.port=1234 -Djgroups.bind.address=192.0.2.0</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -2294,7 +2368,7 @@ Users are responsible for generating and distributing the secret keys that nodes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2303,7 +2377,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -2372,7 +2446,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2454,7 +2528,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <style>

@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/server/server.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -632,7 +635,12 @@ $(addBlockSwitches);
 <li><a href="#configuring-ssl-engine_endpoint-security">6.1.2. Configuring TLS versions and cipher suites</a></li>
 </ul>
 </li>
-<li><a href="#configuring-server-fips_endpoint-security">6.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</a></li>
+<li><a href="#configuring-server-fips_endpoint-security">6.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</a>
+<ul class="sectlevel3">
+<li><a href="#configuring_the_pkcs11_cryptographic_provider">6.2.1. Configuring the PKCS11 cryptographic provider</a></li>
+<li><a href="#configuring_the_bouncy_castle_fips_cryptographic_provider">6.2.2. Configuring the Bouncy Castle FIPS cryptographic provider</a></li>
+</ul>
+</li>
 <li><a href="#configuring-client-certificate-authentication_endpoint-security">6.3. Configuring client certificate authentication</a></li>
 <li><a href="#configuring-client-certificate-authorization_endpoint-security">6.4. Configuring authorization with client certificates</a></li>
 </ul>
@@ -884,7 +892,7 @@ Hot Rod Java clients.</p>
 <p>Run the <code>sha1sum</code> command with the server download archive as the argument, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ sha1sum infinispan-server-${version}.zip</code></pre>
+<pre class="CodeRay highlight nowrap"><code>sha1sum infinispan-server-${version}.zip</code></pre>
 </div>
 </div>
 </li>
@@ -921,7 +929,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ unzip infinispan-server-13.0.10.Final.zip</code></pre>
+<pre class="CodeRay highlight nowrap"><code>unzip infinispan-server-13.0.11.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -955,7 +963,7 @@ Hot Rod Java clients.</p>
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh</code></pre>
 </div>
 </div>
 </dd>
@@ -1068,7 +1076,7 @@ You must manually propagate caches to each node.</p>
 <p>Specify one or more configuration files with the <code>--server-config=</code> or <code>-c</code> argument, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ bin/server.sh -c infinispan.xml -c datasources.yaml -c security-realms.json</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -c infinispan.xml -c datasources.yaml -c security-realms.json</code></pre>
 </div>
 </div>
 </li>
@@ -1125,7 +1133,7 @@ For this reason you should create a user with <code>admin</code> permissions the
 <p>Add a user assigned to the <code>admin</code> group.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">$ bin/cli.sh user create myuser -p changeme -g admin</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="sh">bin/cli.sh user create myuser -p changeme -g admin</code></pre>
 </div>
 </div>
 </li>
@@ -1133,7 +1141,7 @@ For this reason you should create a user with <code>admin</code> permissions the
 <p>Use implicit authorization to gain <code>admin</code> permissions.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">$ bin/cli.sh user create admin -p changeme</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="sh">bin/cli.sh user create admin -p changeme</code></pre>
 </div>
 </div>
 </li>
@@ -1381,7 +1389,7 @@ Doing things like specifying a port offset on the command line is not a reliable
 <p>Copy the root directory to <code>server2</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ cp -r server server2</code></pre>
+<pre class="CodeRay highlight nowrap"><code>cp -r server server2</code></pre>
 </div>
 </div>
 </li>
@@ -1389,7 +1397,7 @@ Doing things like specifying a port offset on the command line is not a reliable
 <p>Specify a port offset and the <code>server2</code> directory.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh -o 100 -s server2</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -o 100 -s server2</code></pre>
 </div>
 </div>
 </li>
@@ -1432,7 +1440,7 @@ ISPN100000: Node &lt;server2_hostname&gt; joined the cluster</code></pre>
 <p>Stop all nodes in a cluster with the <code class="command">shutdown cluster</code> command, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; shutdown cluster</code></pre>
+<pre class="CodeRay highlight nowrap"><code>shutdown cluster</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1444,7 +1452,7 @@ If you use a cache store, the <code class="command">shutdown cluster</code> comm
 <p>Stop individual server instances with the <code class="command">shutdown server</code> command and the server hostname, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; shutdown server &lt;my_server01&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>shutdown server &lt;my_server01&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -2190,7 +2198,7 @@ You can specify that IP address directly in your Infinispan Server configuration
 <p>Open your Infinispan Server configuration and set the value for the <code>inet-address</code> element, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">&lt;server xmlns=&quot;urn:infinispan:server:13.0&quot;&gt;
+<pre class="CodeRay highlight nowrap"><code>&lt;server xmlns=&quot;urn:infinispan:server:13.0&quot;&gt;
   &lt;interfaces&gt;
     &lt;interface name=&quot;custom&quot;&gt;
       &lt;inet-address value=&quot;${infinispan.bind.address:192.0.2.0}&quot;/&gt;
@@ -2205,13 +2213,13 @@ You can specify that IP address directly in your Infinispan Server configuration
 <div class="listingblock">
 <div class="title">Linux</div>
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ bin/server.sh -b 192.0.2.0</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -b 192.0.2.0</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Windows</div>
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">bin\server.bat -b 192.0.2.0</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin\server.bat -b 192.0.2.0</code></pre>
 </div>
 </div>
 </li>
@@ -2382,7 +2390,7 @@ traffic to port <code>11222</code> with firewalld as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash"># firewall-cmd --add-port=11222/tcp --permanent
+<pre class="CodeRay highlight nowrap"><code># firewall-cmd --add-port=11222/tcp --permanent
 success
 # firewall-cmd --list-ports | grep 11222
 11222/tcp</code></pre>
@@ -2415,7 +2423,7 @@ The default port offset is <code>0</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ bin/server.sh -o 100</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -o 100</code></pre>
 </div>
 </div>
 <div class="dlist">
@@ -2425,7 +2433,7 @@ The default port offset is <code>0</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">bin\server.bat -o 100</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin\server.bat -o 100</code></pre>
 </div>
 </div>
 </div>
@@ -2924,7 +2932,7 @@ Infinispan Server rejects all other connections.</p>
 <p>List all IP filtering rules active on a connector across the cluster:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server connector ipfilter ls endpoint-default</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server connector ipfilter ls endpoint-default</code></pre>
 </div>
 </div>
 </li>
@@ -2946,7 +2954,7 @@ Infinispan Server rejects all other connections.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server connector ipfilter set endpoint-default --rules=ACCEPT/192.168.0.0/16,REJECT/10.0.0.0/8`</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server connector ipfilter set endpoint-default --rules=ACCEPT/192.168.0.0/16,REJECT/10.0.0.0/8`</code></pre>
 </div>
 </div>
 </li>
@@ -2954,7 +2962,7 @@ Infinispan Server rejects all other connections.</p>
 <p>Remove all IP filtering rules on a connector across the cluster.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server connector ipfilter clear endpoint-default</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server connector ipfilter clear endpoint-default</code></pre>
 </div>
 </div>
 </li>
@@ -3654,7 +3662,7 @@ Use the <code class="command">user create</code> commands as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
+<pre class="CodeRay highlight nowrap"><code>user create &lt;username&gt; -p &lt;changeme&gt; -g &lt;role&gt; \
      --users-file=application-users.properties \
      --groups-file=application-groups.properties
 
@@ -3884,7 +3892,7 @@ For example, if you have a "datagrid" server in the "INFINISPAN.ORG" domain you 
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ ktutil
+<pre class="CodeRay highlight nowrap"><code>ktutil
 ktutil:  addent -password -p datagrid@INFINISPAN.ORG -k 1 -e aes256-cts
 Password for datagrid@INFINISPAN.ORG: [enter your password]
 ktutil:  wkt http.keytab
@@ -3896,8 +3904,8 @@ ktutil:  quit</code></pre>
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ ktpass -princ HTTP/datagrid@INFINISPAN.ORG -pass * -mapuser INFINISPAN\USER_NAME
-$ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
+<pre class="CodeRay highlight nowrap"><code>ktpass -princ HTTP/datagrid@INFINISPAN.ORG -pass * -mapuser INFINISPAN\USER_NAME
+ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
 </div>
 </div>
 </dd>
@@ -5055,7 +5063,7 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
 </div>
 </li>
 <li>
-<p>Configure Infinispan to use one or more cipher suites with the <code>enabled-ciphersuites</code> attribute.</p>
+<p>Configure Infinispan to use one or more cipher suites with the <code>enabled-ciphersuites</code> attribute (for TLSv1.2 and below) and the <code>enabled-ciphersuites-tls13</code> attribute (for TLSv1.3).</p>
 <div class="paragraph">
 <p>You must ensure that you set a cipher suite that supports any protocol features you plan to use; for example <code>HTTP/2 ALPN</code>.</p>
 </div>
@@ -5080,8 +5088,9 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
                       <span class="attribute-name">password</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">secret</span><span class="delimiter">&quot;</span></span>
                       <span class="attribute-name">alias</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
             <span class="comment">&lt;!-- Configures Infinispan Server to use specific TLS versions and cipher suites. --&gt;</span>
-            <span class="tag">&lt;engine</span> <span class="attribute-name">enabled-protocols</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TLSv1.3</span><span class="delimiter">&quot;</span></span>
-                    <span class="attribute-name">enabled-ciphersuites</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+            <span class="tag">&lt;engine</span> <span class="attribute-name">enabled-protocols</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TLSv1.3 TLSv1.2</span><span class="delimiter">&quot;</span></span>
+                    <span class="attribute-name">enabled-ciphersuites</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256</span><span class="delimiter">&quot;</span></span>
+                    <span class="attribute-name">enabled-ciphersuites-tls13</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
           <span class="tag">&lt;/ssl&gt;</span>
         <span class="tag">&lt;/server-identities&gt;</span>
       <span class="tag">&lt;/security-realm&gt;</span>
@@ -5107,7 +5116,8 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
             },
             <span class="key"><span class="delimiter">&quot;</span><span class="content">engine</span><span class="delimiter">&quot;</span></span>: {
               <span class="key"><span class="delimiter">&quot;</span><span class="content">enabled-protocols</span><span class="delimiter">&quot;</span></span>: [<span class="string"><span class="delimiter">&quot;</span><span class="content">TLSv1.3</span><span class="delimiter">&quot;</span></span>],
-              <span class="key"><span class="delimiter">&quot;</span><span class="content">enabled-ciphersuites</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256</span><span class="delimiter">&quot;</span></span>
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">enabled-ciphersuites</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">enabled-ciphersuites-tls13</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384</span><span class="delimiter">&quot;</span></span>
             }
           }
         }
@@ -5133,7 +5143,8 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
             <span class="key">engine</span>:
               <span class="key">enabledProtocols</span>:
                 - <span class="string"><span class="delimiter">&quot;</span><span class="content">TLSv1.3</span><span class="delimiter">&quot;</span></span>
-              <span class="key">enabledCiphersuites</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256</span><span class="delimiter">&quot;</span></span></code></pre>
+              <span class="key">enabledCiphersuites</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256</span><span class="delimiter">&quot;</span></span>
+              <span class="key">enabledCiphersuitesTls13</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TLS_AES_256_GCM_SHA384</span><span class="delimiter">&quot;</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -5141,23 +5152,43 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
 <div class="sect2">
 <h3 id="configuring-server-fips_endpoint-security"><a class="anchor" href="#configuring-server-fips_endpoint-security"></a>6.2. Configuring Infinispan Server on a system with FIPS 140-2 compliant cryptography</h3>
 <div class="paragraph">
-<p>It is possible to configure Infinispan Server to present SSL/TLS certificates that verify its identity to clients.
-If a security realm contains TLS/SSL identities, it encrypts any connections to Infinispan Server endpoints that use that security realm.</p>
+<p>FIPS (Federal Information Processing Standards) are standards and guidelines for US federal computer systems.
+Although FIPS are developed for use by the US federal government, many in the private sector voluntarily use these standards.</p>
+</div>
+<div class="paragraph">
+<p>FIPS 140-2 defines security requirements for cryptographic modules.
+You can configure your Infinispan Server to use encryption ciphers that adhere to the FIPS 140-2 specification by using alternative JDK security providers.</p>
+</div>
+<div class="ulist">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.oracle.com/en/java/javase/11/security/pkcs11-reference-guide1.html">Java PKCS#11 cryptographic provider</a></p>
+</li>
+<li>
+<p><a href="https://www.bouncycastle.org/fips_faq.html">The Legion of the Bouncy Castle cryptographic provider</a></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="configuring_the_pkcs11_cryptographic_provider"><a class="anchor" href="#configuring_the_pkcs11_cryptographic_provider"></a>6.2.1. Configuring the PKCS11 cryptographic provider</h4>
+<div class="paragraph">
+<p>You can configure the PKCS11 cryptographic provider by specifying the PKCS11 keystore with the <code>SunPKCS11-NSS-FIPS</code> provider.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>A system in FIPS mode. Execute <code>fips-mode-setup --check</code> to ensure it is enabled.</p>
+<p>Configure your system for FIPS mode. You can check if your system has FIPS Mode enabled by issuing the <code>fips-mode-setup --check</code> command in your Infinispan command-line Interface (CLI)</p>
 </li>
 <li>
-<p>A correctly initialized NSS database.</p>
+<p>Initialize the system-wide NSS database by using the <code>certutil</code> tool.</p>
 </li>
 <li>
-<p>A JDK installation with the <code>java.security</code> file configured to enable the <code>SunPKCS11</code> provider pointing to the NSS database and the SSL provider initialized with the <code>SunPKCS11-nss-fips</code> argument.</p>
+<p>Install the JDK with the <code>java.security</code> file configured to enable the <code>SunPKCS11</code> provider. This provider points to the NSS database and the SSL provider.</p>
 </li>
 <li>
-<p>A certificate installed in the NSS database.</p>
+<p>Install a certificate in the NSS database.</p>
 </li>
 </ul>
 </div>
@@ -5169,7 +5200,9 @@ If a security realm contains TLS/SSL identities, it encrypts any connections to 
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The OpenSSL provider requires a private key, but it is not possible to retrieve a private key from the PKCS11 store. FIPS does not allow the export of unencrypted keys from FIPS compliant cryptographic module. Therefore it is not possible to use the OpenSSL provider for TLS when in FIPS mode. Start the server with the <code>-Dorg.infinispan.openssl=false</code> argument to disable OpenSSL.</p>
+<p>The OpenSSL provider requires a private key, but you cannot retrieve a private key from the PKCS#11 store.
+FIPS blocks the export of unencrypted keys from a FIPS-compliant cryptographic module, so you cannot use the OpenSSL provider for TLS when in FIPS mode.
+You can disable the OpenSSL provider at startup with the <code>-Dorg.infinispan.openssl=false</code> argument.</p>
 </div>
 </td>
 </tr>
@@ -5192,7 +5225,7 @@ If a security realm contains TLS/SSL identities, it encrypts any connections to 
 </li>
 </ol>
 </div>
-<h4 id="keystore_configuration_2" class="discrete">Keystore configuration</h4>
+<h5 id="keystore_configuration_2" class="discrete">Keystore configuration</h5>
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
@@ -5246,6 +5279,114 @@ If a security realm contains TLS/SSL identities, it encrypts any connections to 
             <span class="key">keystore</span>:
               <span class="key">provider</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SunPKCS11-NSS-FIPS</span><span class="delimiter">&quot;</span></span>
               <span class="key">type</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">PKCS11</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="configuring_the_bouncy_castle_fips_cryptographic_provider"><a class="anchor" href="#configuring_the_bouncy_castle_fips_cryptographic_provider"></a>6.2.2. Configuring the Bouncy Castle FIPS cryptographic provider</h4>
+<div class="paragraph">
+<p>You can configure the Bouncy Castle FIPS (Federal Information Processing Standards) cryptographic provider in your Infinispan server&#8217;s configuration.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Configure your system for FIPS mode. You can check if your system has FIPS Mode enabled by issuing the <code>fips-mode-setup --check</code> command in your Infinispan command-line Interface (CLI).</p>
+</li>
+<li>
+<p>Create a keystore in BCFKS format that contains a certificate.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Download the Bouncy Castle FIPS JAR file, and add the file to the <code>server/lib</code> directory of your Infinispan Server installation.</p>
+</li>
+<li>
+<p>To install Bouncy Castle, issue the <code>install</code> command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; install org.bouncycastle:bc-fips:1.0.2.3</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add a <code>server-identities</code> definition to the Infinispan Server security realm.</p>
+</li>
+<li>
+<p>Specify the BCFKS keystore with the <code>BCFIPS</code> provider.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<h5 id="keystore_configuration_3" class="discrete">Keystore configuration</h5>
+<div class="listingblock">
+<div class="title">XML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+   <span class="tag">&lt;security&gt;</span>
+      <span class="tag">&lt;security-realms&gt;</span>
+         <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+            <span class="tag">&lt;server-identities&gt;</span>
+               <span class="tag">&lt;ssl&gt;</span>
+                  <span class="comment">&lt;!-- Adds a keystore that reads certificates from the BCFKS keystore. --&gt;</span>
+                  <span class="tag">&lt;keystore</span> <span class="attribute-name">path</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">server.bcfks</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">password</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">secret</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">alias</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">provider</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">BCFIPS</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">BCFKS</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+               <span class="tag">&lt;/ssl&gt;</span>
+            <span class="tag">&lt;/server-identities&gt;</span>
+         <span class="tag">&lt;/security-realm&gt;</span>
+      <span class="tag">&lt;/security-realms&gt;</span>
+   <span class="tag">&lt;/security&gt;</span>
+<span class="tag">&lt;/server&gt;</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">server-identities</span><span class="delimiter">&quot;</span></span>: {
+          <span class="key"><span class="delimiter">&quot;</span><span class="content">ssl</span><span class="delimiter">&quot;</span></span>: {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">keystore</span><span class="delimiter">&quot;</span></span>: {
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">path</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">server.bcfks</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">secret</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">alias</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">provider</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BCFIPS</span><span class="delimiter">&quot;</span></span>,
+              <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BCFKS</span><span class="delimiter">&quot;</span></span>
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
+  <span class="key">security</span>:
+    <span class="key">securityRealms</span>:
+      - <span class="string"><span class="content">name: &quot;default&quot;</span></span>
+        <span class="key">serverIdentities</span>:
+          <span class="key">ssl</span>:
+            <span class="key">keystore</span>:
+              <span class="key">path</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">server.bcfks</span><span class="delimiter">&quot;</span></span>
+              <span class="key">password</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">secret</span><span class="delimiter">&quot;</span></span>
+              <span class="key">alias</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>
+              <span class="key">provider</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BCFIPS</span><span class="delimiter">&quot;</span></span>
+              <span class="key">type</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BCFKS</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -5579,7 +5720,8 @@ These trust stores should be configured with an empty password: <code>password="
         <span class="key">roles</span>:
           <span class="key">Client1</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span></code></pre>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -5662,7 +5804,7 @@ When you create a keystore you also specify a password for the keystore with the
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
 </div>
 </div>
 </dd>
@@ -5670,7 +5812,7 @@ When you create a keystore you also specify a password for the keystore with the
 <dd>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin\cli.bat credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin\cli.bat credentials add dbpassword -c changeme -p &quot;secret1234!&quot;</code></pre>
 </div>
 </div>
 </dd>
@@ -5681,7 +5823,7 @@ When you create a keystore you also specify a password for the keystore with the
 <p>Check that the alias is added to the keystore.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh credentials ls -p &quot;secret1234!&quot;
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh credentials ls -p &quot;secret1234!&quot;
 dbpassword</code></pre>
 </div>
 </div>
@@ -6421,16 +6563,22 @@ Whenever you grant or deny roles to users, Infinispan flushes the ACL cache to e
         <span class="key">roles</span>:
           <span class="key">reader</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
           <span class="key">admin</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL</span><span class="delimiter">&quot;</span></span>
           <span class="key">writer</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
           <span class="key">supervisor</span>:
             <span class="key">role</span>:
-              <span class="key">permissions</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">READ WRITE EXEC</span><span class="delimiter">&quot;</span></span></code></pre>
+              <span class="key">permissions</span>:
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">READ</span><span class="delimiter">&quot;</span></span>
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">WRITE</span><span class="delimiter">&quot;</span></span>
+                - <span class="string"><span class="delimiter">&quot;</span><span class="content">EXEC</span><span class="delimiter">&quot;</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -6852,26 +7000,97 @@ You must also enable statistics otherwise Infinispan provides <code>0</code> val
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Infinispan Server does not expose JMX remotely via the single port endpoint.
-If you want to remotely access Infinispan Server via JMX you must enable a remote port.</p>
+<p>Infinispan Server does not expose JMX remotely by using the single port endpoint.
+If you want to remotely access the Infinispan Server through JMX, you must enable a remote port.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can enable remote JMX ports using one of the following approaches:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enable remote JMX ports that require authentication to one of the Infinispan Server security realms.</p>
+</li>
+<li>
+<p>Enable remote JMX ports manually using the standard Java management configuration options.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>For remote JMX with authentication, define user roles using the default security realm.
+Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
+* Enable remote JMX through port <code>9999</code>.</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Using remote JMX with SSL disabled is not intended for production environments.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="ulist">
-<div class="title">Procedure</div>
 <ul>
 <li>
-<p>Pass the following system properties to Infinispan at startup:</p>
+<p>Pass the following system properties to Infinispan Server at startup.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>-Dcom.sun.management.jmxremote
--Dcom.sun.management.jmxremote.port=9999
--Dcom.sun.management.jmxremote.authenticate=false
--Dcom.sun.management.jmxremote.ssl=false</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enabling remote JMX with no authentication or SSL is not secure and not recommended in any environment.
+Disabling authentication and SSL allows unauthorized users to connect to your server and access the data hosted there.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../server/server.html#creating-security-realms_security-realms">Creating security realms</a></p>
 </li>
 </ul>
 </div>
@@ -7016,7 +7235,7 @@ You can then specify the JDNI name of the managed datasources in your caches, wh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -7096,7 +7315,7 @@ configuration.</p>
 <p>Start a CLI session.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -7104,7 +7323,7 @@ configuration.</p>
 <p>List all datasources and confirm the one you created is available.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server datasource ls</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server datasource ls</code></pre>
 </div>
 </div>
 </li>
@@ -7112,7 +7331,7 @@ configuration.</p>
 <p>Test a datasource connection.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server datasource test my-datasource</code></pre>
+<pre class="CodeRay highlight nowrap"><code>server datasource test my-datasource</code></pre>
 </div>
 </div>
 </li>
@@ -7392,7 +7611,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.10.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.11.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -7791,7 +8010,7 @@ You can use these default stacks as a starting point for building custom cluster
 <p>Use the <code>cluster-stack</code> argument to set the JGroups stack file when Infinispan Server starts:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">$ bin/server.sh --cluster-stack=udp</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh --cluster-stack=udp</code></pre>
 </div>
 </div>
 </li>
@@ -7955,7 +8174,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh -Djgroups.bind.port=1234 -Djgroups.bind.address=192.0.2.0</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh -Djgroups.bind.port=1234 -Djgroups.bind.address=192.0.2.0</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -8383,7 +8602,7 @@ Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to enc
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[org.infinispan.SERVER] ISPN080060: SSL Transport using realm &lt;security_realm_name&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -8540,7 +8759,7 @@ Users are responsible for generating and distributing the secret keys that nodes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -8549,7 +8768,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[org.jgroups.protocols.ASYM_ENCRYPT] &lt;hostname&gt;: received message without encrypt header from &lt;hostname&gt;; dropping it</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -8618,7 +8837,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[org.infinispan.CLUSTER] ISPN000078: Starting JGroups channel cluster with stack &lt;encrypted_stack_name&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -8743,7 +8962,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Run the <code class="command">describe</code> command in the default container.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="sh">[//containers/default]&gt; describe</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe</code></pre>
 </div>
 </div>
 </dd>
@@ -8872,7 +9091,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>Start the CLI and enter your credentials when prompted.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -8883,7 +9102,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; create cache --file=mycache.xml mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>create cache --file=mycache.xml mycache</code></pre>
 </div>
 </div>
 </li>
@@ -8896,7 +9115,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <p>List all remote caches with the <code class="command">ls</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; ls caches
+<pre class="CodeRay highlight nowrap"><code>ls caches
 mycache</code></pre>
 </div>
 </div>
@@ -8905,7 +9124,7 @@ mycache</code></pre>
 <p>View cache configuration with the <code class="command">describe</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; describe caches/mycache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>describe caches/mycache</code></pre>
 </div>
 </div>
 </li>
@@ -9214,7 +9433,7 @@ value:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript"><span class="comment">// mode=local,language=javascript</span>
+<pre class="CodeRay highlight nowrap"><code data-lang="javascript"><span class="comment">// mode=local,language=javascript</span>
 multiplicand * multiplier</code></pre>
 </div>
 </div>
@@ -9226,7 +9445,7 @@ multiplicand * multiplier</code></pre>
 <p>Use the <code class="command">task</code> command to upload scripts, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; task upload --file=multiplication.js multiplication</pre>
+<pre class="CodeRay highlight nowrap"><code>task upload --file=multiplication.js multiplication</code></pre>
 </div>
 </div>
 </li>
@@ -9234,8 +9453,8 @@ multiplicand * multiplier</code></pre>
 <p>Verify that your scripts are available.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; ls tasks
-multiplication</pre>
+<pre class="CodeRay highlight nowrap"><code>ls tasks
+multiplication</code></pre>
 </div>
 </div>
 </li>
@@ -9448,8 +9667,8 @@ Alternatively you can execute scripts and tasks from Hot Rod clients.</p>
 <p>Execute a script named <code>multiplier.js</code> and specify two parameters:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; task exec multiplier.js -Pmultiplicand=10 -Pmultiplier=20
-200.0</pre>
+<pre class="CodeRay highlight nowrap"><code>task exec multiplier.js -Pmultiplicand=10 -Pmultiplier=20
+200.0</code></pre>
 </div>
 </div>
 </li>
@@ -9457,8 +9676,8 @@ Alternatively you can execute scripts and tasks from Hot Rod clients.</p>
 <p>Execute a task named <code>@@cache@names</code> to retrieve a list of all available caches:</p>
 <div class="listingblock">
 <div class="content">
-<pre>//containers/default]&gt; task exec @@cache@names
-["___protobuf_metadata","mycache","___script_cache"]</pre>
+<pre class="CodeRay highlight nowrap"><code>task exec @@cache@names
+[&quot;___protobuf_metadata&quot;,&quot;mycache&quot;,&quot;___script_cache&quot;]</code></pre>
 </div>
 </div>
 </li>
@@ -10129,7 +10348,7 @@ Depending on your environment you can also use different network interfaces and 
 <p>CLI: Use the <code class="command">migrate cluster connect</code> command on the target cluster.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; migrate cluster connect -c myCache --file=remote-store.json</code></pre>
 </div>
 </div>
 </li>
@@ -10199,7 +10418,7 @@ You must perform the synchronization for each cache that you want to migrate to 
 <p>CLI: Use the <code class="command">migrate cluster synchronize</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[//containers/default]&gt; migrate cluster synchronize -c myCache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>migrate cluster synchronize -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -10226,7 +10445,7 @@ entries copied to the target cluster.</p>
 <p>CLI: Use the <code class="command">migrate cluster disconnect</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">[//containers/default]&gt; migrate cluster disconnect -c myCache</code></pre>
+<pre class="CodeRay highlight nowrap"><code>migrate cluster disconnect -c myCache</code></pre>
 </div>
 </div>
 </li>
@@ -10304,8 +10523,7 @@ the target version for the patch you want to create.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -10313,7 +10531,7 @@ the target version for the patch you want to create.</p>
 <p>Use the <code>patch create</code> command to generate a patch archive and include the <code>-q</code> option with a meaningful qualifier to describe the patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
+<pre class="CodeRay highlight nowrap"><code>patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
 path/to/target/server/home path/to/source/server/home</code></pre>
 </div>
 </div>
@@ -10333,7 +10551,7 @@ Paths are relative to <code>$ISPN_HOME</code> for the target server.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
+<pre class="CodeRay highlight nowrap"><code>patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
 path/to/target/server/home \
 path/to/source/server1/home path/to/source/server2/home</code></pre>
 </div>
@@ -10351,9 +10569,12 @@ install "mypatch.zip".</p>
 <p>Describe the generated patch archive.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch describe path/to/mypatch.zip
-
-Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
+<pre class="CodeRay highlight nowrap"><code>patch describe path/to/mypatch.zip</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -10416,8 +10637,7 @@ patching.</p>
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -10446,7 +10666,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is installed.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh
 ...
 ISPN080001: Infinispan Server $version</code></pre>
 </div>
@@ -10470,7 +10690,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch install path/to/patch.zip --server=path/to/server/home</code></pre>
+<pre class="CodeRay highlight nowrap"><code>patch install path/to/patch.zip --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -10515,8 +10735,7 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
-[disconnected]&gt;</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
 </li>
@@ -10524,9 +10743,12 @@ Before you roll back patches, you should ensure that your configuration is compa
 <p>List the installed patches.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch ls
-
-Infinispan patch target=$target_version source=$source_version
+<pre class="CodeRay highlight nowrap"><code>patch ls</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>Infinispan patch target=$target_version source=$source_version
 created=$timestamp installed=$timestamp</code></pre>
 </div>
 </div>
@@ -10545,7 +10767,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Roll back the last installed patch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch rollback</code></pre>
+<pre class="CodeRay highlight nowrap"><code>patch rollback</code></pre>
 </div>
 </div>
 </li>
@@ -10553,7 +10775,7 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Quit the CLI.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; quit</code></pre>
+<pre class="CodeRay highlight nowrap"><code>quit</code></pre>
 </div>
 </div>
 </li>
@@ -10561,9 +10783,12 @@ created=$timestamp installed=$timestamp</code></pre>
 <p>Start the server to verify the patch is rolled back to the previous version.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh
-...
-ISPN080001: Infinispan Server $version</code></pre>
+<pre class="CodeRay highlight nowrap"><code>bin/server.sh</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>ISPN080001: Infinispan Server $version</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -10585,7 +10810,7 @@ directory, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch rollback --server=path/to/server/home</code></pre>
+<pre class="CodeRay highlight nowrap"><code>patch rollback --server=path/to/server/home</code></pre>
 </div>
 </div>
 </td>
@@ -10620,8 +10845,16 @@ routing, threads, in addition to configuration and log files.</p>
 <p>Use the <code class="command">server report</code> command to download a <code>tar.gz</code> archive:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; server report
+<pre class="CodeRay highlight nowrap"><code>server report
 Downloaded report 'infinispan-&lt;hostname&gt;-&lt;timestamp&gt;-report.tar.gz'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command responds with the name of the report, as in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>Downloaded report 'infinispan-&lt;hostname&gt;-&lt;timestamp&gt;-report.tar.gz'</code></pre>
 </div>
 </div>
 </li>
@@ -10667,19 +10900,13 @@ operation, which means that changes:</p>
 <ul>
 <li>
 <p>List all appenders defined on the server:</p>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging list-appenders</pre>
+<pre class="CodeRay highlight nowrap"><code>logging list-appenders</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The preceding command returns:</p>
+<p>The command provides a JSON response such as the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10702,20 +10929,16 @@ operation, which means that changes:</p>
 }</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>List all logger configurations defined on the server:</p>
-</li>
-</ul>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging list-loggers</pre>
+<pre class="CodeRay highlight nowrap"><code>logging list-loggers</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The preceding command returns:</p>
+<p>The command provides a JSON response such as the following:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10738,37 +10961,35 @@ operation, which means that changes:</p>
 } ]</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Add and modify logger configurations with the <code class="command">set</code> subcommand</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p>For example, the following command sets the logging level for the
 <code>org.infinispan</code> package to <code>DEBUG</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging set --level=DEBUG org.infinispan</pre>
+<pre class="CodeRay highlight nowrap"><code>logging set --level=DEBUG org.infinispan</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Remove existing logger configurations with the <code class="command">remove</code> subcommand.</p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
 <p>For example, the following command removes the <code>org.infinispan</code> logger
 configuration, which means the root configuration is used instead:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; logging remove org.infinispan</pre>
+<pre class="CodeRay highlight nowrap"><code>logging remove org.infinispan</code></pre>
 </div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -10777,67 +10998,80 @@ configuration, which means the root configuration is used instead:</p>
 <p>You can inspect server-collected statistics for some Infinispan Server resources with the <code class="command">stats</code> command.</p>
 </div>
 <div class="paragraph">
-<p>Use the <code class="command">stats</code> command either from the context of a resource which
-collects statistics (containers, caches) or with a path to such a resource:</p>
+<p>Use the <code class="command">stats</code> command either from the context of a resource that provides statistics (containers, caches) or with a path to such a resource:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; stats
-{
-  "statistics_enabled" : true,
-  "number_of_entries" : 0,
-  "hit_ratio" : 0.0,
-  "read_write_ratio" : 0.0,
-  "time_since_start" : 0,
-  "time_since_reset" : 49,
-  "current_number_of_entries" : 0,
-  "current_number_of_entries_in_memory" : 0,
-  "total_number_of_entries" : 0,
-  "off_heap_memory_used" : 0,
-  "data_memory_used" : 0,
-  "stores" : 0,
-  "retrievals" : 0,
-  "hits" : 0,
-  "misses" : 0,
-  "remove_hits" : 0,
-  "remove_misses" : 0,
-  "evictions" : 0,
-  "average_read_time" : 0,
-  "average_read_time_nanos" : 0,
-  "average_write_time" : 0,
-  "average_write_time_nanos" : 0,
-  "average_remove_time" : 0,
-  "average_remove_time_nanos" : 0,
-  "required_minimum_number_of_nodes" : -1
-}</pre>
+<pre class="CodeRay highlight nowrap"><code>stats</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">statistics_enabled</span><span class="delimiter">&quot;</span></span> : <span class="value">true</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">number_of_entries</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">hit_ratio</span><span class="delimiter">&quot;</span></span> : <span class="float">0.0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">read_write_ratio</span><span class="delimiter">&quot;</span></span> : <span class="float">0.0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">time_since_start</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">time_since_reset</span><span class="delimiter">&quot;</span></span> : <span class="integer">49</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">current_number_of_entries</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">current_number_of_entries_in_memory</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">total_number_of_entries</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">off_heap_memory_used</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">data_memory_used</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">stores</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">retrievals</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">hits</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">misses</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">remove_hits</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">remove_misses</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">evictions</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_read_time</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_read_time_nanos</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_write_time</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_write_time_nanos</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_remove_time</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_remove_time_nanos</span><span class="delimiter">&quot;</span></span> : <span class="integer">0</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">required_minimum_number_of_nodes</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; stats /containers/default/caches/mycache
-{
-  "time_since_start" : -1,
-  "time_since_reset" : -1,
-  "current_number_of_entries" : -1,
-  "current_number_of_entries_in_memory" : -1,
-  "total_number_of_entries" : -1,
-  "off_heap_memory_used" : -1,
-  "data_memory_used" : -1,
-  "stores" : -1,
-  "retrievals" : -1,
-  "hits" : -1,
-  "misses" : -1,
-  "remove_hits" : -1,
-  "remove_misses" : -1,
-  "evictions" : -1,
-  "average_read_time" : -1,
-  "average_read_time_nanos" : -1,
-  "average_write_time" : -1,
-  "average_write_time_nanos" : -1,
-  "average_remove_time" : -1,
-  "average_remove_time_nanos" : -1,
-  "required_minimum_number_of_nodes" : -1
-}</pre>
+<pre class="CodeRay highlight nowrap"><code>stats /containers/default/caches/mycache</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">time_since_start</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">time_since_reset</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">current_number_of_entries</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">current_number_of_entries_in_memory</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">total_number_of_entries</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">off_heap_memory_used</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">data_memory_used</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">stores</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">retrievals</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">hits</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">misses</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">remove_hits</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">remove_misses</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">evictions</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_read_time</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_read_time_nanos</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_write_time</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_write_time_nanos</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_remove_time</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">average_remove_time_nanos</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">required_minimum_number_of_nodes</span><span class="delimiter">&quot;</span></span> : <span class="integer">-1</span>
+}</code></pre>
 </div>
 </div>
 </div>
@@ -10853,7 +11087,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
 <p>Invoke a <code>GET</code> request to retrieve cluster health.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">GET /rest/v2/cache-managers/{cacheManagerName}/health</code></pre>
+<pre class="CodeRay highlight"><code>GET /rest/v2/cache-managers/{cacheManagerName}/health</code></pre>
 </div>
 </div>
 </li>
@@ -10946,7 +11180,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <style>

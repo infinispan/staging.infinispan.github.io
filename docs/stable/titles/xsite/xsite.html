@@ -439,9 +439,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <link rel="canonical" href="https://infinispan.org/docs/stable/titles/xsite/xsite.html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
 <link rel="stylesheet" href="../../css/css.css">
+<link rel="stylesheet" href="/assets/css/clipboard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
 <script src="../../js/js.js"></script>
+<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
+<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -2069,7 +2072,7 @@ Server clusters, manage sites, and push state transfer to backup locations.</p>
 <p>Check if backup locations are online or offline with the <code class="command">site status</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site status --cache=cacheName --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site status --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -2110,7 +2113,7 @@ locations.</p>
 <p>Bring backup locations online with the <code class="command">bring-online</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site bring-online --cache=customers --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site bring-online --cache=customers --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2118,7 +2121,7 @@ locations.</p>
 <p>Take backup locations offline with the <code class="command">take-offline</code> command:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site take-offline --cache=customers --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site take-offline --cache=customers --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2170,23 +2173,22 @@ Alternatively you can use the default mode, which is to manually perform state t
 <p>Retrieve the current state transfer mode.</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site state-transfer-mode get --cache=cacheName --site=NYC
-"MANUAL"</pre>
+<pre class="CodeRay highlight nowrap"><code>site state-transfer-mode get --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Configure automatic state transfer operations for a cache and backup location.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>site state-transfer-mode set --cache=cacheName --site=NYC --mode=AUTO</code></pre>
+</div>
+</div>
 </li>
 </ul>
 </div>
 </li>
 </ol>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[//containers/default]&gt; site state-transfer-mode set --cache=cacheName --site=NYC --mode=AUTO</pre>
-</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2223,7 +2225,7 @@ Alternatively you can use the default mode, which is to manually perform state t
 <p>Use the <code class="command">site push-site-state</code> command to push state transfer, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre>[//containers/default]&gt; site push-site-state --cache=cacheName --site=NYC</pre>
+<pre class="CodeRay highlight nowrap"><code>site push-site-state --cache=cacheName --site=NYC</code></pre>
 </div>
 </div>
 </li>
@@ -2950,7 +2952,7 @@ If you did not take the site offline manually, this message could indicate a fai
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-29 05:04:07 -0400
+Last updated 2022-09-13 02:17:53 -0400
 </div>
 </div>
 <style>
