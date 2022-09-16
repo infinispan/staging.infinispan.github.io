@@ -633,6 +633,7 @@ $(addBlockSwitches);
 <li><a href="#registering-jmx-mbean-servers-statistics-jmx">4.5.3. Registering MBeans in custom MBean servers</a></li>
 </ul>
 </li>
+<li><a href="#displaying-metrics-state-transfer_statistics-jmx">4.6. Exporting metrics during a state transfer operation</a></li>
 </ul>
 </li>
 <li><a href="#configuring-memory-usage">5. Configuring JVM memory usage</a>
@@ -3539,7 +3540,7 @@ Specific methods on the <code>keySet</code>, <code>values</code> and <code>entry
 </div>
 <div class="paragraph">
 <div class="title">Mortal and Immortal Data</div>
-<p>Further to simply storing entries, Infinispan&#8217;s cache API allows you to attach mortality information to data.  For example, simply using <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html#put-K-V-">put(key, value)</a> would create an <em>immortal</em> entry, i.e., an entry that lives in the cache forever, until it is removed (or evicted from memory to prevent running out of memory).  If, however, you put data in the cache using <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/commons/api/BasicCache.html#put(K,V,long,java.util.concurrent.TimeUnit)">put(key, value, lifespan, timeunit)</a> , this creates a <em>mortal</em> entry, i.e., an entry that has a fixed lifespan and expires after that lifespan.</p>
+<p>Further to simply storing entries, Infinispan&#8217;s cache API allows you to attach mortality information to data.  For example, simply using <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">put(key, value)</a> would create an <em>immortal</em> entry, i.e., an entry that lives in the cache forever, until it is removed (or evicted from memory to prevent running out of memory).  If, however, you put data in the cache using <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/commons/api/BasicCache.html#put(K,V,long,java.util.concurrent.TimeUnit)">put(key, value, lifespan, timeunit)</a> , this creates a <em>mortal</em> entry, i.e., an entry that has a fixed lifespan and expires after that lifespan.</p>
 </div>
 <div class="paragraph">
 <p>In addition to <em>lifespan</em> , Infinispan also supports <em>maxIdle</em> as an additional metric with which to determine expiration.  Any combination of lifespans or maxIdles can be used.</p>
@@ -3580,7 +3581,7 @@ if (cachedPerson == null) {
 </div>
 </div>
 <div class="paragraph">
-<p>Note that <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/Cache.html#putForExternalRead(K,V)">putForExternalRead</a> should never be used as a mechanism to update the cache with a new Person instance originating from application execution (i.e. from a transaction that modifies a Person&#8217;s address). When updating cached values, please use the standard <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html#put-K-V-">put</a> operation, otherwise the possibility of caching corrupt data is likely.</p>
+<p>Note that <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/Cache.html#putForExternalRead(K,V)">putForExternalRead</a> should never be used as a mechanism to update the cache with a new Person instance originating from application execution (i.e. from a transaction that modifies a Person&#8217;s address). When updating cached values, please use the standard <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">put</a> operation, otherwise the possibility of caching corrupt data is likely.</p>
 </div>
 <div class="sect4">
 <h5 id="advancedcache_api"><a class="anchor" href="#advancedcache_api"></a>AdvancedCache API</h5>
@@ -3609,10 +3610,10 @@ if (cachedPerson == null) {
 <div class="sect4">
 <h5 id="cache_asynchronous_api"><a class="anchor" href="#cache_asynchronous_api"></a>Asynchronous API</h5>
 <div class="paragraph">
-<p>In addition to synchronous API methods like <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html#put-K-V-">Cache.put()</a> , <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html#remove-java.lang.Object-">Cache.remove()</a> , etc., Infinispan also has an asynchronous, non-blocking API where you can achieve the same results in a non-blocking fashion.</p>
+<p>In addition to synchronous API methods like <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">Cache.put()</a> , <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#remove-java.lang.Object-">Cache.remove()</a> , etc., Infinispan also has an asynchronous, non-blocking API where you can achieve the same results in a non-blocking fashion.</p>
 </div>
 <div class="paragraph">
-<p>These methods are named in a similar fashion to their blocking counterparts, with "Async" appended.  E.g., <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/commons/api/AsyncCache.html#putAsync(K,V)">Cache.putAsync()</a> , <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/commons/api/AsyncCache.html#removeAsync(java.lang.Object)">Cache.removeAsync()</a> , etc.  These asynchronous counterparts return a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> that contains the actual result of the operation.</p>
+<p>These methods are named in a similar fashion to their blocking counterparts, with "Async" appended.  E.g., <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/commons/api/AsyncCache.html#putAsync(K,V)">Cache.putAsync()</a> , <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/commons/api/AsyncCache.html#removeAsync(java.lang.Object)">Cache.removeAsync()</a> , etc.  These asynchronous counterparts return a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> that contains the actual result of the operation.</p>
 </div>
 <div class="paragraph">
 <p>For example, in a cache parameterized as <code>Cache&lt;String, String&gt;</code>, <code>Cache.put(String key, String value)</code> returns <code>String</code> while <code>Cache.putAsync(String key, String value)</code> returns <code>CompletableFuture&lt;String&gt;</code>.</p>
@@ -4055,29 +4056,89 @@ If you want to remotely access Infinispan Server via JMX you must enable a remot
 </table>
 </div>
 <div class="paragraph">
-<div class="title">Procedure</div>
-<p>Start the server with JMX remoting enabled using one of the supported ways:</p>
+<p>You can enable remote JMX ports using one of the following approaches:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Using the <code>--jmx</code> option. This will enable JMX remoting on port <code>9999</code> without SSL and requiring authentication
-to the default security realm. Users authenticating to JMX should have either the <code>controlRole</code> (for read/write access)
-or the <code>monitorRole</code> (for read-only access). Users not belonging to either of those roles will not be able to access
-any JMX resources. If there is no default security realm, access will always be denied.</p>
+<p>Enable remote JMX ports that require authentication to one of the Infinispan Server security realms.</p>
+</li>
+<li>
+<p>Enable remote JMX ports manually using the standard Java management configuration options.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>For remote JMX with authentication, define user roles using the default security realm.
+Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
+* Enable remote JMX through port <code>9999</code>.</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
 </div>
 </div>
-</li>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Using remote JMX with SSL disabled is not intended for production environments.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
 <li>
-<p>Using any of the standard JMX remoting system properties Infinispan at startup. Refer to the <a href="https://docs.oracle.com/en/java/javase/11/management/monitoring-and-management-using-jmx-technology.html#GUID-F08985BB-629A-4FBF-A0CB-8762DF7590E0">JDK Monitoring and Management using JMX technology</a> guide for details.</p>
+<p>Pass the following system properties to Infinispan Server at startup.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enabling remote JMX with no authentication or SSL is not secure and not recommended in any environment.
+Disabling authentication and SSL allows unauthorized users to connect to your server and access the data hosted there.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../server/server.html#creating-security-realms_security-realms">Creating security realms</a></p>
 </li>
 </ul>
 </div>
@@ -4198,6 +4259,77 @@ register MBeans in custom MBeanServer instances.</p>
    .mBeanServerLookup(new com.acme.MyMBeanServerLookup());</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="displaying-metrics-state-transfer_statistics-jmx"><a class="anchor" href="#displaying-metrics-state-transfer_statistics-jmx"></a>4.6. Exporting metrics during a state transfer operation</h3>
+<div class="paragraph">
+<p>You can export time metrics for clustered caches that Infinispan redistributes across nodes.</p>
+</div>
+<div class="paragraph">
+<p>A state transfer operation occurs when a clustered cache topology changes, such as a node joining or leaving a cluster.
+During a state transfer operation, Infinispan exports metrics from each cache, so that you can determine a cache&#8217;s status.
+A state transfer exposes attributes as properties, so that Infinispan can export metrics from each cache.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You cannot perform a state transfer operation in invalidation mode.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Infinispan generates time metrics that are compatible with the REST API and the JMX API.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Configure Infinispan metrics.</p>
+</li>
+<li>
+<p>Enable metrics for your cache type, such as embedded cache or remote cache.</p>
+</li>
+<li>
+<p>Initiate a state transfer operation by changing your clustered cache topology.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Procedure</div>
+<ul>
+<li>
+<p>Choose one of the following methods:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure Infinispan to use the REST API to collect metrics.</p>
+</li>
+<li>
+<p>Configure Infinispan to use the JMX API to collect metrics.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../configuring/configuring.html#statistics-jmx">Enabling and configuring Infinispan statistics and JMX monitoring (Infinispan caches)</a></p>
+</li>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/14.0/apidocsjmxComponents.html#StateTransferManager"><code>StateTransferManager</code> (Infinispan 14.0 API)</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -10411,15 +10543,15 @@ The effects of data corruption range from lower customer satisfaction to costly 
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Retrieves the current <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Transaction.html">Transaction</a> associated with the thread</p>
+<p>Retrieves the current <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/Transaction.html">Transaction</a> associated with the thread</p>
 </li>
 <li>
-<p>If not already done, registers <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/xa/XAResource.html">XAResource</a> with the transaction manager to be notified when a transaction commits or is rolled back.</p>
+<p>If not already done, registers <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/xa/XAResource.html">XAResource</a> with the transaction manager to be notified when a transaction commits or is rolled back.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>In order to do this, the cache has to be provided with a reference to the environment&#8217;s <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/TransactionManager.html">TransactionManager</a>.
+<p>In order to do this, the cache has to be provided with a reference to the environment&#8217;s <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/TransactionManager.html">TransactionManager</a>.
 This is usually done by configuring the cache with the class name of an implementation of the <a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/transaction/lookup/TransactionManagerLookup.html">TransactionManagerLookup</a> interface.
 When the cache starts, it will create an instance of this class and invoke its <code>getTransactionManager()</code> method, which returns a reference to the <code>TransactionManager</code>.</p>
 </div>
@@ -10542,7 +10674,7 @@ Default is <code>true</code>.</p>
 <p><code>NON_DURABLE_XA</code> - XA transactional cache with recovery disabled.</p>
 </li>
 <li>
-<p><code>NON_XA</code> - transactional cache with integration via <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Synchronization.html">Synchronization</a> instead of XA.
+<p><code>NON_XA</code> - transactional cache with integration via <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/Synchronization.html">Synchronization</a> instead of XA.
 Check section <a href="#tx_sync_enlist">Enlisting Synchronizations</a> for details.</p>
 </li>
 <li>
@@ -10822,11 +10954,11 @@ try {
 <div class="sect3">
 <h4 id="tx_sync_enlist"><a class="anchor" href="#tx_sync_enlist"></a>9.1.6. Enlisting Synchronizations</h4>
 <div class="paragraph">
-<p>By default Infinispan registers itself as a first class participant in distributed transactions through <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/xa/XAResource.html">XAResource</a>.
+<p>By default Infinispan registers itself as a first class participant in distributed transactions through <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/xa/XAResource.html">XAResource</a>.
 There are situations where Infinispan is not required to be a participant in the transaction, but only to be notified by its lifecycle (prepare, complete): e.g. in the case Infinispan is used as a 2nd level cache in Hibernate.</p>
 </div>
 <div class="paragraph">
-<p>Infinispan allows transaction enlistment through <a href="https://docs.oracle.com/javaee/7/api/javax/transaction/Synchronization.html">Synchronization</a>.
+<p>Infinispan allows transaction enlistment through <a href="https://jakarta.ee/specifications/platform/9/apidocs/javax/transaction/Synchronization.html">Synchronization</a>.
 To enable it just use <code>NON_XA</code> transaction mode.</p>
 </div>
 <div class="paragraph">
@@ -12207,7 +12339,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-13 12:57:55 -0400
+Last updated 2022-09-16 16:45:36 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
