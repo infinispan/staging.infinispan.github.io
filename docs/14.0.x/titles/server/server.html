@@ -924,7 +924,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.0.CR2.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.0.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2295,7 +2295,7 @@ For example, <code>10.129.2.100/23</code> and <code>10.129.4.100/23</code> are i
 <div class="ulist">
 <ul>
 <li>
-<p>IPv4: <code>10.0.0.0/8</code>, <code>192.168.0.0/16</code>, <code>172.16.0.0/12</code>, <code>169.254.0.0/16</code> and <code>240.0.0.0/4</code></p>
+<p>IPv4: <code>10.0.0.0/8</code>, <code>100.64.0.0/10</code>, 192.168.0.0/16`, <code>172.16.0.0/12</code>, <code>169.254.0.0/16</code> and <code>240.0.0.0/4</code></p>
 </li>
 <li>
 <p>IPv6: <code>fc00::/7</code> and <code>fe80::/10</code></p>
@@ -2303,7 +2303,7 @@ For example, <code>10.129.2.100/23</code> and <code>10.129.4.100/23</code> are i
 </ul>
 </div>
 <div class="paragraph">
-<p>See <code>RFC 1918</code> for IPv4 or <code>RFC 4193</code> and <code>RFC 3513</code> for IPv6.</p>
+<p>See <code>RFC 1112</code>, <code>RFC 1918</code>, <code>RFC 3927</code>, <code>RFC 6598</code> for IPv4 or <code>RFC 4193</code>, <code>RFC 3513</code> for IPv6.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2326,13 +2326,22 @@ For example, <code>10.129.2.100/23</code> and <code>10.129.4.100/23</code> are i
 <p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/infinispan-server-14.0.html">Infinispan Server schema reference</a></p>
 </li>
 <li>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc1112">RFC 1112</a></p>
+</li>
+<li>
 <p><a href="https://datatracker.ietf.org/doc/html/rfc1918">RFC 1918</a></p>
+</li>
+<li>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc3513">RFC 3513</a></p>
+</li>
+<li>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc3927">RFC 3927</a></p>
 </li>
 <li>
 <p><a href="https://datatracker.ietf.org/doc/html/rfc4193">RFC 4193</a></p>
 </li>
 <li>
-<p><a href="https://www.rfc-editor.org/rfc/rfc3513.html">RFC 3513</a></p>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc6598">RFC 6598</a></p>
 </li>
 </ul>
 </div>
@@ -8254,7 +8263,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.CR2.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -9979,7 +9988,7 @@ method calls:</p>
 <dl>
 <dt class="hdlist1"><code>setTaskContext()</code></dt>
 <dd>
-<p>Allows access to execution context information including task parameters, cache references on which tasks are executed, and so on. In most cases, implementations store this information locally and use it when tasks are actually executed.</p>
+<p>Allows access to execution context information including task parameters, cache references on which tasks are executed, and so on. In most cases, implementations store this information locally and use it when tasks are actually executed. When using <code>SHARED</code> instantiation mode, the task should use a <code>ThreadLocal</code> to store the <code>TaskContext</code> for concurrent invocations.</p>
 </dd>
 <dt class="hdlist1"><code>getName()</code></dt>
 <dd>
@@ -9991,10 +10000,24 @@ method calls:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>TaskExecutionMode.ONE_NODE</code> only the node that handles the request executes the script. Although scripts can still invoke clustered operations.</p>
+<p><code>TaskExecutionMode.ONE_NODE</code> only the node that handles the request executes the script. Although scripts can still invoke clustered operations. This is the default.</p>
 </li>
 <li>
 <p><code>TaskExecutionMode.ALL_NODES</code> Infinispan uses clustered executors to run scripts across nodes. For example, server tasks that invoke stream processing need to be executed on a single node because stream processing is distributed to all nodes.</p>
+</li>
+</ul>
+</div>
+</dd>
+<dt class="hdlist1"><code>getInstantiationMode()</code></dt>
+<dd>
+<p>Returns the instantiation mode for tasks.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TaskInstantiationMode.SHARED</code> creates a single instance that is reused for every task execution on the same server. This is the default.</p>
+</li>
+<li>
+<p><code>TaskInstantiationMode.ISOLATED</code> creates a new instance for every invocation.</p>
 </li>
 </ul>
 </div>
@@ -10023,7 +10046,7 @@ For example, implementations must have a zero-argument constructors.</p>
 </div>
 <div class="paragraph">
 <p>The following <code>HelloTask</code> class implementation provides an example task that
-has one parameter:</p>
+has one parameter. It also illustrates the use of a <code>ThreadLocal</code> to store the <code>TaskContext</code> for concurrent invocations.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10034,15 +10057,16 @@ import org.infinispan.tasks.TaskContext;
 
 public class HelloTask implements ServerTask&lt;String&gt; {
 
-   private TaskContext ctx;
+   private static final ThreadLocal&lt;TaskContext&gt; taskContext = new ThreadLocal&lt;&gt;();
 
    @Override
    public void setTaskContext(TaskContext ctx) {
-      this.ctx = ctx;
+      taskContext.set(ctx);
    }
 
    @Override
    public String call() throws Exception {
+      TaskContext ctx = taskContext.get();
       String name = (String) ctx.getParameters().get().get("name");
       return "Hello " + name;
    }
@@ -11842,7 +11866,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-16 12:33:25 -0400
+Last updated 2022-09-29 06:03:08 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
