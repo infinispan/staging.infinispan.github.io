@@ -127,16 +127,16 @@ We have made several improvements to how authentication is configured and the to
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;endpoints</span> <span class="na">socket-binding=</span><span class="s">"default"</span> <span class="na">security-realm=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-   <span class="nt">&lt;hotrod-connector</span> <span class="na">name=</span><span class="s">"hotrod"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;authentication&gt;</span>
-         <span class="nt">&lt;sasl</span> <span class="na">mechanisms=</span><span class="s">"DIGEST-MD5"</span> <span class="na">server-name=</span><span class="s">"infinispan"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/authentication&gt;</span>
-   <span class="nt">&lt;/hotrod-connector&gt;</span>
-   <span class="nt">&lt;rest-connector</span> <span class="na">name=</span><span class="s">"rest"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;authentication</span> <span class="na">mechanisms=</span><span class="s">"DIGEST"</span><span class="nt">/&gt;</span>
-   <span class="nt">&lt;/rest-connector&gt;</span>
-<span class="nt">&lt;/endpoints&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;endpoints socket-binding="default" security-realm="default"&gt;
+   &lt;hotrod-connector name="hotrod"&gt;
+      &lt;authentication&gt;
+         &lt;sasl mechanisms="DIGEST-MD5" server-name="infinispan"/&gt;
+      &lt;/authentication&gt;
+   &lt;/hotrod-connector&gt;
+   &lt;rest-connector name="rest"&gt;
+      &lt;authentication mechanisms="DIGEST"/&gt;
+   &lt;/rest-connector&gt;
+&lt;/endpoints&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -144,10 +144,10 @@ We have made several improvements to how authentication is configured and the to
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;endpoints</span> <span class="na">socket-binding=</span><span class="s">"default"</span> <span class="na">security-realm=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-   <span class="nt">&lt;hotrod-connector</span> <span class="na">name=</span><span class="s">"hotrod"</span> <span class="nt">/&gt;</span>
-   <span class="nt">&lt;rest-connector</span> <span class="na">name=</span><span class="s">"rest"</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/endpoints&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;endpoints socket-binding="default" security-realm="default"&gt;
+   &lt;hotrod-connector name="hotrod" /&gt;
+   &lt;rest-connector name="rest"/&gt;
+&lt;/endpoints&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -247,7 +247,7 @@ We have made several improvements to how authentication is configured and the to
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code>[disconnected]&gt; user create --password=secret --groups=admin admin
+<pre class="highlightjs highlight"><code class="language-none hljs">[disconnected]&gt; user create --password=secret --groups=admin admin
 [disconnected]&gt; connect --username=admin --password=secret
 [ispn-29934@cluster//containers/default]&gt; user ls
 [ "admin" ]
@@ -269,25 +269,25 @@ Confirm the password for the user: ******
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;infinispan&gt;</span>
-   <span class="nt">&lt;cache-container</span> <span class="na">name=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;security&gt;</span>
-         <span class="nt">&lt;authorization&gt;</span>
-            <span class="nt">&lt;identity-role-mapper/&gt;</span>
-            <span class="nt">&lt;role</span> <span class="na">name=</span><span class="s">"AdminRole"</span> <span class="na">permissions=</span><span class="s">"ALL"</span><span class="nt">/&gt;</span>
-            <span class="nt">&lt;role</span> <span class="na">name=</span><span class="s">"ReaderRole"</span> <span class="na">permissions=</span><span class="s">"READ"</span><span class="nt">/&gt;</span>
-            <span class="nt">&lt;role</span> <span class="na">name=</span><span class="s">"WriterRole"</span> <span class="na">permissions=</span><span class="s">"WRITE"</span><span class="nt">/&gt;</span>
-            <span class="nt">&lt;role</span> <span class="na">name=</span><span class="s">"SupervisorRole"</span> <span class="na">permissions=</span><span class="s">"READ WRITE EXEC BULK_READ"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;/authorization&gt;</span>
-      <span class="nt">&lt;/security&gt;</span>
-      <span class="nt">&lt;distributed-cache</span> <span class="na">name=</span><span class="s">"secured"</span><span class="nt">&gt;</span>
-         <span class="nt">&lt;security&gt;</span>
-            <span class="nt">&lt;authorization</span> <span class="na">roles=</span><span class="s">"AdminRole ReaderRole WriterRole SupervisorRole"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;/security&gt;</span>
-      <span class="nt">&lt;/distributed-cache&gt;</span>
-   <span class="nt">&lt;/cache-container&gt;</span>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;infinispan&gt;
+   &lt;cache-container name="default"&gt;
+      &lt;security&gt;
+         &lt;authorization&gt;
+            &lt;identity-role-mapper/&gt;
+            &lt;role name="AdminRole" permissions="ALL"/&gt;
+            &lt;role name="ReaderRole" permissions="READ"/&gt;
+            &lt;role name="WriterRole" permissions="WRITE"/&gt;
+            &lt;role name="SupervisorRole" permissions="READ WRITE EXEC BULK_READ"/&gt;
+         &lt;/authorization&gt;
+      &lt;/security&gt;
+      &lt;distributed-cache name="secured"&gt;
+         &lt;security&gt;
+            &lt;authorization roles="AdminRole ReaderRole WriterRole SupervisorRole"/&gt;
+         &lt;/security&gt;
+      &lt;/distributed-cache&gt;
+   &lt;/cache-container&gt;
    ...
-<span class="nt">&lt;/infinispan&gt;</span></code></pre>
+&lt;/infinispan&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -295,17 +295,17 @@ Confirm the password for the user: ******
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;infinispan&gt;</span>
-   <span class="nt">&lt;cache-container</span> <span class="na">name=</span><span class="s">"default"</span><span class="nt">&gt;</span>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;infinispan&gt;
+   &lt;cache-container name="default"&gt;
       ...
-      <span class="nt">&lt;distributed-cache</span> <span class="na">name=</span><span class="s">"secured"</span><span class="nt">&gt;</span>
-         <span class="nt">&lt;security&gt;</span>
-            <span class="nt">&lt;authorization/&gt;</span>
-         <span class="nt">&lt;/security&gt;</span>
-      <span class="nt">&lt;/distributed-cache&gt;</span>
-   <span class="nt">&lt;/cache-container&gt;</span>
+      &lt;distributed-cache name="secured"&gt;
+         &lt;security&gt;
+            &lt;authorization/&gt;
+         &lt;/security&gt;
+      &lt;/distributed-cache&gt;
+   &lt;/cache-container&gt;
    ...
-<span class="nt">&lt;/infinispan&gt;</span></code></pre>
+&lt;/infinispan&gt;</code></pre>
 </div>
 </div>
 </div>

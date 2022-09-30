@@ -112,17 +112,17 @@ otherwise Eclipse will complain:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Test</span><span class="o">(</span><span class="n">groups</span> <span class="o">=</span> <span class="s">"unit"</span><span class="o">,</span> <span class="n">enabled</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">testName</span> <span class="o">=</span> <span class="s">"loaders.bdbje.BdbjeCacheStoreIntegrationTest"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BdbjeCacheStoreIntegrationTest</span> <span class="kd">extends</span> <span class="nc">BaseCacheStoreTest</span> <span class="o">{</span>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Test(groups = "unit", enabled = true, testName = "loaders.bdbje.BdbjeCacheStoreIntegrationTest")
+public class BdbjeCacheStoreIntegrationTest extends BaseCacheStoreTest {
 
-  <span class="kd">private</span> <span class="nc">String</span> <span class="n">tmpDirectory</span><span class="o">;</span>
+  private String tmpDirectory;
 
-  <span class="nd">@BeforeTest</span>
-  <span class="nd">@Parameters</span><span class="o">({</span><span class="s">"basedir"</span><span class="o">})</span>
-  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setUpTempDir</span><span class="o">(</span><span class="nc">String</span> <span class="n">basedir</span><span class="o">)</span> <span class="o">{</span>
-     <span class="n">tmpDirectory</span> <span class="o">=</span> <span class="n">basedir</span> <span class="o">+</span> <span class="nc">TestingUtil</span><span class="o">.</span><span class="na">TEST_PATH</span> <span class="o">+</span> <span class="nc">File</span><span class="o">.</span><span class="na">separator</span> <span class="o">+</span> <span class="n">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">();</span>
-  <span class="o">}</span>
-<span class="o">...</span></code></pre>
+  @BeforeTest
+  @Parameters({"basedir"})
+  protected void setUpTempDir(String basedir) {
+     tmpDirectory = basedir + TestingUtil.TEST_PATH + File.separator + getClass().getSimpleName();
+  }
+...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -138,7 +138,7 @@ property like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="o">-</span><span class="nc">Dbasedir</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">galder</span><span class="o">/</span><span class="n">tmp</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">-Dbasedir=/home/galder/tmp</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -146,8 +146,8 @@ property like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="n">org</span><span class="o">.</span><span class="na">testng</span><span class="o">.</span><span class="na">TestNGException</span><span class="o">:</span>
-<span class="nc">Parameter</span> <span class="err">'</span><span class="n">basedir</span><span class="err">'</span> <span class="n">is</span> <span class="n">required</span> <span class="n">by</span> <span class="nd">@Configuration</span> <span class="n">on</span> <span class="n">method</span> <span class="n">setUpTempDir</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">org.testng.TestNGException:
+Parameter 'basedir' is required by @Configuration on method setUpTempDir</code></pre>
 </div>
 </div>
           

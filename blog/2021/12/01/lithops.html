@@ -147,22 +147,22 @@ This is now installable using PIP, the Python Package Installer. The following i
 <div class="listingblock">
 <div class="title">Example.py</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="python"><span class="kn">from</span> <span class="nn">Infinispan</span> <span class="kn">import</span> <span class="n">Infinispan</span>
-<span class="n">conf</span><span class="o">=</span><span class="n">Infinispan</span><span class="p">.</span><span class="n">Configuration</span><span class="p">()</span>
-<span class="n">conf</span><span class="p">.</span><span class="n">addServer</span><span class="p">(</span><span class="s">"localhost"</span><span class="p">,</span><span class="mi">11222</span><span class="p">)</span>
-<span class="n">conf</span><span class="p">.</span><span class="n">setProtocol</span><span class="p">(</span><span class="s">"2.4"</span><span class="p">)</span>
-<span class="n">conf</span><span class="p">.</span><span class="n">setSasl</span><span class="p">(</span><span class="s">"PLAIN"</span><span class="p">,</span> <span class="s">"node0"</span><span class="p">,</span> <span class="s">"writer"</span><span class="p">,</span> <span class="s">"somePassword"</span><span class="p">)</span>
-<span class="n">manager</span><span class="o">=</span><span class="n">Infinispan</span><span class="p">.</span><span class="n">RemoteCacheManager</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
-<span class="n">manager</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
-<span class="n">key</span><span class="o">=</span><span class="n">Infinispan</span><span class="p">.</span><span class="n">UCharVector</span><span class="p">()</span>
-<span class="n">key</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">56</span><span class="p">)</span>
-<span class="n">value</span><span class="o">=</span><span class="n">Infinispan</span><span class="p">.</span><span class="n">UCharVector</span><span class="p">()</span>
-<span class="n">value</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">cache</span><span class="o">=</span><span class="n">Infinispan</span><span class="p">.</span><span class="n">RemoteCache</span><span class="p">(</span><span class="n">manager</span><span class="p">)</span>
-<span class="n">cache</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">)</span>
-<span class="n">res</span><span class="o">=</span><span class="n">cache</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="k">print</span> <span class="p">(</span><span class="n">res</span><span class="p">.</span><span class="n">pop</span><span class="p">())</span>
-<span class="n">manager</span><span class="p">.</span><span class="n">stop</span><span class="p">()</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from Infinispan import Infinispan
+conf=Infinispan.Configuration()
+conf.addServer("localhost",11222)
+conf.setProtocol("2.4")
+conf.setSasl("PLAIN", "node0", "writer", "somePassword")
+manager=Infinispan.RemoteCacheManager(conf)
+manager.start()
+key=Infinispan.UCharVector()
+key.push_back(56)
+value=Infinispan.UCharVector()
+value.push_back(8)
+cache=Infinispan.RemoteCache(manager)
+cache.put(key,value)
+res=cache.get(key)
+print (res.pop())
+manager.stop()</code></pre>
 </div>
 </div>
 </div>
@@ -176,16 +176,16 @@ This is now installable using PIP, the Python Package Installer. The following i
 <div class="listingblock">
 <div class="title">LithopsStorageHotRod.py</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="python"><span class="kn">from</span> <span class="nn">lithops</span> <span class="kn">import</span> <span class="n">Storage</span>
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from lithops import Storage
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
-    <span class="n">st</span> <span class="o">=</span> <span class="n">Storage</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s">'infinispan_hotrod'</span><span class="p">)</span>
-    <span class="n">st</span><span class="p">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="s">'mybucket'</span><span class="p">,</span>
-                  <span class="n">key</span><span class="o">=</span><span class="s">'test.txt'</span><span class="p">,</span>
-                  <span class="n">body</span><span class="o">=</span><span class="s">'Hello World'</span><span class="p">)</span>
+if __name__ == "__main__":
+    st = Storage(backend='infinispan_hotrod')
+    st.put_object(bucket='mybucket',
+                  key='test.txt',
+                  body='Hello World')
 
-    <span class="k">print</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="s">'mybucket'</span><span class="p">,</span>
-                        <span class="n">key</span><span class="o">=</span><span class="s">'test.txt'</span><span class="p">))</span></code></pre>
+    print(st.get_object(bucket='mybucket',
+                        key='test.txt'))</code></pre>
 </div>
 </div>
 </div>

@@ -124,16 +124,16 @@ rather than the expected return type. E.g.,</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="no">V</span> <span class="nf">put</span><span class="o">(</span><span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="no">V</span> <span class="n">value</span><span class="o">);</span>
-<span class="nc">Future</span><span class="o">&lt;</span><span class="no">V</span><span class="o">&gt;</span> <span class="nf">putAsync</span><span class="o">(</span><span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="no">V</span> <span class="n">value</span><span class="o">);</span>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">V put(K key, V value);
+Future&lt;V&gt; putAsync(K key, V value);
 
-<span class="kt">boolean</span> <span class="nf">remove</span><span class="o">(</span><span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="no">V</span> <span class="n">value</span><span class="o">);</span>
-<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Boolean</span><span class="o">&gt;</span> <span class="nf">removeAsync</span><span class="o">(</span><span class="no">K</span> <span class="n">key</span><span class="o">,</span> <span class="no">V</span> <span class="n">value</span><span class="o">);</span>
+boolean remove(K key, V value);
+Future&lt;Boolean&gt; removeAsync(K key, V value);
 
-<span class="kt">void</span> <span class="nf">clear</span><span class="o">();</span>
-<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="nf">clearAsync</span><span class="o">();</span>
+void clear();
+Future&lt;Void&gt; clearAsync();
 
-<span class="c1">// ... etc ...</span></code></pre>
+// ... etc ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -160,14 +160,14 @@ too. Consider:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nc">Cache</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">getCache</span><span class="o">();</span>
-<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">putAsync</span><span class="o">(</span><span class="n">k1</span><span class="o">,</span> <span class="n">v1</span><span class="o">);</span>
-<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">putAsync</span><span class="o">(</span><span class="n">k2</span><span class="o">,</span> <span class="n">v2</span><span class="o">);</span>
-<span class="nc">Future</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">f3</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">putAsync</span><span class="o">(</span><span class="n">k3</span><span class="o">,</span> <span class="n">v3</span><span class="o">);</span>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Cache&lt;String, String&gt; cache = getCache();
+Future&lt;String&gt; f1 = cache.putAsync(k1, v1);
+Future&lt;String&gt; f2 = cache.putAsync(k2, v2);
+Future&lt;String&gt; f3 = cache.putAsync(k3, v3);
 
-<span class="n">f1</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-<span class="n">f2</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-<span class="n">f3</span><span class="o">.</span><span class="na">get</span><span class="o">();</span></code></pre>
+f1.get();
+f2.get();
+f3.get();</code></pre>
 </div>
 </div>
 <div class="paragraph">

@@ -135,11 +135,11 @@ Oh, and the fact that it’s also the <a href="https://untappd.com/b/kinnegar-br
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
-   <span class="nt">&lt;groupId&gt;</span>org.infinispan<span class="nt">&lt;/groupId&gt;</span>
-   <span class="nt">&lt;artifactId&gt;</span>infinispan-core-jakarta<span class="nt">&lt;/artifactId&gt;</span>
-   <span class="nt">&lt;version&gt;</span>14.0.0.Final<span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+   &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
+   &lt;artifactId&gt;infinispan-core-jakarta&lt;/artifactId&gt;
+   &lt;version&gt;14.0.0.Final&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -228,29 +228,29 @@ Oh, and the fact that it’s also the <a href="https://untappd.com/b/kinnegar-br
 <p>Sync (blocking), Async (non-blocking) and <a href="https://smallrye.io/smallrye-mutiny/">Mutiny</a> sub-APIs that fit with your programming model of choice.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="k">try</span> <span class="o">(</span><span class="nc">SyncContainer</span> <span class="n">infinispan</span> <span class="o">=</span> <span class="nc">Infinispan</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"hotrod://localhost"</span><span class="o">))</span> <span class="o">{</span>
-    <span class="c1">// Sync</span>
-    <span class="nc">SyncCache</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">mycache</span> <span class="o">=</span> <span class="n">infinispan</span><span class="o">.</span><span class="na">sync</span><span class="o">().</span><span class="na">caches</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="s">"mycache"</span><span class="o">);</span>
-    <span class="n">mycache</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span> <span class="s">"value"</span><span class="o">);</span>
-    <span class="nc">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">mycache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"key"</span><span class="o">);</span>
-    <span class="c1">// set with options</span>
-    <span class="n">mycache</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span> <span class="s">"anothervalue"</span><span class="o">,</span> <span class="n">writeOptions</span><span class="o">().</span><span class="na">lifespan</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofHours</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">timeout</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">500</span><span class="o">)).</span><span class="na">build</span><span class="o">());</span>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">try (SyncContainer infinispan = Infinispan.create("hotrod://localhost")) {
+    // Sync
+    SyncCache&lt;String, String&gt; mycache = infinispan.sync().caches().get("mycache");
+    mycache.set("key", "value");
+    String value = mycache.get("key");
+    // set with options
+    mycache.set("key", "anothervalue", writeOptions().lifespan(Duration.ofHours(1)).timeout(Duration.ofMillis(500)).build());
 
-    <span class="c1">// Async</span>
-    <span class="n">infinispan</span><span class="o">.</span><span class="na">async</span><span class="o">().</span><span class="na">caches</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"mycache"</span><span class="o">).</span><span class="na">thenApply</span><span class="o">(</span><span class="n">c</span> <span class="o">-&gt;</span>
-        <span class="n">c</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span> <span class="s">"value"</span><span class="o">).</span><span class="na">thenApply</span><span class="o">(</span><span class="n">ignore</span> <span class="o">-&gt;</span>
-            <span class="n">c</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"key"</span><span class="o">).</span><span class="na">thenApply</span><span class="o">(</span><span class="n">value</span> <span class="o">-&gt;</span>
-                <span class="n">c</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span> <span class="s">"anothervalue"</span><span class="o">,</span>
-                <span class="n">writeOptions</span><span class="o">().</span><span class="na">lifespan</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofHours</span><span class="o">(</span><span class="mi">1</span><span class="o">)).</span><span class="na">timeout</span><span class="o">(</span><span class="nc">Duration</span><span class="o">.</span><span class="na">ofMillis</span><span class="o">(</span><span class="mi">500</span><span class="o">)).</span><span class="na">build</span><span class="o">()))</span>
-            <span class="o">));</span>
+    // Async
+    infinispan.async().caches()
+    .get("mycache").thenApply(c -&gt;
+        c.set("key", "value").thenApply(ignore -&gt;
+            c.get("key").thenApply(value -&gt;
+                c.set("key", "anothervalue",
+                writeOptions().lifespan(Duration.ofHours(1)).timeout(Duration.ofMillis(500)).build()))
+            ));
 
-    <span class="c1">// Mutiny</span>
-    <span class="n">infinispan</span><span class="o">.</span><span class="na">mutiny</span><span class="o">().</span><span class="na">caches</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"mycache"</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">c</span> <span class="o">-&gt;</span>
-        <span class="n">c</span><span class="o">.</span><span class="na">query</span><span class="o">(</span><span class="s">"age &gt; :age"</span><span class="o">).</span><span class="na">param</span><span class="o">(</span><span class="s">"age"</span><span class="o">,</span> <span class="mi">80</span><span class="o">).</span><span class="na">skip</span><span class="o">(</span><span class="mi">5</span><span class="o">).</span><span class="na">limit</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">find</span><span class="o">())</span>
-            <span class="o">.</span><span class="na">subscribe</span><span class="o">().</span><span class="na">with</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
-<span class="o">}</span></code></pre>
+    // Mutiny
+    infinispan.mutiny().caches()
+    .get("mycache").map(c -&gt;
+        c.query("age &gt; :age").param("age", 80).skip(5).limit(10).find())
+            .subscribe().with(System.out::println);
+}</code></pre>
 </div>
 </div>
 </li>
@@ -276,9 +276,9 @@ Oh, and the fact that it’s also the <a href="https://untappd.com/b/kinnegar-br
 <p>Custom security providers, such as BouncyCastle, can now be used. Just drop your provider implementation in the <code>server/lib</code> and configure:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;ssl&gt;</span>
-    <span class="nt">&lt;keystore</span> <span class="na">path=</span><span class="s">"server.bcfks"</span> <span class="na">password=</span><span class="s">"secret"</span> <span class="na">alias=</span><span class="s">"server"</span> <span class="na">provider=</span><span class="s">"BC"</span> <span class="na">type=</span><span class="s">"BCFKS"</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/ssl&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;ssl&gt;
+    &lt;keystore path="server.bcfks" password="secret" alias="server" provider="BC" type="BCFKS"/&gt;
+&lt;/ssl&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -286,7 +286,7 @@ Oh, and the fact that it’s also the <a href="https://untappd.com/b/kinnegar-br
 <p>Improved TLS engine configuration, allowing fine-grained ciphersuites selection for both TLSv1.3 and TLSv1.2:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;engine</span> <span class="na">enabled-protocols=</span><span class="s">"TLSv1.3 TLSv1.2"</span> <span class="na">enabled-ciphersuites=</span><span class="s">"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"</span> <span class="na">enabled-ciphersuites-tls13=</span><span class="s">"TLS_AES_256_GCM_SHA384"</span><span class="nt">/&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;engine enabled-protocols="TLSv1.3 TLSv1.2" enabled-ciphersuites="TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384" enabled-ciphersuites-tls13="TLS_AES_256_GCM_SHA384"/&gt;</code></pre>
 </div>
 </div>
 </li>

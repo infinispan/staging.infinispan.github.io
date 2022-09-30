@@ -160,12 +160,12 @@ write:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="kn">import</span> <span class="nn">org.infinispan.BasicCache</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.infinispan.manager.BasicCacheContainer</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.infinispan.client.hotrod.RemoteCacheManager</span><span class="o">;</span>
-<span class="o">...</span>
-<span class="nc">BasicCacheContainer</span> <span class="n">cacheContainer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RemoteCacheManager</span><span class="o">();</span>
-<span class="nc">BasicCache</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">cacheContainer</span><span class="o">.</span><span class="na">getCache</span><span class="o">();</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.infinispan.BasicCache;
+import org.infinispan.manager.BasicCacheContainer;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+...
+BasicCacheContainer cacheContainer = new RemoteCacheManager();
+BasicCache cache = cacheContainer.getCache();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -177,11 +177,11 @@ should work as it used to:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="kn">import</span> <span class="nn">org.infinispan.client.hotrod.RemoteCache</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.infinispan.client.hotrod.RemoteCacheManager</span><span class="o">;</span>
-<span class="o">...</span>
-<span class="nc">RemoteCacheManager</span> <span class="n">cacheContainer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RemoteCacheManager</span><span class="o">();</span>
-<span class="nc">RemoteCache</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">cacheContainer</span><span class="o">.</span><span class="na">getCache</span><span class="o">();</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+...
+RemoteCacheManager cacheContainer = new RemoteCacheManager();
+RemoteCache cache = cacheContainer.getCache();</code></pre>
 </div>
 </div>
 <div class="paragraph">

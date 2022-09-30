@@ -227,24 +227,24 @@ For now, configuring a cache with anchored keys requires a replicated cache with
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="xml"><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-<span class="nt">&lt;infinispan</span>
-      <span class="na">xmlns=</span><span class="s">"urn:infinispan:config:11.0"</span>
-      <span class="na">xmlns:anchored=</span><span class="s">"urn:infinispan:config:anchored:11.0"</span>
-      <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
-      <span class="na">xsi:schemaLocation=</span><span class="s">"urn:infinispan:config:11.0
+<pre class="highlightjs highlight nowrap"><code class="language-xml hljs" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;infinispan
+      xmlns="urn:infinispan:config:11.0"
+      xmlns:anchored="urn:infinispan:config:anchored:11.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:infinispan:config:11.0
             https://infinispan.org/schemas/infinispan-config-11.0.xsd
             urn:infinispan:config:anchored:11.0
-            https://infinispan.org/schemas/infinispan-anchored-config-11.0.xsd"</span><span class="nt">&gt;</span>
+            https://infinispan.org/schemas/infinispan-anchored-config-11.0.xsd"&gt;
 
-    <span class="nt">&lt;cache-container</span> <span class="na">default-cache=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;transport/&gt;</span>
-        <span class="nt">&lt;replicated-cache</span> <span class="na">name=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;anchored:anchored-keys/&gt;</span>
-        <span class="nt">&lt;/replicated-cache&gt;</span>
-    <span class="nt">&lt;/cache-container&gt;</span>
+    &lt;cache-container default-cache="default"&gt;
+        &lt;transport/&gt;
+        &lt;replicated-cache name="default"&gt;
+            &lt;anchored:anchored-keys/&gt;
+        &lt;/replicated-cache&gt;
+    &lt;/cache-container&gt;
 
-<span class="nt">&lt;/infinispan&gt;</span></code></pre>
+&lt;/infinispan&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">

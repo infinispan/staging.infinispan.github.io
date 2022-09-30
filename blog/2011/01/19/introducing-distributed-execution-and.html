@@ -174,7 +174,7 @@ extending DistributedCallable.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code>public interface DistributedCallable extends Callable {
+<pre class="highlightjs highlight"><code class="language-none hljs">public interface DistributedCallable extends Callable {
 /**
 * Invoked by execution environment after DistributedCallable
 * has been migrated for execution to
@@ -232,7 +232,7 @@ using a Reducer.</span></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code>public interface Mapper {
+<pre class="highlightjs highlight"><code class="language-none hljs">public interface Mapper {
 
 /**
 * Invoked once for each input cache entry
@@ -256,7 +256,7 @@ creates one instance of Reducer per execution node.</span></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code>public interface Reducer {
+<pre class="highlightjs highlight"><code class="language-none hljs">public interface Reducer {
 
 
 /**
@@ -290,7 +290,7 @@ MapReduceTask. #[.cm]</span> #</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code>public interface Collator {
+<pre class="highlightjs highlight"><code class="language-none hljs">public interface Collator {
 
 /**
 * Collates all results added so far and
@@ -334,7 +334,7 @@ MapReduceTask.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code>mapped = list()
+<pre class="highlightjs highlight"><code class="language-none hljs">mapped = list()
 for entry in cache.entries:
 t = mapper.map(entry.key, entry.value)
 mapped.add(t)
@@ -367,7 +367,7 @@ framework? Easy! Have a look at GridFileSizeExample.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code>public class GridFileSizeExample {
+<pre class="highlightjs highlight"><code class="language-none hljs">public class GridFileSizeExample {
  public static void main(String arg[]) throws Exception {
 
 Cache  cache = null;

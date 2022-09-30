@@ -152,42 +152,42 @@ works best for them</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;bench-config&gt;</span>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;bench-config&gt;
 
-  <span class="nt">&lt;master</span> <span class="na">bindAddress=</span><span class="s">"${127.0.0.1:master.address}"</span> <span class="na">port=</span><span class="s">"${2103:master.port}"</span><span class="nt">/&gt;</span>
+  &lt;master bindAddress="${127.0.0.1:master.address}" port="${2103:master.port}"/&gt;
 
-  <span class="nt">&lt;benchmark</span> <span class="na">initSize=</span><span class="s">"2"</span> <span class="na">maxSize=</span><span class="s">"${4:slaves}"</span> <span class="na">increment=</span><span class="s">"1"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;DestroyWrapper</span> <span class="na">runOnAllSlaves=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;StartCluster/&gt;</span>
-    <span class="nt">&lt;ClusterValidation</span> <span class="na">partialReplication=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;Warmup</span> <span class="na">operationCount=</span><span class="s">"1000"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;WebSessionBenchmark</span> <span class="na">numberOfRequests=</span><span class="s">"2500"</span> <span class="na">numOfThreads=</span><span class="s">"2"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;CsvReportGeneration/&gt;</span>
-  <span class="nt">&lt;/benchmark&gt;</span>
+  &lt;benchmark initSize="2" maxSize="${4:slaves}" increment="1"&gt;
+    &lt;DestroyWrapper runOnAllSlaves="true"/&gt;
+    &lt;StartCluster/&gt;
+    &lt;ClusterValidation partialReplication="false"/&gt;
+    &lt;Warmup operationCount="1000"/&gt;
+    &lt;WebSessionBenchmark numberOfRequests="2500" numOfThreads="2"/&gt;
+    &lt;CsvReportGeneration/&gt;
+  &lt;/benchmark&gt;
 
-  <span class="nt">&lt;products&gt;</span>
-    <span class="nt">&lt;jbosscache3&gt;</span>
-      <span class="nt">&lt;config</span> <span class="na">name=</span><span class="s">"mvcc/mvcc-repl-sync.xml"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/jbosscache3&gt;</span>
-    <span class="nt">&lt;infinispan4&gt;</span>
-      <span class="nt">&lt;config</span> <span class="na">name=</span><span class="s">"repl-sync.xml"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;config</span> <span class="na">name=</span><span class="s">"dist-sync.xml"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;config</span> <span class="na">name=</span><span class="s">"dist-sync-l1.xml"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/infinispan4&gt;</span>
-  <span class="nt">&lt;/products&gt;</span>
+  &lt;products&gt;
+    &lt;jbosscache3&gt;
+      &lt;config name="mvcc/mvcc-repl-sync.xml"/&gt;
+    &lt;/jbosscache3&gt;
+    &lt;infinispan4&gt;
+      &lt;config name="repl-sync.xml"/&gt;
+      &lt;config name="dist-sync.xml"/&gt;
+      &lt;config name="dist-sync-l1.xml"/&gt;
+    &lt;/infinispan4&gt;
+  &lt;/products&gt;
 
-  <span class="nt">&lt;reports&gt;</span>
-    <span class="nt">&lt;report</span> <span class="na">name=</span><span class="s">"Replicated"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;item</span> <span class="na">product=</span><span class="s">"infinispan4"</span> <span class="na">config=</span><span class="s">"repl-sync.xml"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;item</span> <span class="na">product=</span><span class="s">"jbosscache3"</span> <span class="na">config=</span><span class="s">"mvcc/mvcc-repl-sync.xml"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/report&gt;</span>
-    <span class="nt">&lt;report</span> <span class="na">name=</span><span class="s">"Distributed"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;item</span> <span class="na">product=</span><span class="s">"infinispan4"</span> <span class="na">config=</span><span class="s">"dist-*"</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/report&gt;</span>
-    <span class="nt">&lt;report</span> <span class="na">name=</span><span class="s">"All"</span> <span class="na">includeAll=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;/reports&gt;</span>
+  &lt;reports&gt;
+    &lt;report name="Replicated"&gt;
+      &lt;item product="infinispan4" config="repl-sync.xml"/&gt;
+      &lt;item product="jbosscache3" config="mvcc/mvcc-repl-sync.xml"/&gt;
+    &lt;/report&gt;
+    &lt;report name="Distributed"&gt;
+      &lt;item product="infinispan4" config="dist-*"/&gt;
+    &lt;/report&gt;
+    &lt;report name="All" includeAll="true"/&gt;
+  &lt;/reports&gt;
 
-<span class="nt">&lt;/bench-config&gt;</span></code></pre>
+&lt;/bench-config&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">

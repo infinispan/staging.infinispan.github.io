@@ -114,54 +114,54 @@ One of the big differences is that the new server&#8217;s configuration is just 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="xml"><span class="nt">&lt;infinispan</span>
-        <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
-        <span class="na">xsi:schemaLocation=</span><span class="s">"urn:infinispan:config:10.1 https://infinispan.org/schemas/infinispan-config-10.1.xsd
-                            urn:infinispan:server:10.1 https://infinispan.org/schemas/infinispan-server-10.1.xsd"</span>
-        <span class="na">xmlns=</span><span class="s">"urn:infinispan:config:10.1"</span>
-        <span class="na">xmlns:server=</span><span class="s">"urn:infinispan:server:10.1"</span><span class="nt">&gt;</span>
+<pre class="highlightjs highlight nowrap"><code class="language-xml hljs" data-lang="xml">&lt;infinispan
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:infinispan:config:10.1 https://infinispan.org/schemas/infinispan-config-10.1.xsd
+                            urn:infinispan:server:10.1 https://infinispan.org/schemas/infinispan-server-10.1.xsd"
+        xmlns="urn:infinispan:config:10.1"
+        xmlns:server="urn:infinispan:server:10.1"&gt;
 
-   <span class="nt">&lt;cache-container</span> <span class="na">name=</span><span class="s">"default"</span> <span class="na">statistics=</span><span class="s">"true"</span><span class="nt">&gt;</span> <b class="conum">(1)</b>
-      <span class="nt">&lt;transport</span> <span class="na">cluster=</span><span class="s">"${infinispan.cluster.name}"</span> <span class="na">stack=</span><span class="s">"${infinispan.cluster.stack:tcp}"</span> <span class="na">node-name=</span><span class="s">"${infinispan.node.name:}"</span><span class="nt">/&gt;</span>
-   <span class="nt">&lt;/cache-container&gt;</span>
+   &lt;cache-container name="default" statistics="true"&gt; <b class="conum">(1)</b>
+      &lt;transport cluster="${infinispan.cluster.name}" stack="${infinispan.cluster.stack:tcp}" node-name="${infinispan.node.name:}"/&gt;
+   &lt;/cache-container&gt;
 
-   <span class="nt">&lt;server</span> <span class="na">xmlns=</span><span class="s">"urn:infinispan:server:10.1"</span><span class="nt">&gt;</span> <b class="conum">(2)</b>
-      <span class="nt">&lt;interfaces&gt;</span>
-         <span class="nt">&lt;interface</span> <span class="na">name=</span><span class="s">"public"</span><span class="nt">&gt;</span> <b class="conum">(3)</b>
-            <span class="nt">&lt;inet-address</span> <span class="na">value=</span><span class="s">"${infinispan.bind.address:127.0.0.1}"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;/interface&gt;</span>
-      <span class="nt">&lt;/interfaces&gt;</span>
+   &lt;server xmlns="urn:infinispan:server:10.1"&gt; <b class="conum">(2)</b>
+      &lt;interfaces&gt;
+         &lt;interface name="public"&gt; <b class="conum">(3)</b>
+            &lt;inet-address value="${infinispan.bind.address:127.0.0.1}"/&gt;
+         &lt;/interface&gt;
+      &lt;/interfaces&gt;
 
-      <span class="nt">&lt;socket-bindings</span> <span class="na">default-interface=</span><span class="s">"public"</span> <span class="na">port-offset=</span><span class="s">"${infinispan.socket.binding.port-offset:0}"</span><span class="nt">&gt;</span> <b class="conum">(4)</b>
-         <span class="nt">&lt;socket-binding</span> <span class="na">name=</span><span class="s">"default"</span> <span class="na">port=</span><span class="s">"${infinispan.bind.port:11222}"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;socket-binding</span> <span class="na">name=</span><span class="s">"memcached"</span> <span class="na">port=</span><span class="s">"11221"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/socket-bindings&gt;</span>
+      &lt;socket-bindings default-interface="public" port-offset="${infinispan.socket.binding.port-offset:0}"&gt; <b class="conum">(4)</b>
+         &lt;socket-binding name="default" port="${infinispan.bind.port:11222}"/&gt;
+         &lt;socket-binding name="memcached" port="11221"/&gt;
+      &lt;/socket-bindings&gt;
 
-      <span class="nt">&lt;security&gt;</span> <b class="conum">(5)</b>
-         <span class="nt">&lt;security-realms&gt;</span>
-            <span class="nt">&lt;security-realm</span> <span class="na">name=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-               <span class="c">&lt;!-- Uncomment to enable TLS on the realm --&gt;</span>
-               <span class="c">&lt;!-- server-identities&gt;
+      &lt;security&gt; <b class="conum">(5)</b>
+         &lt;security-realms&gt;
+            &lt;security-realm name="default"&gt;
+               &lt;!-- Uncomment to enable TLS on the realm --&gt;
+               &lt;!-- server-identities&gt;
                   &lt;ssl&gt;
                      &lt;keystore path="application.keystore" relative-to="infinispan.server.config.path"
                                keystore-password="password" alias="server" key-password="password"
                                generate-self-signed-certificate-host="localhost"/&gt;
                   &lt;/ssl&gt;
-               &lt;/server-identities--&gt;</span>
-               <span class="nt">&lt;properties-realm</span> <span class="na">groups-attribute=</span><span class="s">"Roles"</span><span class="nt">&gt;</span>
-                  <span class="nt">&lt;user-properties</span> <span class="na">path=</span><span class="s">"users.properties"</span> <span class="na">relative-to=</span><span class="s">"infinispan.server.config.path"</span> <span class="na">plain-text=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
-                  <span class="nt">&lt;group-properties</span> <span class="na">path=</span><span class="s">"groups.properties"</span> <span class="na">relative-to=</span><span class="s">"infinispan.server.config.path"</span> <span class="nt">/&gt;</span>
-               <span class="nt">&lt;/properties-realm&gt;</span>
-            <span class="nt">&lt;/security-realm&gt;</span>
-         <span class="nt">&lt;/security-realms&gt;</span>
-      <span class="nt">&lt;/security&gt;</span>
+               &lt;/server-identities--&gt;
+               &lt;properties-realm groups-attribute="Roles"&gt;
+                  &lt;user-properties path="users.properties" relative-to="infinispan.server.config.path" plain-text="true"/&gt;
+                  &lt;group-properties path="groups.properties" relative-to="infinispan.server.config.path" /&gt;
+               &lt;/properties-realm&gt;
+            &lt;/security-realm&gt;
+         &lt;/security-realms&gt;
+      &lt;/security&gt;
 
-      <span class="nt">&lt;endpoints</span> <span class="na">socket-binding=</span><span class="s">"default"</span> <span class="na">security-realm=</span><span class="s">"default"</span><span class="nt">&gt;</span> <b class="conum">(6)</b>
-         <span class="nt">&lt;hotrod-connector</span> <span class="na">name=</span><span class="s">"hotrod"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;rest-connector</span> <span class="na">name=</span><span class="s">"rest"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/endpoints&gt;</span>
-   <span class="nt">&lt;/server&gt;</span>
-<span class="nt">&lt;/infinispan&gt;</span></code></pre>
+      &lt;endpoints socket-binding="default" security-realm="default"&gt; <b class="conum">(6)</b>
+         &lt;hotrod-connector name="hotrod"/&gt;
+         &lt;rest-connector name="rest"/&gt;
+      &lt;/endpoints&gt;
+   &lt;/server&gt;
+&lt;/infinispan&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -194,49 +194,49 @@ One of the big differences is that the new server&#8217;s configuration is just 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="xml"><span class="nt">&lt;infinispan</span>
-        <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
-        <span class="na">xsi:schemaLocation=</span><span class="s">"urn:infinispan:config:10.1 https://infinispan.org/schemas/infinispan-config-10.1.xsd
-                            urn:infinispan:server:10.1 https://infinispan.org/schemas/infinispan-server-10.1.xsd"</span>
-        <span class="na">xmlns=</span><span class="s">"urn:infinispan:config:10.1"</span>
-        <span class="na">xmlns:server=</span><span class="s">"urn:infinispan:server:10.1"</span><span class="nt">&gt;</span>
+<pre class="highlightjs highlight nowrap"><code class="language-xml hljs" data-lang="xml">&lt;infinispan
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:infinispan:config:10.1 https://infinispan.org/schemas/infinispan-config-10.1.xsd
+                            urn:infinispan:server:10.1 https://infinispan.org/schemas/infinispan-server-10.1.xsd"
+        xmlns="urn:infinispan:config:10.1"
+        xmlns:server="urn:infinispan:server:10.1"&gt;
 
-   <span class="nt">&lt;cache-container</span> <span class="na">name=</span><span class="s">"default"</span> <span class="na">statistics=</span><span class="s">"true"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;transport</span> <span class="na">cluster=</span><span class="s">"${infinispan.cluster.name}"</span> <span class="na">stack=</span><span class="s">"${infinispan.cluster.stack:tcp}"</span> <span class="na">node-name=</span><span class="s">"${infinispan.node.name:}"</span><span class="nt">/&gt;</span>
-   <span class="nt">&lt;/cache-container&gt;</span>
+   &lt;cache-container name="default" statistics="true"&gt;
+      &lt;transport cluster="${infinispan.cluster.name}" stack="${infinispan.cluster.stack:tcp}" node-name="${infinispan.node.name:}"/&gt;
+   &lt;/cache-container&gt;
 
-   <span class="nt">&lt;server</span> <span class="na">xmlns=</span><span class="s">"urn:infinispan:server:10.1"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;interfaces&gt;</span>
-         <span class="nt">&lt;interface</span> <span class="na">name=</span><span class="s">"public"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;match-interface</span> <span class="na">value=</span><span class="s">"eth0"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;/interface&gt;</span>
-         <span class="nt">&lt;interface</span> <span class="na">name=</span><span class="s">"admin"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;loopback/&gt;</span>
-         <span class="nt">&lt;/interface&gt;</span>
-      <span class="nt">&lt;/interfaces&gt;</span>
+   &lt;server xmlns="urn:infinispan:server:10.1"&gt;
+      &lt;interfaces&gt;
+         &lt;interface name="public"&gt;
+            &lt;match-interface value="eth0"/&gt;
+         &lt;/interface&gt;
+         &lt;interface name="admin"&gt;
+            &lt;loopback/&gt;
+         &lt;/interface&gt;
+      &lt;/interfaces&gt;
 
-      <span class="nt">&lt;socket-bindings</span> <span class="na">default-interface=</span><span class="s">"public"</span> <span class="na">port-offset=</span><span class="s">"${infinispan.socket.binding.port-offset:0}"</span><span class="nt">&gt;</span>
-         <span class="nt">&lt;socket-binding</span> <span class="na">name=</span><span class="s">"public"</span> <span class="na">port=</span><span class="s">"${infinispan.bind.port:11222}"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;socket-binding</span> <span class="na">name=</span><span class="s">"admin"</span> <span class="na">interface=</span><span class="s">"admin"</span> <span class="na">port=</span><span class="s">"${infinispan.bind.port:11222}"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/socket-bindings&gt;</span>
+      &lt;socket-bindings default-interface="public" port-offset="${infinispan.socket.binding.port-offset:0}"&gt;
+         &lt;socket-binding name="public" port="${infinispan.bind.port:11222}"/&gt;
+         &lt;socket-binding name="admin" interface="admin" port="${infinispan.bind.port:11222}"/&gt;
+      &lt;/socket-bindings&gt;
 
-      <span class="nt">&lt;security&gt;</span>
-         <span class="nt">&lt;security-realms&gt;</span>
-            <span class="nt">&lt;security-realm</span> <span class="na">name=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-               <span class="nt">&lt;properties-realm</span> <span class="na">groups-attribute=</span><span class="s">"Roles"</span><span class="nt">&gt;</span>
-                  <span class="nt">&lt;user-properties</span> <span class="na">path=</span><span class="s">"users.properties"</span> <span class="na">relative-to=</span><span class="s">"infinispan.server.config.path"</span> <span class="na">plain-text=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
-                  <span class="nt">&lt;group-properties</span> <span class="na">path=</span><span class="s">"groups.properties"</span> <span class="na">relative-to=</span><span class="s">"infinispan.server.config.path"</span> <span class="nt">/&gt;</span>
-               <span class="nt">&lt;/properties-realm&gt;</span>
-            <span class="nt">&lt;/security-realm&gt;</span>
-         <span class="nt">&lt;/security-realms&gt;</span>
-      <span class="nt">&lt;/security&gt;</span>
+      &lt;security&gt;
+         &lt;security-realms&gt;
+            &lt;security-realm name="default"&gt;
+               &lt;properties-realm groups-attribute="Roles"&gt;
+                  &lt;user-properties path="users.properties" relative-to="infinispan.server.config.path" plain-text="true"/&gt;
+                  &lt;group-properties path="groups.properties" relative-to="infinispan.server.config.path" /&gt;
+               &lt;/properties-realm&gt;
+            &lt;/security-realm&gt;
+         &lt;/security-realms&gt;
+      &lt;/security&gt;
 
-      <span class="nt">&lt;endpoints</span> <span class="na">socket-binding=</span><span class="s">"admin"</span> <span class="na">security-realm=</span><span class="s">"default"</span><span class="nt">&gt;</span>
-         <span class="nt">&lt;hotrod-connector</span> <span class="na">name=</span><span class="s">"hotrod"</span> <span class="na">socket-binding=</span><span class="s">"public"</span><span class="nt">/&gt;</span>
-         <span class="nt">&lt;rest-connector</span> <span class="na">name=</span><span class="s">"rest"</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/endpoints&gt;</span>
-   <span class="nt">&lt;/server&gt;</span>
-<span class="nt">&lt;/infinispan&gt;</span></code></pre>
+      &lt;endpoints socket-binding="admin" security-realm="default"&gt;
+         &lt;hotrod-connector name="hotrod" socket-binding="public"/&gt;
+         &lt;rest-connector name="rest"/&gt;
+      &lt;/endpoints&gt;
+   &lt;/server&gt;
+&lt;/infinispan&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">

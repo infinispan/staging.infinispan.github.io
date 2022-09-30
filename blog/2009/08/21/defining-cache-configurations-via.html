@@ -119,7 +119,7 @@ So, for this coming release, the following method has been deleted:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="kt">void</span> <span class="nf">defineCache</span><span class="o">(</span><span class="nc">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="nc">Configuration</span> <span class="n">configurationOverride</span><span class="o">)</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">void defineCache(String cacheName, Configuration configurationOverride)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -127,9 +127,9 @@ So, for this coming release, the following method has been deleted:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nc">Configuration</span> <span class="nf">defineConfiguration</span><span class="o">(</span><span class="nc">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="nc">Configuration</span> <span class="n">configurationOverride</span><span class="o">);</span>
-<span class="nc">Configuration</span> <span class="nf">defineConfiguration</span><span class="o">(</span><span class="nc">String</span> <span class="n">cacheName</span><span class="o">,</span> <span class="nc">String</span> <span class="n">templateCacheName</span><span class="o">,</span>
-   <span class="nc">Configuration</span> <span class="n">configurationOverride</span><span class="o">);</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Configuration defineConfiguration(String cacheName, Configuration configurationOverride);
+Configuration defineConfiguration(String cacheName, String templateCacheName,
+   Configuration configurationOverride);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -155,14 +155,14 @@ code would look something like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Assume that 'cache-provider-configs.xml' contains</span>
-<span class="c1">// a named cache for entities called 'entity'</span>
-<span class="nc">CacheManager</span> <span class="n">cacheManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultCacheManager</span><span class="o">(</span>
-   <span class="s">"/home/me/infinispan/cache-provider-configs.xml"</span><span class="o">);</span>
-<span class="nc">Configuration</span> <span class="n">overridingConfiguration</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Configuration</span><span class="o">();</span>
-<span class="n">overridingConfiguration</span><span class="o">.</span><span class="na">setEvictionMaxEntries</span><span class="o">(</span><span class="mi">20000</span><span class="o">);</span> <span class="c1">// max entries to 20.000</span>
-<span class="c1">// Override existing 'entity' configuration so that eviction max entries are 20.000.</span>
-<span class="n">cacheManager</span><span class="o">.</span><span class="na">defineConfiguration</span><span class="o">(</span><span class="s">"entity"</span><span class="o">,</span> <span class="n">overridingConfiguration</span><span class="o">);</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Assume that 'cache-provider-configs.xml' contains
+// a named cache for entities called 'entity'
+CacheManager cacheManager = new DefaultCacheManager(
+   "/home/me/infinispan/cache-provider-configs.xml");
+Configuration overridingConfiguration = new Configuration();
+overridingConfiguration.setEvictionMaxEntries(20000); // max entries to 20.000
+// Override existing 'entity' configuration so that eviction max entries are 20.000.
+cacheManager.defineConfiguration("entity", overridingConfiguration);</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -178,16 +178,16 @@ interval used for the rest of entities.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Assume that 'cache-provider-configs.xml' contains</span>
-<span class="c1">// a named cache for entities called 'entity'</span>
-<span class="nc">CacheManager</span> <span class="n">cacheManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultCacheManager</span><span class="o">(</span>
-   <span class="s">"/home/me/infinispan/cache-provider-configs.xml"</span><span class="o">);</span>
-<span class="nc">Configuration</span> <span class="n">overridingConfiguration</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Configuration</span><span class="o">();</span>
-<span class="c1">// set wake up interval to 240 seconds</span>
-<span class="n">overridingConfiguration</span><span class="o">.</span><span class="na">setEvictionWakeUpInterval</span><span class="o">(</span><span class="mi">240000L</span><span class="o">);</span>
-<span class="c1">// Create a new cache configuration for com.acme.Person entity</span>
-<span class="c1">// based on 'entity' configuration, overriding the wake up interval to be 240 seconds</span>
-<span class="n">cacheManager</span><span class="o">.</span><span class="na">defineConfiguration</span><span class="o">(</span><span class="s">"com.acme.Person"</span><span class="o">,</span> <span class="s">"entity"</span><span class="o">,</span> <span class="n">overridingConfiguration</span><span class="o">);</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Assume that 'cache-provider-configs.xml' contains
+// a named cache for entities called 'entity'
+CacheManager cacheManager = new DefaultCacheManager(
+   "/home/me/infinispan/cache-provider-configs.xml");
+Configuration overridingConfiguration = new Configuration();
+// set wake up interval to 240 seconds
+overridingConfiguration.setEvictionWakeUpInterval(240000L);
+// Create a new cache configuration for com.acme.Person entity
+// based on 'entity' configuration, overriding the wake up interval to be 240 seconds
+cacheManager.defineConfiguration("com.acme.Person", "entity", overridingConfiguration);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -200,14 +200,14 @@ CacheManager API. Example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="c1">// Assume that 'cache-provider-configs.xml' contains</span>
-<span class="c1">// a named cache for entities called 'entity'</span>
-<span class="nc">CacheManager</span> <span class="n">cacheManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultCacheManager</span><span class="o">(</span>
-   <span class="s">"/home/me/infinispan/cache-provider-configs.xml"</span><span class="o">);</span>
-<span class="c1">// Pass a brand new Configuration instance without overrides</span>
-<span class="c1">// and it will return the given cache name's Configuration</span>
-<span class="nc">Configuration</span> <span class="n">entityConfiguration</span> <span class="o">=</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">defineConfiguration</span><span class="o">(</span><span class="s">"entity"</span><span class="o">,</span>
-<span class="k">new</span> <span class="nf">Configuration</span><span class="o">());</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// Assume that 'cache-provider-configs.xml' contains
+// a named cache for entities called 'entity'
+CacheManager cacheManager = new DefaultCacheManager(
+   "/home/me/infinispan/cache-provider-configs.xml");
+// Pass a brand new Configuration instance without overrides
+// and it will return the given cache name's Configuration
+Configuration entityConfiguration = cacheManager.defineConfiguration("entity",
+new Configuration());</code></pre>
 </div>
 </div>
 <div class="paragraph">

@@ -123,15 +123,15 @@ must use a builder style:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nc">Configuration</span> <span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConfigurationBuilder</span><span class="o">()</span>
-   <span class="c1">// Adjust any configuration defaults you want</span>
-   <span class="o">.</span><span class="na">clustering</span><span class="o">()</span>
-      <span class="o">.</span><span class="na">l1</span><span class="o">()</span>
-         <span class="o">.</span><span class="na">disable</span><span class="o">()</span>
-      <span class="o">.</span><span class="na">mode</span><span class="o">(</span><span class="no">DIST_SYNC</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">hash</span><span class="o">()</span>
-         <span class="o">.</span><span class="na">numOwners</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">build</span><span class="o">();</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Configuration c1 = new ConfigurationBuilder()
+   // Adjust any configuration defaults you want
+   .clustering()
+      .l1()
+         .disable()
+      .mode(DIST_SYNC)
+      .hash()
+         .numOwners(5)
+   .build();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -144,14 +144,14 @@ example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="java"><span class="nc">Configuration</span> <span class="n">c2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConfigurationBuilder</span><span class="o">()</span>
-   <span class="c1">// Read in C1 to provide defaults</span>
-   <span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">c1</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">clustering</span><span class="o">()</span>
-      <span class="o">.</span><span class="na">l1</span><span class="o">()</span>
-         <span class="o">.</span><span class="na">enable</span><span class="o">()</span>
-   <span class="c1">// This cache is DIST_SYNC, will have 5 owners, with L1 cache enabled</span>
-   <span class="o">.</span><span class="na">build</span><span class="o">();</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Configuration c2 = new ConfigurationBuilder()
+   // Read in C1 to provide defaults
+   .read(c1)
+   .clustering()
+      .l1()
+         .enable()
+   // This cache is DIST_SYNC, will have 5 owners, with L1 cache enabled
+   .build();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -173,10 +173,10 @@ just change the schema definition from:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;infinispan</span>
-     <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
-     <span class="na">xsi:schemaLocation=</span><span class="s">"urn:infinispan:config:4.1 http://www.infinispan.org/schemas/infinispan-config-4.1.xsd"</span>
-     <span class="na">xmlns=</span><span class="s">"urn:infinispan:config:4.1"</span><span class="nt">&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;infinispan
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="urn:infinispan:config:4.1 http://www.infinispan.org/schemas/infinispan-config-4.1.xsd"
+     xmlns="urn:infinispan:config:4.1"&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -184,10 +184,10 @@ just change the schema definition from:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;infinispan</span>
-     <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
-     <span class="na">xsi:schemaLocation=</span><span class="s">"urn:infinispan:config:5.1 http://www.infinispan.org/schemas/infinispan-config-5.1.xsd"</span>
-     <span class="na">xmlns=</span><span class="s">"urn:infinispan:config:5.1"</span><span class="nt">&gt;</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;infinispan
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="urn:infinispan:config:5.1 http://www.infinispan.org/schemas/infinispan-config-5.1.xsd"
+     xmlns="urn:infinispan:config:5.1"&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
