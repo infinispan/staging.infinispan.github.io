@@ -166,12 +166,12 @@ The basic idea is to split the LAT in smaller cycles, as it follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">lock(int lockAcquisitionTimeout) {
-while (currentTime &lt; startTime + timeout) {
- if (acquire(smallTimeout)) break;
- testForDeadlock(globalTransaction, key);
-}
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="n">lock</span><span class="o">(</span><span class="kt">int</span> <span class="n">lockAcquisitionTimeout</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">while</span> <span class="o">(</span><span class="n">currentTime</span> <span class="o">&lt;</span> <span class="n">startTime</span> <span class="o">+</span> <span class="n">timeout</span><span class="o">)</span> <span class="o">{</span>
+ <span class="k">if</span> <span class="o">(</span><span class="n">acquire</span><span class="o">(</span><span class="n">smallTimeout</span><span class="o">))</span> <span class="k">break</span><span class="o">;</span>
+ <span class="n">testForDeadlock</span><span class="o">(</span><span class="n">globalTransaction</span><span class="o">,</span> <span class="n">key</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

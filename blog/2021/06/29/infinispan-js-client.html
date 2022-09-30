@@ -162,9 +162,9 @@ To secure Infinispan credentials, you should use PLAIN authentication only in co
 <div class="listingblock">
 <div class="title">Run the Infinispan Server with Docker or Podman</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">docker run -it -p 11222:11222 -e USER="admin" -e PASS="password" quay.io/infinispan/server:12.1
+<pre class="rouge highlight"><code data-lang="bash">docker run <span class="nt">-it</span> <span class="nt">-p</span> 11222:11222 <span class="nt">-e</span> <span class="nv">USER</span><span class="o">=</span><span class="s2">"admin"</span> <span class="nt">-e</span> <span class="nv">PASS</span><span class="o">=</span><span class="s2">"password"</span> quay.io/infinispan/server:12.1
 
-podman run -it -p 11222:11222 -e USER="admin" -e PASS="password" --net=host quay.io/infinispan/server:12.1</code></pre>
+podman run <span class="nt">-it</span> <span class="nt">-p</span> 11222:11222 <span class="nt">-e</span> <span class="nv">USER</span><span class="o">=</span><span class="s2">"admin"</span> <span class="nt">-e</span> <span class="nv">PASS</span><span class="o">=</span><span class="s2">"password"</span> <span class="nt">--net</span><span class="o">=</span>host quay.io/infinispan/server:12.1</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -183,7 +183,7 @@ the server distribution</a> and run the server manually.
 <div class="listingblock">
 <div class="title">Run the Infinispan Server from the file system</div>
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">./bin/cli.sh user create admin -p password
+<pre class="rouge highlight"><code data-lang="bash">./bin/cli.sh user create admin <span class="nt">-p</span> password
 ./bin/server.sh</code></pre>
 </div>
 </div>
@@ -199,15 +199,15 @@ cache, named it 'my-cache' with the provided configuration.</p>
 <div class="listingblock">
 <div class="title">Connect to Infinispan</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "distributed-cache": {
-    "mode": "SYNC",
-    "encoding": {
-      "media-type": "text/plain"
-    },
-    "statistics": true
-  }
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"distributed-cache"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SYNC"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"encoding"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"media-type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text/plain"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"statistics"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -221,9 +221,9 @@ cache, named it 'my-cache' with the provided configuration.</p>
 <div class="listingblock">
 <div class="title">package.json</div>
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"dependencies": {
-"infinispan": "^0.9.0"
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="json"><span class="nl">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="nl">"infinispan"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^0.9.0"</span><span class="w">
+</span><span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -232,23 +232,23 @@ cache, named it 'my-cache' with the provided configuration.</p>
 <div class="listingblock">
 <div class="title">application.js</div>
 <div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript">var connected = infinispan.client({port: 11222, host: '127.0.0.1'},
-{
-    cacheName: 'my-cache',
-    authentication: {
-        enabled: true,
-        saslMechanism: 'DIGEST-MD5',
-        userName: 'admin',
-        password: 'password'
-    }
-});
+<pre class="rouge highlight"><code data-lang="javascript"><span class="kd">var</span> <span class="nx">connected</span> <span class="o">=</span> <span class="nx">infinispan</span><span class="p">.</span><span class="nx">client</span><span class="p">({</span><span class="na">port</span><span class="p">:</span> <span class="mi">11222</span><span class="p">,</span> <span class="na">host</span><span class="p">:</span> <span class="dl">'</span><span class="s1">127.0.0.1</span><span class="dl">'</span><span class="p">},</span>
+<span class="p">{</span>
+    <span class="na">cacheName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">my-cache</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">authentication</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">enabled</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">saslMechanism</span><span class="p">:</span> <span class="dl">'</span><span class="s1">DIGEST-MD5</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">userName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">password</span><span class="p">:</span> <span class="dl">'</span><span class="s1">password</span><span class="dl">'</span>
+    <span class="p">}</span>
+<span class="p">});</span>
 
-connected.then(function (client) {
-    return client.put('key', 'value')
-    .finally(function() {
-    return client.disconnect();
-  });
-});</code></pre>
+<span class="nx">connected</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">client</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">client</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="dl">'</span><span class="s1">key</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">value</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="k">finally</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">client</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">});</span></code></pre>
 </div>
 </div>
 </div>

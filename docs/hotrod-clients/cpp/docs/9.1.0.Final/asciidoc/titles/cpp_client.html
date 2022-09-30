@@ -122,7 +122,7 @@
 <p>Install the RPM with either the <code>yum</code> package manager or <code>dnf</code> utility.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash"># yum localinstall infinispan-hotrod-cpp-&lt;version&gt;-RHEL-x86_64.rpm</code></pre>
+<pre class="rouge highlight nowrap"><code data-lang="bash"><span class="c"># yum localinstall infinispan-hotrod-cpp-&lt;version&gt;-RHEL-x86_64.rpm</span></code></pre>
 </div>
 </div>
 </li>
@@ -169,8 +169,8 @@
 <p>Install the Protobuf library and <code>protobuf-devel</code> package.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash"># yum install protobuf
-# yum install protobuf-devel</code></pre>
+<pre class="rouge highlight nowrap"><code data-lang="bash"><span class="c"># yum install protobuf</span>
+<span class="c"># yum install protobuf-devel</span></code></pre>
 </div>
 </div>
 </li>
@@ -183,7 +183,7 @@
 <p>Set the <code>LD_LIBRARY_PATH</code> environment variable, if it is not already set.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash"># export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/lib64</code></pre>
+<pre class="rouge highlight nowrap"><code data-lang="bash"><span class="c"># export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/lib64</span></code></pre>
 </div>
 </div>
 </li>
@@ -191,7 +191,7 @@
 <p>Compile Protobuf schema for the Hot Rod C++ client as required.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash"># /bin/protoc --cpp_out dllexport_decl=HR_PROTO_EXPORT:/path/to/output/ $FILE</code></pre>
+<pre class="rouge highlight nowrap"><code data-lang="bash"><span class="c"># /bin/protoc --cpp_out dllexport_decl=HR_PROTO_EXPORT:/path/to/output/ $FILE</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -227,7 +227,7 @@
 <p>Compile Protobuf schema for the Hot Rod C++ client as required.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">bin\protoc --cpp_out dllexport_decl=HR_PROTO_EXPORT:path\to\output\ $FILE</code></pre>
+<pre class="rouge highlight nowrap"><code data-lang="bash">bin<span class="se">\p</span>rotoc <span class="nt">--cpp_out</span> <span class="nv">dllexport_decl</span><span class="o">=</span>HR_PROTO_EXPORT:path<span class="se">\t</span>o<span class="se">\o</span>utput<span class="se">\ </span><span class="nv">$FILE</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -264,39 +264,39 @@
 <div class="listingblock">
 <div class="title">Configuration builder</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-c++" data-lang="c++">#include "infinispan/hotrod/ConfigurationBuilder.h"
+<pre class="rouge highlight nowrap"><code data-lang="c++"><span class="cp">#include "infinispan/hotrod/ConfigurationBuilder.h"
 #include "infinispan/hotrod/RemoteCacheManager.h"
 #include &lt;infinispan/hotrod/RemoteCache.h&gt;
 #include &lt;iostream&gt;
-int main () {
-  ConfigurationBuilder builder;
-    // Configure a cache manager to connect with Hot Rod version 2.8
-    builder.protocolVersion(Configuration::PROTOCOL_VERSION_28);
-    // Connect to a server at localhost with the default port.
-    builder.addServer().host("127.0.0.1").port(11222);
-    // Create and start a RemoteCacheManager to interact with caches.
-    RemoteCacheManager cacheManager(builder.build(), false);
-    cacheManager.start();
-    ...
-}</code></pre>
+</span><span class="kt">int</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="n">ConfigurationBuilder</span> <span class="n">builder</span><span class="p">;</span>
+    <span class="c1">// Configure a cache manager to connect with Hot Rod version 2.8</span>
+    <span class="n">builder</span><span class="p">.</span><span class="n">protocolVersion</span><span class="p">(</span><span class="n">Configuration</span><span class="o">::</span><span class="n">PROTOCOL_VERSION_28</span><span class="p">);</span>
+    <span class="c1">// Connect to a server at localhost with the default port.</span>
+    <span class="n">builder</span><span class="p">.</span><span class="n">addServer</span><span class="p">().</span><span class="n">host</span><span class="p">(</span><span class="s">"127.0.0.1"</span><span class="p">).</span><span class="n">port</span><span class="p">(</span><span class="mi">11222</span><span class="p">);</span>
+    <span class="c1">// Create and start a RemoteCacheManager to interact with caches.</span>
+    <span class="n">RemoteCacheManager</span> <span class="n">cacheManager</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">build</span><span class="p">(),</span> <span class="nb">false</span><span class="p">);</span>
+    <span class="n">cacheManager</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
+    <span class="p">...</span>
+<span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Cross-site replication</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-c++" data-lang="c++">ConfigurationBuilder builder;
-  builder.addServer().host("127.0.0.1").port(11222);
-  // Configure a remote cluster and node when using cross-site replication.
-  builder.addCluster("NYC").addClusterNode("192.0.2.0", 11322);</code></pre>
+<pre class="rouge highlight nowrap"><code data-lang="c++"><span class="n">ConfigurationBuilder</span> <span class="n">builder</span><span class="p">;</span>
+  <span class="n">builder</span><span class="p">.</span><span class="n">addServer</span><span class="p">().</span><span class="n">host</span><span class="p">(</span><span class="s">"127.0.0.1"</span><span class="p">).</span><span class="n">port</span><span class="p">(</span><span class="mi">11222</span><span class="p">);</span>
+  <span class="c1">// Configure a remote cluster and node when using cross-site replication.</span>
+  <span class="n">builder</span><span class="p">.</span><span class="n">addCluster</span><span class="p">(</span><span class="s">"NYC"</span><span class="p">).</span><span class="n">addClusterNode</span><span class="p">(</span><span class="s">"192.0.2.0"</span><span class="p">,</span> <span class="mi">11322</span><span class="p">);</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Near caching</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-c++" data-lang="c++">ConfigurationBuilder builder;
-  builder.addServer().host("127.0.0.1").port(11222);
-  // Enable near-caching for the client.
-  builder.nearCache().mode(NearCacheMode::INVALIDATED).maxEntries(4);</code></pre>
+<pre class="rouge highlight nowrap"><code data-lang="c++"><span class="n">ConfigurationBuilder</span> <span class="n">builder</span><span class="p">;</span>
+  <span class="n">builder</span><span class="p">.</span><span class="n">addServer</span><span class="p">().</span><span class="n">host</span><span class="p">(</span><span class="s">"127.0.0.1"</span><span class="p">).</span><span class="n">port</span><span class="p">(</span><span class="mi">11222</span><span class="p">);</span>
+  <span class="c1">// Enable near-caching for the client.</span>
+  <span class="n">builder</span><span class="p">.</span><span class="n">nearCache</span><span class="p">().</span><span class="n">mode</span><span class="p">(</span><span class="n">NearCacheMode</span><span class="o">::</span><span class="n">INVALIDATED</span><span class="p">).</span><span class="n">maxEntries</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span></code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">

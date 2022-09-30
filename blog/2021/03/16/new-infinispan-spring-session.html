@@ -210,11 +210,11 @@ See the project <a href="https://github.com/wildfly-clustering/wildfly-clusterin
 <p>Create a class containing the session repository configuration, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@org.wildfly.clustering.web.spring.hotrod.annotation.EnableHotRodHttpSession \
-(@HotRod(uri = "hotrod://127.0.0.1:11222"), manager = @SessionManager(granularity = ATTRIBUTE))
-public class Config {
-  // ...
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@org</span><span class="o">.</span><span class="na">wildfly</span><span class="o">.</span><span class="na">clustering</span><span class="o">.</span><span class="na">web</span><span class="o">.</span><span class="na">spring</span><span class="o">.</span><span class="na">hotrod</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">EnableHotRodHttpSession</span> <span class="err">\</span>
+<span class="o">(</span><span class="nd">@HotRod</span><span class="o">(</span><span class="n">uri</span> <span class="o">=</span> <span class="s">"hotrod://127.0.0.1:11222"</span><span class="o">),</span> <span class="n">manager</span> <span class="o">=</span> <span class="nd">@SessionManager</span><span class="o">(</span><span class="n">granularity</span> <span class="o">=</span> <span class="no">ATTRIBUTE</span><span class="o">))</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Config</span> <span class="o">{</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 </li>
@@ -222,16 +222,16 @@ public class Config {
 <p>Ensure your <code>/WEB-INF/applicationContext.xml</code> will process your configuration annotation:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+<pre class="rouge highlight"><code data-lang="xml"><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">"http://www.springframework.org/schema/beans"</span>
+       <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+       <span class="na">xmlns:context=</span><span class="s">"http://www.springframework.org/schema/context"</span>
+       <span class="na">xsi:schemaLocation=</span><span class="s">"http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context.xsd"&gt;
-  &lt;context:annotation-config/&gt;
-&lt;/beans&gt;</code></pre>
+                           http://www.springframework.org/schema/context/spring-context.xsd"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;context:annotation-config/&gt;</span>
+<span class="nt">&lt;/beans&gt;</span></code></pre>
 </div>
 </div>
 </li>
@@ -239,11 +239,11 @@ public class Config {
 <p>Create an application initializer class that will auto-register the requisite servlet filters required by Spring Session:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyHttpSessionApplicationInitializer extends AbstractHttpSessionApplicationInitializer {
-  public MyHttpSessionApplicationInitializer() {
-    // Do not call super constructor (see project README for details)
-  }
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyHttpSessionApplicationInitializer</span> <span class="kd">extends</span> <span class="nc">AbstractHttpSessionApplicationInitializer</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">MyHttpSessionApplicationInitializer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// Do not call super constructor (see project README for details)</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 </li>
@@ -251,12 +251,12 @@ public class Config {
 <p>Create a <code>@WebListener</code> that bootstraps our session repository configuration:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@javax.servlet.annotation.WebListener
-public class MyContextLoaderListener extends org.wildfly.clustering.web.spring.context.ContextLoaderListener {
-  public MyContextLoaderListener() {
-    super(Config.class);
-  }
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@javax</span><span class="o">.</span><span class="na">servlet</span><span class="o">.</span><span class="na">annotation</span><span class="o">.</span><span class="na">WebListener</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyContextLoaderListener</span> <span class="kd">extends</span> <span class="n">org</span><span class="o">.</span><span class="na">wildfly</span><span class="o">.</span><span class="na">clustering</span><span class="o">.</span><span class="na">web</span><span class="o">.</span><span class="na">spring</span><span class="o">.</span><span class="na">context</span><span class="o">.</span><span class="na">ContextLoaderListener</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">MyContextLoaderListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="nc">Config</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 </li>

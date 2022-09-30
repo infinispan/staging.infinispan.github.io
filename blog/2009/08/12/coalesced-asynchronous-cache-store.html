@@ -148,19 +148,19 @@ like this out-of-the-box. Example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;infinispan xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:infinispan:config:4.0"&gt;
-  &lt;namedCache name="persistentCache"&gt;
-     &lt;loaders passivation="false" shared="false" preload="true"&gt;
-        &lt;loader class="org.infinispan.loaders.file.FileCacheStore" fetchPersistentState="true" ignoreModifications="false" purgeOnStartup="false"&gt;
-           &lt;properties&gt;
-              &lt;property name="location" value="/tmp"/&gt;
-           &lt;/properties&gt;
-           &lt;async enabled="true" threadPoolSize="10"/&gt;
-        &lt;/loader&gt;
-     &lt;/loaders&gt;
-  &lt;/namedCache&gt;
-&lt;/infinispan&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;infinispan</span> <span class="na">xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="na">xmlns=</span><span class="s">"urn:infinispan:config:4.0"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;namedCache</span> <span class="na">name=</span><span class="s">"persistentCache"</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;loaders</span> <span class="na">passivation=</span><span class="s">"false"</span> <span class="na">shared=</span><span class="s">"false"</span> <span class="na">preload=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;loader</span> <span class="na">class=</span><span class="s">"org.infinispan.loaders.file.FileCacheStore"</span> <span class="na">fetchPersistentState=</span><span class="s">"true"</span> <span class="na">ignoreModifications=</span><span class="s">"false"</span> <span class="na">purgeOnStartup=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+           <span class="nt">&lt;properties&gt;</span>
+              <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"location"</span> <span class="na">value=</span><span class="s">"/tmp"</span><span class="nt">/&gt;</span>
+           <span class="nt">&lt;/properties&gt;</span>
+           <span class="nt">&lt;async</span> <span class="na">enabled=</span><span class="s">"true"</span> <span class="na">threadPoolSize=</span><span class="s">"10"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/loader&gt;</span>
+     <span class="nt">&lt;/loaders&gt;</span>
+  <span class="nt">&lt;/namedCache&gt;</span>
+<span class="nt">&lt;/infinispan&gt;</span></code></pre>
 </div>
 </div>
           

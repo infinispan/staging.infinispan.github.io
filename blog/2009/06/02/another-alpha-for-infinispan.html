@@ -153,13 +153,13 @@ Future using get() on notification. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">NotifyingFuture&lt;Void&gt; f = cache.clearAsync().attachListener(new FutureListener&lt;Void&gt;() {
- public void futureDone(Future&lt;Void&gt; f) {
-   if (f.get() &amp;&amp; !f.isCancelled()) {
-     System.out.println("clear operation succeeded");
-   }
- }
-});</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">NotifyingFuture</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">clearAsync</span><span class="o">().</span><span class="na">attachListener</span><span class="o">(</span><span class="k">new</span> <span class="nc">FutureListener</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;()</span> <span class="o">{</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">futureDone</span><span class="o">(</span><span class="nc">Future</span><span class="o">&lt;</span><span class="nc">Void</span><span class="o">&gt;</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">get</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">f</span><span class="o">.</span><span class="na">isCancelled</span><span class="o">())</span> <span class="o">{</span>
+     <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"clear operation succeeded"</span><span class="o">);</span>
+   <span class="o">}</span>
+ <span class="o">}</span>
+<span class="o">});</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

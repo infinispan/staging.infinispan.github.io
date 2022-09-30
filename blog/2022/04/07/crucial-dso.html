@@ -127,13 +127,13 @@ workloads to the cloud, but the advantages are available to everyone using Infin
 <div class="listingblock">
 <div class="title">Example.py</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">class Hero {
-    @Shared Room location;
-}
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">class</span> <span class="nc">Hero</span> <span class="o">{</span>
+    <span class="nd">@Shared</span> <span class="nc">Room</span> <span class="n">location</span><span class="o">;</span>
+<span class="o">}</span>
 
-class Room {
-    Treasure loot();
-}</code></pre>
+<span class="kd">class</span> <span class="nc">Room</span> <span class="o">{</span>
+    <span class="nc">Treasure</span> <span class="nf">loot</span><span class="o">();</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -152,24 +152,24 @@ The server component is built as an Infinispan Server extension. To quickly setu
 <div class="listingblock">
 <div class="title">dso.yaml</div>
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: infinispan.org/v1
-kind: Infinispan
-metadata:
-  name: infinispan
-spec:
-  replicas: 2
-  dependencies:
-    artifacts:
-      - url: https://repo1.maven.org/maven2/com/fasterxml/uuid/java-uuid-generator/3.3.0/java-uuid-generator-3.3.0.jar
-        type: file
-      - url: https://repo1.maven.org/maven2/com/google/guava/guava/18.0/guava-18.0.jar
-        type: file
-      - url: http://example.com/dso-core-2.0.jar
-        type: file
-      - url: http://example.com/dso-server-2.0.jar
-        type: file
-  service:
-    type: DataGrid</code></pre>
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">infinispan.org/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Infinispan</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">infinispan</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">dependencies</span><span class="pi">:</span>
+    <span class="na">artifacts</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s">https://repo1.maven.org/maven2/com/fasterxml/uuid/java-uuid-generator/3.3.0/java-uuid-generator-3.3.0.jar</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">file</span>
+      <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s">https://repo1.maven.org/maven2/com/google/guava/guava/18.0/guava-18.0.jar</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">file</span>
+      <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s">http://example.com/dso-core-2.0.jar</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">file</span>
+      <span class="pi">-</span> <span class="na">url</span><span class="pi">:</span> <span class="s">http://example.com/dso-server-2.0.jar</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">file</span>
+  <span class="na">service</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">DataGrid</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -180,7 +180,7 @@ spec:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>INFO  (main) [org.crucial.dso.Factory] Factory[Cache '__dso'@kashyyyk-4890] Created
+<pre class="rouge highlight"><code>INFO  (main) [org.crucial.dso.Factory] Factory[Cache '__dso'@kashyyyk-4890] Created
 INFO  (main) [org.crucial.dso.Factory] Factory singleton  is Factory[Cache '__dso'@kashyyyk-4890]
 INFO  (main) [org.infinispan.CONTAINER] DSO cache initialized</code></pre>
 </div>

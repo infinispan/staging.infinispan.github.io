@@ -128,51 +128,51 @@ The new annotations can be used in the same way for both embedded and remote que
 <div class="listingblock">
 <div class="title">Poem.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Indexed
-public class Poem {
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Indexed</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Poem</span> <span class="o">{</span>
 
-   private Author author;
-   private String description;
-   private Integer year;
+   <span class="kd">private</span> <span class="nc">Author</span> <span class="n">author</span><span class="o">;</span>
+   <span class="kd">private</span> <span class="nc">String</span> <span class="n">description</span><span class="o">;</span>
+   <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">year</span><span class="o">;</span>
 
-   @Embedded(includeDepth = 2, structure = Structure.NESTED)
-   public Author getAuthor() {
-      return author;
-   }
+   <span class="nd">@Embedded</span><span class="o">(</span><span class="n">includeDepth</span> <span class="o">=</span> <span class="mi">2</span><span class="o">,</span> <span class="n">structure</span> <span class="o">=</span> <span class="nc">Structure</span><span class="o">.</span><span class="na">NESTED</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="nc">Author</span> <span class="nf">getAuthor</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">author</span><span class="o">;</span>
+   <span class="o">}</span>
 
-   @Text(projectable = true, analyzer = "whitespace", termVector = TermVector.WITH_OFFSETS)
-   public String getDescription() {
-      return description;
-   }
+   <span class="nd">@Text</span><span class="o">(</span><span class="n">projectable</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">"whitespace"</span><span class="o">,</span> <span class="n">termVector</span> <span class="o">=</span> <span class="nc">TermVector</span><span class="o">.</span><span class="na">WITH_OFFSETS</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getDescription</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">description</span><span class="o">;</span>
+   <span class="o">}</span>
 
-   @Basic(projectable = true, sortable = true, indexNullAs = "1800")
-   public Integer getYear() {
-      return year;
-   }
-}</code></pre>
+   <span class="nd">@Basic</span><span class="o">(</span><span class="n">projectable</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">sortable</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">indexNullAs</span> <span class="o">=</span> <span class="s">"1800"</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="nc">Integer</span> <span class="nf">getYear</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">year</span><span class="o">;</span>
+   <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Author.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Indexed
-public class Author {
+<pre class="rouge highlight"><code data-lang="java"><span class="nd">@Indexed</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Author</span> <span class="o">{</span>
 
-   private String name;
+   <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
 
-   public Author(String name) {
-      this.name = name;
-   }
+   <span class="kd">public</span> <span class="nf">Author</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+   <span class="o">}</span>
 
-   @Keyword(projectable = true, sortable = true, normalizer = "lowercase", indexNullAs = "unnamed", norms = false)
-   public String getName() {
-      return name;
-   }
+   <span class="nd">@Keyword</span><span class="o">(</span><span class="n">projectable</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">sortable</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">normalizer</span> <span class="o">=</span> <span class="s">"lowercase"</span><span class="o">,</span> <span class="n">indexNullAs</span> <span class="o">=</span> <span class="s">"unnamed"</span><span class="o">,</span> <span class="n">norms</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+   <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+   <span class="o">}</span>
 
-   public void setName(String name) {
-      this.name = name;
-   }
-}</code></pre>
+   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+   <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -205,11 +205,11 @@ You can perform some operations to keep the index consistent with data in the ca
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
-  &lt;indexing storage="filesystem" startup-mode="purge"&gt;
-    &lt;!-- Additional indexing configuration goes here. --&gt;
-  &lt;/indexing&gt;
-&lt;/distributed-cache&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;distributed-cache&gt;</span>
+  <span class="nt">&lt;indexing</span> <span class="na">storage=</span><span class="s">"filesystem"</span> <span class="na">startup-mode=</span><span class="s">"purge"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- Additional indexing configuration goes here. --&gt;</span>
+  <span class="nt">&lt;/indexing&gt;</span>
+<span class="nt">&lt;/distributed-cache&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -233,7 +233,7 @@ When you choose <code>auto</code> mode, Infinispan decides what is the right ope
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>remoteCacheManager.administration().updateIndexSchema(CACHE_NAME);</code></pre>
+<pre class="rouge highlight"><code>remoteCacheManager.administration().updateIndexSchema(CACHE_NAME);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -241,7 +241,7 @@ When you choose <code>auto</code> mode, Infinispan decides what is the right ope
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>POST .../v2/caches/{cacheName}/search/indexes?action=updateSchema</code></pre>
+<pre class="rouge highlight"><code>POST .../v2/caches/{cacheName}/search/indexes?action=updateSchema</code></pre>
 </div>
 </div>
 <div class="paragraph">

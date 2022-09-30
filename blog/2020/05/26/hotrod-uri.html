@@ -163,7 +163,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>infinispan.client.hotrod.uri=hotrod://joe:secret@infinispan-host-1:11222,infinispan-host-2:11222
+<pre class="rouge highlight"><code>infinispan.client.hotrod.uri=hotrod://joe:secret@infinispan-host-1:11222,infinispan-host-2:11222
 infinispan.client.hotrod.connect_timeout=100
 infinispan.client.hotrod.socket_timeout=100
 infinispan.client.hotrod.tcp_keep_alive=true</code></pre>
@@ -171,11 +171,11 @@ infinispan.client.hotrod.tcp_keep_alive=true</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">ConfigurationBuilder builder = new ConfigurationBuilder()
-    .uri("hotrod://joe:secret@infinispan-host-1:11222,infinispan-host-2:11222")
-    .socketTimeout(100)
-    .connectionTimeout(100)
-    tcpKeepAlive(true);</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">ConfigurationBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConfigurationBuilder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">uri</span><span class="o">(</span><span class="s">"hotrod://joe:secret@infinispan-host-1:11222,infinispan-host-2:11222"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">socketTimeout</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">connectionTimeout</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+    <span class="n">tcpKeepAlive</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

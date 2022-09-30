@@ -125,11 +125,11 @@ optimisations like the following are now viable:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">AdvancedCache cache = ...
-Cache forceWLCache = cache.withFlags(Flag.FORCE_WRITE_LOCK);
-forceWLCache.get("voo");
-forceWLCache.put("voo", "doo");
-...</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">AdvancedCache</span> <span class="n">cache</span> <span class="o">=</span> <span class="o">...</span>
+<span class="nc">Cache</span> <span class="n">forceWLCache</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">withFlags</span><span class="o">(</span><span class="nc">Flag</span><span class="o">.</span><span class="na">FORCE_WRITE_LOCK</span><span class="o">);</span>
+<span class="n">forceWLCache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"voo"</span><span class="o">);</span>
+<span class="n">forceWLCache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"voo"</span><span class="o">,</span> <span class="s">"doo"</span><span class="o">);</span>
+<span class="o">...</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

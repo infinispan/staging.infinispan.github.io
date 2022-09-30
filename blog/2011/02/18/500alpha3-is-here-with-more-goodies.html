@@ -123,9 +123,9 @@ like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Value v1 = cache.get("k1");
-Value v2 = cache.get("k2");
-Value v3 = cache.get("k3");</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Value</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"k1"</span><span class="o">);</span>
+<span class="nc">Value</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"k2"</span><span class="o">);</span>
+<span class="nc">Value</span> <span class="n">v3</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"k3"</span><span class="o">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -136,13 +136,13 @@ From 5.0.0.ALPHA3 onwards, you can do this instead:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">NotifyingFuture&lt;Value&gt; f1 = cache.getAsync("k1");
-NotifyingFuture&lt;Value&gt; f2 = cache.getAsync("k2");
-NotifyingFuture&lt;Value&gt; f3 = cache.getAsync("k3");
-...
-Value v1 = f1.get(); // blocks until value has been returned
-Value v2 = f2.get();
-Value v3 = f3.get();</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">NotifyingFuture</span><span class="o">&lt;</span><span class="nc">Value</span><span class="o">&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getAsync</span><span class="o">(</span><span class="s">"k1"</span><span class="o">);</span>
+<span class="nc">NotifyingFuture</span><span class="o">&lt;</span><span class="nc">Value</span><span class="o">&gt;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getAsync</span><span class="o">(</span><span class="s">"k2"</span><span class="o">);</span>
+<span class="nc">NotifyingFuture</span><span class="o">&lt;</span><span class="nc">Value</span><span class="o">&gt;</span> <span class="n">f3</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getAsync</span><span class="o">(</span><span class="s">"k3"</span><span class="o">);</span>
+<span class="o">...</span>
+<span class="nc">Value</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">f1</span><span class="o">.</span><span class="na">get</span><span class="o">();</span> <span class="c1">// blocks until value has been returned</span>
+<span class="nc">Value</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">f2</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+<span class="nc">Value</span> <span class="n">v3</span> <span class="o">=</span> <span class="n">f3</span><span class="o">.</span><span class="na">get</span><span class="o">();</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -164,13 +164,13 @@ Infinispan. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">GlobalConfiguration gc = new GlobalConfiguration();
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">GlobalConfiguration</span> <span class="n">gc</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GlobalConfiguration</span><span class="o">();</span>
 
-GlobalJmxStatisticsConfig jmxStatistics = gc.configureGlobalJmxStatistics();
-jmxStatistics.allowDuplicateDomains(true).enabled(true);
+<span class="nc">GlobalJmxStatisticsConfig</span> <span class="n">jmxStatistics</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="na">configureGlobalJmxStatistics</span><span class="o">();</span>
+<span class="n">jmxStatistics</span><span class="o">.</span><span class="na">allowDuplicateDomains</span><span class="o">(</span><span class="kc">true</span><span class="o">).</span><span class="na">enabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 
-TransportConfig transport = gc.configureTransport();
-transport.clusterName("blah").machineId("id").rackId("rack").strictPeerToPeer(true);</code></pre>
+<span class="nc">TransportConfig</span> <span class="n">transport</span> <span class="o">=</span> <span class="n">gc</span><span class="o">.</span><span class="na">configureTransport</span><span class="o">();</span>
+<span class="n">transport</span><span class="o">.</span><span class="na">clusterName</span><span class="o">(</span><span class="s">"blah"</span><span class="o">).</span><span class="na">machineId</span><span class="o">(</span><span class="s">"id"</span><span class="o">).</span><span class="na">rackId</span><span class="o">(</span><span class="s">"rack"</span><span class="o">).</span><span class="na">strictPeerToPeer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

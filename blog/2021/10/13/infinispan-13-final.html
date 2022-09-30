@@ -132,35 +132,35 @@
 <p><strong>Polyglot configuration</strong>: XML, JSON and YAML can now be used interchangeably to configure every part of Infinispan. Here is an example of how to configure a cache with eviction and Protobuf encoding:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
-  &lt;encoding media-type="application/x-protostream"/&gt;
-  &lt;memory max-size="1.5GB" when-full="REMOVE"/&gt;
-&lt;/distributed-cache&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;distributed-cache&gt;</span>
+  <span class="nt">&lt;encoding</span> <span class="na">media-type=</span><span class="s">"application/x-protostream"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;memory</span> <span class="na">max-size=</span><span class="s">"1.5GB"</span> <span class="na">when-full=</span><span class="s">"REMOVE"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/distributed-cache&gt;</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "distributed-cache" : {
-    "encoding" : {
-      "media-type" : "application/x-protostream"
-    },
-    "memory" : {
-      "max-size" : "1.5GB",
-      "when-full" : "REMOVE"
-    }
-  }
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"distributed-cache"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"encoding"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"media-type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"application/x-protostream"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"memory"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"max-size"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1.5GB"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"when-full"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"REMOVE"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">distributedCache:
-  encoding:
-    mediaType: "application/x-protostream"
-  memory:
-    maxSize: "1.5GB"
-    whenFull: "REMOVE"</code></pre>
+<pre class="rouge highlight"><code data-lang="yaml"><span class="na">distributedCache</span><span class="pi">:</span>
+  <span class="na">encoding</span><span class="pi">:</span>
+    <span class="na">mediaType</span><span class="pi">:</span> <span class="s2">"</span><span class="s">application/x-protostream"</span>
+  <span class="na">memory</span><span class="pi">:</span>
+    <span class="na">maxSize</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1.5GB"</span>
+    <span class="na">whenFull</span><span class="pi">:</span> <span class="s2">"</span><span class="s">REMOVE"</span></code></pre>
 </div>
 </div>
 </li>
@@ -183,7 +183,7 @@
 <p><strong>Delete by query</strong>: Ickle (Infinispan&#8217;s query language) now supports <code>DELETE FROM</code> queries using all of the supported clauses, both for indexed and non-indexed caches:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">query.create("DELETE FROM books WHERE page_count &gt; 500").executeStatement();</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="n">query</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"DELETE FROM books WHERE page_count &gt; 500"</span><span class="o">).</span><span class="na">executeStatement</span><span class="o">();</span></code></pre>
 </div>
 </div>
 </li>
@@ -203,12 +203,12 @@
 <p><strong>SQL cache store</strong> which maps database tables and queries to Protobuf, greatly simplifying accessing your existing data. For example, you can expose a single table <code>books</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;table-jdbc-store table-name="books"&gt;
-    &lt;schema message-name="books_value"
-            key-message-name="books_key"
-            package="library"
-            embedded-key="true"/&gt;
-&lt;/table-jdbc-store&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;table-jdbc-store</span> <span class="na">table-name=</span><span class="s">"books"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;schema</span> <span class="na">message-name=</span><span class="s">"books_value"</span>
+            <span class="na">key-message-name=</span><span class="s">"books_key"</span>
+            <span class="na">package=</span><span class="s">"library"</span>
+            <span class="na">embedded-key=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/table-jdbc-store&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -216,20 +216,20 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;query-jdbc-store&gt;
-    &lt;queries key-columns="isbn"&gt;
-        &lt;select-single&gt;SELECT isbn, title FROM books WHERE isbn = :isbn&lt;/select-single&gt;
-        &lt;select-all&gt;SELECT isbn, title FROM books&lt;/select-all&gt;
-        &lt;delete&gt;DELETE FROM books WHERE isbn = :key&lt;/delete&gt;
-        &lt;delete-all&gt;DELETE FROM books&lt;/delete-all&gt;
-        &lt;upsert&gt;INSERT INTO books (isbn, title) VALUES (:key, :value) ON CONFLICT (isbn) DO UPDATE SET title = :value&lt;/upsert&gt;
-        &lt;size&gt;SELECT COUNT(*) FROM books&lt;/size&gt;
-    &lt;/queries&gt;
-    &lt;schema message-name="books_value"
-            key-message-name="books_key"
-            package="library"
-            embedded-key="true"/&gt;
-&lt;/query-jdbc-store&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;query-jdbc-store&gt;</span>
+    <span class="nt">&lt;queries</span> <span class="na">key-columns=</span><span class="s">"isbn"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;select-single&gt;</span>SELECT isbn, title FROM books WHERE isbn = :isbn<span class="nt">&lt;/select-single&gt;</span>
+        <span class="nt">&lt;select-all&gt;</span>SELECT isbn, title FROM books<span class="nt">&lt;/select-all&gt;</span>
+        <span class="nt">&lt;delete&gt;</span>DELETE FROM books WHERE isbn = :key<span class="nt">&lt;/delete&gt;</span>
+        <span class="nt">&lt;delete-all&gt;</span>DELETE FROM books<span class="nt">&lt;/delete-all&gt;</span>
+        <span class="nt">&lt;upsert&gt;</span>INSERT INTO books (isbn, title) VALUES (:key, :value) ON CONFLICT (isbn) DO UPDATE SET title = :value<span class="nt">&lt;/upsert&gt;</span>
+        <span class="nt">&lt;size&gt;</span>SELECT COUNT(*) FROM books<span class="nt">&lt;/size&gt;</span>
+    <span class="nt">&lt;/queries&gt;</span>
+    <span class="nt">&lt;schema</span> <span class="na">message-name=</span><span class="s">"books_value"</span>
+            <span class="na">key-message-name=</span><span class="s">"books_key"</span>
+            <span class="na">package=</span><span class="s">"library"</span>
+            <span class="na">embedded-key=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/query-jdbc-store&gt;</span></code></pre>
 </div>
 </div>
 </li>
@@ -246,7 +246,7 @@
 <p><strong>Configuration overlays</strong>: you can specify multiple configuration files, in any of the supported formats, and they will be combined to form the final configuration. You can even mix formats:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">server.sh -c base.xml -c layer.yml -c custom.json</code></pre>
+<pre class="rouge highlight"><code data-lang="shell">server.sh <span class="nt">-c</span> base.xml <span class="nt">-c</span> layer.yml <span class="nt">-c</span> custom.json</code></pre>
 </div>
 </div>
 </li>
@@ -254,7 +254,7 @@
 <p><strong>Mutable cache configuration</strong>: you can now update cache configurations cluster-wide at runtime with the CLI. The following example changes the maximum number of entries of a cache:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">alter cache mycache --attribute=memory.max-count --value=10000</code></pre>
+<pre class="rouge highlight"><code data-lang="shell">alter cache mycache <span class="nt">--attribute</span><span class="o">=</span>memory.max-count <span class="nt">--value</span><span class="o">=</span>10000</code></pre>
 </div>
 </div>
 </li>
@@ -265,27 +265,27 @@
 <p><strong>REST listeners</strong>: It is now possible to listen to cache events over HTTP using Server-Sent Events.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">curl --digest -u user:password -N http://127.0.0.1:11222/rest/v2/caches/mycache?action=listen
+<pre class="rouge highlight"><code data-lang="shell">curl <span class="nt">--digest</span> <span class="nt">-u</span> user:password <span class="nt">-N</span> http://127.0.0.1:11222/rest/v2/caches/mycache?action<span class="o">=</span>listen
 event: cache-entry-created
 data:
-data: {
-data:    "_type": "string",
-data:    "_value": "k1"
-data: }
+data: <span class="o">{</span>
+data:    <span class="s2">"_type"</span>: <span class="s2">"string"</span>,
+data:    <span class="s2">"_value"</span>: <span class="s2">"k1"</span>
+data: <span class="o">}</span>
 
 event: cache-entry-modified
 data:
-data: {
-data:    "_type": "string",
-data:    "_value": "k1"
-data: }
+data: <span class="o">{</span>
+data:    <span class="s2">"_type"</span>: <span class="s2">"string"</span>,
+data:    <span class="s2">"_value"</span>: <span class="s2">"k1"</span>
+data: <span class="o">}</span>
 
 event: cache-entry-removed
 data:
-data: {
-data:    "_type": "string",
-data:    "_value": "k1"
-data: }</code></pre>
+data: <span class="o">{</span>
+data:    <span class="s2">"_type"</span>: <span class="s2">"string"</span>,
+data:    <span class="s2">"_value"</span>: <span class="s2">"k1"</span>
+data: <span class="o">}</span></code></pre>
 </div>
 </div>
 </li>
@@ -296,9 +296,9 @@ data: }</code></pre>
 <p><strong>Simple TLS for clustering</strong>: Infinispan Server can automatically enable TLS for the cluster transport simply by specifying a security realm with a keystore/truststore server identity:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cache-container name="default" statistics="true"&gt;
-  &lt;transport cluster="cluster" server:security-realm="cluster"/&gt;
-&lt;/cache-container&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;cache-container</span> <span class="na">name=</span><span class="s">"default"</span> <span class="na">statistics=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;transport</span> <span class="na">cluster=</span><span class="s">"cluster"</span> <span class="na">server:security-realm=</span><span class="s">"cluster"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/cache-container&gt;</span></code></pre>
 </div>
 </div>
 </li>
@@ -437,8 +437,8 @@ data: }</code></pre>
 <p>Easily connect a CLI to an operator-managed Infinispan cluster without having to specify connection details:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">kubectl infinispan shell -n default mycluster
-[mycluster-0-37266@mycluster//containers/default]&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="shell">kubectl infinispan shell <span class="nt">-n</span> default mycluster
+<span class="o">[</span>mycluster-0-37266@mycluster//containers/default]&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -455,14 +455,14 @@ data: }</code></pre>
 <p>An InfinispanContainer which makes it easy to test your applications via the awesome <a href="https://www.testcontainers.org/">Testcontainers</a> library</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">try (InfinispanContainer container = new InfinispanContainer()) {
-  container.start();
-    try (RemoteCacheManager cacheManager = container.getRemoteCacheManager()) {
-      RemoteCache&lt;Object, Object&gt; testCache = cacheManager.administration().getOrCreateCache("test", DefaultTemplate.DIST_SYNC);
-      testCache.put("key", "value");
-      assertEquals("value", testCache.get("key"));
-    }
-}</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="k">try</span> <span class="o">(</span><span class="nc">InfinispanContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InfinispanContainer</span><span class="o">())</span> <span class="o">{</span>
+  <span class="n">container</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="k">try</span> <span class="o">(</span><span class="nc">RemoteCacheManager</span> <span class="n">cacheManager</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="na">getRemoteCacheManager</span><span class="o">())</span> <span class="o">{</span>
+      <span class="nc">RemoteCache</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">testCache</span> <span class="o">=</span> <span class="n">cacheManager</span><span class="o">.</span><span class="na">administration</span><span class="o">().</span><span class="na">getOrCreateCache</span><span class="o">(</span><span class="s">"test"</span><span class="o">,</span> <span class="nc">DefaultTemplate</span><span class="o">.</span><span class="na">DIST_SYNC</span><span class="o">);</span>
+      <span class="n">testCache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span> <span class="s">"value"</span><span class="o">);</span>
+      <span class="n">assertEquals</span><span class="o">(</span><span class="s">"value"</span><span class="o">,</span> <span class="n">testCache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"key"</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 </li>

@@ -219,11 +219,11 @@ for itself:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-sql" data-lang="sql">select accountId, sum(amount) from com.acme.Transaction
-    where amount &lt; 20.0
-    group by accountId
-    having sum(amount) &gt; 1000.0
-    order by accountId</code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">accountId</span><span class="p">,</span> <span class="k">sum</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="k">from</span> <span class="n">com</span><span class="p">.</span><span class="n">acme</span><span class="p">.</span><span class="n">Transaction</span>
+<span class="err">   </span> <span class="k">where</span> <span class="n">amount</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">.</span><span class="mi">0</span>
+<span class="err">   </span> <span class="k">group</span> <span class="k">by</span> <span class="n">accountId</span>
+<span class="err">   </span> <span class="k">having</span> <span class="k">sum</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
+<span class="err">   </span> <span class="k">order</span> <span class="k">by</span> <span class="n">accountId</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -231,12 +231,12 @@ for itself:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Query query = queryFactory.from(Transaction.class)
-.select(Expression.property("accountId"), Expression.sum("amount"))
-.having("amount").lt(20.0)
-.groupBy("accountId")
-.having(Expression.sum("amount")).gt(1000.0)
-.orderBy("accountId").build();</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">queryFactory</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="nc">Transaction</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="nc">Expression</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">"accountId"</span><span class="o">),</span> <span class="nc">Expression</span><span class="o">.</span><span class="na">sum</span><span class="o">(</span><span class="s">"amount"</span><span class="o">))</span>
+<span class="o">.</span><span class="na">having</span><span class="o">(</span><span class="s">"amount"</span><span class="o">).</span><span class="na">lt</span><span class="o">(</span><span class="mf">20.0</span><span class="o">)</span>
+<span class="o">.</span><span class="na">groupBy</span><span class="o">(</span><span class="s">"accountId"</span><span class="o">)</span>
+<span class="o">.</span><span class="na">having</span><span class="o">(</span><span class="nc">Expression</span><span class="o">.</span><span class="na">sum</span><span class="o">(</span><span class="s">"amount"</span><span class="o">)).</span><span class="na">gt</span><span class="o">(</span><span class="mf">1000.0</span><span class="o">)</span>
+<span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">"accountId"</span><span class="o">).</span><span class="na">build</span><span class="o">();</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -251,8 +251,8 @@ demonstrates a simple full-text term query:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-sql" data-lang="sql">select transactionId, amount, description from com.acme.Transaction
-where amount &gt; 10 and description : "coffee"</code></pre>
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">select</span> <span class="n">transactionId</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">description</span> <span class="k">from</span> <span class="n">com</span><span class="p">.</span><span class="n">acme</span><span class="p">.</span><span class="n">Transaction</span>
+<span class="k">where</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="k">and</span> <span class="n">description</span> <span class="p">:</span> <span class="nv">"coffee"</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

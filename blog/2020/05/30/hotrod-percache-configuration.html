@@ -121,14 +121,14 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">ConfigurationBuilder builder = new ConfigurationBuilder()
-    .uri("hotrod://127.0.0.1");
-    .remoteCache("closecache")
-        .nearCacheMode(NearCacheMode.INVALIDATED)
-        .nearCacheMaxEntries(10000)
-    .remoteCache("txcache")
-        .transactionMode(TransactionMode.NON_XA);
-RemoteCacheManager manager = new RemoteCacheManager(builder.build());</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">ConfigurationBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConfigurationBuilder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">uri</span><span class="o">(</span><span class="s">"hotrod://127.0.0.1"</span><span class="o">);</span>
+    <span class="o">.</span><span class="na">remoteCache</span><span class="o">(</span><span class="s">"closecache"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">nearCacheMode</span><span class="o">(</span><span class="nc">NearCacheMode</span><span class="o">.</span><span class="na">INVALIDATED</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">nearCacheMaxEntries</span><span class="o">(</span><span class="mi">10000</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">remoteCache</span><span class="o">(</span><span class="s">"txcache"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">transactionMode</span><span class="o">(</span><span class="nc">TransactionMode</span><span class="o">.</span><span class="na">NON_XA</span><span class="o">);</span>
+<span class="nc">RemoteCacheManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RemoteCacheManager</span><span class="o">(</span><span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">());</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -139,7 +139,7 @@ RemoteCacheManager manager = new RemoteCacheManager(builder.build());</code></pr
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>infinispan.client.hotrod.uri=hotrod://127.0.0.1
+<pre class="rouge highlight"><code>infinispan.client.hotrod.uri=hotrod://127.0.0.1
 infinispan.client.hotrod.cache.closecache.near_cache.mode=INVALIDATED
 infinispan.client.hotrod.cache.closecache.near_cache.max_entries=10000
 infinispan.client.hotrod.cache.txcache.transaction.transaction_mode=NON_XA</code></pre>
@@ -155,13 +155,13 @@ infinispan.client.hotrod.cache.txcache.transaction.transaction_mode=NON_XA</code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">ConfigurationBuilder builder = new ConfigurationBuilder()
-    .uri("hotrod://127.0.0.1");
-    .remoteCache("mydistcache")
-        .templateName("org.infinispan.DIST_SYNC");
-RemoteCacheManager manager = new RemoteCacheManager(builder.build());
-Cache&lt;String, String&gt; cache = manager.getCache("mydistcache");
-...</code></pre>
+<pre class="rouge highlight"><code data-lang="java"><span class="nc">ConfigurationBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConfigurationBuilder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">uri</span><span class="o">(</span><span class="s">"hotrod://127.0.0.1"</span><span class="o">);</span>
+    <span class="o">.</span><span class="na">remoteCache</span><span class="o">(</span><span class="s">"mydistcache"</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">templateName</span><span class="o">(</span><span class="s">"org.infinispan.DIST_SYNC"</span><span class="o">);</span>
+<span class="nc">RemoteCacheManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RemoteCacheManager</span><span class="o">(</span><span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">());</span>
+<span class="nc">Cache</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">cache</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="na">getCache</span><span class="o">(</span><span class="s">"mydistcache"</span><span class="o">);</span>
+<span class="o">...</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -169,7 +169,7 @@ Cache&lt;String, String&gt; cache = manager.getCache("mydistcache");
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>infinispan.client.hotrod.uri=hotrod://127.0.0.1
+<pre class="rouge highlight"><code>infinispan.client.hotrod.uri=hotrod://127.0.0.1
 infinispan.client.hotrod.cache.mydistcache.template=org.infinispan.DIST_SYNC</code></pre>
 </div>
 </div>

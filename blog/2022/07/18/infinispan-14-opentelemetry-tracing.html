@@ -134,7 +134,7 @@ which is now supported by the majority of tracing servers.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell script" data-lang="shell script">./jaeger-all-in-one --collector.otlp.enabled</code></pre>
+<pre class="rouge highlight"><code data-lang="shell script">./jaeger-all-in-one --collector.otlp.enabled</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -145,10 +145,10 @@ which is now supported by the majority of tracing servers.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-properties" data-lang="properties">infinispan.tracing.enabled=true
-otel.service.name=infinispan-server-service
-otel.exporter.otlp.endpoint=http://localhost:4317
-otel.metrics.exporter=none</code></pre>
+<pre class="rouge highlight"><code data-lang="properties"><span class="py">infinispan.tracing.enabled</span><span class="p">=</span><span class="s">true</span>
+<span class="py">otel.service.name</span><span class="p">=</span><span class="s">infinispan-server-service</span>
+<span class="py">otel.exporter.otlp.endpoint</span><span class="p">=</span><span class="s">http://localhost:4317</span>
+<span class="py">otel.metrics.exporter</span><span class="p">=</span><span class="s">none</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -162,7 +162,7 @@ In this case, OTLP gRPC Exporter protocol is used and the server runs on the sam
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell script" data-lang="shell script">export JAVA_OPTS="-Dinfinispan.tracing.enabled=true -Dotel.service.name=infinispan-server-service -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.metrics.exporter=none"
+<pre class="rouge highlight"><code data-lang="shell script">export JAVA_OPTS="-Dinfinispan.tracing.enabled=true -Dotel.service.name=infinispan-server-service -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.metrics.exporter=none"
 ./server.sh</code></pre>
 </div>
 </div>
@@ -171,7 +171,7 @@ In this case, OTLP gRPC Exporter protocol is used and the server runs on the sam
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">(ForkJoinPool.commonPool-worker-2) [org.infinispan.server.core.telemetry.TelemetryServiceFactory] ISPN000952: OpenTelemetry instance loaded: OpenTelemetrySdk{...</code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="o">(</span>ForkJoinPool.commonPool-worker-2<span class="o">)</span> <span class="o">[</span>org.infinispan.server.core.telemetry.TelemetryServiceFactory] ISPN000952: OpenTelemetry instance loaded: OpenTelemetrySdk<span class="o">{</span>...</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -190,24 +190,24 @@ In this case, OTLP gRPC Exporter protocol is used and the server runs on the sam
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyRestClient {
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyRestClient</span> <span class="o">{</span>
 
-    public void putSomeValues(RemoteCache cache) {
-        Span span = tracer.spanBuilder("sub-bulk-1").setSpanKind(SpanKind.CLIENT).startSpan();
-        // put the span into the current Context
-        try (Scope scope = span.makeCurrent()) {
-            cache.put(1, "A");
-            cache.put(2, "B");
-            cache.put(3, "C");
-        } catch (Throwable throwable) {
-            span.setStatus(StatusCode.ERROR, "Something bad happened!");
-            span.recordException(throwable);
-            throw throwable;
-        } finally {
-            span.end(); // Cannot set a span after this call
-        }
-    }
-}</code></pre>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">putSomeValues</span><span class="o">(</span><span class="nc">RemoteCache</span> <span class="n">cache</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Span</span> <span class="n">span</span> <span class="o">=</span> <span class="n">tracer</span><span class="o">.</span><span class="na">spanBuilder</span><span class="o">(</span><span class="s">"sub-bulk-1"</span><span class="o">).</span><span class="na">setSpanKind</span><span class="o">(</span><span class="nc">SpanKind</span><span class="o">.</span><span class="na">CLIENT</span><span class="o">).</span><span class="na">startSpan</span><span class="o">();</span>
+        <span class="c1">// put the span into the current Context</span>
+        <span class="k">try</span> <span class="o">(</span><span class="nc">Scope</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">span</span><span class="o">.</span><span class="na">makeCurrent</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"A"</span><span class="o">);</span>
+            <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"B"</span><span class="o">);</span>
+            <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="s">"C"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">span</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="nc">StatusCode</span><span class="o">.</span><span class="na">ERROR</span><span class="o">,</span> <span class="s">"Something bad happened!"</span><span class="o">);</span>
+            <span class="n">span</span><span class="o">.</span><span class="na">recordException</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+            <span class="k">throw</span> <span class="n">throwable</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">span</span><span class="o">.</span><span class="na">end</span><span class="o">();</span> <span class="c1">// Cannot set a span after this call</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -234,46 +234,46 @@ In this case, OTLP gRPC Exporter protocol is used and the server runs on the sam
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyRestClient {
+<pre class="rouge highlight"><code data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyRestClient</span> <span class="o">{</span>
 
-    public void putSomeValues(RestCacheClient cache) {
-        Span span = tracer.spanBuilder("sub-bulk-1").setSpanKind(SpanKind.CLIENT).startSpan();
-        // put the span into the current Context
-        try (Scope scope = span.makeCurrent()) {
-            putSomeEntries(cache);
-        } catch (Throwable throwable) {
-            span.setStatus(StatusCode.ERROR, "Something bad happened!");
-            span.recordException(throwable);
-            throw throwable;
-        } finally {
-            span.end(); // Cannot set a span after this call
-        }
-    }
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">putSomeValues</span><span class="o">(</span><span class="nc">RestCacheClient</span> <span class="n">cache</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Span</span> <span class="n">span</span> <span class="o">=</span> <span class="n">tracer</span><span class="o">.</span><span class="na">spanBuilder</span><span class="o">(</span><span class="s">"sub-bulk-1"</span><span class="o">).</span><span class="na">setSpanKind</span><span class="o">(</span><span class="nc">SpanKind</span><span class="o">.</span><span class="na">CLIENT</span><span class="o">).</span><span class="na">startSpan</span><span class="o">();</span>
+        <span class="c1">// put the span into the current Context</span>
+        <span class="k">try</span> <span class="o">(</span><span class="nc">Scope</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">span</span><span class="o">.</span><span class="na">makeCurrent</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">putSomeEntries</span><span class="o">(</span><span class="n">cache</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">span</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="nc">StatusCode</span><span class="o">.</span><span class="na">ERROR</span><span class="o">,</span> <span class="s">"Something bad happened!"</span><span class="o">);</span>
+            <span class="n">span</span><span class="o">.</span><span class="na">recordException</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+            <span class="k">throw</span> <span class="n">throwable</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">span</span><span class="o">.</span><span class="na">end</span><span class="o">();</span> <span class="c1">// Cannot set a span after this call</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
 
-    private void putSomeEntries(RestCacheClient cache) {
-        Map&lt;String, String&gt; contextMap = getContextMap();
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">putSomeEntries</span><span class="o">(</span><span class="nc">RestCacheClient</span> <span class="n">cache</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">contextMap</span> <span class="o">=</span> <span class="n">getContextMap</span><span class="o">();</span>
 
-        CompletableFuture[] futures = new CompletableFuture[3];
+        <span class="nc">CompletableFuture</span><span class="o">[]</span> <span class="n">futures</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CompletableFuture</span><span class="o">[</span><span class="mi">3</span><span class="o">];</span>
 
-        futures[0] = cache.put("1", MediaType.TEXT_PLAIN.toString(),
-            RestEntity.create(MediaType.TEXT_PLAIN, "A"), contextMap).toCompletableFuture();
-        futures[1] = cache.put("2", MediaType.TEXT_PLAIN.toString(),
-            RestEntity.create(MediaType.TEXT_PLAIN, "B"), contextMap).toCompletableFuture();
-        futures[2] = cache.put("3", MediaType.TEXT_PLAIN.toString(),
-            RestEntity.create(MediaType.TEXT_PLAIN, "C"), contextMap).toCompletableFuture();
+        <span class="n">futures</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"1"</span><span class="o">,</span> <span class="nc">MediaType</span><span class="o">.</span><span class="na">TEXT_PLAIN</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span>
+            <span class="nc">RestEntity</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">TEXT_PLAIN</span><span class="o">,</span> <span class="s">"A"</span><span class="o">),</span> <span class="n">contextMap</span><span class="o">).</span><span class="na">toCompletableFuture</span><span class="o">();</span>
+        <span class="n">futures</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"2"</span><span class="o">,</span> <span class="nc">MediaType</span><span class="o">.</span><span class="na">TEXT_PLAIN</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span>
+            <span class="nc">RestEntity</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">TEXT_PLAIN</span><span class="o">,</span> <span class="s">"B"</span><span class="o">),</span> <span class="n">contextMap</span><span class="o">).</span><span class="na">toCompletableFuture</span><span class="o">();</span>
+        <span class="n">futures</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"3"</span><span class="o">,</span> <span class="nc">MediaType</span><span class="o">.</span><span class="na">TEXT_PLAIN</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span>
+            <span class="nc">RestEntity</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">TEXT_PLAIN</span><span class="o">,</span> <span class="s">"C"</span><span class="o">),</span> <span class="n">contextMap</span><span class="o">).</span><span class="na">toCompletableFuture</span><span class="o">();</span>
 
-        CompletableFuture.allOf(futures).join();
-    }
+        <span class="nc">CompletableFuture</span><span class="o">.</span><span class="na">allOf</span><span class="o">(</span><span class="n">futures</span><span class="o">).</span><span class="na">join</span><span class="o">();</span>
+    <span class="o">}</span>
 
-    public static Map&lt;String, String&gt; getContextMap() {
-        HashMap&lt;String, String&gt; result = new HashMap&lt;&gt;();
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getContextMap</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
 
-        // Inject the request with the *current* Context, which contains our current Span.
-        W3CTraceContextPropagator.getInstance().inject(Context.current(), result,
-          (carrier, key, value) -&gt; carrier.put(key, value));
-        return result;
-    }
-}</code></pre>
+        <span class="c1">// Inject the request with the *current* Context, which contains our current Span.</span>
+        <span class="nc">W3CTraceContextPropagator</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">inject</span><span class="o">(</span><span class="nc">Context</span><span class="o">.</span><span class="na">current</span><span class="o">(),</span> <span class="n">result</span><span class="o">,</span>
+          <span class="o">(</span><span class="n">carrier</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">carrier</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">));</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
