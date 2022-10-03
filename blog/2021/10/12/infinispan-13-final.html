@@ -11,13 +11,13 @@
   <link rel="stylesheet" href="/assets/css/main.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <link rel="stylesheet"
-        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/github.min.css">
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css">
   <link rel="alternate" type="application/rss+xml"
         title="Infinispan's RSS Feed"
         href="/feed.xml" />
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/highlight.min.js"></script>
-  <script charset="UTF-8"
-          src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/languages/java.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+          
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <!--   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125236544-1"></script>
   <script>
@@ -132,7 +132,7 @@
 <p><strong>Polyglot configuration</strong>: XML, JSON and YAML can now be used interchangeably to configure every part of Infinispan. Here is an example of how to configure a cache with eviction and Protobuf encoding:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;distributed-cache&gt;
   &lt;encoding media-type="application/x-protostream"/&gt;
   &lt;memory max-size="1.5GB" when-full="REMOVE"/&gt;
 &lt;/distributed-cache&gt;</code></pre>
@@ -140,7 +140,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "distributed-cache" : {
     "encoding" : {
       "media-type" : "application/x-protostream"
@@ -155,7 +155,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">distributedCache:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">distributedCache:
   encoding:
     mediaType: "application/x-protostream"
   memory:
@@ -183,7 +183,7 @@
 <p><strong>Delete by query</strong>: Ickle (Infinispan&#8217;s query language) now supports <code>DELETE FROM</code> queries using all of the supported clauses, both for indexed and non-indexed caches:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">query.create("DELETE FROM books WHERE page_count &gt; 500").executeStatement();</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">query.create("DELETE FROM books WHERE page_count &gt; 500").executeStatement();</code></pre>
 </div>
 </div>
 </li>
@@ -203,7 +203,7 @@
 <p><strong>SQL cache store</strong> which maps database tables and queries to Protobuf, greatly simplifying accessing your existing data. For example, you can expose a single table <code>books</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;table-jdbc-store table-name="books"&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;table-jdbc-store table-name="books"&gt;
     &lt;schema message-name="books_value"
             key-message-name="books_key"
             package="library"
@@ -216,7 +216,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;query-jdbc-store&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;query-jdbc-store&gt;
     &lt;queries key-columns="isbn"&gt;
         &lt;select-single&gt;SELECT isbn, title FROM books WHERE isbn = :isbn&lt;/select-single&gt;
         &lt;select-all&gt;SELECT isbn, title FROM books&lt;/select-all&gt;
@@ -246,7 +246,7 @@
 <p><strong>Configuration overlays</strong>: you can specify multiple configuration files, in any of the supported formats, and they will be combined to form the final configuration. You can even mix formats:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">server.sh -c base.xml -c layer.yml -c custom.json</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">server.sh -c base.xml -c layer.yml -c custom.json</code></pre>
 </div>
 </div>
 </li>
@@ -254,7 +254,7 @@
 <p><strong>Mutable cache configuration</strong>: you can now update cache configurations cluster-wide at runtime with the CLI. The following example changes the maximum number of entries of a cache:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">alter cache mycache --attribute=memory.max-count --value=10000</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">alter cache mycache --attribute=memory.max-count --value=10000</code></pre>
 </div>
 </div>
 </li>
@@ -265,7 +265,7 @@
 <p><strong>REST listeners</strong>: It is now possible to listen to cache events over HTTP using Server-Sent Events.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">curl --digest -u user:password -N http://127.0.0.1:11222/rest/v2/caches/mycache?action=listen
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">curl --digest -u user:password -N http://127.0.0.1:11222/rest/v2/caches/mycache?action=listen
 event: cache-entry-created
 data:
 data: {
@@ -296,7 +296,7 @@ data: }</code></pre>
 <p><strong>Simple TLS for clustering</strong>: Infinispan Server can automatically enable TLS for the cluster transport simply by specifying a security realm with a keystore/truststore server identity:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;cache-container name="default" statistics="true"&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;cache-container name="default" statistics="true"&gt;
   &lt;transport cluster="cluster" server:security-realm="cluster"/&gt;
 &lt;/cache-container&gt;</code></pre>
 </div>
@@ -437,7 +437,7 @@ data: }</code></pre>
 <p>Easily connect a CLI to an operator-managed Infinispan cluster without having to specify connection details:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">kubectl infinispan shell -n default mycluster
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">kubectl infinispan shell -n default mycluster
 [mycluster-0-37266@mycluster//containers/default]&gt;</code></pre>
 </div>
 </div>
@@ -455,7 +455,7 @@ data: }</code></pre>
 <p>An InfinispanContainer which makes it easy to test your applications via the awesome <a href="https://www.testcontainers.org/">Testcontainers</a> library</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">try (InfinispanContainer container = new InfinispanContainer()) {
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">try (InfinispanContainer container = new InfinispanContainer()) {
   container.start();
     try (RemoteCacheManager cacheManager = container.getRemoteCacheManager()) {
       RemoteCache&lt;Object, Object&gt; testCache = cacheManager.administration().getOrCreateCache("test", DefaultTemplate.DIST_SYNC);

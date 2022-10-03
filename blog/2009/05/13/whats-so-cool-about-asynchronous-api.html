@@ -11,13 +11,13 @@
   <link rel="stylesheet" href="/assets/css/main.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <link rel="stylesheet"
-        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/github.min.css">
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css">
   <link rel="alternate" type="application/rss+xml"
         title="Infinispan's RSS Feed"
         href="/feed.xml" />
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/highlight.min.js"></script>
-  <script charset="UTF-8"
-          src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/languages/java.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+          
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <!--   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125236544-1"></script>
   <script>
@@ -124,7 +124,7 @@ rather than the expected return type. E.g.,</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">V put(K key, V value);
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">V put(K key, V value);
 Future&lt;V&gt; putAsync(K key, V value);
 
 boolean remove(K key, V value);
@@ -160,7 +160,7 @@ too. Consider:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Cache&lt;String, String&gt; cache = getCache();
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Cache&lt;String, String&gt; cache = getCache();
 Future&lt;String&gt; f1 = cache.putAsync(k1, v1);
 Future&lt;String&gt; f2 = cache.putAsync(k2, v2);
 Future&lt;String&gt; f3 = cache.putAsync(k3, v3);
