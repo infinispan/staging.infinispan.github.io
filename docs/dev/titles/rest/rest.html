@@ -1894,7 +1894,8 @@ For server caches with no encoding, Infinispan assumes <code>application/x-proto
       "127.0.0.1:44175"
     ],
     "memory_entries": 0,
-    "total_entries": 0
+    "total_entries": 0,
+    "memory_used": 528512
   },
   {
     "node_name":"NodeB",
@@ -1902,7 +1903,8 @@ For server caches with no encoding, Infinispan assumes <code>application/x-proto
       "127.0.0.1:44187"
     ],
     "memory_entries": 0,
-    "total_entries": 0
+    "total_entries": 0,
+    "memory_used": 528512
   }
 ]</code></pre>
 </div>
@@ -1923,6 +1925,9 @@ For server caches with no encoding, Infinispan assumes <code>application/x-proto
 </li>
 <li>
 <p><code>total_entries</code> the number of entries the node has in memory and disk belonging to the cache.</p>
+</li>
+<li>
+<p><code>memory_used</code> the value in bytes the eviction algorithm estimates the cache occupies. Returns -1 if eviction is not enabled.</p>
 </li>
 </ul>
 </div>
@@ -6645,7 +6650,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-05 13:07:20 UTC
+Last updated 2022-10-10 08:10:09 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
