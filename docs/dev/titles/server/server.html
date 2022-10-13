@@ -3305,6 +3305,20 @@ When you disable user authentication you should also disable authorization in yo
 <p>Infinispan Server automatically configures endpoints with authentication mechanisms that match your security realm configuration.
 For example, if you add a Kerberos security realm then Infinispan Server enables the <code>GSSAPI</code> and <code>GS2-KRB5</code> authentication mechanisms for the Hot Rod endpoint.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Currently, you cannot use the Lightweight Directory Access Protocol (LDAP) protocol with the <code>DIGEST</code> or <code>SCRAM</code> authentication mechanisms, because these mechanisms require access to specific hashed passwords.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <div class="title">Hot Rod endpoints</div>
 <p>Infinispan Server enables the following SASL authentication mechanisms for Hot Rod endpoints when your configuration includes the corresponding security realm:</p>
@@ -11866,7 +11880,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-11 16:10:26 UTC
+Last updated 2022-10-13 10:24:04 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
