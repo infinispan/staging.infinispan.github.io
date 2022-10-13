@@ -6146,17 +6146,18 @@ kind: Cache
 metadata:
   name: mycachedefinition
 spec:
-  clusterName: infinispan
+  clusterName:
+    example_crd_name: ~
   name: myYAMLcache
-  template: |
-  distributedCache:
-    mode: "SYNC"
-    owners: "2"
-    statistics: "true"
-    encoding:
-      mediaType: "application/x-protostream"
-    persistence:
-      fileStore: ~</code></pre>
+  template: |-
+      distributedCache:
+        mode: "SYNC"
+        owners: "2"
+        statistics: "true"
+        encoding:
+          mediaType: "application/x-protostream"
+        persistence:
+          fileStore: ~</code></pre>
 </div>
 </div>
 </div>
@@ -7887,7 +7888,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-03 11:52:45 UTC
+Last updated 2022-10-13 12:17:57 UTC
 </div>
 </div>
 <script>
