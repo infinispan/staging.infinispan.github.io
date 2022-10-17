@@ -5120,6 +5120,20 @@ If you set up cross-site on Kubernetes this field specifies the access secret fo
 <p>You must add a keystore to use an OpenShift <code>Route</code> as the expose type for cross-site replication.
 Securing cross-site connections is optional if you use a <code>NodePort</code> or <code>LoadBalancer</code> as the expose type.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Cross-site replication does not support the Kubernetes CA service. You must provide your own certificates.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
 <ul>
@@ -7888,7 +7902,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-13 12:17:57 UTC
+Last updated 2022-10-17 08:55:28 UTC
 </div>
 </div>
 <script>
