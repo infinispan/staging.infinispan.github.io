@@ -743,10 +743,10 @@ to readily integrate with enterprise-level security frameworks.</p>
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/AuthorizationPermission.html">org.infinispan.security.AuthorizationPermission Enum</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/security/AuthorizationPermission.html">org.infinispan.security.AuthorizationPermission Enum</a></p>
 </li>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/configdocs/">Infinispan configuration schema reference</a></p>
 </li>
 </ul>
 </div>
@@ -879,7 +879,7 @@ to readily integrate with enterprise-level security frameworks.</p>
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/package-summary.html">Infinispan Security API</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/security/package-summary.html">Infinispan Security API</a></p>
 </li>
 </ul>
 </div>
@@ -917,19 +917,19 @@ Infinispan also provides the following role and permission mapper implementation
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/package-summary.html">Infinispan Security API</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/security/package-summary.html">Infinispan Security API</a></p>
 </li>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/PrincipalRoleMapper.html">org.infinispan.security.PrincipalRoleMapper</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/security/PrincipalRoleMapper.html">org.infinispan.security.PrincipalRoleMapper</a></p>
 </li>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/RolePermissionMapper.html">org.infinispan.security.RolePermissionMapper</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/security/RolePermissionMapper.html">org.infinispan.security.RolePermissionMapper</a></p>
 </li>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/mappers/IdentityRoleMapper.html">org.infinispan.security.mappers.IdentityRoleMapper</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/security/mappers/IdentityRoleMapper.html">org.infinispan.security.mappers.IdentityRoleMapper</a></p>
 </li>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/security/mappers/CommonNameRoleMapper.html">org.infinispan.security.mappers.CommonNameRoleMapper</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/security/mappers/CommonNameRoleMapper.html">org.infinispan.security.mappers.CommonNameRoleMapper</a></p>
 </li>
 </ul>
 </div>
@@ -1001,7 +1001,7 @@ For example, if your deployment integrates with an LDAP directory and you want t
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/configdocs/">Infinispan configuration schema reference</a></p>
 </li>
 </ul>
 </div>
@@ -1268,7 +1268,7 @@ You must manually synchronize credentials in a properties realm to each node in 
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="application-realm"&gt;
@@ -1446,7 +1446,7 @@ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="kerberos-realm"&gt;
@@ -1610,7 +1610,7 @@ user2=supervisor</code></pre>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="default"&gt;
@@ -1767,7 +1767,7 @@ Specify a different filter with the <code>filter-name</code> attribute.</p>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="ldap-realm"&gt;
@@ -1872,7 +1872,7 @@ it to search LDAP directories.</p>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="ldap-realm"&gt;
@@ -1982,7 +1982,7 @@ KeyCloak.</p>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="token-realm"&gt;
@@ -2063,7 +2063,7 @@ KeyCloak.</p>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="trust-store-realm"&gt;
@@ -2150,7 +2150,7 @@ When users attempt to access the Hot Rod or REST endpoints, Infinispan Server us
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="distributed-realm"&gt;
@@ -2371,7 +2371,7 @@ For example, if you explicitly declare a <code>hotrod-connector</code> you must 
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;endpoints&gt;
     &lt;endpoint socket-binding="default"
               security-realm="my-realm"&gt;
@@ -2483,7 +2483,7 @@ When you disable user authentication you should also disable authorization in yo
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;endpoints socket-binding="default"/&gt;
 &lt;/server&gt;</code></pre>
 </div>
@@ -2781,7 +2781,7 @@ Configure cache authorization and then set <code>&lt;no-anonymous value=false /&
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;endpoints&gt;
     &lt;endpoint socket-binding="default"
               security-realm="default"&gt;
@@ -3005,7 +3005,7 @@ BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="default"&gt;
@@ -3123,7 +3123,7 @@ BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="generated-keystore"&gt;
@@ -3242,7 +3242,7 @@ Omitting the <code>enabled-protocols</code> attribute allows any TLS version.</p
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="default"&gt;
@@ -3394,7 +3394,7 @@ You can disable the OpenSSL provider at startup with the <code>-Dorg.infinispan.
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
    &lt;security&gt;
       &lt;security-realms&gt;
          &lt;security-realm name="default"&gt;
@@ -3495,7 +3495,7 @@ You can disable the OpenSSL provider at startup with the <code>-Dorg.infinispan.
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
    &lt;security&gt;
       &lt;security-realms&gt;
          &lt;security-realm name="default"&gt;
@@ -3651,7 +3651,7 @@ These trust stores should be configured with an empty password: <code>password="
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="trust-store-realm"&gt;
@@ -4139,7 +4139,7 @@ If the command requires parameters, provide them as a space-separated list of st
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;credential-stores&gt;
       &lt;credential-store name="credentials" path="credentials.pfx"&gt;
@@ -4184,7 +4184,7 @@ If the command requires parameters, provide them as a space-separated list of st
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;credential-stores&gt;
       &lt;credential-store name="credentials"
@@ -4230,7 +4230,7 @@ If the command requires parameters, provide them as a space-separated list of st
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;credential-stores&gt;
       &lt;credential-store name="credentials"
@@ -4282,7 +4282,7 @@ If the command requires parameters, provide them as a space-separated list of st
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;credential-stores&gt;
       &lt;credential-store name="credentials"
@@ -4370,7 +4370,7 @@ If the command requires parameters, provide them as a space-separated list of st
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;credential-stores&gt;
       &lt;credential-store name="credentials"
@@ -4513,7 +4513,7 @@ Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to enc
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:14.0"&gt;
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
   &lt;security&gt;
     &lt;security-realms&gt;
       &lt;security-realm name="cluster-transport"&gt;
@@ -4978,7 +4978,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-17 14:20:31 UTC
+Last updated 2022-10-17 14:48:40 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
