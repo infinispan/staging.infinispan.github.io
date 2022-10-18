@@ -924,7 +924,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.0.Final.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.1.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3304,6 +3304,20 @@ When you disable user authentication you should also disable authorization in yo
 <div class="paragraph">
 <p>Infinispan Server automatically configures endpoints with authentication mechanisms that match your security realm configuration.
 For example, if you add a Kerberos security realm then Infinispan Server enables the <code>GSSAPI</code> and <code>GS2-KRB5</code> authentication mechanisms for the Hot Rod endpoint.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Currently, you cannot use the Lightweight Directory Access Protocol (LDAP) protocol with the <code>DIGEST</code> or <code>SCRAM</code> authentication mechanisms, because these mechanisms require access to specific hashed passwords.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <div class="title">Hot Rod endpoints</div>
@@ -8263,7 +8277,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.0.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.1.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>

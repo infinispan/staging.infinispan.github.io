@@ -1720,6 +1720,38 @@ mycache</code></pre>
 <p>All declarative caches must conform to the Infinispan schema.
 Configuration in JSON format must follow the structure of an XML configuration, elements correspond to objects and attributes correspond to fields.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan restricts characters to a maximum of <code>255</code> for a cache name or a cache template name.
+If you exceed this character limit, Infinispan throws an exception.
+Write succinct cache names and cache template names.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>A file system might set a limitation for the length of a file name, so ensure that a cache&#8217;s name does not exceed this limitation.
+If a cache name exceeds a file system&#8217;s naming limitation, general operations or initialing operations towards that cache might fail.
+Write succinct file names.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <h5 id="distributed_caches" class="discrete">Distributed caches</h5>
 <div class="listingblock primary">
 <div class="title">XML</div>

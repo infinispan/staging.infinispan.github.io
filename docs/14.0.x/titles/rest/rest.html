@@ -1223,6 +1223,38 @@ Infinispan configuration payload; either <code>application/xml</code> or
 <p>All declarative caches must conform to the Infinispan schema.
 Configuration in JSON format must follow the structure of an XML configuration, elements correspond to objects and attributes correspond to fields.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan restricts characters to a maximum of <code>255</code> for a cache name or a cache template name.
+If you exceed this character limit, Infinispan throws an exception.
+Write succinct cache names and cache template names.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>A file system might set a limitation for the length of a file name, so ensure that a cache&#8217;s name does not exceed this limitation.
+If a cache name exceeds a file system&#8217;s naming limitation, general operations or initialing operations towards that cache might fail.
+Write succinct file names.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <h6 id="distributed_caches" class="discrete">Distributed caches</h6>
 <div class="listingblock primary">
 <div class="title">XML</div>
@@ -1862,7 +1894,8 @@ For server caches with no encoding, Infinispan assumes <code>application/x-proto
       "127.0.0.1:44175"
     ],
     "memory_entries": 0,
-    "total_entries": 0
+    "total_entries": 0,
+    "memory_used": 528512
   },
   {
     "node_name":"NodeB",
@@ -1870,7 +1903,8 @@ For server caches with no encoding, Infinispan assumes <code>application/x-proto
       "127.0.0.1:44187"
     ],
     "memory_entries": 0,
-    "total_entries": 0
+    "total_entries": 0,
+    "memory_used": 528512
   }
 ]</code></pre>
 </div>
@@ -1891,6 +1925,9 @@ For server caches with no encoding, Infinispan assumes <code>application/x-proto
 </li>
 <li>
 <p><code>total_entries</code> the number of entries the node has in memory and disk belonging to the cache.</p>
+</li>
+<li>
+<p><code>memory_used</code> the value in bytes the eviction algorithm estimates the cache occupies. Returns -1 if eviction is not enabled.</p>
 </li>
 </ul>
 </div>

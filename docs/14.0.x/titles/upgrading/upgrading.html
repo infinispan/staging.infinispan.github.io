@@ -550,6 +550,7 @@ $(addBlockSwitches);
 <li><a href="#jpastore_has_been_removed">1.1.11. JPAStore has been removed</a></li>
 <li><a href="#protodoc_annotations_are_no_longer_necessary">1.1.12. ProtoDoc annotations are no longer necessary</a></li>
 <li><a href="#the_undocumented_server_filesystem_realm_has_been_removed">1.1.13. The (undocumented) server filesystem-realm has been removed</a></li>
+<li><a href="#query_efficiency">1.1.14. Query efficiency</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_12_1_to_13_0">1.2. Upgrading from 12.1 to 13.0</a>
@@ -1106,6 +1107,15 @@ Any annotations will simply be copied as comments to the generated <code>.proto<
 <h4 id="the_undocumented_server_filesystem_realm_has_been_removed"><a class="anchor" href="#the_undocumented_server_filesystem_realm_has_been_removed"></a>1.1.13. The (undocumented) server filesystem-realm has been removed</h4>
 <div class="paragraph">
 <p>The <code>filesystem-realm</code>, an experimental feature which has never been documented, has been removed.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="query_efficiency"><a class="anchor" href="#query_efficiency"></a>1.1.14. Query efficiency</h4>
+<div class="paragraph">
+<p>The default for maximum results returned by a query that was present in Infinispan 12.1.5.Final and earlier versions has been restored.
+You can now change the default limit by setting the default-max-results cache property.
+The default value of default-max-results is 100.
+Limiting the number of results returned by a query significantly improves performance of queries that don&#8217;t have an explicit limit set.</p>
 </div>
 </div>
 </div>

@@ -1572,8 +1572,23 @@ You must manually synchronize credentials in a properties realm to each node in 
 </li>
 <li>
 <p>Add a security realm with the <code>security-realm</code> element and give it a unique name with the <code>name</code> attribute.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>To follow the example, create one security realm named <code>application-realm</code> and another named <code>management-realm</code>.</p>
+<p>Do not add special characters, such as hyphens (<code>-</code>) or ampersands (<code>&amp;</code>), to security realm names.
+Infinispan Server endpoints can become unreachable if security realm names contain special characters.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To follow the example, create one security realm named <code>ApplicationRealm</code> and another named <code>ManagementRealm</code>.</p>
 </div>
 </li>
 <li>
@@ -1616,19 +1631,22 @@ You must manually synchronize credentials in a properties realm to each node in 
 </ol>
 </div>
 <h4 id="multiple_property_realms" class="discrete">Multiple property realms</h4>
+<div class="paragraph">
+<p>The following configuration shows how you can configure multiple security realms in XML, JSON, or YAML format:</p>
+</div>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">application-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ApplicationRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="tag">&lt;properties-realm</span> <span class="attribute-name">groups-attribute</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
           <span class="tag">&lt;user-properties</span> <span class="attribute-name">path</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">application-users.properties</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
           <span class="tag">&lt;group-properties</span> <span class="attribute-name">path</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">application-groups.properties</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
         <span class="tag">&lt;/properties-realm&gt;</span>
       <span class="tag">&lt;/security-realm&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">management-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ManagementRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="tag">&lt;properties-realm</span> <span class="attribute-name">groups-attribute</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
           <span class="tag">&lt;user-properties</span> <span class="attribute-name">path</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">management-users.properties</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
           <span class="tag">&lt;group-properties</span> <span class="attribute-name">path</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">management-groups.properties</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
@@ -1646,11 +1664,11 @@ You must manually synchronize credentials in a properties realm to each node in 
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">management-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ManagementRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">properties-realm</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">groups-attribute</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span>,
           <span class="key"><span class="delimiter">&quot;</span><span class="content">user-properties</span><span class="delimiter">&quot;</span></span>: {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">digest-realm-name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">management-realm</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">digest-realm-name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ManagementRealm</span><span class="delimiter">&quot;</span></span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">path</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">management-users.properties</span><span class="delimiter">&quot;</span></span>
           },
           <span class="key"><span class="delimiter">&quot;</span><span class="content">group-properties</span><span class="delimiter">&quot;</span></span>: {
@@ -1658,11 +1676,11 @@ You must manually synchronize credentials in a properties realm to each node in 
           }
         }
       }, {
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ApplicationRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">properties-realm</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">groups-attribute</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span>,
           <span class="key"><span class="delimiter">&quot;</span><span class="content">user-properties</span><span class="delimiter">&quot;</span></span>: {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">digest-realm-name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application-realm</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">digest-realm-name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ApplicationRealm</span><span class="delimiter">&quot;</span></span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">path</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application-users.properties</span><span class="delimiter">&quot;</span></span>
           },
           <span class="key"><span class="delimiter">&quot;</span><span class="content">group-properties</span><span class="delimiter">&quot;</span></span>: {
@@ -1681,19 +1699,19 @@ You must manually synchronize credentials in a properties realm to each node in 
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: &quot;management-realm&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;ManagementRealm&quot;</span></span>
         <span class="key">propertiesRealm</span>:
           <span class="key">groupsAttribute</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span>
           <span class="key">userProperties</span>:
-            <span class="key">digestRealmName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">management-realm</span><span class="delimiter">&quot;</span></span>
+            <span class="key">digestRealmName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ManagementRealm</span><span class="delimiter">&quot;</span></span>
             <span class="key">path</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">management-users.properties</span><span class="delimiter">&quot;</span></span>
           <span class="key">groupProperties</span>:
             <span class="key">path</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">management-groups.properties</span><span class="delimiter">&quot;</span></span>
-      - <span class="string"><span class="content">name: &quot;application-realm&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;ApplicationRealm&quot;</span></span>
         <span class="key">propertiesRealm</span>:
           <span class="key">groupsAttribute</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span>
           <span class="key">userProperties</span>:
-            <span class="key">digestRealmName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application-realm</span><span class="delimiter">&quot;</span></span>
+            <span class="key">digestRealmName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ApplicationRealm</span><span class="delimiter">&quot;</span></span>
             <span class="key">path</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application-users.properties</span><span class="delimiter">&quot;</span></span>
           <span class="key">groupProperties</span>:
             <span class="key">path</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">application-groups.properties</span><span class="delimiter">&quot;</span></span></code></pre>
@@ -1818,7 +1836,7 @@ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
   <span class="tag">&lt;/security&gt;</span>
   <span class="tag">&lt;endpoints&gt;</span>
     <span class="tag">&lt;endpoint</span> <span class="attribute-name">socket-binding</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>
-              <span class="attribute-name">security-realm</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">kerberos-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+              <span class="attribute-name">security-realm</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">KerberosRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
      <span class="tag">&lt;hotrod-connector&gt;</span>
         <span class="tag">&lt;authentication&gt;</span>
            <span class="tag">&lt;sasl</span> <span class="attribute-name">server-name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">datagrid</span><span class="delimiter">&quot;</span></span>
@@ -1840,7 +1858,7 @@ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">kerberos-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">KerberosRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">server-identities</span><span class="delimiter">&quot;</span></span>: [{
           <span class="key"><span class="delimiter">&quot;</span><span class="content">kerberos</span><span class="delimiter">&quot;</span></span>: {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">principal</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">hotrod/datagrid@INFINISPAN.ORG</span><span class="delimiter">&quot;</span></span>,
@@ -1858,7 +1876,7 @@ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
     <span class="key"><span class="delimiter">&quot;</span><span class="content">endpoints</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">endpoint</span><span class="delimiter">&quot;</span></span>: {
         <span class="key"><span class="delimiter">&quot;</span><span class="content">socket-binding</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>,
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realm</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">kerberos-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realm</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">KerberosRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">hotrod-connector</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">authentication</span><span class="delimiter">&quot;</span></span>: {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realm</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">kerberos-realm</span><span class="delimiter">&quot;</span></span>,
@@ -1885,7 +1903,7 @@ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: &quot;kerberos-realm&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;KerberosRealm&quot;</span></span>
         <span class="key">serverIdentities</span>:
           - <span class="string"><span class="content">kerberos:</span><span class="content">
               principal: &quot;hotrod/datagrid@INFINISPAN.ORG&quot;
@@ -1898,7 +1916,7 @@ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
   <span class="key">endpoints</span>:
     <span class="key">endpoint</span>:
       <span class="key">socketBinding</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>
-      <span class="key">securityRealm</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">kerberos-realm</span><span class="delimiter">&quot;</span></span>
+      <span class="key">securityRealm</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">KerberosRealm</span><span class="delimiter">&quot;</span></span>
       <span class="key">hotrodConnector</span>:
         <span class="key">authentication</span>:
           <span class="key">sasl</span>:
@@ -1906,7 +1924,7 @@ ktab -k http.keytab -a HTTP/datagrid@INFINISPAN.ORG</code></pre>
             <span class="key">serverPrincipal</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">hotrod/datagrid@INFINISPAN.ORG</span><span class="delimiter">&quot;</span></span>
       <span class="key">restConnector</span>:
         <span class="key">authentication</span>:
-          <span class="key">securityRealm</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">kerberos-realm</span><span class="delimiter">&quot;</span></span>
+          <span class="key">securityRealm</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">KerberosRealm</span><span class="delimiter">&quot;</span></span>
           <span class="key">serverPrincipal&quot;</span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">HTTP/localhost@INFINISPAN.ORG</span><span class="delimiter">&quot;</span></span></code></pre>
 </div>
 </div>
@@ -2117,7 +2135,7 @@ Specify a different filter with the <code>filter-name</code> attribute.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ldap-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">LdapRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="comment">&lt;!-- Specifies connection properties. --&gt;</span>
         <span class="tag">&lt;ldap-realm</span> <span class="attribute-name">url</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://my-ldap-server:10389</span><span class="delimiter">&quot;</span></span>
                     <span class="attribute-name">principal</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>
@@ -2153,7 +2171,7 @@ Specify a different filter with the <code>filter-name</code> attribute.</p>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ldap-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">LdapRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">ldap-realm</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://my-ldap-server:10389</span><span class="delimiter">&quot;</span></span>,
           <span class="key"><span class="delimiter">&quot;</span><span class="content">principal</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>,
@@ -2188,7 +2206,7 @@ Specify a different filter with the <code>filter-name</code> attribute.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: ldap-realm</span></span>
+      - <span class="string"><span class="content">name: LdapRealm</span></span>
         <span class="key">ldapRealm</span>:
           <span class="key">url</span>: <span class="string"><span class="content">'ldap://my-ldap-server:10389'</span></span>
           <span class="key">principal</span>: <span class="string"><span class="content">'uid=admin,ou=People,dc=infinispan,dc=org'</span></span>
@@ -2222,7 +2240,7 @@ it to search LDAP directories.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ldap-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">LdapRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="tag">&lt;ldap-realm</span> <span class="attribute-name">url</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://${org.infinispan.test.host.address}:10389</span><span class="delimiter">&quot;</span></span>
                     <span class="attribute-name">principal</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>
                     <span class="attribute-name">credential</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">strongPassword</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
@@ -2255,7 +2273,7 @@ it to search LDAP directories.</p>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ldap-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">LdapRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">ldap-realm</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">principal</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>,
           <span class="key"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://${org.infinispan.test.host.address}:10389</span><span class="delimiter">&quot;</span></span>,
@@ -2294,7 +2312,7 @@ it to search LDAP directories.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: &quot;ldap-realm&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;LdapRealm&quot;</span></span>
         <span class="key">ldapRealm</span>:
           <span class="key">principal</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>
           <span class="key">url</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://${org.infinispan.test.host.address}:10389</span><span class="delimiter">&quot;</span></span>
@@ -2332,7 +2350,7 @@ KeyCloak.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">token-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TokenRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="comment">&lt;!-- Specifies the URL of the authentication server. --&gt;</span>
         <span class="tag">&lt;token-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">token</span><span class="delimiter">&quot;</span></span>
                      <span class="attribute-name">auth-server-url</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">https://oauth-server/auth/</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
@@ -2354,7 +2372,7 @@ KeyCloak.</p>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">token-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TokenRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">token-realm</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">auth-server-url</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">https://oauth-server/auth/</span><span class="delimiter">&quot;</span></span>,
           <span class="key"><span class="delimiter">&quot;</span><span class="content">oauth2-introspection</span><span class="delimiter">&quot;</span></span>: {
@@ -2375,7 +2393,7 @@ KeyCloak.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: token-realm</span></span>
+      - <span class="string"><span class="content">name: &quot;TokenRealm&quot;</span></span>
         <span class="key">tokenRealm</span>:
           <span class="key">authServerUrl</span>: <span class="string"><span class="content">'https://oauth-server/auth/'</span></span>
           <span class="key">oauth2Introspection</span>:
@@ -2413,7 +2431,7 @@ KeyCloak.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">trust-store-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TrustStoreRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="tag">&lt;server-identities&gt;</span>
           <span class="tag">&lt;ssl&gt;</span>
             <span class="comment">&lt;!-- Provides an SSL/TLS identity with a keystore that contains server certificates. --&gt;</span>
@@ -2442,7 +2460,7 @@ KeyCloak.</p>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">trust-store-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TrustStoreRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">server-identities</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">ssl</span><span class="delimiter">&quot;</span></span>: {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">keystore</span><span class="delimiter">&quot;</span></span>: {
@@ -2471,7 +2489,7 @@ KeyCloak.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: &quot;trust-store-realm&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;TrustStoreRealm&quot;</span></span>
         <span class="key">serverIdentities</span>:
           <span class="key">ssl</span>:
             <span class="key">keystore</span>:
@@ -2500,7 +2518,7 @@ When users attempt to access the Hot Rod or REST endpoints, Infinispan Server us
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">distributed-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">DistributedRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="tag">&lt;ldap-realm</span> <span class="attribute-name">url</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://my-ldap-server:10389</span><span class="delimiter">&quot;</span></span>
                     <span class="attribute-name">principal</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>
                     <span class="attribute-name">credential</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">strongPassword</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
@@ -2534,7 +2552,7 @@ When users attempt to access the Hot Rod or REST endpoints, Infinispan Server us
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">distributed-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">DistributedRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">ldap-realm</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">principal</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>,
           <span class="key"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://my-ldap-server:10389</span><span class="delimiter">&quot;</span></span>,
@@ -2556,7 +2574,7 @@ When users attempt to access the Hot Rod or REST endpoints, Infinispan Server us
         <span class="key"><span class="delimiter">&quot;</span><span class="content">properties-realm</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">groups-attribute</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span>,
           <span class="key"><span class="delimiter">&quot;</span><span class="content">user-properties</span><span class="delimiter">&quot;</span></span>: {
-            <span class="key"><span class="delimiter">&quot;</span><span class="content">digest-realm-name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">distributed-realm</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">digest-realm-name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">DistributedRealm</span><span class="delimiter">&quot;</span></span>,
             <span class="key"><span class="delimiter">&quot;</span><span class="content">path</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">users.properties</span><span class="delimiter">&quot;</span></span>
           },
           <span class="key"><span class="delimiter">&quot;</span><span class="content">group-properties</span><span class="delimiter">&quot;</span></span>: {
@@ -2576,7 +2594,7 @@ When users attempt to access the Hot Rod or REST endpoints, Infinispan Server us
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: &quot;distributed-realm&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;DistributedRealm&quot;</span></span>
         <span class="key">ldapRealm</span>:
           <span class="key">principal</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">uid=admin,ou=People,dc=infinispan,dc=org</span><span class="delimiter">&quot;</span></span>
           <span class="key">url</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ldap://my-ldap-server:10389</span><span class="delimiter">&quot;</span></span>
@@ -2594,7 +2612,7 @@ When users attempt to access the Hot Rod or REST endpoints, Infinispan Server us
         <span class="key">propertiesRealm</span>:
           <span class="key">groupsAttribute</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Roles</span><span class="delimiter">&quot;</span></span>
           <span class="key">userProperties</span>:
-            <span class="key">digestRealmName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">distributed-realm</span><span class="delimiter">&quot;</span></span>
+            <span class="key">digestRealmName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">DistributedRealm</span><span class="delimiter">&quot;</span></span>
             <span class="key">path</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">users.properties</span><span class="delimiter">&quot;</span></span>
           <span class="key">groupProperties</span>:
             <span class="key">path</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">groups.properties</span><span class="delimiter">&quot;</span></span>
@@ -3459,7 +3477,7 @@ BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">generated-keystore</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">GeneratedKeystore</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="tag">&lt;server-identities&gt;</span>
           <span class="tag">&lt;ssl&gt;</span>
             <span class="comment">&lt;!-- Generates a keystore that includes a self-signed certificate with the specified hostname. --&gt;</span>
@@ -3483,7 +3501,7 @@ BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">generated-keystore</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">GeneratedKeystore</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">server-identities</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">ssl</span><span class="delimiter">&quot;</span></span>: {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">keystore</span><span class="delimiter">&quot;</span></span>: {
@@ -3506,7 +3524,7 @@ BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: &quot;generated-keystore&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;GeneratedKeystore&quot;</span></span>
         <span class="key">serverIdentities</span>:
           <span class="key">ssl</span>:
             <span class="key">keystore</span>:
@@ -3987,7 +4005,7 @@ These trust stores should be configured with an empty password: <code>password="
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;server</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">urn:infinispan:server:13.0</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
   <span class="tag">&lt;security&gt;</span>
     <span class="tag">&lt;security-realms&gt;</span>
-      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">trust-store-realm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+      <span class="tag">&lt;security-realm</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">TrustStoreRealm</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
         <span class="tag">&lt;server-identities&gt;</span>
           <span class="tag">&lt;ssl&gt;</span>
             <span class="comment">&lt;!-- Provides an SSL/TLS identity with a keystore that
@@ -4034,7 +4052,7 @@ These trust stores should be configured with an empty password: <code>password="
   <span class="key"><span class="delimiter">&quot;</span><span class="content">server</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">security</span><span class="delimiter">&quot;</span></span>: {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realms</span><span class="delimiter">&quot;</span></span>: [{
-        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">trust-store-realm</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TrustStoreRealm</span><span class="delimiter">&quot;</span></span>,
         <span class="key"><span class="delimiter">&quot;</span><span class="content">server-identities</span><span class="delimiter">&quot;</span></span>: {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">ssl</span><span class="delimiter">&quot;</span></span>: {
             <span class="key"><span class="delimiter">&quot;</span><span class="content">keystore</span><span class="delimiter">&quot;</span></span>: {
@@ -4055,7 +4073,7 @@ These trust stores should be configured with an empty password: <code>password="
     },
     <span class="key"><span class="delimiter">&quot;</span><span class="content">endpoints</span><span class="delimiter">&quot;</span></span>: [{
       <span class="key"><span class="delimiter">&quot;</span><span class="content">socket-binding</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realm</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">trust-store-realm</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">security-realm</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">TrustStoreRealm</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">require-ssl-client-auth</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">connectors</span><span class="delimiter">&quot;</span></span>: {
         <span class="key"><span class="delimiter">&quot;</span><span class="content">hotrod</span><span class="delimiter">&quot;</span></span>: {
@@ -4088,7 +4106,7 @@ These trust stores should be configured with an empty password: <code>password="
 <pre class="CodeRay highlight nowrap"><code data-lang="yaml"><span class="key">server</span>:
   <span class="key">security</span>:
     <span class="key">securityRealms</span>:
-      - <span class="string"><span class="content">name: &quot;trust-store-realm&quot;</span></span>
+      - <span class="string"><span class="content">name: &quot;TrustStoreRealm&quot;</span></span>
         <span class="key">serverIdentities</span>:
           <span class="key">ssl</span>:
             <span class="key">keystore</span>:
@@ -5096,7 +5114,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-13 02:17:53 -0400
+Last updated 2022-09-29 06:03:08 -0400
 </div>
 </div>
 <style>

@@ -1293,6 +1293,21 @@ conjunction with <code>Query.startOffset(long startOffset)</code> to achieve pag
 Query&lt;Book&gt; query = queryFactory.create("FROM org.infinispan.sample.Book WHERE title like '%clustering%' ORDER BY year").startOffset(20).maxResults(10)</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you don&#8217;t explicitly set the <code>maxResults</code> for a query instance, Infinispan limits the number of results returned by the query to <code>100</code>.
+You can change the default limit by setting the <code>query.default-max-results</code> cache property.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect3">
 <h4 id="number_of_hits"><a class="anchor" href="#number_of_hits"></a>2.1.2. Number of hits</h4>
@@ -1908,6 +1923,7 @@ This procedure explains how to index query a remote cache that stores <code>Book
       &lt;artifactId&gt;infinispan-bom&lt;/artifactId&gt;
       &lt;version&gt;${version.infinispan}&lt;/version&gt;
       &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
     &lt;/dependency&gt;
   &lt;/dependencies&gt;
 &lt;/dependencyManagement&gt;
