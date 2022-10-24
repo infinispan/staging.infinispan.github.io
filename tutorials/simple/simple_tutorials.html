@@ -457,7 +457,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#hotrod-js-tutorials_remote-cache-tutorials">2.3. Hot Rod Node.JS client tutorials</a></li>
 <li><a href="#hotrod-dotnet-tutorials_remote-cache-tutorials">2.4. Hot Rod .NET/C# client tutorials</a></li>
 <li><a href="#hotrod-cpp-tutorials_remote-cache-tutorials">2.5. Hot Rod C++ client tutorials</a></li>
-<li><a href="#cross-site-replication_remote-cache-tutorials">2.6. Cross-site replication</a></li>
+<li><a href="#cross-site-replication_remote-cache-tutorials">2.6. Cross-site replication</a>
+<ul class="sectlevel3">
+<li><a href="#_docker_compose">2.6.1. Docker compose</a></li>
+<li><a href="#_minikube_and_infinispan_operator">2.6.2. Minikube and Infinispan Operator</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#spring-tutorials">3. Spring and Spring Boot</a>
@@ -995,9 +1000,12 @@ cmake --build .</pre>
 </div>
 <div class="paragraph">
 <p>In this tutorial, you start two Infinispan clusters, LON and NY, that provide backups for each other.
-This tutorial demonstrates Infinispan cross-site replication capabilities locally using docker-compose.
+This tutorial demonstrates Infinispan cross-site replication capabilities locally using <code>docker-compose</code>
+or the Infinispan Operator with a local Kubernetes cluster like Minikube.
 In production environments, Infinispan cluster backups are typically located in different data centers.</p>
 </div>
+<div class="sect3">
+<h4 id="_docker_compose"><a class="anchor" href="#_docker_compose"></a>2.6.1. Docker compose</h4>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -1029,6 +1037,50 @@ example, the cache in LON is distributed while the cache in NYC is replicated.</
 </li>
 </ol>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_minikube_and_infinispan_operator"><a class="anchor" href="#_minikube_and_infinispan_operator"></a>2.6.2. Minikube and Infinispan Operator</h4>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Make sure you have <code>minikube</code> installed locally.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>Run <strong><code>./setup.sh</code></strong>: This script starts minikube, installs the Infinispan Operator, deploys two clusters (LON and NYC) and creates the caches.</p>
+</li>
+<li>
+<p>Run <strong><code>./create-data.sh</code></strong></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Both sites are accessible externally using the Infinispan Console through</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>LON <code>(minikube service --url example-cluster-lon-external</code></p>
+</li>
+<li>
+<p>NYC <code>minikube service --url example-cluster-nyc-external</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The credentials are configured using Kubernetes secrets (<code>identities_lon.yaml</code> and <code>identities_nyc.yaml</code>).</p>
+</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -1052,7 +1104,11 @@ example, the cache in LON is distributed while the cache in NYC is replicated.</
 <li>
 <p><a href="https://infinispan.org/docs/stable/titles/rest/rest.html#rest_v2_cache_operations">REST API: Cross-Site Replication</a></p>
 </li>
+<li>
+<p><a href="https://infinispan.org/docs/infinispan-operator/">Infinispan Operator</a></p>
+</li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -1235,7 +1291,7 @@ $ mvn wildfly:deploy</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-20 04:18:59 -0400
+Last updated 2022-10-24 06:55:52 -0400
 </div>
 </div>
 </body>
