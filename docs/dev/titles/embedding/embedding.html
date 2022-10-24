@@ -5192,9 +5192,9 @@ multimapCache = multimapCacheManager.get(multimapCacheName);</code></pre>
 <div class="sect4">
 <h5 id="support_for_duplicates"><a class="anchor" href="#support_for_duplicates"></a>Support for duplicates</h5>
 <div class="paragraph">
-<p>Duplicates are not supported yet. This means that the multimap won&#8217;t contain any duplicate key-value pair.
-Whenever put method is called, if the key-value pair already exist, this key-value par won&#8217;t be added.
-Methods used to check if a key-value pair is already present in the Multimap are the <code>equals</code> and <code>hashcode</code>.</p>
+<p>A multimap can be configured to store duplicate values for a single key. A duplicate is determined by the value&#8217;s <code>equals</code> method.
+Whenever the put method is called, if multimap is configured to support duplicates, the key-value pair will be added to the collection.
+Invoking remove on the multimap will remove all duplicates if present.</p>
 </div>
 </div>
 <div class="sect4">
@@ -6687,7 +6687,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-24 11:14:22 UTC
+Last updated 2022-10-24 12:26:56 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
