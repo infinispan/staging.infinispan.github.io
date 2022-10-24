@@ -545,37 +545,38 @@ $(addBlockSwitches);
 </li>
 <li><a href="#deployment-planning">2. Infinispan deployment planning</a>
 <ul class="sectlevel2">
-<li><a href="#data-set-size_deployment-planning">2.1. How to calculate the size of your data set</a>
+<li><a href="#performance-metric-considerations_deployment-planning">2.1. Performance metric considerations</a></li>
+<li><a href="#data-set-size_deployment-planning">2.2. How to calculate the size of your data set</a>
 <ul class="sectlevel3">
-<li><a href="#memory-overhead_deployment-planning">2.1.1. Memory overhead</a></li>
-<li><a href="#jvm-heap-memory-allocation_deployment-planning">2.1.2. JVM heap space allocation</a></li>
+<li><a href="#memory-overhead_deployment-planning">2.2.1. Memory overhead</a></li>
+<li><a href="#jvm-heap-memory-allocation_deployment-planning">2.2.2. JVM heap space allocation</a></li>
 </ul>
 </li>
-<li><a href="#performance-clustered-cache-modes_deployment-planning">2.2. Clustered cache modes</a></li>
-<li><a href="#performance-avoiding-stale-caches_deployment-planning">2.3. Strategies to manage stale data</a></li>
-<li><a href="#managing-jvm-memory_deployment-planning">2.4. JVM memory management with eviction</a></li>
-<li><a href="#off-heap-memory_deployment-planning">2.5. JVM heap and off-heap memory</a>
+<li><a href="#performance-clustered-cache-modes_deployment-planning">2.3. Clustered cache modes</a></li>
+<li><a href="#performance-avoiding-stale-caches_deployment-planning">2.4. Strategies to manage stale data</a></li>
+<li><a href="#managing-jvm-memory_deployment-planning">2.5. JVM memory management with eviction</a></li>
+<li><a href="#off-heap-memory_deployment-planning">2.6. JVM heap and off-heap memory</a>
 <ul class="sectlevel3">
-<li><a href="#off-heap-storage_deployment-planning">2.5.1. Off-heap data storage</a></li>
+<li><a href="#off-heap-storage_deployment-planning">2.6.1. Off-heap data storage</a></li>
 </ul>
 </li>
-<li><a href="#performance-persistence_deployment-planning">2.6. Persistent storage</a></li>
-<li><a href="#performance-security_deployment-planning">2.7. Cluster security</a></li>
-<li><a href="#performance-client-listeners_deployment-planning">2.8. Client listeners</a></li>
-<li><a href="#performance-indexing-querying_deployment-planning">2.9. Indexing and querying caches</a>
+<li><a href="#performance-persistence_deployment-planning">2.7. Persistent storage</a></li>
+<li><a href="#performance-security_deployment-planning">2.8. Cluster security</a></li>
+<li><a href="#performance-client-listeners_deployment-planning">2.9. Client listeners</a></li>
+<li><a href="#performance-indexing-querying_deployment-planning">2.10. Indexing and querying caches</a>
 <ul class="sectlevel3">
-<li><a href="#continuous-query-performance_deployment-planning">2.9.1. Continuous queries and Infinispan performance</a></li>
+<li><a href="#continuous-query-performance_deployment-planning">2.10.1. Continuous queries and Infinispan performance</a></li>
 </ul>
 </li>
-<li><a href="#performance-data-consistency_deployment-planning">2.10. Data consistency</a></li>
-<li><a href="#performance-partition-handling_deployment-planning">2.11. Network partitions and degraded clusters</a>
+<li><a href="#performance-data-consistency_deployment-planning">2.11. Data consistency</a></li>
+<li><a href="#performance-partition-handling_deployment-planning">2.12. Network partitions and degraded clusters</a>
 <ul class="sectlevel3">
-<li><a href="#partition-handling-garbage-collection_deployment-planning">2.11.1. Garbage collection and partition handling</a></li>
+<li><a href="#partition-handling-garbage-collection_deployment-planning">2.12.1. Garbage collection and partition handling</a></li>
 </ul>
 </li>
-<li><a href="#performance-cross-site-replication_deployment-planning">2.12. Cluster backups and disaster recovery</a></li>
-<li><a href="#performance-clustered-execution_deployment-planning">2.13. Code execution and data processing</a></li>
-<li><a href="#performance-client-traffic_deployment-planning">2.14. Client traffic</a></li>
+<li><a href="#performance-cross-site-replication_deployment-planning">2.13. Cluster backups and disaster recovery</a></li>
+<li><a href="#performance-clustered-execution_deployment-planning">2.14. Code execution and data processing</a></li>
+<li><a href="#performance-client-traffic_deployment-planning">2.15. Client traffic</a></li>
 </ul>
 </li>
 <li><a href="#performance-tuning_tuning">3. Performance tuning guidelines</a>
@@ -819,7 +820,57 @@ Cross-site replication provides Infinispan with a global cluster view and:</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="data-set-size_deployment-planning"><a class="anchor" href="#data-set-size_deployment-planning"></a>2.1. How to calculate the size of your data set</h3>
+<h3 id="performance-metric-considerations_deployment-planning"><a class="anchor" href="#performance-metric-considerations_deployment-planning"></a>2.1. Performance metric considerations</h3>
+<div class="paragraph">
+<p>Infinispan includes so many configurable combinations that determining a single formula for performance metrics that covers all use cases is not possible.</p>
+</div>
+<div class="paragraph">
+<p>The purpose of the <em>Infinispan performance considerations and tuning guidelines</em> document is to provide details about use cases and architectures that can help you determine requirements for your Infinispan deployment.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, consider the following inter-related factors that apply to Infinispan:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Available CPU and memory resources in cloud environments</p>
+</li>
+<li>
+<p>Caches used in parallel</p>
+</li>
+<li>
+<p>Get, put, query balancing</p>
+</li>
+<li>
+<p>Peak load and throughput limitations</p>
+</li>
+<li>
+<p>Querying limitations with data set</p>
+</li>
+<li>
+<p>Number of entries per cache</p>
+</li>
+<li>
+<p>Size of cache entries</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Given the number of different combinations and unknown external factors, providing a performance calculation that meets all Infinispan use cases is not possible.
+You cannot compare one performance test to another test if any of the previously listed factors are different.</p>
+</div>
+<div class="paragraph">
+<p>You can run basic performance tests with the Infinispan CLI that collects limited performance metrics.
+You can customize the performance test so that the test outputs results that might meet your needs.
+Test results provide baseline metrics that can help you determine settings and resources for your Infinispan caching requirements.</p>
+</div>
+<div class="paragraph">
+<p>Measure the performance of your current settings and check if they meet your requirements.
+If your needs are not met, optimize the settings and then re-measure their performance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-set-size_deployment-planning"><a class="anchor" href="#data-set-size_deployment-planning"></a>2.2. How to calculate the size of your data set</h3>
 <div class="paragraph">
 <p>Planning a Infinispan deployment involves calculating the size of your data set then figuring out the correct number of nodes and amount of RAM to hold the data set.</p>
 </div>
@@ -896,7 +947,7 @@ Planned nodes = 10 + 3 - 1 = 12</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="memory-overhead_deployment-planning"><a class="anchor" href="#memory-overhead_deployment-planning"></a>2.1.1. Memory overhead</h4>
+<h4 id="memory-overhead_deployment-planning"><a class="anchor" href="#memory-overhead_deployment-planning"></a>2.2.1. Memory overhead</h4>
 <div class="paragraph">
 <p>Memory overhead is additional memory that Infinispan uses to store entries.
 An approximate estimate for memory overhead is 200 bytes per entry in JVM heap memory or 60 bytes per entry in off-heap memory.
@@ -915,7 +966,7 @@ Rebalancing operations for clusters when nodes join and leave also temporarily r
 </div>
 </div>
 <div class="sect3">
-<h4 id="jvm-heap-memory-allocation_deployment-planning"><a class="anchor" href="#jvm-heap-memory-allocation_deployment-planning"></a>2.1.2. JVM heap space allocation</h4>
+<h4 id="jvm-heap-memory-allocation_deployment-planning"><a class="anchor" href="#jvm-heap-memory-allocation_deployment-planning"></a>2.2.2. JVM heap space allocation</h4>
 <div class="paragraph">
 <p>When allocating JVM heap space for Infinispan deployments, you can use the following guidelines:</p>
 </div>
@@ -961,7 +1012,7 @@ However that amount increases as the number of concurrent operations scales up.<
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-clustered-cache-modes_deployment-planning"><a class="anchor" href="#performance-clustered-cache-modes_deployment-planning"></a>2.2. Clustered cache modes</h3>
+<h3 id="performance-clustered-cache-modes_deployment-planning"><a class="anchor" href="#performance-clustered-cache-modes_deployment-planning"></a>2.3. Clustered cache modes</h3>
 <div class="paragraph">
 <p>You can configure clustered Infinispan caches as replicated or distributed.</p>
 </div>
@@ -1159,7 +1210,7 @@ For example, with RocksDB and JDBC-string based cache stores, segmentation reduc
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-avoiding-stale-caches_deployment-planning"><a class="anchor" href="#performance-avoiding-stale-caches_deployment-planning"></a>2.3. Strategies to manage stale data</h3>
+<h3 id="performance-avoiding-stale-caches_deployment-planning"><a class="anchor" href="#performance-avoiding-stale-caches_deployment-planning"></a>2.4. Strategies to manage stale data</h3>
 <div class="paragraph">
 <p>If Infinispan is not the primary source of data, embedded and remote caches are stale by nature.
 While planning, benchmarking, and tuning your Infinispan deployment, choose the appropriate level of cache staleness for your applications.</p>
@@ -1199,7 +1250,7 @@ With synchronous replication, you can choose either "sync" or "async" touch comm
 </div>
 </div>
 <div class="sect2">
-<h3 id="managing-jvm-memory_deployment-planning"><a class="anchor" href="#managing-jvm-memory_deployment-planning"></a>2.4. JVM memory management with eviction</h3>
+<h3 id="managing-jvm-memory_deployment-planning"><a class="anchor" href="#managing-jvm-memory_deployment-planning"></a>2.5. JVM memory management with eviction</h3>
 <div class="paragraph">
 <p>RAM is a costly resource and usually limited in availability.
 Infinispan lets you manage memory usage to give priority to frequently used data by removing entries from memory.</p>
@@ -1251,7 +1302,7 @@ When this happens, the read operation does not return the value until the evicti
 </div>
 </div>
 <div class="sect2">
-<h3 id="off-heap-memory_deployment-planning"><a class="anchor" href="#off-heap-memory_deployment-planning"></a>2.5. JVM heap and off-heap memory</h3>
+<h3 id="off-heap-memory_deployment-planning"><a class="anchor" href="#off-heap-memory_deployment-planning"></a>2.6. JVM heap and off-heap memory</h3>
 <div class="paragraph">
 <p>Infinispan stores cache entries in JVM heap memory by default.
 You can configure Infinispan to use off-heap storage, which means that your data occupies native memory outside the managed JVM memory space.</p>
@@ -1297,7 +1348,7 @@ The diagram also represents a section of native memory that holds Infinispan cac
 <p>One disadvantage, however, is that JVM heap dumps do not show entries stored in off-heap memory.</p>
 </div>
 <div class="sect3">
-<h4 id="off-heap-storage_deployment-planning"><a class="anchor" href="#off-heap-storage_deployment-planning"></a>2.5.1. Off-heap data storage</h4>
+<h4 id="off-heap-storage_deployment-planning"><a class="anchor" href="#off-heap-storage_deployment-planning"></a>2.6.1. Off-heap data storage</h4>
 <div class="paragraph">
 <p>When you add entries to off-heap caches, Infinispan dynamically allocates native memory to your data.</p>
 </div>
@@ -1334,7 +1385,7 @@ This ensures that there is an even distribution of <code>ReadWriteLock</code> in
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-persistence_deployment-planning"><a class="anchor" href="#performance-persistence_deployment-planning"></a>2.6. Persistent storage</h3>
+<h3 id="performance-persistence_deployment-planning"><a class="anchor" href="#performance-persistence_deployment-planning"></a>2.7. Persistent storage</h3>
 <div class="paragraph">
 <p>Configuring Infinispan to interact with a persistent data source greatly impacts performance.
 This performance penalty comes from the fact that more traditional data sources are inherently slower than in-memory caches.
@@ -1396,7 +1447,7 @@ Pre-loading caches can slow down Infinispan cluster start times and result in ou
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-security_deployment-planning"><a class="anchor" href="#performance-security_deployment-planning"></a>2.7. Cluster security</h3>
+<h3 id="performance-security_deployment-planning"><a class="anchor" href="#performance-security_deployment-planning"></a>2.8. Cluster security</h3>
 <div class="paragraph">
 <p>Protecting your data and preventing network intrusion is one of the most important aspect of deployment planning.
 Sensitive customer details leaking to the open internet or data breaches that allow hackers to publicly expose confidential information have devastating impacts on business reputation.</p>
@@ -1486,7 +1537,7 @@ However the overall impact to performance from authorization is much lower than 
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-client-listeners_deployment-planning"><a class="anchor" href="#performance-client-listeners_deployment-planning"></a>2.8. Client listeners</h3>
+<h3 id="performance-client-listeners_deployment-planning"><a class="anchor" href="#performance-client-listeners_deployment-planning"></a>2.9. Client listeners</h3>
 <div class="paragraph">
 <p>Client listeners provide notifications whenever data is added, removed, or modified on your Infinispan cluster.</p>
 </div>
@@ -1545,7 +1596,7 @@ Of course queries have additional processing costs that you need to take into ac
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-indexing-querying_deployment-planning"><a class="anchor" href="#performance-indexing-querying_deployment-planning"></a>2.9. Indexing and querying caches</h3>
+<h3 id="performance-indexing-querying_deployment-planning"><a class="anchor" href="#performance-indexing-querying_deployment-planning"></a>2.10. Indexing and querying caches</h3>
 <div class="paragraph">
 <p>Querying Infinispan caches lets you analyze and filter data to gain real-time insights.
 As an example, consider an online game where players compete against each other in some way to score points.
@@ -1599,7 +1650,7 @@ Faster queries means faster reads but comes at the expense of slower writes that
 </ul>
 </div>
 <div class="sect3">
-<h4 id="continuous-query-performance_deployment-planning"><a class="anchor" href="#continuous-query-performance_deployment-planning"></a>2.9.1. Continuous queries and Infinispan performance</h4>
+<h4 id="continuous-query-performance_deployment-planning"><a class="anchor" href="#continuous-query-performance_deployment-planning"></a>2.10.1. Continuous queries and Infinispan performance</h4>
 <div class="paragraph">
 <p>Continuous queries provide a constant stream of updates to applications, which can generate a significant number of events.
 Infinispan temporarily allocates memory for each event it generates, which can result in memory pressure and potentially lead to <code>OutOfMemoryError</code> exceptions, especially for remote caches.
@@ -1622,7 +1673,7 @@ To achieve this, you should avoid any cache operations that generate events unne
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-data-consistency_deployment-planning"><a class="anchor" href="#performance-data-consistency_deployment-planning"></a>2.10. Data consistency</h3>
+<h3 id="performance-data-consistency_deployment-planning"><a class="anchor" href="#performance-data-consistency_deployment-planning"></a>2.11. Data consistency</h3>
 <div class="paragraph">
 <p>Data that resides on a distributed system is vulnerable to errors that can arise from temporary network outages, system failures, or just simple human error.
 These external factors are uncontrollable but can have serious consequences for quality of your data.
@@ -1674,7 +1725,7 @@ In some cases it might be necessary for a system administrator to manually compl
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-partition-handling_deployment-planning"><a class="anchor" href="#performance-partition-handling_deployment-planning"></a>2.11. Network partitions and degraded clusters</h3>
+<h3 id="performance-partition-handling_deployment-planning"><a class="anchor" href="#performance-partition-handling_deployment-planning"></a>2.12. Network partitions and degraded clusters</h3>
 <div class="paragraph">
 <p>Infinispan clusters can encounter split brain scenarios where subsets of nodes in the cluster become isolated from each other and communication between nodes becomes disjointed.
 When this happens, Infinispan caches in minority partitions enter <strong>DEGRADED</strong> mode while caches in majority partitions remain available.</p>
@@ -1751,7 +1802,7 @@ Configuring a merge policy results in Infinispan retrieving every version of an 
 </tbody>
 </table>
 <div class="sect3">
-<h4 id="partition-handling-garbage-collection_deployment-planning"><a class="anchor" href="#partition-handling-garbage-collection_deployment-planning"></a>2.11.1. Garbage collection and partition handling</h4>
+<h4 id="partition-handling-garbage-collection_deployment-planning"><a class="anchor" href="#partition-handling-garbage-collection_deployment-planning"></a>2.12.1. Garbage collection and partition handling</h4>
 <div class="paragraph">
 <p>Long garbage collection (GC) times can increase the amount of time it takes Infinispan to detect network partitions.
 In some cases, GC can cause Infinispan to exceed the maximum time to detect a split.</p>
@@ -1778,7 +1829,7 @@ If <code>numOwners &gt; 1</code>, the old consistent hash and the new consistent
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-cross-site-replication_deployment-planning"><a class="anchor" href="#performance-cross-site-replication_deployment-planning"></a>2.12. Cluster backups and disaster recovery</h3>
+<h3 id="performance-cross-site-replication_deployment-planning"><a class="anchor" href="#performance-cross-site-replication_deployment-planning"></a>2.13. Cluster backups and disaster recovery</h3>
 <div class="paragraph">
 <p>Infinispan clusters that perform cross-site replication are typically "symmetrical" in terms of overall CPU and memory allocation.
 When you take cross-site replication into account for sizing, the primary concern is the impact of state transfer operations between clusters.</p>
@@ -1847,7 +1898,7 @@ If you implement a blocking custom merge policy, it can exhaust the thread pool.
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-clustered-execution_deployment-planning"><a class="anchor" href="#performance-clustered-execution_deployment-planning"></a>2.13. Code execution and data processing</h3>
+<h3 id="performance-clustered-execution_deployment-planning"><a class="anchor" href="#performance-clustered-execution_deployment-planning"></a>2.14. Code execution and data processing</h3>
 <div class="paragraph">
 <p>One of the benefits of distributed caching is that you can leverage compute resources from each host to perform large scale data processing more efficiently.
 By executing your processing logic directly on Infinispan you spread the workload across multiple JVM instances.
@@ -1924,7 +1975,7 @@ You can execute tasks on one Infinispan Server instance only or all server insta
 </div>
 </div>
 <div class="sect2">
-<h3 id="performance-client-traffic_deployment-planning"><a class="anchor" href="#performance-client-traffic_deployment-planning"></a>2.14. Client traffic</h3>
+<h3 id="performance-client-traffic_deployment-planning"><a class="anchor" href="#performance-client-traffic_deployment-planning"></a>2.15. Client traffic</h3>
 <div class="paragraph">
 <p>When sizing remote Infinispan clusters, you need to calculate the number and size of entries but also the amount of client traffic.
 Infinispan needs enough RAM to store your data and enough CPU to handle client read and write requests in a timely manner.</p>
@@ -2215,7 +2266,7 @@ cb.unsafe().unreliableReturnValues(true);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-24 12:26:56 UTC
+Last updated 2022-10-24 20:24:17 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
