@@ -698,8 +698,8 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_cache_ignore_confirm">2.5.5. Confirming Ignored Caches</a></li>
 <li><a href="#rest_v2_server_config">2.5.6. Obtaining Server Configuration</a></li>
 <li><a href="#rest_v2_server_env">2.5.7. Getting Environment Variables</a></li>
-<li><a href="#rest_v2_server_memory">2.5.8. Getting JVM Memory Details</a></li>
-<li><a href="#rest_v2_server_memory">2.5.9. Getting JVM Heap Dumps</a></li>
+<li><a href="#rest_v2_server_memory_statistics">2.5.8. Getting JVM Memory Details</a></li>
+<li><a href="#rest_v2_server_heap_dump">2.5.9. Getting JVM Heap Dumps</a></li>
 <li><a href="#rest_v2_server_threads">2.5.10. Getting JVM Thread Dumps</a></li>
 <li><a href="#rest_v2_server_report">2.5.11. Getting Diagnostic Reports for Infinispan Servers</a></li>
 <li><a href="#rest_v2_server_stop">2.5.12. Stopping Infinispan Servers</a></li>
@@ -5456,7 +5456,7 @@ requests.</p>
 <div class="sect3">
 <h4 id="rest_v2_server_info"><a class="anchor" href="#rest_v2_server_info"></a>2.5.1. Retrieving Basic Server Information</h4>
 <div class="paragraph">
-<p>View basic information about Infinispan servers with <code>GET</code> requests.</p>
+<p>View basic information about Infinispan Servers with <code>GET</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5478,7 +5478,7 @@ as in the following example:</p>
 <div class="sect3">
 <h4 id="rest_v2_server_cm"><a class="anchor" href="#rest_v2_server_cm"></a>2.5.2. Getting Cache Managers</h4>
 <div class="paragraph">
-<p>Retrieve lists of Cache Managers for Infinispan servers with <code>GET</code> requests.</p>
+<p>Retrieve lists of Cache Managers for Infinispan Servers with <code>GET</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5563,7 +5563,7 @@ compatibility you must provide the Cache Manager name in the requests.</p>
 <div class="sect3">
 <h4 id="rest_v2_server_config"><a class="anchor" href="#rest_v2_server_config"></a>2.5.6. Obtaining Server Configuration</h4>
 <div class="paragraph">
-<p>Retrieve Infinispan server configurations with <code>GET</code> requests.</p>
+<p>Retrieve Infinispan Server configurations with <code>GET</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5621,7 +5621,7 @@ compatibility you must provide the Cache Manager name in the requests.</p>
 <div class="sect3">
 <h4 id="rest_v2_server_env"><a class="anchor" href="#rest_v2_server_env"></a>2.5.7. Getting Environment Variables</h4>
 <div class="paragraph">
-<p>Retrieve all environment variables for Infinispan servers with <code>GET</code> requests.</p>
+<p>Retrieve all environment variables for Infinispan Servers with <code>GET</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5630,9 +5630,9 @@ compatibility you must provide the Cache Manager name in the requests.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_server_memory"><a class="anchor" href="#rest_v2_server_memory"></a>2.5.8. Getting JVM Memory Details</h4>
+<h4 id="rest_v2_server_memory_statistics"><a class="anchor" href="#rest_v2_server_memory_statistics"></a>2.5.8. Getting JVM Memory Details</h4>
 <div class="paragraph">
-<p>Retrieve JVM memory usage information for Infinispan servers with <code>GET</code>
+<p>Retrieve JVM memory usage information for Infinispan Servers with <code>GET</code>
 requests.</p>
 </div>
 <div class="listingblock">
@@ -5647,9 +5647,9 @@ format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_server_memory"><a class="anchor" href="#rest_v2_server_memory"></a>2.5.9. Getting JVM Heap Dumps</h4>
+<h4 id="rest_v2_server_heap_dump"><a class="anchor" href="#rest_v2_server_heap_dump"></a>2.5.9. Getting JVM Heap Dumps</h4>
 <div class="paragraph">
-<p>Generate JVM heap dumps for Infinispan servers with <code>POST</code>
+<p>Generate JVM heap dumps for Infinispan Servers with <code>POST</code>
 requests.</p>
 </div>
 <div class="listingblock">
@@ -5679,7 +5679,7 @@ with the full path of the file in JSON format.</p>
 <div class="sect3">
 <h4 id="rest_v2_server_report"><a class="anchor" href="#rest_v2_server_report"></a>2.5.11. Getting Diagnostic Reports for Infinispan Servers</h4>
 <div class="paragraph">
-<p>Retrieve aggregated reports for Infinispan servers with <code>GET</code> requests.</p>
+<p>Retrieve aggregated reports for Infinispan Servers with <code>GET</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5688,7 +5688,7 @@ with the full path of the file in JSON format.</p>
 </div>
 <div class="paragraph">
 <p>Infinispan responds with a <code>tar.gz</code> archive that contains an aggregated report
-with diagnostic information about both the Infinispan server and the host. The
+with diagnostic information about both the Infinispan Server and the host. The
 report provides details about CPU, memory, open files, network sockets and
 routing, threads, in addition to configuration and log files.</p>
 </div>
@@ -5696,7 +5696,7 @@ routing, threads, in addition to configuration and log files.</p>
 <div class="sect3">
 <h4 id="rest_v2_server_stop"><a class="anchor" href="#rest_v2_server_stop"></a>2.5.12. Stopping Infinispan Servers</h4>
 <div class="paragraph">
-<p>Stop Infinispan servers with <code>POST</code> requests.</p>
+<p>Stop Infinispan Servers with <code>POST</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6859,7 +6859,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-26 11:02:12 UTC
+Last updated 2022-10-31 13:26:09 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
