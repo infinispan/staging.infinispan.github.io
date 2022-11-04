@@ -5679,11 +5679,20 @@ with the full path of the file in JSON format.</p>
 <div class="sect3">
 <h4 id="rest_v2_server_report"><a class="anchor" href="#rest_v2_server_report"></a>2.5.11. Getting Diagnostic Reports for Infinispan Servers</h4>
 <div class="paragraph">
-<p>Retrieve aggregated reports for Infinispan Servers with <code>GET</code> requests.</p>
+<p>Retrieve aggregated reports for Infinispan Servers with <code>GET</code> requests.
+To retrieve the report for the requested server:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>GET /rest/v2/server/report</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To retrieve the report of another server in the cluster, reference the node by name:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/server/report/{nodeName}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6859,7 +6868,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-02 12:40:05 UTC
+Last updated 2022-11-04 11:58:51 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
