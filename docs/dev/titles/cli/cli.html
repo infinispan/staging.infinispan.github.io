@@ -1489,7 +1489,8 @@ tasks</code></pre>
 caches
 counters
 configurations
-schemas</pre>
+schemas
+tasks</pre>
 </div>
 </div>
 <div class="dlist">
@@ -1533,11 +1534,11 @@ server</pre>
 </dd>
 <dt class="hdlist1"><code>cluster</code></dt>
 <dd>
-<p>Lists Infinispan servers joined to the cluster.</p>
+<p>Lists Infinispan Servers joined to the cluster.</p>
 </dd>
 <dt class="hdlist1"><code>server</code></dt>
 <dd>
-<p>Resources for managing and monitoring Infinispan servers.</p>
+<p>Resources for managing and monitoring Infinispan Servers.</p>
 </dd>
 </dl>
 </div>
@@ -1669,12 +1670,15 @@ You can restart nodes in any order but the cluster remains in DEGRADED state unt
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Start the CLI and enter your credentials when prompted.</p>
+<p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
+</li>
+<li>
+<p>Run the <code>connect</code> command and enter your username and password when prompted.</p>
 </li>
 <li>
 <p>Use the <code class="command">create cache</code> command to create remote caches.</p>
@@ -1773,6 +1777,9 @@ Write succinct file names.</p>
   &lt;indexing enabled="true"
             storage="local-heap"&gt;
     &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;indexed-entities&gt;
+      &lt;indexed-entity&gt;org.infinispan.Person&lt;/indexed-entity&gt;
+    &lt;/indexed-entities&gt;
   &lt;/indexing&gt;
   &lt;partition-handling when-split="ALLOW_READ_WRITES"
                       merge-policy="PREFERRED_NON_NULL"/&gt;
@@ -1812,11 +1819,14 @@ Write succinct file names.</p>
       "when-full": "REMOVE"
     },
     "indexing" : {
-      "enabled" : true,
-      "storage" : "local-heap",
-      "index-reader" : {
-        "refresh-interval" : "1000"
-      }
+          "enabled" : true,
+          "storage" : "local-heap",
+          "index-reader" : {
+            "refresh-interval" : "1000"
+          },
+          "indexed-entities": [
+            "org.infinispan.Person"
+          ]
     },
     "partition-handling" : {
       "when-split" : "ALLOW_READ_WRITES",
@@ -1857,6 +1867,8 @@ Write succinct file names.</p>
     storage: "local-heap"
     indexReader:
       refreshInterval: "1000"
+    indexedEntities:
+      - "org.infinispan.Person"
   partitionHandling:
     whenSplit: "ALLOW_READ_WRITES"
     mergePolicy: "PREFERRED_NON_NULL"
@@ -1883,6 +1895,9 @@ Write succinct file names.</p>
   &lt;indexing enabled="true"
             storage="local-heap"&gt;
     &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;indexed-entities&gt;
+      &lt;indexed-entity&gt;org.infinispan.Person&lt;/indexed-entity&gt;
+    &lt;/indexed-entities&gt;
   &lt;/indexing&gt;
   &lt;partition-handling when-split="ALLOW_READ_WRITES"
                       merge-policy="PREFERRED_NON_NULL"/&gt;
@@ -1923,7 +1938,10 @@ Write succinct file names.</p>
       "storage" : "local-heap",
       "index-reader" : {
         "refresh-interval" : "1000"
-      }
+        },
+      "indexed-entities": [
+        "org.infinispan.Person"
+      ]
     },
     "partition-handling" : {
       "when-split" : "ALLOW_READ_WRITES",
@@ -1961,6 +1979,8 @@ Write succinct file names.</p>
     storage: "local-heap"
     indexReader:
       refreshInterval: "1000"
+    indexedEntities:
+      - "org.infinispan.Person"
   partitionHandling:
     whenSplit: "ALLOW_READ_WRITES"
     mergePolicy: "PREFERRED_NON_NULL"
@@ -6242,7 +6262,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-04 11:58:51 UTC
+Last updated 2022-11-15 14:22:36 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
