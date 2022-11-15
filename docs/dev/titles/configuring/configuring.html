@@ -7667,7 +7667,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 <div class="listingblock primary">
 <div class="title">Declarative</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">query-jdbc-store xmlns="urn:infinispan:config:store:jdbc:15.0"</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">query-jdbc-store xmlns="urn:infinispan:config:store:sql:15.0"</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -7814,14 +7814,15 @@ However you can apply the same named variable more than once in a statement.</p>
 </div>
 <h6 id="sql_statements" class="discrete">SQL statements</h6>
 <div class="paragraph">
-<p>SQL data definition language (DDL) statements for the "person" and "address" tables are as follows:</p>
+<p>The following examples show SQL data definition language (DDL) statements for the "person" and "address" tables.
+The data types described in the example are only valid for PostgreSQL database.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">SQL statement for the "person" table</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-proto" data-lang="proto">CREATE TABLE Person (
   name VARCHAR(255) NOT NULL,
-  picture VARBINARY(255),
+  picture BYTEA,
   sex VARCHAR(255),
   birthdate TIMESTAMP,
   accepted_tos BOOLEAN,
@@ -7849,7 +7850,7 @@ However you can apply the same named variable more than once in a statement.</p>
 <div class="listingblock primary">
 <div class="title">Protobuf schema for the "person" table</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example
+<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example;
 
 enum Sex {
    FEMALE = 1;
@@ -7887,7 +7888,8 @@ message Address {
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
   &lt;persistence&gt;
-    &lt;query-jdbc-store xmlns="urn:infinispan:config:store:jdbc:15.0"
+    &lt;connection-pool connection-url=""/&gt;
+    &lt;query-jdbc-store xmlns="urn:infinispan:config:store:sql:15.0"
                       dialect="POSTGRES"
                       shared="true"&gt;
       &lt;queries key-columns="name"&gt;
@@ -12391,7 +12393,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-15 14:22:36 UTC
+Last updated 2022-11-15 16:10:47 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
