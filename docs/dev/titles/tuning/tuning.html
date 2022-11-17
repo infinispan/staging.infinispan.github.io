@@ -968,24 +968,8 @@ Rebalancing operations for clusters when nodes join and leave also temporarily r
 <div class="sect3">
 <h4 id="jvm-heap-memory-allocation_deployment-planning"><a class="anchor" href="#jvm-heap-memory-allocation_deployment-planning"></a>2.2.2. JVM heap space allocation</h4>
 <div class="paragraph">
-<p>When allocating JVM heap space for Infinispan deployments, you can use the following guidelines:</p>
+<p>Determine the volume of memory that you require for your Infinispan deployment, so that you have enough data storage capacity to meet your needs.</p>
 </div>
-<table class="tableblock frame-all grid-all stripes-even fit-content">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cache operations only (read, write, delete)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Allocate <strong>50%</strong> of JVM heap space for data storage</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cache operations + data processing such as queries and cache event listeners</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Allocate <strong>33%</strong> of JVM heap space for data storage</p></td>
-</tr>
-</tbody>
-</table>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -994,20 +978,170 @@ Rebalancing operations for clusters when nodes join and leave also temporarily r
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Allocating too much of JVM heap space for data storage can lead to more frequent garbage collection (GC) as well as GC pauses that lead to Infinispan cluster instability and network partitions.</p>
+<p>Allocating a large memory heap size in combination with setting garbage collection (GC) times might impact the performance of your Infinispan deployment in the following ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If a JVM handles only one thread, the GC might block the thread and reduce the JVM&#8217;s performance. The GC might operate ahead of the deployment. This asynchronous behavior might cause large GC pauses.</p>
+</li>
+<li>
+<p>If CPU resources are low and GC operates synchronously with the deployment, GC might require more frequent runs that can degrade your deployment&#8217;s performance.</p>
+</li>
+</ul>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
+<p>The following table outlines two examples of allocating JVM heap space for data storage.
+These examples represent safe estimates for deploying a cluster.</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cache operations only, such as read, write, and delete operations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocate <strong>50%</strong> of JVM heap space for data storage.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cache operations and data processing, such as queries and cache event listeners.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocate <strong>33%</strong> of JVM heap space for data storage.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Depending on pattern changes and usage for data storage, you might consider setting a different percentage for JVM heap space than any of the suggested safe estimates.</p>
+</div>
+<div class="paragraph">
+<p>Consider setting a safe estimate before you start your Infinispan deployment.
+After you start your deployment, check the performance of your JVM and the occupancy of heap space.
+You might need to re-adjust JVM heap space when data usage and throughput for your JVM significantly increases.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The safe estimates were calculated on the assumption that the following common operations were running inside a JVM.
+The list is not exhaustive, and you might set one of these safe estimates with the purpose of performing additional operations.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Infinispan converts objects in serialized form to key-value pairs. Infinispan adds the pairs to caches and persistent storage.</p>
+</li>
+<li>
+<p>Infinispan encrypts and decrypts caches from remote connections to clients.</p>
+</li>
+<li>
+<p>Infinispan performs regular querying of caches to collect data.</p>
+</li>
+<li>
+<p>Infinispan strategically divides data into segments to ensure efficient distribution of data among clusters, even during a state transfer operation.</p>
+</li>
+<li>
+<p>GC performs more frequent garbage collections, because the JVM allocated large volumes of memory for GC operations.</p>
+</li>
+<li>
+<p>GC dynamically manages and monitors data objects in JVM heap space to ensure safe removal of unused objects.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Consider the following factors when allocating JVM heap space for data storage, and when determining the volume of memory and CPU requirements for your Infinispan deployment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Clustered cache mode.</p>
+</li>
+<li>
+<p>Number of segments.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For example, a low number of segments might affect how a server distributes data among nodes.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Read or write operations.</p>
+</li>
+<li>
+<p>Rebalancing requirements.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For example, a high number of threads might quickly run in parallel during a state transfer, but each thread operation might use more memory.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Scaling clusters.</p>
+</li>
+<li>
+<p>Synchronous or asynchronous replication.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Most notable Infinispan operations that require high CPU resources include rebalancing nodes after pod restarts, running indexing queries on data, and performing GC operations.</p>
+</div>
+<div class="paragraph">
 <div class="title">Off-heap storage</div>
-<p>Infinispan uses JVM heap representations of objects to process read and write operations on caches or perform other operations such as state transfer.
+<p>Infinispan uses JVM heap representations of objects to process read and write operations on caches or perform other operations, such as a state transfer operation.
 You must always allocate some JVM heap space to Infinispan, even if you store entries in off-heap memory.</p>
 </div>
 <div class="paragraph">
-<p>The amount of JVM heap memory that Infinispan uses with off-heap storage is much smaller than when storing data in the JVM heap space.
-However that amount increases as the number of concurrent operations scales up.</p>
+<p>The volume of JVM heap memory that Infinispan uses with off-heap storage is much smaller when compared with storing data in the JVM heap space.
+The JVM heap memory requirements for off-heap storage scales with the number of concurrent operations as against the number of stored entries.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan uses topology caches to provide clients with a cluster view.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you receive any <code>OutOfMemoryError</code> exceptions from your Infinispan cluster, consider the options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Disable the state transfer operation, which might results in data loss if a node joins or leaves a cluster.</p>
+</li>
+<li>
+<p>Recalculate the JVM heap space by factoring in the key size and the number of nodes and segments.</p>
+</li>
+<li>
+<p>Use more nodes to better manage memory consumption for your cluster.</p>
+</li>
+<li>
+<p>Use a single node, because this might use less memory. However, consider the impact if you want to scale your cluster to its original size.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -2266,7 +2400,7 @@ cb.unsafe().unreliableReturnValues(true);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-16 10:30:33 UTC
+Last updated 2022-11-17 13:40:59 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
