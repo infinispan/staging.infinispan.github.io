@@ -1087,15 +1087,13 @@ This is in addition to the javax compatible jars.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>If your application requires using the jakarta instead of javax namespace all you need to do is change your maven
-dependency to use the jakarta scope</p>
+<p>If your application requires using the jakarta instead of javax namespace all you need to do is to append your dependencies with <code>-jakarta</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
    &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-   &lt;artifactId&gt;infinispan-client-hotrod&lt;/artifactId&gt;
-   &lt;classifier&gt;jakarta&lt;/classifier&gt;
+   &lt;artifactId&gt;infinispan-client-hotrod-jakarta&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -4690,7 +4688,7 @@ repository, run the following command:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-17 13:40:59 UTC
+Last updated 2022-11-21 20:21:17 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
