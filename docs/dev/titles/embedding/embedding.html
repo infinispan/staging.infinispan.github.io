@@ -1545,11 +1545,11 @@ For example, if your deployment integrates with an LDAP directory and you want t
 <p>If required, define custom role and permission mappings with the <code>role()</code> and <code>permission()</code> methods.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-java" data-lang="java">GlobalRoleConfigurationBuilder global = new GlobalConfigurationBuilder();
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">GlobalConfigurationBuilder global = new GlobalConfigurationBuilder();
   global.security().authorization().enable()
           .principalRoleMapper(new ClusterRoleMapper())
-          .role("admin").permission(AuthorizationPermission.ADMIN)
-          .role("reader").permission(AuthorizationPermission.ALL_READ);</code></pre>
+          .role("myroleone").permission(AuthorizationPermission.ALL_WRITE)
+          .role("myroletwo").permission(AuthorizationPermission.ALL_READ);</code></pre>
 </div>
 </div>
 </li>
@@ -1571,7 +1571,7 @@ config.security().authorization().enable();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>ConfigurationBuilder config = new ConfigurationBuilder();
-config.security().authorization().enable().role("admin");</pre>
+config.security().authorization().enable().role("myroleone");</pre>
 </div>
 </div>
 </li>
@@ -1618,7 +1618,7 @@ config.security().authorization().enable().role("admin");</pre>
 <p>Define new roles with the <code>addRole()</code> method.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-java" data-lang="java">MutablePermissionMapper mapper = (MutablePermissionMapper) cacheManager.getCacheManagerConfiguration().security().authorization().rolePermissionMapper();
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">MutableRolePermissionMapper mapper = (MutableRolePermissionMapper) cacheManager.getCacheManagerConfiguration().security().authorization().rolePermissionMapper();
 mapper.addRole(Role.newRole("myroleone", true, AuthorizationPermission.ALL_WRITE, AuthorizationPermission.LISTEN));
 mapper.addRole(Role.newRole("myroletwo", true, AuthorizationPermission.READ, AuthorizationPermission.WRITE));</code></pre>
 </div>
@@ -1665,7 +1665,7 @@ For this reason, you must execute code with a Infinispan user that has a role wi
 <p>Wrap method calls in a <code>PrivilegedAction</code> to execute them with the Subject.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Security.doAs(mySubject, PrivilegedAction&lt;String&gt;() -&gt; cache.put("key", "value"));</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Security.doAs(mySubject, (PrivilegedAction&lt;String&gt;)() -&gt; cache.put("key", "value"));</code></pre>
 </div>
 </div>
 </li>
@@ -7303,7 +7303,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-21 20:21:17 UTC
+Last updated 2022-11-23 20:19:12 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
