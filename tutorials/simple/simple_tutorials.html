@@ -631,9 +631,6 @@ However, the recommended way to use Kubernetes and Infinispan is the Infinispan 
 <p><a href="https://infinispan.org/docs/stable/titles/embedding/embedding.html">Embedding Infinispan Caches</a></p>
 </li>
 <li>
-<p><a href="https://infinispan.org/docs/stable/titles/developing/developing.html">Infinispan Developer Guide</a></p>
-</li>
-<li>
 <p><a href="https://infinispan.org/docs/stable/titles/query/query.html">Querying Infinispan caches</a></p>
 </li>
 </ul>
@@ -698,7 +695,7 @@ Creating a user named <code>admin</code> gives you administrative access to Infi
 <div class="ulist">
 <ul>
 <li>
-<p>Hot Rod Java clients require JDK 8 or later. However, Infinispan recommends using Java 11 at a minimum.</p>
+<p>Infinispan requires Java 11 at a minimum. However, Hot Rod Java clients running in applications that require Java 8 can continue using older versions of client libraries.</p>
 </li>
 </ul>
 </div>
@@ -798,9 +795,6 @@ Creating a user named <code>admin</code> gives you administrative access to Infi
 </li>
 <li>
 <p><a href="https://infinispan.org/docs/stable/titles/query/query.html">Querying Infinispan caches</a></p>
-</li>
-<li>
-<p><a href="https://infinispan.org/docs/stable/titles/developing/developing.html">Developer guide</a></p>
 </li>
 <li>
 <p><a href="https://infinispan.org/docs/stable/titles/rest/rest.html">REST API</a></p>
@@ -936,7 +930,7 @@ must be either in the PATH or in the application working directory.</p>
 <p>Centos 7 (RHEL 7 should work also)</p>
 </li>
 <li>
-<p>Infinispan server running with the default standalone configuration</p>
+<p>Infinispan Server running with the default standalone configuration</p>
 </li>
 </ul>
 </div>
@@ -1105,7 +1099,7 @@ example, the cache in LON is distributed while the cache in NYC is replicated.</
 <p><a href="https://infinispan.org/docs/stable/titles/rest/rest.html#rest_v2_cache_operations">REST API: Cross-Site Replication</a></p>
 </li>
 <li>
-<p><a href="https://infinispan.org/docs/infinispan-operator/">Infinispan Operator</a></p>
+<p><a href="https://infinispan.org/docs/infinispan-operator/main/operator.html">Infinispan Operator</a></p>
 </li>
 </ul>
 </div>
@@ -1278,7 +1272,7 @@ $ mvn wildfly:deploy</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://infinispan.org/docs/stable/titles/developing/developing.html#ispn_modules">Infinispan WildFly modules</a></p>
+<p><a href="https://infinispan.org/docs/stable/titles/embedding/embedding.html#ispn_modules">Infinispan WildFly modules</a></p>
 </li>
 <li>
 <p><a href="https://infinispan.org/docs/stable/titles/hibernate/hibernate.html">Hibernate Second-Level Caching</a></p>
@@ -1291,7 +1285,7 @@ $ mvn wildfly:deploy</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-24 06:55:52 -0400
+Last updated 2022-11-22 11:00:30 -0500
 </div>
 </div>
 </body>

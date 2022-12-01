@@ -2364,6 +2364,9 @@ Write succinct file names.</p>
   &lt;indexing enabled="true"
             storage="local-heap"&gt;
     &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;indexed-entities&gt;
+      &lt;indexed-entity&gt;org.infinispan.Person&lt;/indexed-entity&gt;
+    &lt;/indexed-entities&gt;
   &lt;/indexing&gt;
   &lt;partition-handling when-split="ALLOW_READ_WRITES"
                       merge-policy="PREFERRED_NON_NULL"/&gt;
@@ -2403,11 +2406,14 @@ Write succinct file names.</p>
       "when-full": "REMOVE"
     },
     "indexing" : {
-      "enabled" : true,
-      "storage" : "local-heap",
-      "index-reader" : {
-        "refresh-interval" : "1000"
-      }
+          "enabled" : true,
+          "storage" : "local-heap",
+          "index-reader" : {
+            "refresh-interval" : "1000"
+          },
+          "indexed-entities": [
+            "org.infinispan.Person"
+          ]
     },
     "partition-handling" : {
       "when-split" : "ALLOW_READ_WRITES",
@@ -2448,6 +2454,8 @@ Write succinct file names.</p>
     storage: "local-heap"
     indexReader:
       refreshInterval: "1000"
+    indexedEntities:
+      - "org.infinispan.Person"
   partitionHandling:
     whenSplit: "ALLOW_READ_WRITES"
     mergePolicy: "PREFERRED_NON_NULL"
@@ -2474,6 +2482,9 @@ Write succinct file names.</p>
   &lt;indexing enabled="true"
             storage="local-heap"&gt;
     &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;indexed-entities&gt;
+      &lt;indexed-entity&gt;org.infinispan.Person&lt;/indexed-entity&gt;
+    &lt;/indexed-entities&gt;
   &lt;/indexing&gt;
   &lt;partition-handling when-split="ALLOW_READ_WRITES"
                       merge-policy="PREFERRED_NON_NULL"/&gt;
@@ -2514,7 +2525,10 @@ Write succinct file names.</p>
       "storage" : "local-heap",
       "index-reader" : {
         "refresh-interval" : "1000"
-      }
+        },
+      "indexed-entities": [
+        "org.infinispan.Person"
+      ]
     },
     "partition-handling" : {
       "when-split" : "ALLOW_READ_WRITES",
@@ -2552,6 +2566,8 @@ Write succinct file names.</p>
     storage: "local-heap"
     indexReader:
       refreshInterval: "1000"
+    indexedEntities:
+      - "org.infinispan.Person"
   partitionHandling:
     whenSplit: "ALLOW_READ_WRITES"
     mergePolicy: "PREFERRED_NON_NULL"
@@ -3219,12 +3235,15 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Start the CLI and enter your credentials when prompted.</p>
+<p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
+</li>
+<li>
+<p>Run the <code>connect</code> command and enter your username and password when prompted.</p>
 </li>
 <li>
 <p>Use the <code class="command">create cache</code> command to create remote caches.</p>
@@ -4104,26 +4123,23 @@ If you want to remotely access Infinispan Server via JMX you must enable a remot
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>For remote JMX with authentication, define user roles using the default security realm.
+<p>For remote JMX with authentication, define JMX specific user roles using the default security realm.
 Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <div class="title">Procedure</div>
-<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
-* Enable remote JMX through port <code>9999</code>.</p>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:</p>
 </div>
-<div class="paragraph">
-<p>+</p>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enable remote JMX through port <code>9999</code>.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -4139,8 +4155,7 @@ Users must have <code>controlRole</code> with read/write access or the <code>mon
 </tr>
 </table>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Pass the following system properties to Infinispan Server at startup.</p>
 <div class="listingblock">
@@ -7652,7 +7667,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 <div class="listingblock primary">
 <div class="title">Declarative</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">query-jdbc-store xmlns="urn:infinispan:config:store:jdbc:14.0"</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">query-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0"</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -7799,14 +7814,15 @@ However you can apply the same named variable more than once in a statement.</p>
 </div>
 <h6 id="sql_statements" class="discrete">SQL statements</h6>
 <div class="paragraph">
-<p>SQL data definition language (DDL) statements for the "person" and "address" tables are as follows:</p>
+<p>The following examples show SQL data definition language (DDL) statements for the "person" and "address" tables.
+The data types described in the example are only valid for PostgreSQL database.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">SQL statement for the "person" table</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-proto" data-lang="proto">CREATE TABLE Person (
   name VARCHAR(255) NOT NULL,
-  picture VARBINARY(255),
+  picture BYTEA,
   sex VARCHAR(255),
   birthdate TIMESTAMP,
   accepted_tos BOOLEAN,
@@ -7834,7 +7850,7 @@ However you can apply the same named variable more than once in a statement.</p>
 <div class="listingblock primary">
 <div class="title">Protobuf schema for the "person" table</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example
+<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example;
 
 enum Sex {
    FEMALE = 1;
@@ -7872,23 +7888,26 @@ message Address {
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
   &lt;persistence&gt;
-    &lt;query-jdbc-store xmlns="urn:infinispan:config:store:jdbc:14.0"
+    &lt;query-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0"
                       dialect="POSTGRES"
-                      shared="true"&gt;
-      &lt;queries key-columns="name"&gt;
-        &lt;select-single&gt;SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name&lt;/select-single&gt;
-        &lt;select-all&gt;SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name&lt;/select-all&gt;
-        &lt;delete-single&gt;DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name&lt;/delete-single&gt;
-        &lt;delete-all&gt;DELETE FROM Person; DELETE FROM Address&lt;/delete-all&gt;
-        &lt;upsert&gt;INSERT INTO Person (name,  picture, sex, birthdate, accepted_tos) VALUES (:name, :picture, :sex, :birthdate, :accepted_tos); INSERT INTO Address(name, street, city, zip) VALUES (:name, :street, :city, :zip)&lt;/upsert&gt;
-        &lt;size&gt;SELECT COUNT(*) FROM Person&lt;/size&gt;
-      &lt;/queries&gt;
+                      shared="true" key-columns="name"&gt;
+          &lt;connection-pool driver="org.postgresql.Driver"
+                            connection-url="jdbc:postgresql://localhost:5432/postgres"
+                            username="postgres"
+                            password="changeme"/&gt;
+      &lt;queries select-single="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name"
+        select-all="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name"
+        delete-single="DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name"
+        delete-all="DELETE FROM Person; DELETE FROM Address"
+        upsert="INSERT INTO Person (name,  picture, sex, birthdate, accepted_tos) VALUES (:name, :picture, :sex, :birthdate, :accepted_tos); INSERT INTO Address(name, street, city, zip) VALUES (:name, :street, :city, :zip)"
+        size="SELECT COUNT(*) FROM Person"
+      /&gt;
       &lt;schema message-name="Person"
               package="com.example"
               embedded-key="true"/&gt;
     &lt;/query-jdbc-store&gt;
   &lt;/persistence&gt;
-&lt;distributed-cache&gt;</code></pre>
+&lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
@@ -12376,7 +12395,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-29 06:03:08 -0400
+Last updated 2022-11-30 12:11:06 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">

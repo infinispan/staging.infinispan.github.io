@@ -1,4 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2022-10-24T07:44:49-04:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 14.0.0.Final</title><link href="https://infinispan.org/blog/2022/09/29/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Final" /><published>2022-09-29T08:00:00-04:00</published><updated>2022-09-29T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/09/29/infinispan-14.0.0.Final</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/29/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2022-12-01T02:17:57-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 14 supporting duplicates on multimap</title><link href="https://infinispan.org/blog/2022/10/01/infinispan-14-supporting-duplicates-on-multimap" rel="alternate" type="text/html" title="Infinispan 14 supporting duplicates on multimap" /><published>2022-10-01T20:00:00-04:00</published><updated>2022-10-01T20:00:00-04:00</updated><id>https://infinispan.org/blog/2022/10/01/infinispan-14-supporting-duplicates-on-multimap</id><content type="html" xml:base="https://infinispan.org/blog/2022/10/01/infinispan-14-supporting-duplicates-on-multimap">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Dear Infinispan community,&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With the Infinispan 14 development release 04 multimap cache supports duplicates.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;By default &lt;code&gt;supportsDuplicates&lt;/code&gt; is set to false and can be configured during initialization.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The following is an example on how you can set multimap to support duplicate key-value pairs:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;public class MyEmbeddedMultimapCacheExmaple {
+
+public static void main(String[] args) {
+      DefaultCacheManager cacheManager = new DefaultCacheManager();
+
+      MultimapCacheManager multimapCacheManager = EmbeddedMultimapCacheManagerFactory.from(cacheManager);
+
+      multimapCacheManager.defineConfiguration(&quot;multimap&quot;, new ConfigurationBuilder().build());
+
+      // Get the MultimapCache with duplicates support
+      MultimapCache&amp;lt;String, String&amp;gt; multimap = multimapCacheManager.get(&quot;multimap&quot;, true);
+
+      // Store duplicate values in a key
+      CompletableFuture.allOf(
+            multimap.put(&quot;key&quot;, &quot;value1&quot;),
+            multimap.put(&quot;key&quot;, &quot;value1&quot;),
+            multimap.put(&quot;key&quot;, &quot;value3&quot;))
+            .whenComplete((nil, ex) -&amp;gt; {
+               // Retrieve the values
+               multimap.get(&quot;key&quot;).whenComplete((values, ex2) -&amp;gt; {
+                  // Print them out
+                  System.out.println(values);
+
+                  System.out.println(&quot;Multimap size:&quot; + values.size());
+                  // Stop the cache manager and release all resources
+                  cacheManager.stop();
+               });
+            });
+   }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-none hljs&quot;&gt;[value1, value1, value3]
+Multimap size: 3&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;further-reading&quot;&gt;Further reading&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Check out for available documentation
+&lt;a href=&quot;https://infinispan.org/docs/14.0.x/titles/embedding/embedding.html#multimap-cache&quot;&gt;Infinispan MultimapCache Guide&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Yusuf Karadag</name></author><category term="multimap" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14.0.0.Final</title><link href="https://infinispan.org/blog/2022/09/29/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Final" /><published>2022-09-29T08:00:00-04:00</published><updated>2022-09-29T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/09/29/infinispan-14.0.0.Final</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/29/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Flying saucers are probably the most common type of UFO. They are sleek and shiny and, most importantly, they come in peace bringing lots of goodies from outer space!
@@ -1336,36 +1400,4 @@ INFO  (main) [org.infinispan.CONTAINER] DSO cache initialized&lt;/code&gt;&lt;/p
 &lt;p&gt;Head over to Crucial&amp;#8217;s &lt;a href=&quot;https://github.com/crucial-project/dso&quot;&gt;DSO&lt;/a&gt; page for code, examples and more details about this exciting project.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="crucial" /><category term="dso" /><category term="cloudbutton" /><summary type="html">Traditionally, an object-relational mapping (ORM) converts the data between the application and storage tiers. The ORM materializes the frontier between the two tiers, and it reduces the coupling. However, it also forces to repeatedly convert the objects between their in-memory and their serialized representations back and forth. This negatively impacts performance and increases execution costs.</summary></entry><entry><title type="html">.Net Core Client version 0.0.3-beta</title><link href="https://infinispan.org/blog/2022/03/22/dotnetcore-0-0-3-beta" rel="alternate" type="text/html" title=".Net Core Client version 0.0.3-beta" /><published>2022-03-22T08:00:00-04:00</published><updated>2022-03-22T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/03/22/dotnet-core-0.0.3-beta</id><content type="html" xml:base="https://infinispan.org/blog/2022/03/22/dotnetcore-0-0-3-beta">&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispanners and .NET Core lovers,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;we&amp;#8217;re pleased to annouce the new release of the .NET Core client.
-Release 0.0.3-beta comes with a bunch of new features:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;remote event listener.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;cluster failover configuration.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;TLS with server cert verification.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;some new hotrod operations. &lt;a href=&quot;https://rigazilla.github.io/Infinispan.Hotrod.Core/html/class_infinispan_1_1_hotrod_1_1_core_1_1_cache.html&quot;&gt;(Check if your favourite Hotrod op is in!)&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Good starting point could be the &lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core/tree/main/Infinispan.Hotrod.Application&quot;&gt;sample application&lt;/a&gt;.
-Documentation is growing up, temporarily placed &lt;a href=&quot;https://rigazilla.github.io/Infinispan.Hotrod.Core/html/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Please let us know your thoughts. A good place to share them is the &lt;a href=&quot;https://github.com/infinispan/Infinispan.Hotrod.Core/issues&quot;&gt;issues&lt;/a&gt; page.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The Infinispan Team&lt;/p&gt;
-&lt;/div&gt;</content><author><name>Vittorio Rigamonti</name></author><category term="hotrod" /><category term=".Net Core" /><category term="client" /><category term="C#" /><category term="listener" /><category term="cluster failover" /><summary type="html">Dear Infinispanners and .NET Core lovers,</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="crucial" /><category term="dso" /><category term="cloudbutton" /><summary type="html">Traditionally, an object-relational mapping (ORM) converts the data between the application and storage tiers. The ORM materializes the frontier between the two tiers, and it reduces the coupling. However, it also forces to repeatedly convert the objects between their in-memory and their serialized representations back and forth. This negatively impacts performance and increases execution costs.</summary></entry></feed>

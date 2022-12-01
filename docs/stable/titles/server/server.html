@@ -924,7 +924,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.1.Final.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.3.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4419,12 +4419,12 @@ Specify a different filter with the <code>filter-name</code> attribute.</p>
           url: 'ldap://my-ldap-server:10389'
           principal: 'uid=admin,ou=People,dc=infinispan,dc=org'
           credential: strongPassword
-          connectionTimeout': '3000'
-          readTimeout': '30000'
-          connectionPooling': true
-          referralMode': ignore
-          pageSize': '30'
-          directVerification': true
+          connectionTimeout: '3000'
+          readTimeout: '30000'
+          connectionPooling: true
+          referralMode: ignore
+          pageSize: '30'
+          directVerification: true
           identityMapping:
             rdnIdentifier: uid
             searchDn: 'ou=People,dc=infinispan,dc=org'
@@ -7619,26 +7619,23 @@ If you want to remotely access Infinispan Server via JMX you must enable a remot
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>For remote JMX with authentication, define user roles using the default security realm.
+<p>For remote JMX with authentication, define JMX specific user roles using the default security realm.
 Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <div class="title">Procedure</div>
-<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
-* Enable remote JMX through port <code>9999</code>.</p>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:</p>
 </div>
-<div class="paragraph">
-<p>+</p>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enable remote JMX through port <code>9999</code>.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -7654,8 +7651,7 @@ Users must have <code>controlRole</code> with read/write access or the <code>mon
 </tr>
 </table>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Pass the following system properties to Infinispan Server at startup.</p>
 <div class="listingblock">
@@ -8277,7 +8273,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.1.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.3.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -9773,12 +9769,15 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Start the CLI and enter your credentials when prompted.</p>
+<p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
+</li>
+<li>
+<p>Run the <code>connect</code> command and enter your username and password when prompted.</p>
 </li>
 <li>
 <p>Use the <code class="command">create cache</code> command to create remote caches.</p>
@@ -11705,9 +11704,6 @@ configuration, which means the root configuration is used instead:</p>
 <pre class="highlight nowrap"><code>stats</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>+</p>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
@@ -11743,9 +11739,6 @@ configuration, which means the root configuration is used instead:</p>
 <div class="content">
 <pre class="highlight nowrap"><code>stats /containers/default/caches/mycache</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -11880,7 +11873,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-29 06:03:08 -0400
+Last updated 2022-11-30 12:11:06 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">

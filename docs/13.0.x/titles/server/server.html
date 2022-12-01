@@ -929,7 +929,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>unzip infinispan-server-13.0.12.Final.zip</code></pre>
+<pre class="CodeRay highlight nowrap"><code>unzip infinispan-server-13.0.13.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4350,12 +4350,12 @@ Specify a different filter with the <code>filter-name</code> attribute.</p>
           <span class="key">url</span>: <span class="string"><span class="content">'ldap://my-ldap-server:10389'</span></span>
           <span class="key">principal</span>: <span class="string"><span class="content">'uid=admin,ou=People,dc=infinispan,dc=org'</span></span>
           <span class="key">credential</span>: <span class="string"><span class="content">strongPassword</span></span>
-          <span class="key">connectionTimeout'</span>: <span class="string"><span class="content">'3000'</span></span>
-          <span class="key">readTimeout'</span>: <span class="string"><span class="content">'30000'</span></span>
-          <span class="key">connectionPooling'</span>: <span class="string"><span class="content">true</span></span>
-          <span class="key">referralMode'</span>: <span class="string"><span class="content">ignore</span></span>
-          <span class="key">pageSize'</span>: <span class="string"><span class="content">'30'</span></span>
-          <span class="key">directVerification'</span>: <span class="string"><span class="content">true</span></span>
+          <span class="key">connectionTimeout</span>: <span class="string"><span class="content">'3000'</span></span>
+          <span class="key">readTimeout</span>: <span class="string"><span class="content">'30000'</span></span>
+          <span class="key">connectionPooling</span>: <span class="string"><span class="content">true</span></span>
+          <span class="key">referralMode</span>: <span class="string"><span class="content">ignore</span></span>
+          <span class="key">pageSize</span>: <span class="string"><span class="content">'30'</span></span>
+          <span class="key">directVerification</span>: <span class="string"><span class="content">true</span></span>
           <span class="key">identityMapping</span>:
             <span class="key">rdnIdentifier</span>: <span class="string"><span class="content">uid</span></span>
             <span class="key">searchDn</span>: <span class="string"><span class="content">'ou=People,dc=infinispan,dc=org'</span></span>
@@ -7049,19 +7049,16 @@ Users must have <code>controlRole</code> with read/write access or the <code>mon
 </div>
 <div class="paragraph">
 <div class="title">Procedure</div>
-<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:
-* Enable remote JMX through port <code>9999</code>.</p>
+<p>Start Infinispan Server with a remote JMX port enabled using one of the following ways:</p>
 </div>
-<div class="paragraph">
-<p>+</p>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enable remote JMX through port <code>9999</code>.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code>bin/server.sh --jmx 9999</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -7077,8 +7074,7 @@ Users must have <code>controlRole</code> with read/write access or the <code>mon
 </tr>
 </table>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>Pass the following system properties to Infinispan Server at startup.</p>
 <div class="listingblock">
@@ -7629,7 +7625,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.12.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-13.0.13.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -11038,9 +11034,6 @@ configuration, which means the root configuration is used instead:</p>
 <pre class="CodeRay highlight nowrap"><code>stats</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>+</p>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="json">{
@@ -11076,9 +11069,6 @@ configuration, which means the root configuration is used instead:</p>
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code>stats /containers/default/caches/mycache</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>+</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -11213,7 +11203,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-29 06:03:08 -0400
+Last updated 2022-11-30 09:48:00 -0500
 </div>
 </div>
 <style>

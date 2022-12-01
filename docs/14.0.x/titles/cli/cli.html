@@ -1489,7 +1489,8 @@ tasks</code></pre>
 caches
 counters
 configurations
-schemas</pre>
+schemas
+tasks</pre>
 </div>
 </div>
 <div class="dlist">
@@ -1533,11 +1534,11 @@ server</pre>
 </dd>
 <dt class="hdlist1"><code>cluster</code></dt>
 <dd>
-<p>Lists Infinispan servers joined to the cluster.</p>
+<p>Lists Infinispan Servers joined to the cluster.</p>
 </dd>
 <dt class="hdlist1"><code>server</code></dt>
 <dd>
-<p>Resources for managing and monitoring Infinispan servers.</p>
+<p>Resources for managing and monitoring Infinispan Servers.</p>
 </dd>
 </dl>
 </div>
@@ -1669,12 +1670,15 @@ You can restart nodes in any order but the cluster remains in DEGRADED state unt
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Start the CLI and enter your credentials when prompted.</p>
+<p>Start the CLI.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>bin/cli.sh</code></pre>
 </div>
 </div>
+</li>
+<li>
+<p>Run the <code>connect</code> command and enter your username and password when prompted.</p>
 </li>
 <li>
 <p>Use the <code class="command">create cache</code> command to create remote caches.</p>
@@ -1773,6 +1777,9 @@ Write succinct file names.</p>
   &lt;indexing enabled="true"
             storage="local-heap"&gt;
     &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;indexed-entities&gt;
+      &lt;indexed-entity&gt;org.infinispan.Person&lt;/indexed-entity&gt;
+    &lt;/indexed-entities&gt;
   &lt;/indexing&gt;
   &lt;partition-handling when-split="ALLOW_READ_WRITES"
                       merge-policy="PREFERRED_NON_NULL"/&gt;
@@ -1812,11 +1819,14 @@ Write succinct file names.</p>
       "when-full": "REMOVE"
     },
     "indexing" : {
-      "enabled" : true,
-      "storage" : "local-heap",
-      "index-reader" : {
-        "refresh-interval" : "1000"
-      }
+          "enabled" : true,
+          "storage" : "local-heap",
+          "index-reader" : {
+            "refresh-interval" : "1000"
+          },
+          "indexed-entities": [
+            "org.infinispan.Person"
+          ]
     },
     "partition-handling" : {
       "when-split" : "ALLOW_READ_WRITES",
@@ -1857,6 +1867,8 @@ Write succinct file names.</p>
     storage: "local-heap"
     indexReader:
       refreshInterval: "1000"
+    indexedEntities:
+      - "org.infinispan.Person"
   partitionHandling:
     whenSplit: "ALLOW_READ_WRITES"
     mergePolicy: "PREFERRED_NON_NULL"
@@ -1883,6 +1895,9 @@ Write succinct file names.</p>
   &lt;indexing enabled="true"
             storage="local-heap"&gt;
     &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;indexed-entities&gt;
+      &lt;indexed-entity&gt;org.infinispan.Person&lt;/indexed-entity&gt;
+    &lt;/indexed-entities&gt;
   &lt;/indexing&gt;
   &lt;partition-handling when-split="ALLOW_READ_WRITES"
                       merge-policy="PREFERRED_NON_NULL"/&gt;
@@ -1923,7 +1938,10 @@ Write succinct file names.</p>
       "storage" : "local-heap",
       "index-reader" : {
         "refresh-interval" : "1000"
-      }
+        },
+      "indexed-entities": [
+        "org.infinispan.Person"
+      ]
     },
     "partition-handling" : {
       "when-split" : "ALLOW_READ_WRITES",
@@ -1961,6 +1979,8 @@ Write succinct file names.</p>
     storage: "local-heap"
     indexReader:
       refreshInterval: "1000"
+    indexedEntities:
+      - "org.infinispan.Person"
   partitionHandling:
     whenSplit: "ALLOW_READ_WRITES"
     mergePolicy: "PREFERRED_NON_NULL"
@@ -2429,51 +2449,6 @@ quit</pre>
 </div>
 </li>
 </ol>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Use <code class="command">echo</code> to add commands in interactive mode.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The following example shows how to use <code class="command">echo describe</code> to get cluster information:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>echo describe|bin/cli.sh -c localhost:11222 -f -
-{
-  "name" : "default",
-  "version" : "10.0.0-SNAPSHOT",
-  "coordinator" : false,
-  "cache_configuration_names" : [ "org.infinispan.REPL_ASYNC", "___protobuf_metadata", "org.infinispan.DIST_SYNC", "qcache", "org.infinispan.LOCAL", "dist_cache_01", "org.infinispan.INVALIDATION_SYNC", "org.infinispan.REPL_SYNC", "org.infinispan.SCATTERED_SYNC", "mycache", "org.infinispan.INVALIDATION_ASYNC", "mybatch", "org.infinispan.DIST_ASYNC" ],
-  "cluster_name" : "cluster",
-  "physical_addresses" : "[192.168.1.7:7800]",
-  "coordinator_address" : "thundercat-34689",
-  "cache_manager_status" : "RUNNING",
-  "created_cache_count" : "4",
-  "running_cache_count" : "4",
-  "node_address" : "thundercat-47082",
-  "cluster_members" : [ "thundercat-34689", "thundercat-47082" ],
-  "cluster_members_physical_addresses" : [ "10.36.118.25:7801", "192.168.1.7:7800" ],
-  "cluster_size" : 2,
-  "defined_caches" : [ {
-    "name" : "___protobuf_metadata",
-    "started" : true
-  }, {
-    "name" : "mybatch",
-    "started" : true
-  } ]
-}</pre>
-</div>
 </div>
 </div>
 </div>
@@ -6242,7 +6217,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-29 06:03:08 -0400
+Last updated 2022-11-30 12:11:06 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
