@@ -852,6 +852,11 @@ Refer to the OpenShift documentation for specific instructions.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No default value.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.container.libraries</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Libraries to be downloaded before server startup. Specify multiple, space-separated artifacts represented as URLs or as Maven coordinates. Archive artifacts in .tar, .tar.gz or .zip formats will be extracted.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No default value.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.container.storage.ephemeral</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines whether storage is ephemeral or permanent.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The default value is <code>false</code>, which means data is permanent.
@@ -1952,7 +1957,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-11-17 06:15:21 -0500
+Last updated 2022-12-08 05:03:04 -0500
 </div>
 </div>
 <script>
