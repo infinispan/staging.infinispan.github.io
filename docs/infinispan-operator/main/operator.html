@@ -2189,11 +2189,19 @@ spec:
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a <code>ConfigMap</code> that contains Infinispan configuration.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.configListener</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.configListener.enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Creates a <code>listener</code> pod in each Infinispan cluster that allows Infinispan Operator to reconcile server-side modifications with Infinispan resources such as the <code>Cache</code> CR.</p>
 <p class="tableblock">The <code>listener</code> pod consumes minimal resources and is enabled by default.
 Setting a value of <code>false</code> removes the <code>listener</code> pod and disables bi-directional reconciliation.
 You should do this only if you do not need declarative Kubernetes representations of Infinispan resources created through the Infinispan Console, CLI, or client applications.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.configListener.logging</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configures the logging level used by the ConfigListener deployments. Can be one of `Debug</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Info</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Error`. The default level is <code>Info</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.affinity</code></p></td>
@@ -7902,7 +7910,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-16 16:26:11 UTC
+Last updated 2023-01-16 18:19:57 UTC
 </div>
 </div>
 <script>
