@@ -2260,7 +2260,7 @@ Alternatively you can use the default mode, which is to manually perform state t
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>GET /v2/caches/{cacheName}/x-site/backups/</code></pre>
+<pre class="highlight nowrap"><code>GET /rest/v2/caches/{cacheName}/x-site/backups/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2320,7 +2320,7 @@ in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>GET /v2/caches/{cacheName}/x-site/backups/{siteName}</code></pre>
+<pre class="highlight nowrap"><code>GET /rest/v2/caches/{cacheName}/x-site/backups/{siteName}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2371,7 +2371,7 @@ format, as in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/{cacheName}/x-site/backups/{siteName}?action=take-offline</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/{cacheName}/x-site/backups/{siteName}?action=take-offline</code></pre>
 </div>
 </div>
 </div>
@@ -2382,7 +2382,7 @@ format, as in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/{cacheName}/x-site/backups/{siteName}?action=bring-online</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/{cacheName}/x-site/backups/{siteName}?action=bring-online</code></pre>
 </div>
 </div>
 </div>
@@ -2394,7 +2394,7 @@ parameter.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/{cacheName}/x-site/backups/{siteName}?action=start-push-state</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/{cacheName}/x-site/backups/{siteName}?action=start-push-state</code></pre>
 </div>
 </div>
 </div>
@@ -2405,7 +2405,7 @@ parameter.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/{cacheName}/x-site/backups/{siteName}?action=cancel-push-state</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/{cacheName}/x-site/backups/{siteName}?action=cancel-push-state</code></pre>
 </div>
 </div>
 </div>
@@ -2417,7 +2417,7 @@ parameter.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>GET /v2/caches/{cacheName}/x-site/backups?action=push-state-status</code></pre>
+<pre class="highlight nowrap"><code>GET /rest/v2/caches/{cacheName}/x-site/backups?action=push-state-status</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2472,7 +2472,7 @@ in JSON format, as in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/{cacheName}/x-site/local?action=clear-push-state-status</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/{cacheName}/x-site/local?action=clear-push-state-status</code></pre>
 </div>
 </div>
 </div>
@@ -2490,7 +2490,7 @@ parameters to control when backup locations automatically go offline.</p>
 <code>take-offline-config</code> parameter.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>GET /v2/caches/{cacheName}/x-site/backups/{siteName}/take-offline-config</code></pre>
+<pre class="highlight nowrap"><code>GET /rest/v2/caches/{cacheName}/x-site/backups/{siteName}/take-offline-config</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2510,7 +2510,7 @@ follows:</p>
 <p>Modify take offline parameters in the body of <code>PUT</code> requests.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>PUT /v2/caches/{cacheName}/x-site/backups/{siteName}/take-offline-config</code></pre>
+<pre class="highlight nowrap"><code>PUT /rest/v2/caches/{cacheName}/x-site/backups/{siteName}/take-offline-config</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2532,7 +2532,7 @@ local cache with the <code>?action=cancel-receive-state</code> parameter.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/{cacheName}/x-site/backups/{siteName}?action=cancel-receive-state</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/{cacheName}/x-site/backups/{siteName}?action=cancel-receive-state</code></pre>
 </div>
 </div>
 </div>
@@ -2843,7 +2843,7 @@ and statistics, see the <em>Infinispan JMX Components</em> documentation.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-12-06 11:59:40 -0500
+Last updated 2023-01-19 03:13:52 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
