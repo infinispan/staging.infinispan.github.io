@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.16">
-<title>Using the RESP protocol endpoint with Infinispan</title>
+<title>Infinispan cache configuration cheat sheet</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,15 +437,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="canonical" href="https://infinispan.org/docs/stable/titles/resp/resp-endpoint.html">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/themes/default/style.min.css">
-<link rel="stylesheet" href="../../css/css.css">
-<link rel="stylesheet" href="/assets/css/clipboard.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
-<script src="../../js/js.js"></script>
-<script src="/assets/javascript/clipboard.min.js" type="text/javascript"></script>
-<script src="/assets/javascript/copy.js" type="text/javascript"></script>
 <style>
 .hidden {
     display: none;
@@ -523,71 +514,80 @@ $(addBlockSwitches);
 </script>
 
 </head>
-<body class="book toc2 toc-left">
+<body class="book">
 <div id="header">
-<h1>Using the RESP protocol endpoint with Infinispan</h1>
-<div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#resp-endpoint">1. Using the RESP endpoint</a>
-<ul class="sectlevel2">
-<li><a href="#enabling-resp-endpoint_resp-endpoint">1.1. Enabling the RESP endpoint</a></li>
-<li><a href="#redis-commands_resp-endpoint">1.2. Redis commands</a></li>
-</ul>
-</li>
-</ul>
-</div>
+<h1>Infinispan cache configuration cheat sheet</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan Server includes an endpoint that implements the RESP3 protocol and allows you to interact with remote caches using Redis clients.</p>
+<p>Use the following information and configuration examples as a quick reference for creating and configuring Infinispan caches.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="resp-endpoint"><a class="anchor" href="#resp-endpoint"></a>1. Using the RESP endpoint</h2>
+<h2 id="clustered_cache_modes"><a class="anchor" href="#clustered_cache_modes"></a>1. Clustered cache modes</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Distributed</dt>
+<dd>
+<p>Distributed caches offer linear scalability and efficient memory usage by creating fewer copies of each entry across the cluster.
+Distributed caches store a number of copies for each cache entry that is equal to the <strong>Number of owners</strong> that you configure.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache /&gt;</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Replicated</dt>
+<dd>
+<p>Replicated caches offer data guarantees and fault tolerance by creating a copy of all entries on each node in the cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;replicated-cache /&gt;</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cluster_replication"><a class="anchor" href="#cluster_replication"></a>2. Cluster replication</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Synchronous replication</dt>
+<dd>
+<p>Helps to keep your data consistent but adds latency to cluster traffic that reduces throughput for cache writes.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache mode="SYNC" /&gt;</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Asynchronous replication</dt>
+<dd>
+<p>Reduces latency and increases the speed of write operations but because Infinispan replicates entries from primary owners, asynchronous replication provides a lower guarantee against data loss.
+Cluster topology changes and network errors might also lead to data inconsistency with asynchronous replication.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache mode="ASYNC" /&gt;</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cache_configuration_options"><a class="anchor" href="#cache_configuration_options"></a>3. Cache configuration options</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan Server includes an experimental module that implements the <a href="https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md">RESP3 protocol</a>.
-The RESP endpoint allows Redis clients to connect to one or several Infinispan-backed RESP servers and perform cache operations.</p>
-</div>
-<div class="sect2">
-<h3 id="enabling-resp-endpoint_resp-endpoint"><a class="anchor" href="#enabling-resp-endpoint_resp-endpoint"></a>1.1. Enabling the RESP endpoint</h3>
-<div class="paragraph">
-<p>Add the <code>resp-connector</code> to Infinispan Server configuration to enable the RESP endpoint.
-You can enable the RESP endpoint with:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Standalone Infinispan Server deployments, exactly like standalone Redis, where each server instance runs independently of each other.</p>
-</li>
-<li>
-<p>Clustered Infinispan Server deployments, where server instances replicate or distribute data between each other. Clustered deployments provides clients with failover capabilities.</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Install Infinispan Server.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Open your Infinispan Server configuration for editing.</p>
-</li>
-<li>
-<p>Add cache configuration to the <code>cache-container</code> section if required.</p>
-<div class="paragraph">
-<p>Cache configuration cannot enable capabilities that violate the RESP protocol.
-For example, specifying expiration values in a cache for the RESP endpoint results in a fatal error at startup.</p>
+<div class="title">Encoding</div>
+<p>A format, identified by a media type, that Infinispan uses to store keys and values in caches.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -596,89 +596,525 @@ For example, specifying expiration values in a cache for the RESP endpoint resul
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<div class="paragraph">
-<p>Configure your cache with Protobuf encoding if you want to view cache entries in the Infinispan Console (<code>encoding media-type="application/x-protostream"</code>).</p>
-</div>
+Infinispan recommends the <code>application/x-protostream</code> media type. Protobuf gives you excellent performance as well as interoperability between client applications in different programming languages for both Hot Rod and REST endpoints. Your cache encoding must be compatible with the Hot Rod client marshaller.
 </td>
 </tr>
 </table>
 </div>
-</li>
-<li>
-<p>Add an <code>endpoint</code> declaration to your configuration.</p>
-</li>
-<li>
-<p>Add the <code>resp-connector</code> element and specify the name of the cache to use with the RESP connector with the <code>cache</code> attribute.</p>
-<div class="paragraph">
-<p>You can use only one cache with the RESP endpoint.</p>
-</div>
-</li>
-<li>
-<p>Declare the security realm to use with the RESP endpoint with the <code>security-realm</code> attribute, if required.</p>
-</li>
-<li>
-<p>Ensure that the endpoint declaration also adds a Hot Rod and REST connector.</p>
-</li>
-<li>
-<p>Save the changes to your configuration.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<div class="title">Verification</div>
-<p>When you start Infinispan Server check for the following log message:</p>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>[org.infinispan.SERVER] ISPN080018: Started connector Resp (internal)</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache mode="SYNC"&gt;
+  &lt;encoding&gt;
+    &lt;key media-type="application/x-protostream"/&gt;
+    &lt;value media-type="application/x-protostream"/&gt;
+  &lt;/encoding&gt;
+&lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You can now connect to the RESP endpoint with a Redis client.
-For example, with the Redis CLI you can do the following to add an entry to the cache:</p>
+<div class="title">Expiration</div>
+<p>Controls how long Infinispan keeps entries in a cache and takes effect across clusters.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Lifespan</dt>
+<dd>
+<p>The maximum amount of time, in milliseconds, that cache entries can exist.
+If you set the value to -1, entries never expire.
+Lifespan uses a <code>creation</code> timestamp and the value for the <code>lifespan</code> property to determine when entries expire.
+The creation time for cache entries provides a value that is consistent across clustered caches.</p>
+</dd>
+<dt class="hdlist1">Max-idle</dt>
+<dd>
+<p>The maximum amount of time, in milliseconds, that cache entries can remain idle.
+If no operations are performed on entries within the maximum idle time, the entries expire across the cluster.
+If you set the value to -1, entries never expire.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Maximum idle uses a <code>last used</code> timestamp and the value for the <code>max-idle</code> property to determine when entries expire.
+The last access time for entries is not always the same on all nodes.
+To ensure that entries have the same relative access times across clusters, Infinispan sends touch commands to all owners when keys are accessed.
+This synchronous behavior increases latency of client requests.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The Infinispan team recommends setting the value for <code>lifespan</code> to be at least double of the value that you set for the <code>max-idle</code> property. Configuring <code>max-idle</code> close to <code>lifespan</code> has performance drawbacks.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>redis-cli -p 11222 --user username --pass password</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;expiration lifespan="5000"
+              max-idle="1000" /&gt;
+&lt;/distributed-cache&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<div class="title">Statistics</div>
+<p>Start collecting statistics for your cache.
+Keep disabled for optimal performance.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>127.0.0.1:11222&gt; SET k v
-OK
-127.0.0.1:11222&gt; GET k
-"v"
-127.0.0.1:11222&gt; quit</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache statistics="true" /&gt;</code></pre>
 </div>
 </div>
-<h5 id="resp_endpoint_configuration" class="discrete">RESP endpoint configuration</h5>
+</div>
+</div>
+<div class="sect1">
+<h2 id="infinispan_capabilities"><a class="anchor" href="#infinispan_capabilities"></a>4. Infinispan capabilities</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="bounded_caches"><a class="anchor" href="#bounded_caches"></a>4.1. Bounded caches</h3>
+<div class="paragraph">
+<div class="title">Eviction</div>
+<p>Eviction controls the amount of data that Infinispan keeps in memory and takes effect for each node.</p>
+</div>
+<div class="paragraph">
+<p>Control the size of data container in one of the following ways:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Max size</dt>
+<dd>
+<p>Maximum size of the data container in bytes.
+Eviction occurs when the approximate memory usage of the data container exceeds the maximum size.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;memory max-size="12MB" when-full="REMOVE"/&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Max count</dt>
+<dd>
+<p>Maximum number of entries.
+Eviction occurs after the container size exceeds the maximum count.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+	&lt;memory max-count="124" when-full="REMOVE"/&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="ulist">
+<div class="title">Eviction strategies</div>
+<ul>
+<li>
+<p><code>REMOVE</code> Infinispan performs eviction. This is the default strategy when you define a size for the data container. Because not all nodes evict the same entries you should use eviction with persistent storage to avoid data inconsistency.</p>
+</li>
+<li>
+<p><code>EXCEPTION</code> Infinispan throws an exception instead of evicting entries.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If no strategy is defined, but <code>max-count</code> or <code>max-size</code> is configured, <code>REMOVE</code> is used.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="indexed_caches"><a class="anchor" href="#indexed_caches"></a>4.2. Indexed caches</h3>
+<div class="paragraph">
+<p>Create indexes of values in your caches for faster queries and full-text search capabilities.</p>
+</div>
+<div class="dlist">
+<div class="title">Index storage</div>
+<dl>
+<dt class="hdlist1">Persistent</dt>
+<dd>
+<p>On the host file system, which is the default and persists indexes between restarts.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;indexing storage="filesystem"&gt;
+    &lt;!-- Indexing configuration goes here. --&gt;
+  &lt;/indexing&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Volatile</dt>
+<dd>
+<p>In JVM heap memory, which means that indexes do not survive restarts.
+You should store indexes in JVM heap memory only for small datasets.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;indexing storage="local-heap"&gt;
+    &lt;!-- Indexing configuration goes here. --&gt;
+  &lt;/indexing&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Index reader</dt>
+<dd>
+<p>The index reader provides access to the indexes to perform queries.
+As the index content changes, Infinispan needs to refresh the reader so that search results are up to date.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;indexing storage="filesystem" path="${java.io.tmpdir}/baseDir"&gt;
+    &lt;!-- Sets an interval of one second for the index reader. --&gt;
+    &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;!-- Additional indexing configuration goes here. --&gt;
+  &lt;/indexing&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Index writer</dt>
+<dd>
+<p>The index writer constructs an index composed of one or more segments (sub-indexes) that can be merged over time to improve performance.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;indexing storage="filesystem" path="${java.io.tmpdir}/baseDir"&gt;
+    &lt;index-writer commit-interval="2000"
+                  low-level-trace="false"
+                  max-buffered-entries="32"
+                  queue-count="1"
+                  queue-size="10000"
+                  ram-buffer-size="400"
+                  thread-pool-size="2"&gt;
+      &lt;index-merge calibrate-by-deletes="true"
+                   factor="3"
+                   max-entries="2000"
+                   min-size="10"
+                   max-size="20"/&gt;
+    &lt;/index-writer&gt;
+    &lt;!-- Additional indexing configuration goes here. --&gt;
+  &lt;/indexing&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="authorization"><a class="anchor" href="#authorization"></a>4.3. Authorization</h3>
+<div class="paragraph">
+<p>Secure your deployment by restricting user access to data.</p>
+</div>
+<div class="ulist">
+<div class="title">Default set of roles</div>
+<ul>
+<li>
+<p>Observer</p>
+</li>
+<li>
+<p>Application</p>
+</li>
+<li>
+<p>Admin</p>
+</li>
+<li>
+<p>Monitor</p>
+</li>
+<li>
+<p>Deployer</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+	&lt;security&gt;
+        &lt;!--Specify one or more user roles --&gt;
+		&lt;authorization enabled="true"
+                  roles="observer application admin monitor"/&gt;
+	&lt;/security&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="backups"><a class="anchor" href="#backups"></a>4.4. Backups</h3>
+<div class="paragraph">
+<p>Define backup locations for cache data and modify state transfer properties.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Backup strategies</dt>
+<dd>
+<p>To back up data to a different cluster, Infinispan can use either a synchronous or asynchronous strategy.
+Infinispan performs conflict resolution with the asynchronous backup strategy.</p>
+</dd>
+<dt class="hdlist1">Remote site</dt>
+<dd>
+<p>Specifies the name of the remote site that backs up data to the local cache.</p>
+</dd>
+<dt class="hdlist1">Remote cache</dt>
+<dd>
+<p>Specifies the name of the remote cache that uses the local cache as a backup.</p>
+</dd>
+<dt class="hdlist1">Timeout</dt>
+<dd>
+<p>Specifies timeout, in milliseconds, for synchronous and asynchronous backup operations.</p>
+</dd>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Cluster LON</th>
+<th class="tableblock halign-left valign-top">Cluster NYC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;backups&gt;
+    &lt;backup site="NYC"
+            strategy="ASYNC"
+            timeout="10000" /&gt;
+  &lt;/backups&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache name="eu-customers"&gt;
+  &lt;backups&gt;
+    &lt;backup site="LON"
+            strategy="ASYNC" /&gt;
+  &lt;/backups&gt;
+    &lt;!-- Defines the local cache as a backup for a remote cache with a different name. --&gt;
+  &lt;backup-for remote-cache="customers"
+              remote-site="LON" /&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="transactional"><a class="anchor" href="#transactional"></a>4.5. Transactional</h3>
+<div class="paragraph">
+<div class="title">Transaction mode</div>
+<p>Configure the mode that Infinispan uses when carrying out transactions to ensure the cache state is consistent.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Enable transaction mode for the cache to ensure consistency for conditional operations, such as <code>putIfAbsent</code> or <code>remove</code>, that require consistent cache data across the cluster.
+</td>
+</tr>
+</table>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">NON_XA</dt>
+<dd>
+<p>Cache will enlist within transactions as a <code>javax.transaction.Synchronization</code>.</p>
+</dd>
+<dt class="hdlist1">NON_DURABLE_XA</dt>
+<dd>
+<p>Cache will enlist within transactions as a <code>javax.transaction.xa.XAResource</code>, without recovery.</p>
+</dd>
+<dt class="hdlist1">FULL_XA</dt>
+<dd>
+<p>Cache will enlist within transactions as a <code>javax.transaction.xa.XAResource</code>, with recovery.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<div class="title">Locking mode</div>
+<p>Configure how Infinispan locks keys to perform write operations for transactions.
+Locking keys adds contention that increases latency for write operations.
+You can adjust the amount of contention by using optimistic or pessimistic locking.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Optimistic</dt>
+<dd>
+<p>Infinispan locks keys when it invokes the <code>commit()</code> method.
+Keys are locked for shorter periods of time which reduces overall latency but makes transaction recovery less efficient.</p>
+</dd>
+<dt class="hdlist1">Pessimistic</dt>
+<dd>
+<p>Infinispan locks keys when it invokes the <code>put()</code> method.
+Keys are locked for longer periods of time which increases latency but makes transaction recovery more efficient.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache name="deee" mode="SYNC"&gt;
+	&lt;transaction
+          &lt;!-- Transaction mode --&gt;
+                mode="NON_XA"
+          &lt;!-- Locking mode --&gt;
+                locking="OPTIMISTIC"/&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="persistence"><a class="anchor" href="#persistence"></a>4.6. Persistence</h3>
+<div class="paragraph">
+<p>Configure non-volatile storage so entries remain available after cluster restarts.</p>
+</div>
+<div class="paragraph">
+<div class="title">Passivation</div>
+<p>Infinispan writes entries to persistent storage when it evicts those entries from memory. Passivation ensures that only a single copy of an entry is maintained, either in-memory or in a cache store, and prevents unnecessary and expensive writes to persistent storage.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;persistence passivation="true"&gt;
+    &lt;!-- Persistence configuration goes here. --&gt;
+  &lt;/persistence&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+<div class="dlist">
+<div class="title">Persistent storage configuration</div>
+<dl>
+<dt class="hdlist1">File store</dt>
+<dd>
+<p>File-based cache store on the local host filesystem. For clustered caches, file-based cache stores are unique to each Infinispan node.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+	&lt;persistence passivation="false"&gt;
+		&lt;file-store&gt;
+			&lt;data path="path/to/data"/&gt;
+			&lt;index path="path/to/index"/&gt;
+		&lt;/file-store&gt;
+	&lt;/persistence&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Remote store</dt>
+<dd>
+<p>Remote cache stores use the Hot Rod protocol to store data on Infinispan clusters.</p>
+</dd>
+<dt class="hdlist1">Table SQL store</dt>
+<dd>
+<p>Load entries from a single database table.
+Ensure that the appropriate JDBC driver is available to the Infinispan cluster.</p>
+</dd>
+<dt class="hdlist1">Query SQL store</dt>
+<dd>
+<p>Use SQL queries to load entries from one or more database tables, including sub-columns.
+You can also perform insert, update, and delete operations. You must ensure that the appropriate JDBC driver is available to the Infinispan cluster.</p>
+</dd>
+<dt class="hdlist1">JDBC string-based store</dt>
+<dd>
+<p>Use a relational database for persistent storage through a JDBC connection.
+Ensure that the appropriate JDBC driver is available to the Infinispan cluster.</p>
+</dd>
+<dt class="hdlist1">RocksDB store</dt>
+<dd>
+<p>A RocksDB cache store uses two databases; one as a primary store and another to hold expired entries.</p>
+</dd>
+<dt class="hdlist1">Custom store</dt>
+<dd>
+<p>Use a custom cache store that you implement with the Infinispan Persistence SPI.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuration_formats"><a class="anchor" href="#configuration_formats"></a>5. Configuration formats</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can create Infinispan configuration in  XML, JSON, or YAML format.</p>
+</div>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;endpoints&gt;
-  &lt;endpoint socket-binding="default" security-realm="default"&gt;
-    &lt;resp-connector cache="mycache" /&gt;
-    &lt;hotrod-connector /&gt;
-    &lt;rest-connector/&gt;
-  &lt;/endpoint&gt;
-&lt;/endpoints&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache owners="2"
+                   mode="SYNC"
+                   statistics="true"&gt;
+  &lt;encoding media-type="application/x-protostream"/&gt;
+  &lt;locking isolation="REPEATABLE_READ"/&gt;
+  &lt;transaction mode="FULL_XA"
+               locking="OPTIMISTIC"/&gt;
+  &lt;expiration lifespan="5000"
+              max-idle="1000" /&gt;
+  &lt;memory max-count="1000000"
+          when-full="REMOVE"/&gt;
+  &lt;indexing enabled="true"
+            storage="local-heap"&gt;
+    &lt;index-reader refresh-interval="1000"/&gt;
+    &lt;indexed-entities&gt;
+      &lt;indexed-entity&gt;org.infinispan.Person&lt;/indexed-entity&gt;
+    &lt;/indexed-entities&gt;
+  &lt;/indexing&gt;
+  &lt;persistence passivation="false"&gt;
+    &lt;!-- Persistent storage configuration. --&gt;
+  &lt;/persistence&gt;
+&lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">JSON</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "server": {
-    "endpoints": {
-      "endpoint": {
-        "socket-binding": "default",
-        "security-realm": "default",
-        "resp-connector": {
-          "cache": "mycache"
-        },
-        "hotrod-connector": {},
-        "rest-connector": {}
+  "distributed-cache": {
+    "owners": 2,
+    "mode": "SYNC",
+    "statistics": true,
+    "encoding": {
+      "media-type": "application/x-protostream"
+    },
+    "locking": {
+      "isolation": "REPEATABLE_READ"
+    },
+    "transaction": {
+      "mode": "FULL_XA",
+      "locking": "OPTIMISTIC"
+    },
+    "expiration": {
+      "lifespan": 5000,
+      "max-idle": 1000
+    },
+    "memory": {
+      "max-count": 1000000,
+      "when-full": "REMOVE"
+    },
+    "indexing": {
+      "enabled": true,
+      "storage": "local-heap",
+      "indexed-entities": [
+        "org.infinispan.Person"
+      ],
+      "index-reader": {
+        "refresh-interval": 1000
       }
+    },
+    "persistence": {
+      "passivation": false
     }
   }
 }</code></pre>
@@ -687,74 +1123,32 @@ OK
 <div class="listingblock secondary">
 <div class="title">YAML</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
-  endpoints:
-    endpoint:
-      socketBinding: "default"
-      securityRealm: "default"
-      respConnector:
-        cache: "mycache"
-      hotrodConnector: ~
-      restConnector: ~</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="redis-commands_resp-endpoint"><a class="anchor" href="#redis-commands_resp-endpoint"></a>1.2. Redis commands</h3>
-<div class="paragraph">
-<p>The Infinispan RESP endpoint implements the following Redis commands:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://redis.io/commands/auth">AUTH</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/decr">DECR</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/del">DEL</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/echo">ECHO</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/get">GET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/hello">HELLO</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/incr">INCR</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/mget">MGET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/mset">MSET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/ping">PING</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/publish">PUBLISH</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/quit">QUIT</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/reset">RESET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/set">SET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/subscribe">SUBSCRIBE</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/unsubscribe">UNSUBSCRIBE</a></p>
-</li>
-</ul>
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributed-cache:
+  owners: 2
+  mode: SYNC
+  statistics: true
+  encoding:
+    media-type: application/x-protostream
+  locking:
+    isolation: REPEATABLE_READ
+  transaction:
+    mode: FULL_XA
+    locking: OPTIMISTIC
+  expiration:
+    lifespan: 5000
+    max-idle: 1000
+  memory:
+    max-count: 1000000
+    when-full: REMOVE
+  indexing:
+    enabled: true
+    storage: local-heap
+    index-reader:
+      refresh-interval: 1000
+    indexedEntities:
+      - "org.infinispan.Person"
+  persistence:
+    passivation: false</code></pre>
 </div>
 </div>
 </div>
@@ -765,40 +1159,5 @@ OK
 Last updated 2023-01-26 14:07:05 UTC
 </div>
 </div>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  messageStyle: "none",
-  tex2jax: {
-    inlineMath: [["\\(", "\\)"]],
-    displayMath: [["\\[", "\\]"]],
-    ignoreClass: "nostem|nolatexmath"
-  },
-  asciimath2jax: {
-    delimiters: [["\\$", "\\$"]],
-    ignoreClass: "nostem|noasciimath"
-  },
-  TeX: { equationNumbers: { autoNumber: "none" } }
-})
-MathJax.Hub.Register.StartupHook("AsciiMath Jax Ready", function () {
-  MathJax.InputJax.AsciiMath.postfilterHooks.Add(function (data, node) {
-    if ((node = data.script.parentNode) && (node = node.parentNode) && node.classList.contains("stemblock")) {
-      data.math.root.display = "block"
-    }
-    return data
-  })
-})
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-8601422-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
 </body>
 </html>
