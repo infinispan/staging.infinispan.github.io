@@ -1729,7 +1729,7 @@ To protect sensitive text strings such as passwords, add the entries in a creden
 <p>Create a <code>CredentialStore Secret</code> file.</p>
 </li>
 <li>
-<p>Specify the credentials and its aliases with the <code>data</code> field.</p>
+<p>Use the <code>data</code> field to specify the credentials and its aliases.</p>
 <div class="listingblock">
 <div class="title">user-secret.yaml</div>
 <div class="content">
@@ -1739,8 +1739,8 @@ metadata:
   name: user-secret
 type: Opaque
 data:
-  cred1: sensitive-value
-  cred2: sensitive-value2</code></pre>
+  postgres_cred: sensitive-value
+  mysql_cred: sensitive-value2</code></pre>
 </div>
 </div>
 </li>
@@ -1756,7 +1756,7 @@ data:
 <p>Open the <code>Infinispan</code> CR for editing.</p>
 </li>
 <li>
-<p>Specify the name of the credential store Secret in the <code>spec.security.credentialStoreSecretName</code> field.</p>
+<p>In the <code>spec.security.credentialStoreSecretName</code> field, specify the name of the credential store secret.</p>
 <div class="listingblock">
 <div class="title">Infinispan CR</div>
 <div class="content">
@@ -1770,7 +1770,28 @@ data:
 <p>Apply the changes.</p>
 </li>
 <li>
-<p>Define a <code>credential-reference</code> in your configuration with <code>store="credentials"</code>.</p>
+<p>Open your Infinispan Server configuration for editing.</p>
+</li>
+<li>
+<p>Add a <code>credential-reference</code> to your configuration.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Specify the <code>credentials</code> as the name of the <code>store</code>.</p>
+</li>
+<li>
+<p>Specify the <code>alias</code> attribute as one of the keys defined in your credential secret.</p>
+<div class="listingblock">
+<div class="title">Infinispan.xml</div>
+<div class="content">
+<pre>&lt;credential-store&gt;
+    &lt;credential-reference store="credentials"  alias="postgres_cred"/&gt;
+&lt;/credential-store&gt;</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
 </li>
 </ol>
 </div>
@@ -1778,7 +1799,7 @@ data:
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://infinispan.org/docs/stable/titles/server/server.html##credential-keystore-references_credential-keystores">Defining credential store references</a></p>
+<p><a href="https://infinispan.org/docs/stable/titles/server/server.html#credential-keystore-references_credential-keystores">Credential store references</a></p>
 </li>
 </ul>
 </div>
@@ -7986,7 +8007,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-31 17:42:48 UTC
+Last updated 2023-02-02 12:09:32 UTC
 </div>
 </div>
 <script>
