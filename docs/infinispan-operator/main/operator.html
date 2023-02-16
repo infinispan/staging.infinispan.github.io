@@ -486,7 +486,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#configuring-clusters">5. Configuring Infinispan clusters</a>
 <ul class="sectlevel2">
 <li><a href="#applying-custom-configuration_configuring-clusters">5.1. Applying custom configuration to Infinispan clusters</a></li>
-<li><a href="#infinispan-configuration_configuring-clusters">5.2. Custom Infinispan configuration</a></li>
+<li><a href="#infinispan-configuration_configuring-clusters">5.2. Custom Infinispan configuration</a>
+<ul class="sectlevel3">
+<li><a href="#_cache_template">5.2.1. Cache template</a></li>
+<li><a href="#_logging_configuration">5.2.2. Logging configuration</a></li>
+</ul>
+</li>
 <li><a href="#secure_credentials_configuring-clusters">5.3. Securing custom Infinispan configuration</a></li>
 </ul>
 </li>
@@ -630,10 +635,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#caches_creating-caches">16.1. Infinispan caches</a></li>
 <li><a href="#creating-caches_creating-caches">16.2. Creating caches with the Cache CR</a></li>
-<li><a href="#adding-cache-stores_creating-caches">16.3. Adding persistent cache stores</a></li>
-<li><a href="#creating-caches-cacheservice_creating-caches">16.4. Adding caches to Cache Service pods</a>
+<li><a href="#updating_cache_creating-caches">16.3. Updating caches with the Cache CR</a></li>
+<li><a href="#adding-cache-stores_creating-caches">16.4. Adding persistent cache stores</a></li>
+<li><a href="#creating-caches-cacheservice_creating-caches">16.5. Adding caches to Cache Service pods</a>
 <ul class="sectlevel3">
-<li><a href="#default-cache-service-config_creating-caches">16.4.1. Default cache configuration</a></li>
+<li><a href="#default-cache-service-config_creating-caches">16.5.1. Default cache configuration</a></li>
 </ul>
 </li>
 </ul>
@@ -1576,7 +1582,8 @@ Each time you modify the Infinispan configuration in the <code>ConfigMap</code>,
 <div class="paragraph">
 <p>You can add Infinispan configuration to a <code>ConfigMap</code> in XML, YAML, or JSON format.</p>
 </div>
-<h4 id="_cache_template" class="discrete">Cache template</h4>
+<div class="sect3">
+<h4 id="_cache_template"><a class="anchor" href="#_cache_template"></a>5.2.1. Cache template</h4>
 <div class="listingblock">
 <div class="title">XML</div>
 <div class="content">
@@ -1647,7 +1654,9 @@ Each time you modify the Infinispan configuration in the <code>ConfigMap</code>,
 }</code></pre>
 </div>
 </div>
-<h4 id="_logging_configuration" class="discrete">Logging configuration</h4>
+</div>
+<div class="sect3">
+<h4 id="_logging_configuration"><a class="anchor" href="#_logging_configuration"></a>5.2.2. Logging configuration</h4>
 <div class="paragraph">
 <p>You can also include Apache Log4j configuration in XML format as part of your <code>ConfigMap</code>.</p>
 </div>
@@ -1706,6 +1715,7 @@ data:
 <p><a href="{config_docs}#cache-configuration_cache-configuration">Custom Infinispan configuration</a></p>
 </li>
 </ul>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2294,11 +2304,7 @@ You should do this only if you do not need declarative Kubernetes representation
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.configListener.logging.level</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Configures the logging level used by the ConfigListener deployments. Can be one of `debug</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">info</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">error`. The default level is <code>info</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configures the logging level for the <code>ConfigListener</code> deployments. The default level is <code>info</code>. You can change it to <code>debug</code> or  <code>error</code>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>spec.affinity</code></p></td>
@@ -4111,6 +4117,18 @@ a <code>LoadBalancer</code> service.</p>
 <h3 id="exposing-routes_network-services"><a class="anchor" href="#exposing-routes_network-services"></a>12.4. Exposing Infinispan through a Route</h3>
 <div class="paragraph _abstract">
 <p>Use a Kubernetes Ingress or an OpenShift <code>Route</code> with passthrough encryption to make Infinispan clusters available on the network.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+To access Infinispan with Hot Rod client, you must configure TLS with SNI.
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -6281,7 +6299,62 @@ spec:
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-cache-stores_creating-caches"><a class="anchor" href="#adding-cache-stores_creating-caches"></a>16.3. Adding persistent cache stores</h3>
+<h3 id="updating_cache_creating-caches"><a class="anchor" href="#updating_cache_creating-caches"></a>16.3. Updating caches with the Cache CR</h3>
+<div class="paragraph">
+<p>You can control how Infinispan Operator handles modifications to the cache configuration in the <code>Cache</code> CR.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan Operator attempts to update the cache configuration on the Infinispan Server at runtime.
+If the update fails, Infinispan Operator uses one of the following strategies:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">retain strategy</dt>
+<dd>
+<p>The Operator updates the status of the <code>Cache</code> CR to <code>Ready=False</code>.
+You can manually delete the <code>Cache</code> CR and create a new cache configuration. This is the default strategy.</p>
+</dd>
+<dt class="hdlist1">recreate strategy</dt>
+<dd>
+<p>The Operator deletes the <code>Cache</code> CR and creates a new cache with the latest <code>spec.template</code> value.</p>
+</dd>
+</dl>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have a valid <code>Cache</code> CR.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Use the <code>spec.updates.strategy</code> field to set the <code>Cache</code> CR strategy.</p>
+<div class="listingblock">
+<div class="title">mycache.yaml</div>
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">spec:
+  updates:
+    strategy: recreate</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Apply changes to the <code>Cache</code> CR, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>oc apply -f mycache.yaml</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-cache-stores_creating-caches"><a class="anchor" href="#adding-cache-stores_creating-caches"></a>16.4. Adding persistent cache stores</h3>
 <div class="paragraph _abstract">
 <p>You can add persistent cache stores to Data Grid Service pods to save data to the persistent volume.</p>
 </div>
@@ -6308,7 +6381,7 @@ spec:
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-cacheservice_creating-caches"><a class="anchor" href="#creating-caches-cacheservice_creating-caches"></a>16.4. Adding caches to Cache Service pods</h3>
+<h3 id="creating-caches-cacheservice_creating-caches"><a class="anchor" href="#creating-caches-cacheservice_creating-caches"></a>16.5. Adding caches to Cache Service pods</h3>
 <div class="paragraph _abstract">
 <p>Cache Service pods include a default cache configuration with recommended
 settings. This default cache lets you start using Infinispan without the need
@@ -6346,7 +6419,7 @@ If you want multiple custom caches you should create Data Grid Service pods inst
 </ul>
 </div>
 <div class="sect3">
-<h4 id="default-cache-service-config_creating-caches"><a class="anchor" href="#default-cache-service-config_creating-caches"></a>16.4.1. Default cache configuration</h4>
+<h4 id="default-cache-service-config_creating-caches"><a class="anchor" href="#default-cache-service-config_creating-caches"></a>16.5.1. Default cache configuration</h4>
 <div class="paragraph _abstract">
 <p>This topic describes default cache configuration for Cache Service pods.</p>
 </div>
@@ -7696,8 +7769,8 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 <div class="paragraph _abstract">
 <p>Hot Rod is a binary TCP protocol that Infinispan provides for high-performance data transfer capabilities with remote clients.</p>
 </div>
+<h4 id="_client_intelligence" class="discrete">Client intelligence</h4>
 <div class="paragraph">
-<div class="title">Client intelligence</div>
 <p>The Hot Rod protocol includes a mechanism that provides clients with an up-to-date view of the cache topology.
 Client intelligence improves performance by reducing the number of network hops for read and write operations.</p>
 </div>
@@ -7708,13 +7781,33 @@ Client intelligence improves performance by reducing the number of network hops 
 <p><code>HASH_DISTRIBUTION_AWARE</code> is the default intelligence mechanism and enables clients to route requests to primary owners, which provides the best performance for Hot Rod clients.</p>
 </div>
 <div class="paragraph">
-<div class="title"><code>BASIC</code> intelligence</div>
+<p>Clients running on a different Kubernetes, or outside Kubernetes, can access Infinispan by using a <code>LoadBalancer</code>, <code>NodePort</code>, or OpenShift <code>Route</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Hot Rod client connections via Kubernetes <code>Route</code> require encryption.
+You must configure TLS with SNI otherwise the Hot Rod connection fails.</p>
+</div>
+<div class="paragraph">
+<p>For unencrypted Hot Rod client connections, you must use a <code>LoadBalancer</code> service or a <code>NodePort</code> service.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
 <p>Hot Rod clients must use <code>BASIC</code> intelligence in the following situations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Connecting to Infinispan through a <code>LoadBalancer</code>, <code>NodePort</code>, or OpenShift <code>Route</code>.</p>
+<p>Connecting to Infinispan through a <code>LoadBalancer</code> service, a <code>NodePort</code> service, or an OpenShift <code>Route</code>.</p>
 </li>
 <li>
 <p>Failing over to a different Kubernetes cluster when using cross-site replication.</p>
@@ -8007,7 +8100,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-16 09:42:00 UTC
+Last updated 2023-02-16 11:09:06 UTC
 </div>
 </div>
 <script>
