@@ -6316,7 +6316,19 @@ You can manually delete the <code>Cache</code> CR and create a new cache configu
 </dd>
 <dt class="hdlist1">recreate strategy</dt>
 <dd>
-<p>The Operator deletes the <code>Cache</code> CR and creates a new cache with the latest <code>spec.template</code> value.</p>
+<p>The Operator deletes the cache from the Infinispan cluster and creates a new cache with the latest <code>spec.template</code> value from the <code>Cache</code> CR.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Configure the <code>recreate</code> strategy only if your deployment can tolerate data loss.
+</td>
+</tr>
+</table>
+</div>
 </dd>
 </dl>
 </div>
@@ -8100,7 +8112,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-16 11:09:06 UTC
+Last updated 2023-02-21 09:34:25 UTC
 </div>
 </div>
 <script>
