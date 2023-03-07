@@ -573,7 +573,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_retrieve_cache">2.1.14. Retrieving Data By Keys</a></li>
 <li><a href="#rest_v2_check_entries">2.1.15. Checking if Entries Exist</a></li>
 <li><a href="#rest_v2_delete_entries">2.1.16. Deleting Entries</a></li>
-<li><a href="#rest_v2_distribution_entries">2.1.17. Checking entry distribution</a></li>
+<li><a href="#rest_v2_distribution_entries">2.1.17. Checking distribution of cache entries</a></li>
 <li><a href="#rest_v2_remove_cache">2.1.18. Deleting Caches</a></li>
 <li><a href="#rest_v2_get_keys">2.1.19. Retrieving All Keys from Caches</a></li>
 <li><a href="#rest_v2_get_entries">2.1.20. Retrieving All Entries from Caches</a></li>
@@ -1769,8 +1769,8 @@ For example, the following command converts the replicated cache configuration f
 <div class="sect3">
 <h4 id="rest_v2_cache_config_compare"><a class="anchor" href="#rest_v2_cache_config_compare"></a>2.1.7. Comparing Cache Configurations</h4>
 <div class="paragraph">
-<p>Invoke a <code>POST</code> request with a <code>multipart/form-data</code> body containing two configurations and the <code>?action=compare</code>
-parameter. Infinispan responds with <code>204 (No Content)</code> in case the configurations are equal, and <code>409 (Conflict)</code> in case they are different.</p>
+<p>Invoke a <code>POST</code> request with a <code>multipart/form-data</code> body containing two cache configurations and the <code>?action=compare</code>
+parameter.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1778,7 +1778,12 @@ parameter. Infinispan responds with <code>204 (No Content)</code> in case the co
 </div>
 </div>
 <div class="paragraph">
-<p>Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes in the comparison.</p>
+<p>+
+TIP: Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes in the comparison.</p>
+</div>
+<div class="paragraph">
+<p>+
+Infinispan responds with <code>204 (No Content)</code> in case the configurations are equal, and <code>409 (Conflict)</code> in case they are different.</p>
 </div>
 </div>
 <div class="sect3">
@@ -2386,9 +2391,9 @@ Java objects, Infinispan does not de-serialize the content in the request.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_distribution_entries"><a class="anchor" href="#rest_v2_distribution_entries"></a>2.1.17. Checking entry distribution</h4>
+<h4 id="rest_v2_distribution_entries"><a class="anchor" href="#rest_v2_distribution_entries"></a>2.1.17. Checking distribution of cache entries</h4>
 <div class="paragraph">
-<p>Invoking this endpoint returns the nodes the entry is present, identifying the primary owner and backup readers.</p>
+<p>Invoke this endpoint to retrieve details for data distribution of Infinispan cache entry.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2421,32 +2426,29 @@ Java objects, Infinispan does not de-serialize the content in the request.</p>
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>The root element contains the properties:</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>contains_key</code> identifies if the key exists in the cache.</p>
+<p><code>contains_key</code> returns <code>true</code> if the cache contains the key</p>
 </li>
 <li>
-<p><code>owners</code> is a list of nodes that have the key.</p>
+<p><code>owners</code> provides a list of nodes that contain the key</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Each element in the <code>owners</code> list represents a node. The properties are:</p>
+<p>List of owners includes the following properties:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>node_name</code> is the node name.</p>
+<p><code>node_name</code> shows the name of the node</p>
 </li>
 <li>
-<p><code>primary</code> identifies if the node is the primary owner.</p>
+<p><code>primary</code> identifies a node that is the primary owner</p>
 </li>
 <li>
-<p><code>node_addresses</code> is a list with all the node&#8217;s physical addresses.</p>
+<p><code>node_addresses</code> shows the IP addresses and ports where the node can be accessed</p>
 </li>
 </ul>
 </div>
@@ -6913,7 +6915,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-30 12:50:07 UTC
+Last updated 2023-03-07 16:47:41 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
