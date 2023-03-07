@@ -5345,7 +5345,7 @@ Eviction happens when there are 100 entries in the data container and Infinispan
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
   "replicated-cache" : {
     "memory" : {
-      "storage" : "OBJECT",
+      "storage" : "OFF_HEAP",
       "max-count" : "500"
     }
   }
@@ -8944,8 +8944,7 @@ initializes the cache.</p>
 <code>StoreMigrator</code> then loads entries from the source store into memory and then puts them into the target cache.</p>
 </div>
 <div class="paragraph">
-<p><code>StoreMigrator</code> also lets you migrate data from one type of cache store to another.
-For example, you can migrate from a JDBC string-based cache store to a RocksDB cache store.</p>
+<p><code>StoreMigrator</code> also lets you migrate data from one type of cache store to another. For example, you can migrate from a JDBC string-based cache store to a RocksDB cache store.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -9035,8 +9034,7 @@ For example, you can migrate from a JDBC string-based cache store to a RocksDB c
 <div class="sect3">
 <h4 id="configuring-store-migrator_cache-store-migrator"><a class="anchor" href="#configuring-store-migrator_cache-store-migrator"></a>6.16.3. Configuring the cache store migrator</h4>
 <div class="paragraph">
-<p>Set properties for source and target cache stores in a <code>migrator.properties</code>
-file.</p>
+<p>Use the <code>migrator.properties</code> file to configure properties for source and target cache stores.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -9045,12 +9043,13 @@ file.</p>
 <p>Create a <code>migrator.properties</code> file.</p>
 </li>
 <li>
-<p>Configure the source cache store in <code>migrator.properties</code>.</p>
+<p>Configure properties for source and target cache store using the <code>migrator.properties</code> file.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prepend all configuration properties with <code>source.</code> as in the following example:</p>
+<p>Add the <code>source.</code> prefix to all configuration properties for the source cache store.</p>
 <div class="listingblock">
+<div class="title">Example source cache store</div>
 <div class="content">
 <pre class="highlight nowrap"><code>source.type=SOFT_INDEX_FILE_STORE
 source.cache_name=myCache
@@ -9058,17 +9057,27 @@ source.location=/path/to/source/sifs
 source.version=&lt;version&gt;</code></pre>
 </div>
 </div>
-</li>
-</ol>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For migrating data from segmented cache stores, you must also configure the number of segments using the <code>source.segment_count</code> property.
+The number of segments must match <code>clustering.hash.numSegments</code> in your Infinispan configuration.
+If the number of segments for a cache store does not match the number of segments for the corresponding cache, Infinispan cannot read data from the cache store.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </li>
 <li>
-<p>Configure the target cache store in <code>migrator.properties</code>.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Prepend all configuration properties with <code>target.</code> as in the following example:</p>
+<p>Add the <code>target.</code> prefix to all configuration properties for the target cache store.</p>
 <div class="listingblock">
+<div class="title">Example target cache store</div>
 <div class="content">
 <pre class="highlight nowrap"><code>target.type=SINGLE_FILE_STORE
 target.cache_name=myCache
@@ -9103,7 +9112,7 @@ target.location=/path/to/target/sfs.dat</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the type of cache store type for a source or target.</p>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the type of cache store for a source or target cache store.</p>
 <p class="tableblock"><code>.type=JDBC_STRING</code></p>
 <p class="tableblock"><code>.type=JDBC_BINARY</code></p>
 <p class="tableblock"><code>.type=JDBC_MIXED</code></p>
@@ -9135,19 +9144,16 @@ target.location=/path/to/target/sfs.dat</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>cache_name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Names the cache that the store backs.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the cache that you want to back up.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>.cache_name=myCache</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>segment_count</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of segments for target cache stores that can use
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of segments for target cache stores that can use
 segmentation.</p>
 <p class="tableblock">The number of segments must match <code>clustering.hash.numSegments</code> in the
-Infinispan configuration.</p>
-<p class="tableblock">In other words, the number of segments for a cache store must match the number
-of segments for the corresponding cache. If the number of segments is not the
-same, Infinispan cannot read data from the cache store.</p></td>
+Infinispan configuration. If the number of segments for a cache store does not match the number of segments for the corresponding cache, Infinispan cannot read data from the cache store.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>.segment_count=256</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
@@ -9176,7 +9182,7 @@ same, Infinispan cannot read data from the cache store.</p></td>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>version</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the marshaller version for source cache stores.<br>
-Set the value that matches the Infinispan major version of the source cluster. For example; set a value of <code>13</code> for Infinispan 13.x.</p></td>
+Set the value that matches the Infinispan major version of the source cluster. For example; set a value of <code>14</code> for Infinispan 14.x.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required for source stores only.</p></td>
 </tr>
 <tr>
@@ -9400,17 +9406,16 @@ target.location=path/to/sifs/index</pre>
 <div class="sect3">
 <h4 id="migrating-cache-stores_cache-store-migrator"><a class="anchor" href="#migrating-cache-stores_cache-store-migrator"></a>6.16.4. Migrating Infinispan cache stores</h4>
 <div class="paragraph">
-<p>Run <code>StoreMigrator</code> to migrate data from one cache store to another.</p>
+<p>You can use the <code>StoreMigrator</code> to migrate data between cache stores with different Infinispan versions or to migrate data from one type of cache store to another.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Get <code>infinispan-tools.jar</code>.</p>
+<p>Have a  <code>infinispan-tools.jar</code>.</p>
 </li>
 <li>
-<p>Create a <code>migrator.properties</code> file that configures the source and target
-cache stores.</p>
+<p>Have the source and target cache store configured in the <code>migrator.properties</code> file.</p>
 </li>
 </ul>
 </div>
@@ -9418,12 +9423,14 @@ cache stores.</p>
 <div class="title">Procedure</div>
 <ul>
 <li>
-<p>If you build <code>infinispan-tools.jar</code> from source, do the following:</p>
+<p>If you built the <code>infinispan-tools.jar</code> from the source code, do the following:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Add <code>infinispan-tools.jar</code> and dependencies for your source and target
-databases, such as JDBC drivers, to your classpath.</p>
+<p>Add <code>infinispan-tools.jar</code> to your classpath.</p>
+</li>
+<li>
+<p>Add dependencies for your source and target databases, such as JDBC drivers to your classpath.</p>
 </li>
 <li>
 <p>Specify <code>migrator.properties</code> file as an argument for <code>StoreMigrator</code>.</p>
@@ -9432,10 +9439,11 @@ databases, such as JDBC drivers, to your classpath.</p>
 </div>
 </li>
 <li>
-<p>If you pull <code>infinispan-tools.jar</code> from the Maven
-repository, run the following command:</p>
-<div class="paragraph">
-<p><code>mvn exec:java</code></p>
+<p>If you pulled <code>infinispan-tools.jar</code> from the Maven repository, run the following command:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">mvn exec:java</code></pre>
+</div>
 </div>
 </li>
 </ul>
@@ -12395,7 +12403,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-19 03:13:52 -0500
+Last updated 2023-03-07 17:15:38 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
