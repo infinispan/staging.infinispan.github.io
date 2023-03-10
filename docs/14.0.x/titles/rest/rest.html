@@ -1767,8 +1767,8 @@ For example, the following command converts the replicated cache configuration f
 <div class="sect3">
 <h4 id="rest_v2_cache_config_compare"><a class="anchor" href="#rest_v2_cache_config_compare"></a>2.1.7. Comparing Cache Configurations</h4>
 <div class="paragraph">
-<p>Invoke a <code>POST</code> request with a <code>multipart/form-data</code> body containing two configurations and the <code>?action=compare</code>
-parameter. Infinispan responds with <code>204 (No Content)</code> in case the configurations are equal, and <code>409 (Conflict)</code> in case they are different.</p>
+<p>Invoke a <code>POST</code> request with a <code>multipart/form-data</code> body containing two cache configurations and the <code>?action=compare</code>
+parameter.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1776,7 +1776,12 @@ parameter. Infinispan responds with <code>204 (No Content)</code> in case the co
 </div>
 </div>
 <div class="paragraph">
-<p>Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes in the comparison.</p>
+<p>+
+TIP: Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes in the comparison.</p>
+</div>
+<div class="paragraph">
+<p>+
+Infinispan responds with <code>204 (No Content)</code> in case the configurations are equal, and <code>409 (Conflict)</code> in case they are different.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1794,7 +1799,7 @@ parameter. Infinispan responds with <code>204 (No Content)</code> in case the co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+<pre class="highlight nowrap"><code class="language-json" data-lang="json"> {
   "stats": {
     "time_since_start": -1,
     "time_since_reset": -1,
@@ -4368,6 +4373,28 @@ running and serving requests.</p>
 </tr>
 </tbody>
 </table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 20. Request parameters</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required or Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code> returns formatted content, including additional spacing and line separators which improve readability but increase payload size. The default is <code>false</code>.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <div class="title">Reference</div>
 <p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/configuration/global/GlobalConfiguration.html">GlobalConfiguration</a></p>
@@ -4416,6 +4443,28 @@ configuration, as in the following example:</p>
 ]</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 21. Request parameters</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required or Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code> returns formatted content, including additional spacing and line separators which improve readability but increase payload size. The default is <code>false</code>.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="rest_v2_cache_manager_cache_templates"><a class="anchor" href="#rest_v2_cache_manager_cache_templates"></a>2.4.7. Listing Available Cache Templates</h4>
@@ -4441,6 +4490,28 @@ configuration, as in the following example:</p>
 </tr>
 </table>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 22. Request parameters</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required or Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code> returns formatted content, including additional spacing and line separators which improve readability but increase payload size. The default is <code>false</code>.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="rest_v2_cache_manager_cache_list"><a class="anchor" href="#rest_v2_cache_manager_cache_list"></a>2.4.8. Obtaining Cache Status and Information</h4>
@@ -4487,6 +4558,28 @@ cache, as in the following example:</p>
 }]</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 23. Request parameters</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required or Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code> returns formatted content, including additional spacing and line separators which improve readability but increase payload size. The default is <code>false</code>.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="rest_v2_cache_manager_stats"><a class="anchor" href="#rest_v2_cache_manager_stats"></a>2.4.9. Getting Cache Manager Statistics</h4>
@@ -4677,7 +4770,7 @@ A <code>202</code> response indicates that the backup request is accepted for pr
 for the backup operation, as follows:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 20. JSON Parameters</caption>
+<caption class="title">Table 24. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4704,7 +4797,7 @@ for the backup operation, as follows:</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 21. Resource Parameters</caption>
+<caption class="title">Table 25. Resource Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4865,7 +4958,7 @@ that the restore request has been accepted for processing.</p>
 an archive that is available on the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 22. JSON Parameters</caption>
+<caption class="title">Table 26. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4892,7 +4985,7 @@ an archive that is available on the server.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 23. Resource Parameters</caption>
+<caption class="title">Table 27. Resource Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4954,7 +5047,7 @@ an archive that is available on the server.</p>
 local backup archive to the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 24. Form Data</caption>
+<caption class="title">Table 28. Form Data</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -5072,7 +5165,7 @@ The <code>data</code> value will contain the declarative configuration of the en
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 25. Headers</caption>
+<caption class="title">Table 29. Headers</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5093,6 +5186,33 @@ The <code>data</code> value will contain the declarative configuration of the en
 </tr>
 </tbody>
 </table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 30. Request parameters</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required or Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>includeCurrentState</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, the results include the state of the existing configuration in addition to the changes. If set to <code>false</code>, the request returns only the changes. The default value is <code>false</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code> returns formatted content, including additional spacing and line separators which improve readability but increase payload size. The default is <code>false</code>.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="rest_v2_container_listen"><a class="anchor" href="#rest_v2_container_listen"></a>2.4.23. Listening to container events</h4>
@@ -5109,7 +5229,7 @@ Currently, we expose only <code>LIFECYCLE</code> events.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 26. Headers</caption>
+<caption class="title">Table 31. Headers</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5127,6 +5247,33 @@ Currently, we expose only <code>LIFECYCLE</code> events.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sets the required format to return content. Supported formats are <code>application/yaml</code>, <code>application/json</code> and <code>application/xml</code>. The default is <code>application/yaml</code>. See <a href="#rest_accept">Accept</a> for more information.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 32. Request parameters</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required or Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>includeCurrentState</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code>, the results include the state of the existing configuration in addition to the changes. If set to <code>false</code>, the request returns only the changes. The default value is <code>false</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code> returns formatted content, including additional spacing and line separators which improve readability but increase payload size. The default is <code>false</code>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -5173,7 +5320,7 @@ requests.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 27. Returned status</caption>
+<caption class="title">Table 33. Returned status</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -5587,7 +5734,7 @@ and so on) currently stored in the cache container for the cluster.</p>
 for the backup operation, as follows:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 28. JSON Parameters</caption>
+<caption class="title">Table 34. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5710,7 +5857,7 @@ matches the container name for the cluster.</p>
 an archive that is available on the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 29. JSON Parameters</caption>
+<caption class="title">Table 35. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5737,7 +5884,7 @@ an archive that is available on the server.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 30. Resource Parameters</caption>
+<caption class="title">Table 36. Resource Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5799,7 +5946,7 @@ an archive that is available on the server.</p>
 local backup archive to the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 31. Form Data</caption>
+<caption class="title">Table 37. Form Data</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -6078,7 +6225,7 @@ If no appenders are specified, those specified in the root logger will be used.<
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 32. Request Parameters</caption>
+<caption class="title">Table 38. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6275,7 +6422,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 33. Request Parameters</caption>
+<caption class="title">Table 39. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6308,7 +6455,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 34. Request Parameters</caption>
+<caption class="title">Table 40. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6687,7 +6834,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-19 03:13:52 -0500
+Last updated 2023-03-10 11:42:42 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
