@@ -739,6 +739,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_tasks_list">2.8.1. Retrieving Server Tasks Information</a></li>
 <li><a href="#rest_v2_tasks_execute">2.8.2. Executing Tasks</a></li>
 <li><a href="#rest_v2_tasks_upload">2.8.3. Uploading Script Tasks</a></li>
+<li><a href="#rest_v2_tasks_download">2.8.4. Downloading Script Tasks</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_security">2.9. Working with Infinispan Security</a>
@@ -6288,11 +6289,12 @@ security role in <code>JSON</code> format, as in the following example:</p>
 <div class="sect3">
 <h4 id="rest_v2_tasks_execute"><a class="anchor" href="#rest_v2_tasks_execute"></a>2.8.2. Executing Tasks</h4>
 <div class="paragraph">
-<p>Execute tasks with <code>POST</code> requests that include the task name and required parameters prefixed with <code>param</code>.</p>
+<p>Execute tasks with <code>POST</code> requests that include the task name, an optional
+cache name and required parameters prefixed with <code>param</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /rest/v2/tasks/SimpleTask?action=exec&amp;param.p1=v1&amp;param.p2=v2</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/tasks/SimpleTask?action=exec&amp;cache=mycache&amp;param.p1=v1&amp;param.p2=v2</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6311,6 +6313,17 @@ uploads the script, you can execute it with <code>GET</code> requests.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>POST /rest/v2/tasks/taskName</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rest_v2_tasks_download"><a class="anchor" href="#rest_v2_tasks_download"></a>2.8.4. Downloading Script Tasks</h4>
+<div class="paragraph">
+<p>Download script tasks with <code>GET</code> requests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/tasks/taskName?action=script</code></pre>
 </div>
 </div>
 </div>
@@ -6834,7 +6847,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-10 11:42:42 -0500
+Last updated 2023-03-20 12:21:42 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
