@@ -564,7 +564,12 @@ $(addBlockSwitches);
 <li><a href="#filtering_operators">2.2.1. Filtering operators</a></li>
 <li><a href="#boolean_conditions">2.2.2. Boolean conditions</a></li>
 <li><a href="#nested_conditions">2.2.3. Nested conditions</a></li>
-<li><a href="#projections_with_select_statements">2.2.4. Projections with SELECT statements</a></li>
+<li><a href="#projections_with_select_statements">2.2.4. Projections with SELECT statements</a>
+<ul class="sectlevel4">
+<li><a href="#project_cache_entry_version">Project cache entry version</a></li>
+<li><a href="#project_cache_entry_value">Project cache entry value</a></li>
+</ul>
+</li>
 <li><a href="#grouping_and_aggregation">2.2.5. Grouping and aggregation</a></li>
 <li><a href="#delete_statements">2.2.6. DELETE statements</a></li>
 </ul>
@@ -1599,6 +1604,31 @@ a projected attribute.</p>
 SELECT title, publicationYear FROM org.infinispan.sample.Book WHERE title like '%Data Grid%' OR description like '%Data Grid%'</code></pre>
 </div>
 </div>
+<div class="sect4">
+<h5 id="project_cache_entry_version"><a class="anchor" href="#project_cache_entry_version"></a>Project cache entry version</h5>
+<div class="paragraph">
+<p>It is possible to project the cache entry version, using the <code>version</code> projection function.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql"># return the title, publication year and the cache entry version
+SELECT b.title, b.publicationYear, version(b) FROM org.infinispan.sample.Book b WHERE b.title like '%Data Grid%'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="project_cache_entry_value"><a class="anchor" href="#project_cache_entry_value"></a>Project cache entry value</h5>
+<div class="paragraph">
+<p>It is possible to project the cache entry value together with other projections.
+It can be used for instance to project the cache entry value together with the cache entry version
+in the same <code>Object[]</code> returned hit.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql"># return the cache entry value and the cache entry version
+SELECT b, version(b) FROM org.infinispan.sample.Book b WHERE b.title like '%Data Grid%'</code></pre>
+</div>
+</div>
 <h4 id="sorting" class="discrete">Sorting</h4>
 <div class="paragraph">
 <p>Ordering the results based on one or more attributes or attribute paths is done with the <code>ORDER BY</code> clause. If multiple sorting criteria
@@ -1609,6 +1639,7 @@ are specified, then the order will dictate their precedence.</p>
 <pre class="highlight"><code class="language-sql" data-lang="sql"># match all books that have "Data Grid" in their title or description
 # and return them sorted by the publication year and title
 FROM org.infinispan.sample.Book WHERE title like '%Data Grid%' ORDER BY publicationYear DESC, title ASC</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -3023,7 +3054,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-20 12:21:42 UTC
+Last updated 2023-03-28 09:12:47 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -589,6 +589,7 @@ $(addBlockSwitches);
 <ul class="sectlevel4">
 <li><a href="#rest_v2_query_reindex">Re-indexing Data</a></li>
 <li><a href="#rest_v2_query_purge_index">Purging Indexes</a></li>
+<li><a href="#rest_v2_query_get_index_schema">Get Indexes Metamodel</a></li>
 <li><a href="#rest_v2_search_stats">Retrieving Query and Index Statistics</a></li>
 <li><a href="#rest_v2_search_stats_clear">Clearing Query Statistics</a></li>
 <li><a href="#rest_v2_query_index_stats">Retrieving Index Statistics (Deprecated)</a></li>
@@ -2898,6 +2899,136 @@ parameter.</p>
 </div>
 <div class="paragraph">
 <p>If the operation successfully completes, the service returns <code>204 (No Content)</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="rest_v2_query_get_index_schema"><a class="anchor" href="#rest_v2_query_get_index_schema"></a>Get Indexes Metamodel</h5>
+<div class="paragraph">
+<p>Present the full index schema metamodel of all indexes defined on this cache.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET  /rest/v2/caches/{cacheName}/search/indexes/metamodel</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Infinispan response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">[{
+    "entity-name": "org.infinispan.query.test.Book",
+    "java-class": "org.infinispan.query.test.Book",
+    "index-name": "org.infinispan.query.test.Book",
+    "value-fields": {
+        "description": {
+            "multi-valued": false,
+            "multi-valued-in-root": false,
+            "type": "java.lang.String",
+            "projection-type": "java.lang.String",
+            "argument-type": "java.lang.String",
+            "searchable": true,
+            "sortable": false,
+            "projectable": false,
+            "aggregable": false,
+            "analyzer": "standard"
+        },
+        "name": {
+            "multi-valued": false,
+            "multi-valued-in-root": true,
+            "type": "java.lang.String",
+            "projection-type": "java.lang.String",
+            "argument-type": "java.lang.String",
+            "searchable": true,
+            "sortable": false,
+            "projectable": false,
+            "aggregable": false,
+            "analyzer": "standard"
+        },
+        "surname": {
+            "multi-valued": false,
+            "multi-valued-in-root": true,
+            "type": "java.lang.String",
+            "projection-type": "java.lang.String",
+            "argument-type": "java.lang.String",
+            "searchable": true,
+            "sortable": false,
+            "projectable": false,
+            "aggregable": false
+        },
+        "title": {
+            "multi-valued": false,
+            "multi-valued-in-root": false,
+            "type": "java.lang.String",
+            "projection-type": "java.lang.String",
+            "argument-type": "java.lang.String",
+            "searchable": true,
+            "sortable": false,
+            "projectable": false,
+            "aggregable": false
+        }
+    },
+    "object-fields": {
+        "authors": {
+            "multi-valued": true,
+            "multi-valued-in-root": true,
+            "nested": true,
+            "value-fields": {
+                "name": {
+                    "multi-valued": false,
+                    "multi-valued-in-root": true,
+                    "type": "java.lang.String",
+                    "projection-type": "java.lang.String",
+                    "argument-type": "java.lang.String",
+                    "searchable": true,
+                    "sortable": false,
+                    "projectable": false,
+                    "aggregable": false,
+                    "analyzer": "standard"
+                },
+                "surname": {
+                    "multi-valued": false,
+                    "multi-valued-in-root": true,
+                    "type": "java.lang.String",
+                    "projection-type": "java.lang.String",
+                    "argument-type": "java.lang.String",
+                    "searchable": true,
+                    "sortable": false,
+                    "projectable": false,
+                    "aggregable": false
+                }
+            }
+        }
+    }
+}, {
+    "entity-name": "org.infinispan.query.test.Author",
+    "java-class": "org.infinispan.query.test.Author",
+    "index-name": "org.infinispan.query.test.Author",
+    "value-fields": {
+        "surname": {
+            "multi-valued": false,
+            "multi-valued-in-root": false,
+            "type": "java.lang.String",
+            "projection-type": "java.lang.String",
+            "argument-type": "java.lang.String",
+            "searchable": true,
+            "sortable": false,
+            "projectable": false,
+            "aggregable": false
+        },
+        "name": {
+            "multi-valued": false,
+            "multi-valued-in-root": false,
+            "type": "java.lang.String",
+            "projection-type": "java.lang.String",
+            "argument-type": "java.lang.String",
+            "searchable": true,
+            "sortable": false,
+            "projectable": false,
+            "aggregable": false,
+            "analyzer": "standard"
+        }
+    }
+}]</code></pre>
+</div>
 </div>
 </div>
 <div class="sect4">
@@ -6847,7 +6978,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-20 12:21:42 UTC
+Last updated 2023-03-28 09:12:47 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
