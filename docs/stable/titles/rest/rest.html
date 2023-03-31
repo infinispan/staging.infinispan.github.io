@@ -1777,13 +1777,20 @@ parameter.</p>
 <pre class="highlight nowrap"><code>POST /rest/v2/caches?action=compare</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>+
-TIP: Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes in the comparison.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes in the comparison.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>+
-Infinispan responds with <code>204 (No Content)</code> in case the configurations are equal, and <code>409 (Conflict)</code> in case they are different.</p>
+<p>Infinispan responds with <code>204 (No Content)</code> in case the configurations are equal, and <code>409 (Conflict)</code> in case they are different.</p>
 </div>
 </div>
 <div class="sect3">
@@ -6978,7 +6985,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-28 09:12:47 UTC
+Last updated 2023-03-31 13:48:35 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

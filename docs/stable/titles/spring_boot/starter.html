@@ -580,6 +580,35 @@ You can also simply add Infinispan dependencies to your Spring Boot project.</p>
 <div class="paragraph">
 <p>Add dependencies for the Infinispan Spring Boot Starter to your project.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan supports Spring Boot version 2.x and version 3.
+Be aware that Spring Boot version 3 requires Java 17.</p>
+</div>
+<div class="paragraph">
+<p>The examples in this document include artifacts for the latest version of Spring Boot.
+If you want to use Spring Boot 2.x use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>infinispan-spring-boot-starter-embedded</code></p>
+</li>
+<li>
+<p><code>infinispan-spring-boot-starter-remote</code></p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="enforcing-versions_starter"><a class="anchor" href="#enforcing-versions_starter"></a>1.1. Enforcing Infinispan Versions</h3>
 <div class="paragraph">
@@ -615,7 +644,7 @@ However you can enforce a specific version of Infinispan with the <code>infinisp
        &lt;/dependency&gt;
        &lt;dependency&gt;
            &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-           &lt;artifactId&gt;infinispan-spring-boot-starter&lt;/artifactId&gt;
+           &lt;artifactId&gt;infinispan-spring-boot3-starter&lt;/artifactId&gt;
        &lt;/dependency&gt;
     &lt;/dependencies&gt;
  &lt;/dependencyManagement&gt;</code></pre>
@@ -643,7 +672,7 @@ However you can enforce a specific version of Infinispan with the <code>infinisp
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
   &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-  &lt;artifactId&gt;infinispan-spring-boot-starter-embedded&lt;/artifactId&gt;
+  &lt;artifactId&gt;infinispan-spring-boot3-starter-embedded&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -652,7 +681,7 @@ However you can enforce a specific version of Infinispan with the <code>infinisp
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
   &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-  &lt;artifactId&gt;infinispan-spring-boot-starter-remote&lt;/artifactId&gt;
+  &lt;artifactId&gt;infinispan-spring-boot3-starter-remote&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -674,7 +703,7 @@ However you can enforce a specific version of Infinispan with the <code>infinisp
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Add <code>infinispan-spring-boot-starter-embedded</code> to your project&#8217;s classpath to enable Embedded mode.</p>
+<p>Add <code>infinispan-spring-boot3-starter-embedded</code> to your project&#8217;s classpath to enable Embedded mode.</p>
 </li>
 <li>
 <p>Use the Spring <code>@Autowired</code> annotation to include an <code>EmbeddedCacheManager</code> bean in your Java configuration classes, as in the following example:</p>
@@ -1271,7 +1300,7 @@ To use Spring Session, you must first create a Infinispan cache.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-28 09:12:47 UTC
+Last updated 2023-03-31 13:48:35 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
