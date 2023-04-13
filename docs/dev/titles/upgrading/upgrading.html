@@ -533,8 +533,9 @@ $(addBlockSwitches);
 <ul class="sectlevel2">
 <li><a href="#upgrading_from_14_0_to_15_0">1.1. Upgrading from 14.0 to 15.0</a>
 <ul class="sectlevel3">
-<li><a href="#removals">1.1.1. Removals</a></li>
-<li><a href="#resp_endpoint">1.1.2. RESP Endpoint</a></li>
+<li><a href="#securitymanager">1.1.1. SecurityManager</a></li>
+<li><a href="#removals">1.1.2. Removals</a></li>
+<li><a href="#resp_endpoint">1.1.3. RESP Endpoint</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_13_0_to_14_0">1.2. Upgrading from 13.0 to 14.0</a>
@@ -933,7 +934,14 @@ Find out how to perform rolling upgrades of Infinispan Server deployments and ho
 <div class="sect2">
 <h3 id="upgrading_from_14_0_to_15_0"><a class="anchor" href="#upgrading_from_14_0_to_15_0"></a>1.1. Upgrading from 14.0 to 15.0</h3>
 <div class="sect3">
-<h4 id="removals"><a class="anchor" href="#removals"></a>1.1.1. Removals</h4>
+<h4 id="securitymanager"><a class="anchor" href="#securitymanager"></a>1.1.1. SecurityManager</h4>
+<div class="paragraph">
+<p>Aligning with the deprecation for removal of the SecurityManager since JDK 17, we no longer support integration with a
+SecurityManager.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="removals"><a class="anchor" href="#removals"></a>1.1.2. Removals</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -946,7 +954,7 @@ Find out how to perform rolling upgrades of Infinispan Server deployments and ho
 </div>
 </div>
 <div class="sect3">
-<h4 id="resp_endpoint"><a class="anchor" href="#resp_endpoint"></a>1.1.2. RESP Endpoint</h4>
+<h4 id="resp_endpoint"><a class="anchor" href="#resp_endpoint"></a>1.1.3. RESP Endpoint</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -4710,7 +4718,7 @@ target.location=path/to/sifs/index</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-31 13:48:51 UTC
+Last updated 2023-04-13 08:15:12 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
