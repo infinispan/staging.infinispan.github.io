@@ -842,6 +842,7 @@ $(addBlockSwitches);
 <li><a href="#command_synopsis_2">8.27.4. COMMAND SYNOPSIS</a></li>
 <li><a href="#common_options_2">8.27.5. COMMON OPTIONS</a></li>
 <li><a href="#cluster_connection_options">8.27.6. CLUSTER CONNECTION OPTIONS</a></li>
+<li><a href="#store_options">8.27.7. STORE OPTIONS</a></li>
 </ul>
 </li>
 <li><a href="#patch1">8.28. PATCH(1)</a>
@@ -4992,6 +4993,9 @@ Lists the content of a cache, including keys, values and metadata and redirects 
 <div class="paragraph">
 <p><strong>migrate cluster source-connection</strong></p>
 </div>
+<div class="paragraph">
+<p><strong>migrate store</strong></p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="description_7"><a class="anchor" href="#description_7"></a>8.27.3. DESCRIPTION</h4>
@@ -5021,6 +5025,17 @@ Lists the content of a cache, including keys, values and metadata and redirects 
 <dt class="hdlist1"><strong>migrate cluster source-connection</strong></dt>
 <dd>
 <p>Gets connection configuration of the target cluster. The command will print "Not Found" if the connections hasn&#8217;t been established.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Migrate stores</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>migrate store</strong></dt>
+<dd>
+<p>Migrates store data.</p>
 </dd>
 </dl>
 </div>
@@ -5081,6 +5096,24 @@ CLUSTER DISCONNECT OPTIONS</pre>
 <dt class="hdlist1"><strong>-c, --cache</strong>='name'</dt>
 <dd>
 <p>The name of the cache to obtain the connection configuration.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="store_options"><a class="anchor" href="#store_options"></a>8.27.7. STORE OPTIONS</h4>
+<div class="paragraph">
+<p>*-P</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>-p, --properties</strong>='FILE'</dt>
+<dd>
+<p>The path to a properties file containing the migration configuration.</p>
+</dd>
+<dt class="hdlist1"><strong>-v, --verbose</strong></dt>
+<dd>
+<p>Displays verbose information about the migration process.</p>
 </dd>
 </dl>
 </div>
@@ -6217,7 +6250,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-13 13:52:48 UTC
+Last updated 2023-04-14 09:53:56 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
