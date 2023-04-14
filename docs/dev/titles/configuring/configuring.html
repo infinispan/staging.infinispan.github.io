@@ -9370,6 +9370,24 @@ Infinispan configuration. If the number of segments for a cache store does not m
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>.segment_count=256</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>marshaller.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a custom marshaller class.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required if using custom marshallers.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>marshaller.allow-list.classes</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a comma-separated list of fully qualified class names that are allowed to be deserialized.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>marshaller.allow-list.regexps</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a comma-separated list of regular expressions that determine which classes are allowed be deserialized.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>marshaller.externalizers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a comma-separated list of custom <code>AdvancedExternalizer</code> implementations to load in this format: <code>[id]:&lt;Externalizer class&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
+</tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
@@ -9397,16 +9415,6 @@ Infinispan configuration. If the number of segments for a cache store does not m
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the marshaller version for source cache stores.<br>
 Set the value that matches the Infinispan major version of the source cluster. For example; set a value of <code>14</code> for Infinispan 14.x.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required for source stores only.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>marshaller.class</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a custom marshaller class.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Required if using custom marshallers.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>marshaller.externalizers</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a comma-separated list of custom <code>AdvancedExternalizer</code> implementations to load in this format: <code>[id]:&lt;Externalizer class&gt;</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>connection_pool.connection_url</code></p></td>
@@ -9494,7 +9502,9 @@ Set the value that matches the Infinispan major version of the source cluster. F
 target.type=STRING
 target.cache_name=myCache
 target.dialect=POSTGRES
-target.marshaller.class=org.example.CustomMarshaller
+target.marshaller.class=org.infinispan.commons.marshall.JavaSerializationMarshaller
+target.marshaller.allow-list.classes=org.example.Person,org.example.Animal
+target.marshaller.allow-list.regexps="org.another.example.*"
 target.marshaller.externalizers=25:Externalizer1,org.example.Externalizer2
 target.connection_pool.connection_url=jdbc:postgresql:postgres
 target.connection_pool.driver_class=org.postrgesql.Driver
@@ -12596,7 +12606,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-14 10:52:53 UTC
+Last updated 2023-04-14 14:53:26 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
