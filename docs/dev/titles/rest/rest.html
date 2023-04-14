@@ -589,8 +589,9 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_caches_set_availability">2.1.30. Setting Cache Availability</a></li>
 <li><a href="#rest_v2_query_cache">2.1.31. Indexing and Querying with the REST API</a>
 <ul class="sectlevel4">
-<li><a href="#rest_v2_query_reindex">Re-indexing Data</a></li>
-<li><a href="#rest_v2_query_purge_index">Purging Indexes</a></li>
+<li><a href="#rest_v2_query_reindex">Rebuilding indexes</a></li>
+<li><a href="#rest_v2_query_updateIndexSchema">Updating index schema</a></li>
+<li><a href="#rest_v2_query_purge_index">Purging indexes</a></li>
 <li><a href="#rest_v2_query_get_index_schema">Get Indexes Metamodel</a></li>
 <li><a href="#rest_v2_search_stats">Retrieving Query and Index Statistics</a></li>
 <li><a href="#rest_v2_search_stats_clear">Clearing Query Statistics</a></li>
@@ -2928,13 +2929,31 @@ You can set the availability of internal caches but this is subject to change in
 </div>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_query_reindex"><a class="anchor" href="#rest_v2_query_reindex"></a>Re-indexing Data</h5>
+<h5 id="rest_v2_query_reindex"><a class="anchor" href="#rest_v2_query_reindex"></a>Rebuilding indexes</h5>
 <div class="paragraph">
-<p>Re-index all data in caches with <code>POST</code> requests and the <code>?action=mass-index</code> parameter.</p>
+<p>When you delete fields or change index field definitions, you must rebuild the index to ensure the index is consistent with data in the cache.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Rebuilding Protobuf schema using REST, CLI, Infinispan Console or remote client might lead to inconsistencies.
+Remote clients might have different versions of the Protostream entity and this might lead to unreliable behavior.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Reindex all data in caches with <code>POST</code> requests and the <code>?action=reindex</code> parameter.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST  /v2/caches/{cacheName}/search/indexes?action=mass-index</code></pre>
+<pre class="highlight nowrap"><code>POST  /v2/caches/{cacheName}/search/indexes?action=reindex</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -2970,7 +2989,22 @@ the <a href="#rest_v2_query_index_stats">Index Statistics</a> REST call.</p></td
 </table>
 </div>
 <div class="sect4">
-<h5 id="rest_v2_query_purge_index"><a class="anchor" href="#rest_v2_query_purge_index"></a>Purging Indexes</h5>
+<h5 id="rest_v2_query_updateIndexSchema"><a class="anchor" href="#rest_v2_query_updateIndexSchema"></a>Updating index schema</h5>
+<div class="paragraph">
+<p>The update index schema operation lets you add schema changes with a minimal downtime.
+Instead of removing previously indexed data and recreating the index schema, Infinispan adds new fields to the existing schema.</p>
+</div>
+<div class="paragraph">
+<p>Update the index schema of values in your cache using <code>POST</code> requests and the <code>?action=updateSchema</code> parameter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>POST  /v2/caches/{cacheName}/search/indexes?action=updateSchema</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="rest_v2_query_purge_index"><a class="anchor" href="#rest_v2_query_purge_index"></a>Purging indexes</h5>
 <div class="paragraph">
 <p>Delete all indexes from caches with <code>POST</code> requests and the <code>?action=clear</code>
 parameter.</p>
@@ -4162,6 +4196,22 @@ Infinispan stores the schema and returns the error in the response body.</p>
 <h4 id="rest_v2_update_protobuf"><a class="anchor" href="#rest_v2_update_protobuf"></a>2.3.3. Updating Protobuf Schemas</h4>
 <div class="paragraph">
 <p>Modify Protobuf schemas with <code>PUT</code> requests that include the content of a protobuf file in the payload.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When you make changes to the existing Protobuf schema definition, you must either update or rebuild the index schema.
+If the changes involve modifying the existing fields, then you must rebuild the index.
+When you add new fields without touching existing schema, you can update the index schema instead of rebuilding it.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7077,7 +7127,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-14 14:53:26 UTC
+Last updated 2023-04-14 15:44:50 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
