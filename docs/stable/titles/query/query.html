@@ -545,7 +545,8 @@ $(addBlockSwitches);
 </li>
 <li><a href="#indexing-annotations_indexing-caches">1.2. Indexing annotations</a></li>
 <li><a href="#rebuilding-indexes_indexing-caches">1.3. Rebuilding indexes</a></li>
-<li><a href="#non-indexed-queries_indexing-caches">1.4. Non-indexed queries</a></li>
+<li><a href="#update-index-schema_indexing-caches">1.4. Updating index schema</a></li>
+<li><a href="#non-indexed-queries_indexing-caches">1.5. Non-indexed queries</a></li>
 </ul>
 </li>
 <li><a href="#ickle-query-language">2. Creating Ickle queries</a>
@@ -590,11 +591,12 @@ $(addBlockSwitches);
 <li><a href="#query-remote">3. Querying remote caches</a>
 <ul class="sectlevel2">
 <li><a href="#querying-hot-rod_query-remote">3.1. Querying caches from Hot Rod Java clients</a></li>
-<li><a href="#querying-console_query-remote">3.2. Querying caches from Infinispan Console and CLI</a></li>
-<li><a href="#using-analyzers_query-remote">3.3. Using analyzers with remote caches</a>
+<li><a href="#querying-protostream-common-types_query-remote">3.2. Querying ProtoStream common types</a></li>
+<li><a href="#querying-console_query-remote">3.3. Querying caches from Infinispan Console and CLI</a></li>
+<li><a href="#using-analyzers_query-remote">3.4. Using analyzers with remote caches</a>
 <ul class="sectlevel3">
-<li><a href="#default-analyzers_query-remote">3.3.1. Default analyzer definitions</a></li>
-<li><a href="#creating-analyzers_query-remote">3.3.2. Creating custom analyzer definitions</a></li>
+<li><a href="#default-analyzers_query-remote">3.4.1. Default analyzer definitions</a></li>
+<li><a href="#creating-analyzers_query-remote">3.4.2. Creating custom analyzer definitions</a></li>
 </ul>
 </li>
 </ul>
@@ -1220,7 +1222,72 @@ CompletionStage&lt;Void&gt; future = index.run();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="non-indexed-queries_indexing-caches"><a class="anchor" href="#non-indexed-queries_indexing-caches"></a>1.4. Non-indexed queries</h3>
+<h3 id="update-index-schema_indexing-caches"><a class="anchor" href="#update-index-schema_indexing-caches"></a>1.4. Updating index schema</h3>
+<div class="paragraph">
+<p>The update index schema operation lets you add schema changes with a minimal downtime.
+Instead of removing previously indexed data and recreating the index schema, Infinispan adds new fields to the existing schema.
+Updating index schema is much faster than rebuilding the index but you can update schema only when your changes do not affect fields that were already indexed.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can update index schema only when your changes does not affect previously indexed fields.
+When you change index field definitions or when you delete fields, you must rebuild the index.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Procedure</div>
+<ul>
+<li>
+<p>Update index schema for a given cache:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Call the <code>updateIndexSchema()</code> method to programmatically update the index schema from a Hot Rod Java client:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">remoteCacheManager.administration().updateIndexSchema("MyCache");</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For remote caches, you can update index schema from the Infinispan Console or using the <a href="../rest/rest.html#rest_v2_query_updateIndexSchema">REST API</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../query/query.html#rebuilding-indexes_indexing-caches">Rebuilding indexes</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="non-indexed-queries_indexing-caches"><a class="anchor" href="#non-indexed-queries_indexing-caches"></a>1.5. Non-indexed queries</h3>
 <div class="paragraph">
 <p>Infinispan recommends indexing caches for the best performance for queries.
 However you can query caches that are non-indexed.</p>
@@ -2155,7 +2222,73 @@ public class RemoteQuery {
 </div>
 </div>
 <div class="sect2">
-<h3 id="querying-console_query-remote"><a class="anchor" href="#querying-console_query-remote"></a>3.2. Querying caches from Infinispan Console and CLI</h3>
+<h3 id="querying-protostream-common-types_query-remote"><a class="anchor" href="#querying-protostream-common-types_query-remote"></a>3.2. Querying ProtoStream common types</h3>
+<div class="paragraph">
+<p>Perform Ickle queries on caches that store data as ProtoStream common types such as <code>BigInteger</code> and <code>BigDecimal</code>.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Add indexing annotations to your class, as in the following example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Indexed
+public class CalculusIndexed {
+    @Basic
+    @ProtoField(value = 1)
+    public BigInteger getPurchases() {
+      return purchases;
+    }
+
+    @Decimal // the scale is 2 by default
+    @ProtoField(value = 2)
+    public BigDecimal getProspect() {
+      return prospect;
+    }
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Set the <code>dependsOn</code> attribute to <code>CommonTypes.class</code> to indicate that the generated Protobuf schema can reference and use <code>CommonTypes</code> types such as <code>BigInteger</code> and <code>BigDecimal</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@AutoProtoSchemaBuilder(includeClasses = CalculusIndexed.class, dependsOn = CommonTypes.class,
+     schemaFilePath = "/protostream", schemaFileName = "calculus-indexed.proto",
+     schemaPackageName = "lab.indexed")
+public interface CalculusIndexedSchema extends GeneratedSchema {
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Perform queries:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Query&lt;Product&gt; query = queryFactory.create("from lab.indexed.CalculusIndexed c where c.purchases &gt; 9");
+QueryResult&lt;Product&gt; result = query.execute();
+// play with the result
+
+query = queryFactory.create("from lab.indexed.CalculusIndexed c where c.prospect = 2.2");
+result = query.execute();
+// play with the result</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../encoding/encoding.html#protostream-types_marshalling">ProtoStream Types Marshalling</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="querying-console_query-remote"><a class="anchor" href="#querying-console_query-remote"></a>3.3. Querying caches from Infinispan Console and CLI</h3>
 <div class="paragraph">
 <p>Infinispan Console and the Infinispan Command Line Interface (CLI) let you query indexed and non-indexed remote caches.
 You can also use any HTTP client to index and query caches via the REST API.</p>
@@ -2326,7 +2459,7 @@ For this example procedure, create entries that use the following JSON values:</
 </div>
 </div>
 <div class="sect2">
-<h3 id="using-analyzers_query-remote"><a class="anchor" href="#using-analyzers_query-remote"></a>3.3. Using analyzers with remote caches</h3>
+<h3 id="using-analyzers_query-remote"><a class="anchor" href="#using-analyzers_query-remote"></a>3.4. Using analyzers with remote caches</h3>
 <div class="paragraph">
 <p>Analyzers convert input data into terms that you can index and query.
 You specify analyzer definitions with the <code>@Field</code> annotation in your Java classes or directly in Protobuf schema.</p>
@@ -2369,7 +2502,7 @@ final String description;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="default-analyzers_query-remote"><a class="anchor" href="#default-analyzers_query-remote"></a>3.3.1. Default analyzer definitions</h4>
+<h4 id="default-analyzers_query-remote"><a class="anchor" href="#default-analyzers_query-remote"></a>3.4.1. Default analyzer definitions</h4>
 <div class="paragraph">
 <p>Infinispan provides a set of default analyzer definitions.</p>
 </div>
@@ -2426,7 +2559,7 @@ appropriate Lucene documentation.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating-analyzers_query-remote"><a class="anchor" href="#creating-analyzers_query-remote"></a>3.3.2. Creating custom analyzer definitions</h4>
+<h4 id="creating-analyzers_query-remote"><a class="anchor" href="#creating-analyzers_query-remote"></a>3.4.2. Creating custom analyzer definitions</h4>
 <div class="paragraph">
 <p>Create custom analyzer definitions and add them to your Infinispan Server installations.</p>
 </div>
@@ -3054,7 +3187,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-13 13:56:45 UTC
+Last updated 2023-04-17 08:13:04 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
