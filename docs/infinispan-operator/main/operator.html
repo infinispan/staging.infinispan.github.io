@@ -615,6 +615,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#creating-service-monitor_monitor">14.1. Creating a Prometheus service monitor</a>
 <ul class="sectlevel3">
 <li><a href="#disabling-service-monitor_monitor">14.1.1. Disabling the Prometheus service monitor</a></li>
+<li><a href="#configuring-service-monitor-target-labels_monitor">14.1.2. Configuring Service Monitor Target Labels</a></li>
 </ul>
 </li>
 <li><a href="#creating-grafana-dashboards_monitor">14.2. Creating Grafana data sources</a></li>
@@ -5726,6 +5727,38 @@ metadata:
 </ol>
 </div>
 </div>
+<div class="sect3">
+<h4 id="configuring-service-monitor-target-labels_monitor"><a class="anchor" href="#configuring-service-monitor-target-labels_monitor"></a>14.1.2. Configuring Service Monitor Target Labels</h4>
+<div class="paragraph _abstract">
+<p>You can configure the generated <code>ServiceMonitor</code> to propagate Service labels to the underlying metrics using the ServiceMonitor <code>spec.targetLabels</code> field.
+Use the Service labels to filter and aggregate the metrics collected from the monitored endpoints.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Define labels to apply to your service by setting the <code>infinispan.org/targetLabels</code> annotation in your <code>Infinispan</code> CR.</p>
+</li>
+<li>
+<p>Specify a comma-separated list of the labels required in your metrics using the <code>infinispan.org/serviceMonitorTargetLabels</code> annotation on your <code>Infinispan</code> CR.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: infinispan
+  annotations:
+    infinispan.org/targetLabels: "label1,label2,label3"
+    infinispan.org/serviceMonitorTargetLabels: "label1,label2"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Apply the changes.</p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="creating-grafana-dashboards_monitor"><a class="anchor" href="#creating-grafana-dashboards_monitor"></a>14.2. Creating Grafana data sources</h3>
@@ -8117,7 +8150,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-17 14:53:15 UTC
+Last updated 2023-04-21 15:54:08 UTC
 </div>
 </div>
 <script>
