@@ -9017,12 +9017,6 @@ the following features:</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Portability across JCache-compliant vendors</dt>
-<dd>
-<p>Infinispan maintains compatibility between the <code>NonBlockingStore</code> interface
-and the <code>JSR-107</code> JCache specification by using an adapter that handles
-blocking code.</p>
-</dd>
 <dt class="hdlist1">Simplified transaction integration</dt>
 <dd>
 <p>Infinispan automatically handles locking so your implementations do not need
@@ -10965,7 +10959,7 @@ Default is <code><em>recoveryInfoCacheName</em></code>.</p>
 <p><code>stop-timeout</code> - the time in millisecond to wait for ongoing transaction when the cache is stopping. Default is  <code>30000</code>.</p>
 </li>
 <li>
-<p><code>transaction-manager-lookup</code> - configures the fully qualified class name of a class that looks up a reference to a <code>javax.transaction.TransactionManager</code>.
+<p><code>transaction-manager-lookup</code> - configures the fully qualified class name of a class that looks up a reference to a <code>jakarta.transaction.TransactionManager</code>.
 Default is <code>org.infinispan.transaction.lookup.GenericTransactionManagerLookup</code>.</p>
 </li>
 </ul>
@@ -12606,7 +12600,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-20 05:21:41 UTC
+Last updated 2023-04-17 14:46:28 +0200
 </div>
 </div>
 <script type="text/x-mathjax-config">

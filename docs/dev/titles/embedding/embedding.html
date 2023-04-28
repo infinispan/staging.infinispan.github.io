@@ -682,34 +682,21 @@ $(addBlockSwitches);
 <li><a href="#cdi_dependencies">10.1. CDI Dependencies</a></li>
 <li><a href="#cdi_inject_embed">10.2. Injecting Embedded Caches</a></li>
 <li><a href="#cdi_inject_remote">10.3. Injecting Remote Caches</a></li>
-<li><a href="#jcache_annotations">10.4. JCache Caching Annotations</a></li>
-<li><a href="#cache_events">10.5. Receiving Cache and Cache Manager Events</a></li>
+<li><a href="#cache_events">10.4. Receiving Cache and Cache Manager Events</a></li>
 </ul>
 </li>
-<li><a href="#jcache">11. Using the JCache API</a>
+<li><a href="#multimap-cache">11. Multimap cache</a>
 <ul class="sectlevel2">
-<li><a href="#jcache-creating-embedded-caches_jcache">11.1. Creating embedded caches</a>
+<li><a href="#using-multimap-cache_multimap-cache">11.1. Multimap Cache</a>
 <ul class="sectlevel3">
-<li><a href="#configuring_embedded_caches">11.1.1. Configuring embedded caches</a></li>
-</ul>
-</li>
-<li><a href="#jcache-store-retrieve-data_jcache">11.2. Store and retrieve data</a></li>
-<li><a href="#jcache-api-comparison_jcache">11.3. Comparing java.util.concurrent.ConcurrentMap and javax.cache.Cache APIs</a></li>
-<li><a href="#jcache-clustering_jcache">11.4. Clustering JCache instances</a></li>
-</ul>
-</li>
-<li><a href="#multimap-cache">12. Multimap cache</a>
-<ul class="sectlevel2">
-<li><a href="#using-multimap-cache_multimap-cache">12.1. Multimap Cache</a>
-<ul class="sectlevel3">
-<li><a href="#installation_and_configuration">12.1.1. Installation and configuration</a></li>
-<li><a href="#multimapcache_api">12.1.2. MultimapCache API</a></li>
-<li><a href="#creating_a_multimap_cache">12.1.3. Creating a Multimap Cache</a>
+<li><a href="#installation_and_configuration">11.1.1. Installation and configuration</a></li>
+<li><a href="#multimapcache_api">11.1.2. MultimapCache API</a></li>
+<li><a href="#creating_a_multimap_cache">11.1.3. Creating a Multimap Cache</a>
 <ul class="sectlevel4">
 <li><a href="#embedded_mode">Embedded mode</a></li>
 </ul>
 </li>
-<li><a href="#multimap_limitations">12.1.4. Limitations</a>
+<li><a href="#multimap_limitations">11.1.4. Limitations</a>
 <ul class="sectlevel4">
 <li><a href="#support_for_duplicates">Support for duplicates</a></li>
 <li><a href="#eviction">Eviction</a></li>
@@ -720,65 +707,65 @@ $(addBlockSwitches);
 </li>
 </ul>
 </li>
-<li><a href="#custom_interceptors_chapter">13. Custom Interceptors</a>
+<li><a href="#custom_interceptors_chapter">12. Custom Interceptors</a>
 <ul class="sectlevel2">
-<li><a href="#adding_custom_interceptors_declaratively">13.1. Adding custom interceptors declaratively</a></li>
-<li><a href="#adding_custom_interceptors_programmatically">13.2. Adding custom interceptors programmatically</a></li>
-<li><a href="#custom_interceptor_design">13.3. Custom interceptor design</a></li>
+<li><a href="#adding_custom_interceptors_declaratively">12.1. Adding custom interceptors declaratively</a></li>
+<li><a href="#adding_custom_interceptors_programmatically">12.2. Adding custom interceptors programmatically</a></li>
+<li><a href="#custom_interceptor_design">12.3. Custom interceptor design</a></li>
 </ul>
 </li>
-<li><a href="#functional-map-api">14. Functional Map API</a>
+<li><a href="#functional-map-api">13. Functional Map API</a>
 <ul class="sectlevel2">
-<li><a href="#using-functional-map-api">14.1. Using the Functional Map API</a>
+<li><a href="#using-functional-map-api">13.1. Using the Functional Map API</a>
 <ul class="sectlevel3">
-<li><a href="#asynchronous_and_lazy">14.1.1. Asynchronous and Lazy</a></li>
-<li><a href="#function_transparency">14.1.2. Function transparency</a></li>
-<li><a href="#constructing_functional_maps">14.1.3. Constructing Functional Maps</a></li>
-<li><a href="#read_only_map_api">14.1.4. Read-Only Map API</a>
+<li><a href="#asynchronous_and_lazy">13.1.1. Asynchronous and Lazy</a></li>
+<li><a href="#function_transparency">13.1.2. Function transparency</a></li>
+<li><a href="#constructing_functional_maps">13.1.3. Constructing Functional Maps</a></li>
+<li><a href="#read_only_map_api">13.1.4. Read-Only Map API</a>
 <ul class="sectlevel4">
 <li><a href="#read_only_entry_view">Read-Only Entry View</a></li>
 </ul>
 </li>
-<li><a href="#write_only_map_api">14.1.5. Write-Only Map API</a>
+<li><a href="#write_only_map_api">13.1.5. Write-Only Map API</a>
 <ul class="sectlevel4">
 <li><a href="#write_only_entry_view">Write-Only Entry View</a></li>
 </ul>
 </li>
-<li><a href="#read_write_map_api">14.1.6. Read-Write Map API</a>
+<li><a href="#read_write_map_api">13.1.6. Read-Write Map API</a>
 <ul class="sectlevel4">
 <li><a href="#read_write_entry_view">Read-Write Entry View</a></li>
 </ul>
 </li>
-<li><a href="#meta_parameter">14.1.7. Metadata Parameter Handling</a></li>
-<li><a href="#_invocation_parameter">14.1.8. Invocation Parameter</a></li>
-<li><a href="#functional_listeners">14.1.9. Functional Listeners</a>
+<li><a href="#meta_parameter">13.1.7. Metadata Parameter Handling</a></li>
+<li><a href="#_invocation_parameter">13.1.8. Invocation Parameter</a></li>
+<li><a href="#functional_listeners">13.1.9. Functional Listeners</a>
 <ul class="sectlevel4">
 <li><a href="#write_listeners">Write Listeners</a></li>
 <li><a href="#read_write_listeners">Read-Write Listeners</a></li>
 </ul>
 </li>
-<li><a href="#marshalling_of_functions">14.1.10. Marshalling of Functions</a></li>
-<li><a href="#use_cases_for_functional_api">14.1.11. Use Cases for Functional API</a></li>
+<li><a href="#marshalling_of_functions">13.1.10. Marshalling of Functions</a></li>
+<li><a href="#use_cases_for_functional_api">13.1.11. Use Cases for Functional API</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#anchored-keys">15. Anchored keys</a>
+<li><a href="#anchored-keys">14. Anchored keys</a>
 <ul class="sectlevel2">
-<li><a href="#anchored_keys_module">15.1. Anchored Keys module</a>
+<li><a href="#anchored_keys_module">14.1. Anchored Keys module</a>
 <ul class="sectlevel3">
-<li><a href="#background">15.1.1. Background</a></li>
-<li><a href="#architecture">15.1.2. Architecture</a></li>
-<li><a href="#limitations">15.1.3. Limitations</a></li>
-<li><a href="#configuration">15.1.4. Configuration</a></li>
-<li><a href="#implementation_status">15.1.5. Implementation status</a>
+<li><a href="#background">14.1.1. Background</a></li>
+<li><a href="#architecture">14.1.2. Architecture</a></li>
+<li><a href="#limitations">14.1.3. Limitations</a></li>
+<li><a href="#configuration">14.1.4. Configuration</a></li>
+<li><a href="#implementation_status">14.1.5. Implementation status</a>
 <ul class="sectlevel4">
 <li><a href="#functional_commands">Functional commands</a></li>
 <li><a href="#partition_handling">Partition handling</a></li>
 <li><a href="#listeners">Listeners</a></li>
 </ul>
 </li>
-<li><a href="#performance_considerations">15.1.6. Performance considerations</a>
+<li><a href="#performance_considerations">14.1.6. Performance considerations</a>
 <ul class="sectlevel4">
 <li><a href="#clientserver_latency">Client/Server Latency</a></li>
 <li><a href="#memory_overhead">Memory overhead</a></li>
@@ -789,15 +776,15 @@ $(addBlockSwitches);
 </li>
 </ul>
 </li>
-<li><a href="#extending">16. Extending Infinispan</a>
+<li><a href="#extending">15. Extending Infinispan</a>
 <ul class="sectlevel2">
-<li><a href="#custom_commands">16.1. Custom Commands</a>
+<li><a href="#custom_commands">15.1. Custom Commands</a>
 <ul class="sectlevel3">
-<li><a href="#an_example">16.1.1. An Example</a></li>
-<li><a href="#preassigned_custom_command_id_ranges">16.1.2. Preassigned Custom Command Id Ranges</a></li>
+<li><a href="#an_example">15.1.1. An Example</a></li>
+<li><a href="#preassigned_custom_command_id_ranges">15.1.2. Preassigned Custom Command Id Ranges</a></li>
 </ul>
 </li>
-<li><a href="#extending_the_configuration_builders_and_parsers">16.2. Extending the configuration builders and parsers</a></li>
+<li><a href="#extending_the_configuration_builders_and_parsers">15.2. Extending the configuration builders and parsers</a></li>
 </ul>
 </li>
 </ul>
@@ -5144,9 +5131,6 @@ Dependency Injection) programming model and allows you to:</p>
 <li>
 <p>Receive cache and cache manager level events.</p>
 </li>
-<li>
-<p>Control data storage and retrieval using JCache annotations.</p>
-</li>
 </ul>
 </div>
 <div class="sect2">
@@ -5187,7 +5171,7 @@ Infinispan CDI extension in your project:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">...
-import javax.inject.Qualifier;
+import jakarta.inject.Qualifier;
 
 @Qualifier
 @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
@@ -5214,7 +5198,7 @@ public @interface GreetingCache { <i class="conum" data-value="1"></i><b>(1)</b>
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.cdi.ConfigureCache;
-import javax.enterprise.inject.Produces;
+import jakarta.transaction.inject.Produces;
 
 public class Config {
 
@@ -5301,7 +5285,7 @@ method or do not add any qualifier.</p>
 <div class="listingblock">
 <div class="content">
 <pre>...
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class GreetingService {
 
@@ -5399,7 +5383,7 @@ public @interface RemoteGreetingCache { <i class="conum" data-value="2"></i><b>(
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">...
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.transaction.context.ApplicationScoped;
 
 public class Config {
 
@@ -5430,118 +5414,7 @@ public class Config {
 </div>
 </div>
 <div class="sect2">
-<h3 id="jcache_annotations"><a class="anchor" href="#jcache_annotations"></a>10.4. JCache Caching Annotations</h3>
-<div class="paragraph">
-<p>You can use the following JCache caching annotations with CDI managed beans when JCache artifacts are on the classpath:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>@CacheResult</code></dt>
-<dd>
-<p>caches the results of method calls.</p>
-</dd>
-<dt class="hdlist1"><code>@CachePut</code></dt>
-<dd>
-<p>caches method parameters.</p>
-</dd>
-<dt class="hdlist1"><code>@CacheRemoveEntry</code></dt>
-<dd>
-<p>removes entries from a cache.</p>
-</dd>
-<dt class="hdlist1"><code>@CacheRemoveAll</code></dt>
-<dd>
-<p>removes all entries from a cache.</p>
-</dd>
-</dl>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p><strong>Target type:</strong> You can use these JCache caching annotations on methods only.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>To use JCache caching annotations, declare interceptors in the <code>beans.xml</code>
-file for your application.</p>
-</div>
-<div class="listingblock">
-<div class="title">Managed Environments (Application Server)</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
-   version="1.2" bean-discovery-mode="annotated"&gt;
-
-  &lt;interceptors&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.InjectedCacheResultInterceptor&lt;/class&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.InjectedCachePutInterceptor&lt;/class&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.InjectedCacheRemoveEntryInterceptor&lt;/class&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.InjectedCacheRemoveAllInterceptor&lt;/class&gt;
-  &lt;/interceptors&gt;
-&lt;/beans&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Non-managed Environments (Standalone)</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
-   version="1.2" bean-discovery-mode="annotated"&gt;
-
-  &lt;interceptors&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.CacheResultInterceptor&lt;/class&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.CachePutInterceptor&lt;/class&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.CacheRemoveEntryInterceptor&lt;/class&gt;
-    &lt;class&gt;org.infinispan.jcache.annotation.CacheRemoveAllInterceptor&lt;/class&gt;
-  &lt;/interceptors&gt;
-&lt;/beans&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<div class="title">JCache Caching Annotation Examples</div>
-<p>The following example shows how the <code>@CacheResult</code> annotation caches the results of the <code>GreetingService.greet()</code> method:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import javax.cache.interceptor.CacheResult;
-
-public class GreetingService {
-
-    @CacheResult
-    public String greet(String user) {
-        return "Hello" + user;
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>With JCache annotations, the default cache uses the fully qualified name of the
-annotated method with its parameter types, for example:<br>
-<code>org.infinispan.example.GreetingService.greet(java.lang.String)</code></p>
-</div>
-<div class="paragraph">
-<p>To use caches other than the default, use the <code>cacheName</code> attribute to specify
-the cache name as in the following example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CacheResult(cacheName = "greeting-cache")</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="cache_events"><a class="anchor" href="#cache_events"></a>10.5. Receiving Cache and Cache Manager Events</h3>
+<h3 id="cache_events"><a class="anchor" href="#cache_events"></a>10.4. Receiving Cache and Cache Manager Events</h3>
 <div class="paragraph">
 <p>You can use CDI Events to receive Cache and Cache Manager level events.</p>
 </div>
@@ -5554,7 +5427,7 @@ the cache name as in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import javax.enterprise.event.Observes;
+<pre class="highlight"><code class="language-java" data-lang="java">import jakarta.transaction.event.Observes;
 import org.infinispan.notifications.cachemanagerlistener.event.CacheStartedEvent;
 import org.infinispan.notifications.cachelistener.event.*;
 
@@ -5576,355 +5449,18 @@ public class GreetingService {
 </div>
 </div>
 <div class="sect1">
-<h2 id="jcache"><a class="anchor" href="#jcache"></a>11. Using the JCache API</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Infinispan provides an implementation of the JCache (JSR-107) API that specifies a standard Java API for caching temporary Java objects in
-memory.
-Caching Java objects can help get around bottlenecks arising from using data that is expensive to retrieve or data that is hard to calculate.
-Caching these type of objects in memory can help speed up application performance by retrieving the data directly from memory instead of doing an expensive roundtrip or recalculation.</p>
-</div>
-<div class="sect2">
-<h3 id="jcache-creating-embedded-caches_jcache"><a class="anchor" href="#jcache-creating-embedded-caches_jcache"></a>11.1. Creating embedded caches</h3>
-<div class="olist arabic">
-<div class="title">Prerequisites</div>
-<ol class="arabic">
-<li>
-<p>Ensure that <code>cache-api</code> is on your classpath.</p>
-</li>
-<li>
-<p>Add the following dependency to your <code>pom.xml</code>:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
-  &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-  &lt;artifactId&gt;infinispan-jcache&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="ulist">
-<div class="title">Procedure</div>
-<ul>
-<li>
-<p>Create embedded caches that use the default JCache API configuration as follows:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import javax.cache.*;
-import javax.cache.configuration.*;
-
-// Retrieve the system wide Cache Manager
-CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
-// Define a named cache with default JCache configuration
-Cache&lt;String, String&gt; cache = cacheManager.createCache("namedCache",
-      new MutableConfiguration&lt;String, String&gt;());</code></pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="configuring_embedded_caches"><a class="anchor" href="#configuring_embedded_caches"></a>11.1.1. Configuring embedded caches</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Pass the URI for custom Infinispan configuration to the <code>CachingProvider.getCacheManager(URI)</code> call as follows:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import java.net.URI;
-import javax.cache.*;
-import javax.cache.configuration.*;
-
-// Load configuration from an absolute filesystem path
-URI uri = URI.create("file:///path/to/infinispan.xml");
-// Load configuration from a classpath resource
-// URI uri = this.getClass().getClassLoader().getResource("infinispan.xml").toURI();
-
-// Create a Cache Manager using the above configuration
-CacheManager cacheManager = Caching.getCachingProvider().getCacheManager(uri, this.getClass().getClassLoader(), null);</code></pre>
-</div>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-By default, the JCache API specifies that data should be stored as
-<code>storeByValue</code>, so that object state mutations outside of operations to the
-cache, won&#8217;t have an impact in the objects stored in the cache. Infinispan
-has so far implemented this using serialization/marshalling to make copies to
-store in the cache, and that way adhere to the spec. Hence, if using default
-JCache configuration with Infinispan, data stored must be marshallable.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Alternatively, JCache can be configured to store data by reference
-(just like Infinispan or JDK Collections work). To do that, simply call:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Cache&lt;String, String&gt; cache = cacheManager.createCache("namedCache",
-      new MutableConfiguration&lt;String, String&gt;().setStoreByValue(false));</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="jcache-store-retrieve-data_jcache"><a class="anchor" href="#jcache-store-retrieve-data_jcache"></a>11.2. Store and retrieve data</h3>
-<div class="paragraph">
-<p>Even though JCache API does not extend neither
-<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html">java.util.Map</a>
-not <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html">java.util.concurrent.ConcurrentMap</a>,
-it providers a key/value API to store and retrieve data:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import javax.cache.*;
-import javax.cache.configuration.*;
-
-CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
-Cache&lt;String, String&gt; cache = cacheManager.createCache("namedCache",
-      new MutableConfiguration&lt;String, String&gt;());
-cache.put("hello", "world"); // Notice that javax.cache.Cache.put(K) returns void!
-String value = cache.get("hello"); // Returns "world"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Contrary to standard <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html">java.util.Map</a>,
-<a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0-RC1/src/main/java/javax/cache/Cache.java">javax.cache.Cache</a>
-comes with two basic put methods called put and getAndPut. The former returns
-<code>void</code> whereas the latter returns the previous value associated with the key.
-So, the equivalent of <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">java.util.Map.put(K)</a>
-in JCache is <a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0-RC1/src/main/java/javax/cache/Cache.java#L230">javax.cache.Cache.getAndPut(K)</a>.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Even though JCache API only covers standalone caching, it can be plugged
-with a persistence store, and has been designed with clustering or
-distribution in mind. The reason why javax.cache.Cache offers two put methods
-is because standard java.util.Map put call forces implementors to calculate
-the previous value. When a persistent store is in use, or the cache is
-distributed, returning the previous value could be an expensive operation, and
-often users call standard <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">java.util.Map.put(K)</a>
-without using the return value. Hence, JCache users need to think about
-whether the return value is relevant to them, in which case they need to call
-<a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0-RC1/src/main/java/javax/cache/Cache.java#L230">javax.cache.Cache.getAndPut(K)</a> ,
-otherwise they can call <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">java.util.Map.put(K, V)</a>
-which avoids returning the potentially expensive operation of returning the
-previous value.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="jcache-api-comparison_jcache"><a class="anchor" href="#jcache-api-comparison_jcache"></a>11.3. Comparing java.util.concurrent.ConcurrentMap and javax.cache.Cache APIs</h3>
-<div class="paragraph">
-<p>Here&#8217;s a brief comparison of the data manipulation APIs provided by
-<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html">java.util.concurrent.ConcurrentMap</a>
-and <a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0-RC1/src/main/java/javax/cache/Cache.java">javax.cache.Cache</a> APIs.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Operation</th>
-<th class="tableblock halign-left valign-top">java.util.concurrent.ConcurrentMap&lt;K, V&gt;</th>
-<th class="tableblock halign-left valign-top">javax.cache.Cache&lt;K, V&gt;</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">store and no return</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">N/A </p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>void put(K key)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">store and return previous value</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V put(K key)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V getAndPut(K key)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">store if not present</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V putIfAbsent(K key, V value)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean putIfAbsent(K key, V value)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">retrieve</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V get(Object key)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V get(K key)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete if present</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V remove(Object key)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean remove(K key)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete and return previous value</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V remove(Object key)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V getAndRemove(K key)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">delete conditional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean remove(Object key, Object value)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean remove(K key, V oldValue)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">replace if present</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V replace(K key, V value)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean replace(K key, V value)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">replace and return previous value</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V replace(K key, V value)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>V getAndReplace(K key, V value)</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">replace conditional</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean replace(K key, V oldValue, V newValue)</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>boolean replace(K key, V oldValue, V newValue)</code></p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Comparing the two APIs, it&#8217;s obvious to see that, where possible, JCache
-avoids returning the previous value to avoid operations doing expensive
-network or IO operations. This is an overriding principle in the design of
-JCache API. In fact, there&#8217;s a set of operations that are present in
-<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html">java.util.concurrent.ConcurrentMap</a> ,
-but are not present in the <a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0-RC1/src/main/java/javax/cache/Cache.java">javax.cache.Cache</a>
-because they could be expensive to compute in a distributed cache.
-The only exception is iterating over the contents of the cache:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Operation</th>
-<th class="tableblock halign-left valign-top">java.util.concurrent.ConcurrentMap&lt;K, V&gt;</th>
-<th class="tableblock halign-left valign-top">javax.cache.Cache&lt;K, V&gt;</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">calculate size of cache</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>int size()</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"> N/A</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">return all keys in the cache</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Set&lt;K&gt; keySet()</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"> N/A</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">return all values in the cache</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Collection&lt;V&gt; values()</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"> N/A</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">return all entries in the cache</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Set&lt;Map.Entry&lt;K, V&gt;&gt; entrySet()</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"> N/A</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">iterate over the cache</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">use <code>iterator()</code> method on keySet, values or entrySet</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Iterator&lt;Cache.Entry&lt;K, V&gt;&gt; iterator()</code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="jcache-clustering_jcache"><a class="anchor" href="#jcache-clustering_jcache"></a>11.4. Clustering JCache instances</h3>
-<div class="paragraph">
-<p>Infinispan JCache implementation goes beyond the specification in order to
-provide the possibility to cluster caches using the standard API. Given a
-Infinispan configuration file configured to replicate caches like this:</p>
-</div>
-<div class="listingblock">
-<div class="title">infinispan.xml</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
-   &lt;cache-container default-cache="namedCache"&gt;
-      &lt;transport cluster="jcache-cluster" /&gt;
-      &lt;replicated-cache name="namedCache" /&gt;
-   &lt;/cache-container&gt;
-&lt;/infinispan&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can create a cluster of caches using this code:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import javax.cache.*;
-import java.net.URI;
-
-// For multiple Cache Managers to be constructed with the standard JCache API
-// and live in the same JVM, either their names, or their classloaders, must
-// be different.
-// This example shows how to force their classloaders to be different.
-// An alternative method would have been to duplicate the XML file and give
-// it a different name, but this results in unnecessary file duplication.
-ClassLoader tccl = Thread.currentThread().getContextClassLoader();
-CacheManager cacheManager1 = Caching.getCachingProvider().getCacheManager(
-      URI.create("infinispan-jcache-cluster.xml"), new TestClassLoader(tccl));
-CacheManager cacheManager2 = Caching.getCachingProvider().getCacheManager(
-      URI.create("infinispan-jcache-cluster.xml"), new TestClassLoader(tccl));
-
-Cache&lt;String, String&gt; cache1 = cacheManager1.getCache("namedCache");
-Cache&lt;String, String&gt; cache2 = cacheManager2.getCache("namedCache");
-
-cache1.put("hello", "world");
-String value = cache2.get("hello"); // Returns "world" if clustering is working
-
-// --
-
-public static class TestClassLoader extends ClassLoader {
-  public TestClassLoader(ClassLoader parent) {
-     super(parent);
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="multimap-cache"><a class="anchor" href="#multimap-cache"></a>12. Multimap cache</h2>
+<h2 id="multimap-cache"><a class="anchor" href="#multimap-cache"></a>11. Multimap cache</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>MutimapCache is a type of Infinispan Cache that maps keys to values in which each key can contain multiple values.</p>
 </div>
 <div class="sect2">
-<h3 id="using-multimap-cache_multimap-cache"><a class="anchor" href="#using-multimap-cache_multimap-cache"></a>12.1. Multimap Cache</h3>
+<h3 id="using-multimap-cache_multimap-cache"><a class="anchor" href="#using-multimap-cache_multimap-cache"></a>11.1. Multimap Cache</h3>
 <div class="paragraph">
 <p>MutimapCache is a type of Infinispan Cache that maps keys to values in which each key can contain multiple values.</p>
 </div>
 <div class="sect3">
-<h4 id="installation_and_configuration"><a class="anchor" href="#installation_and_configuration"></a>12.1.1. Installation and configuration</h4>
+<h4 id="installation_and_configuration"><a class="anchor" href="#installation_and_configuration"></a>11.1.1. Installation and configuration</h4>
 <div class="listingblock">
 <div class="title">pom.xml</div>
 <div class="content">
@@ -5936,7 +5472,7 @@ public static class TestClassLoader extends ClassLoader {
 </div>
 </div>
 <div class="sect3">
-<h4 id="multimapcache_api"><a class="anchor" href="#multimapcache_api"></a>12.1.2. MultimapCache API</h4>
+<h4 id="multimapcache_api"><a class="anchor" href="#multimapcache_api"></a>11.1.2. MultimapCache API</h4>
 <div class="paragraph">
 <p>MultimapCache API exposes several methods to interact with the Multimap Cache.
 These methods are non-blocking in most cases; see
@@ -6043,7 +5579,7 @@ The existence of a given value is determined by 'equals' and `hashcode' method&#
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating_a_multimap_cache"><a class="anchor" href="#creating_a_multimap_cache"></a>12.1.3. Creating a Multimap Cache</h4>
+<h4 id="creating_a_multimap_cache"><a class="anchor" href="#creating_a_multimap_cache"></a>11.1.3. Creating a Multimap Cache</h4>
 <div class="paragraph">
 <p>Currently the MultimapCache is configured as a regular cache. This can be done either by code or XML configuration.
 See how to configure a regular cache in <a href="../configuring/configuring.html#cache-configuration">Configuring Infinispan caches</a>.</p>
@@ -6068,7 +5604,7 @@ multimapCache = multimapCacheManager.get(multimapCacheName);</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="multimap_limitations"><a class="anchor" href="#multimap_limitations"></a>12.1.4. Limitations</h4>
+<h4 id="multimap_limitations"><a class="anchor" href="#multimap_limitations"></a>11.1.4. Limitations</h4>
 <div class="paragraph">
 <p>In almost every case the Multimap Cache will behave as a regular Cache, but some limitations exist in the current version, as follows:</p>
 </div>
@@ -6100,7 +5636,7 @@ Methods that will block are <code>size</code>, <code>containsEntry</code> and <c
 </div>
 </div>
 <div class="sect1">
-<h2 id="custom_interceptors_chapter"><a class="anchor" href="#custom_interceptors_chapter"></a>13. Custom Interceptors</h2>
+<h2 id="custom_interceptors_chapter"><a class="anchor" href="#custom_interceptors_chapter"></a>12. Custom Interceptors</h2>
 <div class="sectionbody">
 <div class="admonitionblock important">
 <table>
@@ -6121,7 +5657,7 @@ future version.</p>
 <p>Custom interceptors are a way of extending Infinispan by being able to influence or respond to any modifications to cache. Example of such modifications are: elements are added/removed/updated or transactions are committed.</p>
 </div>
 <div class="sect2">
-<h3 id="adding_custom_interceptors_declaratively"><a class="anchor" href="#adding_custom_interceptors_declaratively"></a>13.1. Adding custom interceptors declaratively</h3>
+<h3 id="adding_custom_interceptors_declaratively"><a class="anchor" href="#adding_custom_interceptors_declaratively"></a>12.1. Adding custom interceptors declaratively</h3>
 <div class="paragraph">
 <p>Custom interceptors can be added on a per named cache basis. This is because each named cache have its own interceptor stack. Following xml snippet depicts the ways in which a custom interceptor can be added.</p>
 </div>
@@ -6148,7 +5684,7 @@ future version.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding_custom_interceptors_programmatically"><a class="anchor" href="#adding_custom_interceptors_programmatically"></a>13.2. Adding custom interceptors programmatically</h3>
+<h3 id="adding_custom_interceptors_programmatically"><a class="anchor" href="#adding_custom_interceptors_programmatically"></a>12.2. Adding custom interceptors programmatically</h3>
 <div class="paragraph">
 <p>In order to do that one needs to obtain a reference to the <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/AdvancedCache.html"><code>AdvancedCache</code></a>. This can be done as follows:</p>
 </div>
@@ -6164,7 +5700,7 @@ AdvancedCache advCache = aCache.getAdvancedCache();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="custom_interceptor_design"><a class="anchor" href="#custom_interceptor_design"></a>13.3. Custom interceptor design</h3>
+<h3 id="custom_interceptor_design"><a class="anchor" href="#custom_interceptor_design"></a>12.3. Custom interceptor design</h3>
 <div class="paragraph">
 <p>When writing a custom interceptor, you need to abide by the following rules.</p>
 </div>
@@ -6182,19 +5718,19 @@ AdvancedCache advCache = aCache.getAdvancedCache();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="functional-map-api"><a class="anchor" href="#functional-map-api"></a>14. Functional Map API</h2>
+<h2 id="functional-map-api"><a class="anchor" href="#functional-map-api"></a>13. Functional Map API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan provides an experimental API for interacting with your data which takes advantage of the functional programming additions and improved asynchronous programming capabilities available in Java 8.</p>
 </div>
 <div class="sect2">
-<h3 id="using-functional-map-api"><a class="anchor" href="#using-functional-map-api"></a>14.1. Using the Functional Map API</h3>
+<h3 id="using-functional-map-api"><a class="anchor" href="#using-functional-map-api"></a>13.1. Using the Functional Map API</h3>
 <div class="paragraph">
 <p>Infinispan&#8217;s <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/FunctionalMap.html">Functional Map API</a>
 is a distilled map-like asynchronous API which uses functions to interact with data.</p>
 </div>
 <div class="sect3">
-<h4 id="asynchronous_and_lazy"><a class="anchor" href="#asynchronous_and_lazy"></a>14.1.1. Asynchronous and Lazy</h4>
+<h4 id="asynchronous_and_lazy"><a class="anchor" href="#asynchronous_and_lazy"></a>13.1.1. Asynchronous and Lazy</h4>
 <div class="paragraph">
 <p>Being an asynchronous API, all methods that return a single result,
 return a CompletableFuture which wraps the result, so you can use the
@@ -6211,7 +5747,7 @@ has completed, or you can chain or compose them with other CompletableFuture.</p
 </div>
 </div>
 <div class="sect3">
-<h4 id="function_transparency"><a class="anchor" href="#function_transparency"></a>14.1.2. Function transparency</h4>
+<h4 id="function_transparency"><a class="anchor" href="#function_transparency"></a>13.1.2. Function transparency</h4>
 <div class="paragraph">
 <p>Since the content of the functions is transparent to Infinispan, the API
 has been split into 3 interfaces for read-only (
@@ -6225,7 +5761,7 @@ internals on the type of work needed to support functions.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="constructing_functional_maps"><a class="anchor" href="#constructing_functional_maps"></a>14.1.3. Constructing Functional Maps</h4>
+<h4 id="constructing_functional_maps"><a class="anchor" href="#constructing_functional_maps"></a>13.1.3. Constructing Functional Maps</h4>
 <div class="paragraph">
 <p>To construct any of the read-only, write-only or read-write map
 instances, an Infinispan
@@ -6270,7 +5806,7 @@ is temporary.
 </div>
 </div>
 <div class="sect3">
-<h4 id="read_only_map_api"><a class="anchor" href="#read_only_map_api"></a>14.1.4. Read-Only Map API</h4>
+<h4 id="read_only_map_api"><a class="anchor" href="#read_only_map_api"></a>13.1.4. Read-Only Map API</h4>
 <div class="paragraph">
 <p>Read-only operations have the advantage that no locks are acquired
 for the duration of the operation. Here&#8217;s an example on how to the
@@ -6347,7 +5883,7 @@ See <a href="#meta_parameter">Metadata Parameter Handling</a> to find out more.<
 </div>
 </div>
 <div class="sect3">
-<h4 id="write_only_map_api"><a class="anchor" href="#write_only_map_api"></a>14.1.5. Write-Only Map API</h4>
+<h4 id="write_only_map_api"><a class="anchor" href="#write_only_map_api"></a>13.1.5. Write-Only Map API</h4>
 <div class="paragraph">
 <p>Write-only operations include operations that insert or update data in the
 cache and also removals. Crucially, a write-only operation does not attempt
@@ -6455,7 +5991,7 @@ parameters associated with this key.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="read_write_map_api"><a class="anchor" href="#read_write_map_api"></a>14.1.6. Read-Write Map API</h4>
+<h4 id="read_write_map_api"><a class="anchor" href="#read_write_map_api"></a>13.1.6. Read-Write Map API</h4>
 <div class="paragraph">
 <p>The final type of operations we have are read­write operations, and within
 this category CAS-like (Compare­And­Swap) operations can be found.
@@ -6554,7 +6090,7 @@ and <a href="#write_only_entry_view">write-only entry views</a>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="meta_parameter"><a class="anchor" href="#meta_parameter"></a>14.1.7. Metadata Parameter Handling</h4>
+<h4 id="meta_parameter"><a class="anchor" href="#meta_parameter"></a>13.1.7. Metadata Parameter Handling</h4>
 <div class="paragraph">
 <p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/MetaParam.html">Metadata parameters</a>
 provide extra information about the cache entry, such
@@ -6650,7 +6186,7 @@ for the metadata parameters already provided by the functional map API.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_invocation_parameter"><a class="anchor" href="#_invocation_parameter"></a>14.1.8. Invocation Parameter</h4>
+<h4 id="_invocation_parameter"><a class="anchor" href="#_invocation_parameter"></a>13.1.8. Invocation Parameter</h4>
 <div class="paragraph">
 <p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/Param.html">Per-invocation parameters</a>
 are applied to regular functional map API calls to
@@ -6723,7 +6259,7 @@ to query these parameters within the interceptors.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="functional_listeners"><a class="anchor" href="#functional_listeners"></a>14.1.9. Functional Listeners</h4>
+<h4 id="functional_listeners"><a class="anchor" href="#functional_listeners"></a>13.1.9. Functional Listeners</h4>
 <div class="paragraph">
 <p>The functional map offers a listener API, where clients can register for and
 get notified when events take place. These notifications are post-event, so
@@ -6923,7 +6459,7 @@ writeClose.close();</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="marshalling_of_functions"><a class="anchor" href="#marshalling_of_functions"></a>14.1.10. Marshalling of Functions</h4>
+<h4 id="marshalling_of_functions"><a class="anchor" href="#marshalling_of_functions"></a>13.1.10. Marshalling of Functions</h4>
 <div class="paragraph">
 <p>Running functional map in a cluster of nodes involves marshalling and
 replication of the operation parameters under certain circumstances.</p>
@@ -7036,7 +6572,7 @@ future.thenAccept(stored -&gt; System.out.printf("Value was put? %s%n", stored))
 </div>
 </div>
 <div class="sect3">
-<h4 id="use_cases_for_functional_api"><a class="anchor" href="#use_cases_for_functional_api"></a>14.1.11. Use Cases for Functional API</h4>
+<h4 id="use_cases_for_functional_api"><a class="anchor" href="#use_cases_for_functional_api"></a>13.1.11. Use Cases for Functional API</h4>
 <div class="paragraph">
 <p>This new API is meant to complement existing Key/Value Infinispan API
 offerings, so you&#8217;ll still be able to use
@@ -7073,16 +6609,16 @@ if you want to retrieve metadata information from values and so on.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="anchored-keys"><a class="anchor" href="#anchored-keys"></a>15. Anchored keys</h2>
+<h2 id="anchored-keys"><a class="anchor" href="#anchored-keys"></a>14. Anchored keys</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="anchored_keys_module"><a class="anchor" href="#anchored_keys_module"></a>15.1. Anchored Keys module</h3>
+<h3 id="anchored_keys_module"><a class="anchor" href="#anchored_keys_module"></a>14.1. Anchored Keys module</h3>
 <div class="paragraph">
 <p>Infinispan version 11 introduces an experimental module that allows scaling up a cluster
 and adding new nodes without expensive <strong>state transfer</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="background"><a class="anchor" href="#background"></a>15.1.1. Background</h4>
+<h4 id="background"><a class="anchor" href="#background"></a>14.1.1. Background</h4>
 <div class="paragraph">
 <p>For background, the preferred way to scale up the storage capacity of a Infinispan cluster
 is to use distributed caches.
@@ -7115,7 +6651,7 @@ it is common (though less so after
 </div>
 </div>
 <div class="sect3">
-<h4 id="architecture"><a class="anchor" href="#architecture"></a>15.1.2. Architecture</h4>
+<h4 id="architecture"><a class="anchor" href="#architecture"></a>14.1.2. Architecture</h4>
 <div class="paragraph">
 <p>The basic idea is to skip the static mapping of keys to segments and to map keys directly to nodes.</p>
 </div>
@@ -7131,7 +6667,7 @@ and values can stay on the anchor owner, minimizing the amount of traffic.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="limitations"><a class="anchor" href="#limitations"></a>15.1.3. Limitations</h4>
+<h4 id="limitations"><a class="anchor" href="#limitations"></a>14.1.3. Limitations</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Only one node can be added at a time</dt>
@@ -7177,7 +6713,7 @@ in order to retrieve the value.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuration"><a class="anchor" href="#configuration"></a>15.1.4. Configuration</h4>
+<h4 id="configuration"><a class="anchor" href="#configuration"></a>14.1.4. Configuration</h4>
 <div class="paragraph">
 <p>The module is still very young and does not yet support many Infinispan features.</p>
 </div>
@@ -7230,7 +6766,7 @@ if state transfer is disabled, or if transactions are enabled.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="implementation_status"><a class="anchor" href="#implementation_status"></a>15.1.5. Implementation status</h4>
+<h4 id="implementation_status"><a class="anchor" href="#implementation_status"></a>14.1.5. Implementation status</h4>
 <div class="paragraph">
 <p>Basic operations are implemented: <code>put</code>, <code>putIfAbsent</code>, <code>get</code>, <code>replace</code>, <code>remove</code>, <code>putAll</code>, <code>getAll</code>.</p>
 </div>
@@ -7264,7 +6800,7 @@ where the value is stored.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="performance_considerations"><a class="anchor" href="#performance_considerations"></a>15.1.6. Performance considerations</h4>
+<h4 id="performance_considerations"><a class="anchor" href="#performance_considerations"></a>14.1.6. Performance considerations</h4>
 <div class="sect4">
 <h5 id="clientserver_latency"><a class="anchor" href="#clientserver_latency"></a>Client/Server Latency</h5>
 <div class="paragraph">
@@ -7341,14 +6877,14 @@ but also in server mode, if the client is not <code>HASH_DISTRIBUTION_AWARE</cod
 </div>
 </div>
 <div class="sect1">
-<h2 id="extending"><a class="anchor" href="#extending"></a>16. Extending Infinispan</h2>
+<h2 id="extending"><a class="anchor" href="#extending"></a>15. Extending Infinispan</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan can be extended to provide the ability for an end user to add
 additional configurations, operations and components outside of the scope of the ones normally provided by Infinispan.</p>
 </div>
 <div class="sect2">
-<h3 id="custom_commands"><a class="anchor" href="#custom_commands"></a>16.1. Custom Commands</h3>
+<h3 id="custom_commands"><a class="anchor" href="#custom_commands"></a>15.1. Custom Commands</h3>
 <div class="paragraph">
 <p>Infinispan makes use of a <a href="http://en.wikipedia.org/wiki/Command_pattern">command/visitor pattern</a> to
 implement the various top-level methods you see on the public-facing API.</p>
@@ -7383,7 +6919,7 @@ implementation in <code>META-INF/services/org.infinispan.commands.module.ModuleC
 </ol>
 </div>
 <div class="sect3">
-<h4 id="an_example"><a class="anchor" href="#an_example"></a>16.1.1. An Example</h4>
+<h4 id="an_example"><a class="anchor" href="#an_example"></a>15.1.1. An Example</h4>
 <div class="paragraph">
 <p>Here is an example of an <code>META-INF/services/org.infinispan.commands.module.ModuleCommandExtensions</code> file, configured accordingly:</p>
 </div>
@@ -7395,7 +6931,7 @@ implementation in <code>META-INF/services/org.infinispan.commands.module.ModuleC
 </div>
 </div>
 <div class="sect3">
-<h4 id="preassigned_custom_command_id_ranges"><a class="anchor" href="#preassigned_custom_command_id_ranges"></a>16.1.2. Preassigned Custom Command Id Ranges</h4>
+<h4 id="preassigned_custom_command_id_ranges"><a class="anchor" href="#preassigned_custom_command_id_ranges"></a>15.1.2. Preassigned Custom Command Id Ranges</h4>
 <div class="paragraph">
 <p>This is the list of <code>Command</code> identifiers that are used by Infinispan based modules or frameworks.
 Infinispan users should avoid using ids within these ranges. (RANGES to be finalised yet!)
@@ -7424,7 +6960,7 @@ Being this a single byte, ranges can&#8217;t be too large.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="extending_the_configuration_builders_and_parsers"><a class="anchor" href="#extending_the_configuration_builders_and_parsers"></a>16.2. Extending the configuration builders and parsers</h3>
+<h3 id="extending_the_configuration_builders_and_parsers"><a class="anchor" href="#extending_the_configuration_builders_and_parsers"></a>15.2. Extending the configuration builders and parsers</h3>
 <div class="paragraph">
 <p>If your custom module requires configuration, it is possible to enhance Infinispan&#8217;s configuration builders and
 parsers. Look at the <a href="https://github.com/infinispan/infinispan/blob/main/core/src/test/java/org/infinispan/configuration/module">custom module tests</a>
@@ -7436,7 +6972,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-20 05:21:41 UTC
+Last updated 2023-04-21 17:25:26 +0200
 </div>
 </div>
 <script type="text/x-mathjax-config">

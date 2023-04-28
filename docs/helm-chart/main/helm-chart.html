@@ -953,6 +953,11 @@ If you do not specify a port, the platform selects an available one.</p></td>
 If you set the value to <code>true</code>, Infinispan creates an initContainer that runs <code>chmod -R</code> on the <code>/opt/infinispan/server/data</code> directory to change permissions.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.monitoring.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable or disable monitoring using <code>ServiceMonitor</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code> Users must have <code>monitoring-edit</code> role assigned by the admin to deploy the Helm chart with <code>ServiceMonitor</code> enabled.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.nameOverride</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies a name for all Infinispan cluster resources.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Helm Chart release name.</p></td>
@@ -1957,7 +1962,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-28 15:06:32 +0100
+Last updated 2023-04-18 17:23:51 +0200
 </div>
 </div>
 <script>
