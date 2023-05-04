@@ -546,11 +546,7 @@ $(addBlockSwitches);
 <li><a href="#verifying-cluster-views_server-getting-started">1.7. Verifying cluster views</a></li>
 <li><a href="#shutting-down-servers_server-getting-started">1.8. Shutting down Infinispan Server</a>
 <ul class="sectlevel3">
-<li><a href="#cluster-restarts_server-getting-started">1.8.1. Shutdown and restart of Infinispan clusters</a>
-<ul class="sectlevel4">
-<li><a href="#cluster_shutdown">Cluster shutdown</a></li>
-</ul>
-</li>
+<li><a href="#cluster-restarts_server-getting-started">1.8.1. Shutdown and restart of Infinispan clusters</a></li>
 </ul>
 </li>
 <li><a href="#server-directory-structure_server-getting-started">1.9. Infinispan Server installation directory structure</a>
@@ -1540,8 +1536,7 @@ ISPN080003: Infinispan Server stopped</code></pre>
 <div class="paragraph">
 <p>Prevent data loss and ensure consistency of your cluster by properly shutting down and restarting nodes.</p>
 </div>
-<div class="sect4">
-<h5 id="cluster_shutdown"><a class="anchor" href="#cluster_shutdown"></a>Cluster shutdown</h5>
+<h5 id="cluster_shutdown" class="discrete">Cluster shutdown</h5>
 <div class="paragraph">
 <p>Infinispan recommends using the <code>shutdown cluster</code> command to stop all nodes in a cluster while saving cluster state and persisting all data in the cache.
 You can use the <code>shutdown cluster</code> command also for clusters with a single node.</p>
@@ -1567,7 +1562,6 @@ Local cache stores marked as <code>purge=false</code> will be available after a 
 <p>If you shutdown clustered nodes with the <code class="command">shutdown server</code> command, you must restart each server in reverse order to avoid potential issues related to data loss and stale entries in the cache.<br>
 For example, if you shutdown <code>server1</code> and then shutdown <code>server2</code>, you should first start <code>server2</code> and then start <code>server1</code>.
 However, restarting clustered nodes in reverse order does not completely prevent data loss and stale entries.</p>
-</div>
 </div>
 </div>
 </div>
@@ -12171,7 +12165,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-02 13:07:46 UTC
+Last updated 2023-05-04 07:09:29 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
