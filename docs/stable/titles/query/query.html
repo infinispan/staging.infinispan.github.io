@@ -535,7 +535,11 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#indexing-configuration_indexing-caches">1.1.1. Index configuration</a>
 <ul class="sectlevel4">
-<li><a href="#index_storage">Index storage</a></li>
+<li><a href="#index_storage">Index storage</a>
+<ul class="sectlevel5">
+<li><a href="#index_path">Index path</a></li>
+</ul>
+</li>
 <li><a href="#index_startup_mode">Index startup mode</a></li>
 <li><a href="#index_reader">Index reader</a></li>
 <li><a href="#index_writer">Index writer</a></li>
@@ -836,6 +840,32 @@ You should store indexes in JVM heap memory only for small datasets.</p>
     &lt;!-- Additional indexing configuration goes here. --&gt;
   &lt;/indexing&gt;
 &lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
+<div class="sect5">
+<h6 id="index_path"><a class="anchor" href="#index_path"></a>Index path</h6>
+<div class="paragraph">
+<p>Specifies a filesystem path for the index when storage is 'filesystem'.
+The value can be a relative or absolute path. Relative paths are created
+relative to the configured global persistent location, or to the current
+working directory when global state is disabled.</p>
+</div>
+<div class="paragraph">
+<p>By default, the cache name is used as a relative path for index path.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When setting a custom value, ensure that there are no conflicts between caches using the same indexed entities.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -3187,7 +3217,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-04 07:09:29 UTC
+Last updated 2023-05-16 10:27:57 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
