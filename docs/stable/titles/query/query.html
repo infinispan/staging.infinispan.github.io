@@ -547,7 +547,7 @@ $(addBlockSwitches);
 </li>
 </ul>
 </li>
-<li><a href="#indexing-annotations_indexing-caches">1.2. Indexing annotations</a></li>
+<li><a href="#indexing-annotations_indexing-caches">1.2. Infinispan native indexing annotations</a></li>
 <li><a href="#rebuilding-indexes_indexing-caches">1.3. Rebuilding indexes</a></li>
 <li><a href="#update-index-schema_indexing-caches">1.4. Updating index schema</a></li>
 <li><a href="#non-indexed-queries_indexing-caches">1.5. Non-indexed queries</a></li>
@@ -879,19 +879,33 @@ By default no indexing operation takes place when a cache starts but you can con
 <ul>
 <li>
 <p>Clear the index when the cache starts.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Infinispan performs the clear (purge) operation synchronously. The cache becomes available only when the purge completes.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Reindex the cache when it starts.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Infinispan performs the reindex operation asynchronously. The reindex operation might take a longer time to complete, depending on the size of the cache.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Automatically clear or reindex the cache.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>If data is volatile and the index is persistent then the cache is cleared when it starts.</p>
+<p>If data is volatile and the index is persistent then Infinispan clears the cache when it starts.</p>
 </li>
 <li>
-<p>If data is persistent and the index is volatile then the cache is reindexed when it starts.</p>
+<p>If data is persistent and the index is volatile then Infinispan reindex the cache when it starts.</p>
 </li>
 </ul>
 </div>
@@ -917,26 +931,6 @@ By default no indexing operation takes place when a cache starts but you can con
   &lt;/indexing&gt;
 &lt;/distributed-cache&gt;</code></pre>
 </div>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The clear (purge) operation is performed synchronously, so the cache will be available only when the purge completes.</p>
-</div>
-<div class="paragraph">
-<p>The reindex operation is performed asynchronously, since it may take a longer time to finish, dependent upon the size of the cache.</p>
-</div>
-<div class="paragraph">
-<p>To check if the reindexing operation is still in progress, check the <code>reindexing</code> attribute of the index statistics.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 </div>
 <div class="sect4">
@@ -1103,57 +1097,85 @@ The defaults should work for most cases and custom configurations should only be
 </div>
 </div>
 <div class="sect2">
-<h3 id="indexing-annotations_indexing-caches"><a class="anchor" href="#indexing-annotations_indexing-caches"></a>1.2. Indexing annotations</h3>
+<h3 id="indexing-annotations_indexing-caches"><a class="anchor" href="#indexing-annotations_indexing-caches"></a>1.2. Infinispan native indexing annotations</h3>
 <div class="paragraph">
 <p>When you enable indexing in caches, you configure Infinispan to create indexes.
 You also need to provide Infinispan with a structured representation of the entities in your caches so it can actually index them.</p>
 </div>
-<div class="paragraph">
-<p>There are two annotations that control the entities and fields that Infinispan indexes:</p>
-</div>
+<h4 id="overview_of_the_infinispan_indexing_annotations" class="discrete">Overview of the Infinispan indexing annotations</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><code>@Indexed</code></dt>
+<dt class="hdlist1">@Indexed</dt>
 <dd>
 <p>Indicates entities, or Protobuf message types, that Infinispan indexes.</p>
 </dd>
-<dt class="hdlist1"><code>@Field</code></dt>
+</dl>
+</div>
+<div class="paragraph">
+<p>To indicate the fields that Infinispan indexes use the indexing annotations.
+You can use these annotations the same way for both embedded and remote queries.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">@Basic</dt>
 <dd>
-<p>Indicates fields that Infinispan indexes and has the following attributes:</p>
+<p>Supports any type of field.
+Use the <code>@Basic</code> annotation for numbers and short strings that don&#8217;t require any transformation or processing.</p>
+</dd>
+<dt class="hdlist1">@Decimal</dt>
+<dd>
+<p>Use this annotation for fields that represent decimal values.</p>
+</dd>
+<dt class="hdlist1">@Keyword</dt>
+<dd>
+<p>Use this annotation for fields that are strings and intended for exact matching.
+Keyword fields are not analyzed or tokenized during indexing.</p>
+</dd>
+<dt class="hdlist1">@Text</dt>
+<dd>
+<p>Use this annotation for fields that contain textual data and are intended for full-text search capabilities. You can use the analyzer to process the text and to generate individual tokens.</p>
+</dd>
+<dt class="hdlist1">@Embedded</dt>
+<dd>
+<p>Use this annotation to mark a field as an embedded object within the parent entity.
+The <code>NESTED</code> structure preserves the original object relationship structure while the <code>FLATTENED</code> structure makes the leaf fields multivalued of the parent entity.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>Each of the annotations supports a set of attributes that you can use to further describe how the entity is indexed.</p>
+</div>
 <table class="tableblock frame-all grid-all stripes-even fit-content">
+<caption class="title">Table 3. Infinispan annotations and supported attributes</caption>
 <colgroup>
-<col>
 <col>
 <col>
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Attribute</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Values</th>
+<th class="tableblock halign-left valign-top">Annotation</th>
+<th class="tableblock halign-left valign-top">Supported attributes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>index</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Controls if Infinispan includes fields in indexes.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Index.YES</code> or <code>Index.NO</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@Basic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, sortable, projectable, aggregable, indexNullAs</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>store</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Allows Infinispan to store fields in indexes so you can use them for projections.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Store.YES</code> or <code>Store.NO</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@Decimal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, sortable, projectable, aggregable, indexNullAs, decimalScale</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>analyze</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Includes fields in full-text searches.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Analyze.NO</code> or specifies an analyzer definition</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@Keyword</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, sortable, projectable, aggregable, indexNullAs, normalizer, norms</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@Text</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, projectable, norms, analyzer, searchAnalyzer, termVector</p></td>
 </tr>
 </tbody>
 </table>
-</dd>
-</dl>
-</div>
 <h4 id="remote_caches" class="discrete">Remote caches</h4>
 <div class="paragraph">
 <p>You can provide Infinispan with indexing annotations for remote caches in two ways:</p>
@@ -1161,19 +1183,19 @@ You also need to provide Infinispan with a structured representation of the enti
 <div class="ulist">
 <ul>
 <li>
-<p>Annotate your Java classes directly with <code>@Indexed</code> and <code>@Field(&#8230;&#8203;)</code>.<br>
-You then generate Protobuf schema, <code>.proto</code> files, before uploading them to Infinispan Server.</p>
+<p>Annotate your Java classes directly using <code>@Basic</code>, <code>@Keyword</code> or <code>@Text</code>.<br>
+You then generate or update your Protobuf schema, <code>.proto</code> files, before uploading them to Infinispan Server.</p>
 </li>
 <li>
-<p>Annotate Protobuf schema directly with <code>@Indexed</code> and <code>@Field(&#8230;&#8203;)</code>.<br>
+<p>Annotate Protobuf schema directly with <code>@Indexed</code> and <code>@Basic</code>, <code>@Keyword</code> or <code>@Text</code>.<br>
 You then upload your Protobuf schema to Infinispan Server.</p>
 <div class="paragraph">
-<p>For example, the following schema uses the <code>@Field</code> annotation:</p>
+<p>For example, the following schema uses the <code>@Text</code> annotation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-java" data-lang="java">/**
-   * @Field(analyze = Analyze.YES, store = Store.YES)
+   * @Text(projectable = true)
    */
 required string street = 1;</code></pre>
 </div>
@@ -1186,7 +1208,9 @@ required string street = 1;</code></pre>
 <p>For embedded caches, you add indexing annotations to your Java classes according to how Infinispan stores your entries.</p>
 </div>
 <div class="paragraph">
-<p>Use the <code>@Indexed</code> and <code>@Field</code> annotations, along with other Hibernate Search annotations such as <code>@FullTextField</code>.</p>
+<p>Annotate values with <code>@Indexed</code> to add them to indexes.
+Use <code>@Basic</code>, <code>@Keyword</code> or <code>@Text</code> to annotate each field depending how you want Infinispan to index them.
+For embedded indexes use the <code>@Embedded</code> annotation and specify the entity structure.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1211,10 +1235,11 @@ While the rebuild operation is in progress, queries might also return fewer resu
 </tr>
 </table>
 </div>
-<div class="paragraph">
+<div class="olist arabic">
 <div class="title">Procedure</div>
+<ol class="arabic">
+<li>
 <p>Rebuild indexes in one of the following ways:</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
@@ -1247,8 +1272,18 @@ While the rebuild operation is in progress, queries might also return fewer resu
 CompletionStage&lt;Void&gt; future = index.run();</code></pre>
 </div>
 </div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Check the status of reindexing operation with the <code>reindexing</code> attribute of the index statistics.</p>
+</li>
+</ol>
+</div>
 </li>
 </ul>
+</div>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -1784,7 +1819,7 @@ grouping is allowed. In this case the aggregations will be computed globally as 
 <p>You can apply the following aggregation functions to a field:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. Index merge attributes</caption>
+<caption class="title">Table 4. Index merge attributes</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1819,7 +1854,7 @@ grouping is allowed. In this case the aggregations will be computed globally as 
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. Table sum return type</caption>
+<caption class="title">Table 5. Table sum return type</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2073,30 +2108,26 @@ This procedure explains how to index query a remote cache that stores <code>Book
 <div class="listingblock">
 <div class="title">Book.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
-
+<pre class="highlight"><code class="language-java" data-lang="java">import org.infinispan.api.annotations.indexing.Basic;
+import org.infinispan.api.annotations.indexing.Indexed;
+import org.infinispan.api.annotations.indexing.Text;
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
 @Indexed
 public class Book {
 
-   @Field(index=Index.YES, analyze = Analyze.YES, store = Store.NO)
+   @Text
    @ProtoField(number = 1)
    final String title;
 
-   @Field(index=Index.YES, analyze = Analyze.YES, store = Store.NO)
+   @Text
    @ProtoField(number = 2)
    final String description;
 
-   @Field(index=Index.YES, store = Store.NO)
+   @Basic
    @ProtoField(number = 3, defaultValue = "0")
    final int publicationYear;
-
 
    @ProtoFactory
    Book(String title, String description, int publicationYear) {
@@ -2243,10 +2274,10 @@ public class RemoteQuery {
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="../encoding/encoding.html">Marshalling and Encoding Data</a> for more information about creating serialization contexts and registering Protobuf schema.</p>
+<p><a href="../encoding/encoding.html">Encoding Infinispan caches and marshalling data</a></p>
 </li>
 <li>
-<p><a href="../encoding/encoding.html#protostream-annotations_marshalling">ProtoStream annotations</a> for more information about the <code>@ProtoField</code>, <code>@ProtoDoc</code>, and <code>@AutoProtoSchemaBuilder</code> annotations.</p>
+<p><a href="../encoding/encoding.html#protostream-annotations_marshalling">Encoding Infinispan caches and marshalling data: ProtoStream annotations</a></p>
 </li>
 </ul>
 </div>
@@ -2348,16 +2379,17 @@ You can also use any HTTP client to index and query caches via the REST API.</p>
 
 /* @Indexed */
 message Person {
-    /* @Field(index=Index.YES, store = Store.NO, analyze = Analyze.NO) */
+
+    /* @Basic */
     optional int32 id = 1;
 
-    /* @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO) */
+    /* @Keyword(projectable = true) */
     required string name = 2;
 
-    /* @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO) */
+    /* @Keyword(projectable = true) */
     required string surname = 3;
 
-    /* @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO) */
+    /* @Basic(projectable = true, sortable = true) */
     optional int32 age = 6;
 
 }</code></pre>
@@ -2492,7 +2524,7 @@ For this example procedure, create entries that use the following JSON values:</
 <h3 id="using-analyzers_query-remote"><a class="anchor" href="#using-analyzers_query-remote"></a>3.4. Using analyzers with remote caches</h3>
 <div class="paragraph">
 <p>Analyzers convert input data into terms that you can index and query.
-You specify analyzer definitions with the <code>@Field</code> annotation in your Java classes or directly in Protobuf schema.</p>
+You specify analyzer definitions with the <code>@Text</code> annotation in your Java classes or directly in Protobuf schema.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -2511,10 +2543,10 @@ You specify analyzer definitions with the <code>@Field</code> annotation in your
 <pre class="highlight nowrap"><code class="language-protobuf" data-lang="protobuf">/* @Indexed */
 message TestEntity {
 
-    /* @Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "keyword")) */
+    /* @Keyword(projectable = true) */
     optional string id = 1;
 
-    /* @Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "simple")) */
+    /* @Text(projectable = true, analyzer = "simple") */
     optional string name = 2;
 }</code></pre>
 </div>
@@ -2522,13 +2554,13 @@ message TestEntity {
 <div class="listingblock secondary">
 <div class="title">Java classes</div>
 <div class="content">
-<pre class="highlight nowrap"><code class="language-java" data-lang="java">@Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "keyword"))
-@ProtoField(1)
-final String id;
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">@Text(projectable = true, analyzer = "whitespace")
+@ProtoField(value = 1)
+private String id;
 
-@Field(store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "simple"))
-@ProtoField(2)
-final String description;</code></pre>
+@Text(projectable = true, analyzer = "simple")
+@ProtoField(value = 2)
+private String description;</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -3217,7 +3249,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-16 10:27:57 UTC
+Last updated 2023-05-18 12:36:45 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
