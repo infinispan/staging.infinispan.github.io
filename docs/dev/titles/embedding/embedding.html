@@ -677,26 +677,33 @@ $(addBlockSwitches);
 <li><a href="#examples">9.13. Examples</a></li>
 </ul>
 </li>
-<li><a href="#cdi_support">10. Using the CDI Extension</a>
+<li><a href="#quarkus_embedded">10. Using the Quarkus extension</a>
 <ul class="sectlevel2">
-<li><a href="#cdi_dependencies">10.1. CDI Dependencies</a></li>
-<li><a href="#cdi_inject_embed">10.2. Injecting Embedded Caches</a></li>
-<li><a href="#cdi_inject_remote">10.3. Injecting Remote Caches</a></li>
-<li><a href="#cache_events">10.4. Receiving Cache and Cache Manager Events</a></li>
+<li><a href="#quarkus_embedded_dependencies">10.1. Quarkus dependencies</a></li>
+<li><a href="#quarkus_inject_embedded">10.2. Injecting Embedded Caches</a></li>
+<li><a href="#quarkus_native_compilation">10.3. Compiling Quarkus Infinispan application</a></li>
 </ul>
 </li>
-<li><a href="#multimap-cache">11. Multimap cache</a>
+<li><a href="#cdi_support">11. Using the CDI Extension</a>
 <ul class="sectlevel2">
-<li><a href="#using-multimap-cache_multimap-cache">11.1. Multimap Cache</a>
+<li><a href="#cdi_dependencies">11.1. CDI Dependencies</a></li>
+<li><a href="#cdi_inject_embed">11.2. Injecting Embedded Caches</a></li>
+<li><a href="#cdi_inject_remote">11.3. Injecting Remote Caches</a></li>
+<li><a href="#cache_events">11.4. Receiving Cache and Cache Manager Events</a></li>
+</ul>
+</li>
+<li><a href="#multimap-cache">12. Multimap cache</a>
+<ul class="sectlevel2">
+<li><a href="#using-multimap-cache_multimap-cache">12.1. Multimap Cache</a>
 <ul class="sectlevel3">
-<li><a href="#installation_and_configuration">11.1.1. Installation and configuration</a></li>
-<li><a href="#multimapcache_api">11.1.2. MultimapCache API</a></li>
-<li><a href="#creating_a_multimap_cache">11.1.3. Creating a Multimap Cache</a>
+<li><a href="#installation_and_configuration">12.1.1. Installation and configuration</a></li>
+<li><a href="#multimapcache_api">12.1.2. MultimapCache API</a></li>
+<li><a href="#creating_a_multimap_cache">12.1.3. Creating a Multimap Cache</a>
 <ul class="sectlevel4">
 <li><a href="#embedded_mode">Embedded mode</a></li>
 </ul>
 </li>
-<li><a href="#multimap_limitations">11.1.4. Limitations</a>
+<li><a href="#multimap_limitations">12.1.4. Limitations</a>
 <ul class="sectlevel4">
 <li><a href="#support_for_duplicates">Support for duplicates</a></li>
 <li><a href="#eviction">Eviction</a></li>
@@ -707,65 +714,65 @@ $(addBlockSwitches);
 </li>
 </ul>
 </li>
-<li><a href="#custom_interceptors_chapter">12. Custom Interceptors</a>
+<li><a href="#custom_interceptors_chapter">13. Custom Interceptors</a>
 <ul class="sectlevel2">
-<li><a href="#adding_custom_interceptors_declaratively">12.1. Adding custom interceptors declaratively</a></li>
-<li><a href="#adding_custom_interceptors_programmatically">12.2. Adding custom interceptors programmatically</a></li>
-<li><a href="#custom_interceptor_design">12.3. Custom interceptor design</a></li>
+<li><a href="#adding_custom_interceptors_declaratively">13.1. Adding custom interceptors declaratively</a></li>
+<li><a href="#adding_custom_interceptors_programmatically">13.2. Adding custom interceptors programmatically</a></li>
+<li><a href="#custom_interceptor_design">13.3. Custom interceptor design</a></li>
 </ul>
 </li>
-<li><a href="#functional-map-api">13. Functional Map API</a>
+<li><a href="#functional-map-api">14. Functional Map API</a>
 <ul class="sectlevel2">
-<li><a href="#using-functional-map-api">13.1. Using the Functional Map API</a>
+<li><a href="#using-functional-map-api">14.1. Using the Functional Map API</a>
 <ul class="sectlevel3">
-<li><a href="#asynchronous_and_lazy">13.1.1. Asynchronous and Lazy</a></li>
-<li><a href="#function_transparency">13.1.2. Function transparency</a></li>
-<li><a href="#constructing_functional_maps">13.1.3. Constructing Functional Maps</a></li>
-<li><a href="#read_only_map_api">13.1.4. Read-Only Map API</a>
+<li><a href="#asynchronous_and_lazy">14.1.1. Asynchronous and Lazy</a></li>
+<li><a href="#function_transparency">14.1.2. Function transparency</a></li>
+<li><a href="#constructing_functional_maps">14.1.3. Constructing Functional Maps</a></li>
+<li><a href="#read_only_map_api">14.1.4. Read-Only Map API</a>
 <ul class="sectlevel4">
 <li><a href="#read_only_entry_view">Read-Only Entry View</a></li>
 </ul>
 </li>
-<li><a href="#write_only_map_api">13.1.5. Write-Only Map API</a>
+<li><a href="#write_only_map_api">14.1.5. Write-Only Map API</a>
 <ul class="sectlevel4">
 <li><a href="#write_only_entry_view">Write-Only Entry View</a></li>
 </ul>
 </li>
-<li><a href="#read_write_map_api">13.1.6. Read-Write Map API</a>
+<li><a href="#read_write_map_api">14.1.6. Read-Write Map API</a>
 <ul class="sectlevel4">
 <li><a href="#read_write_entry_view">Read-Write Entry View</a></li>
 </ul>
 </li>
-<li><a href="#meta_parameter">13.1.7. Metadata Parameter Handling</a></li>
-<li><a href="#_invocation_parameter">13.1.8. Invocation Parameter</a></li>
-<li><a href="#functional_listeners">13.1.9. Functional Listeners</a>
+<li><a href="#meta_parameter">14.1.7. Metadata Parameter Handling</a></li>
+<li><a href="#_invocation_parameter">14.1.8. Invocation Parameter</a></li>
+<li><a href="#functional_listeners">14.1.9. Functional Listeners</a>
 <ul class="sectlevel4">
 <li><a href="#write_listeners">Write Listeners</a></li>
 <li><a href="#read_write_listeners">Read-Write Listeners</a></li>
 </ul>
 </li>
-<li><a href="#marshalling_of_functions">13.1.10. Marshalling of Functions</a></li>
-<li><a href="#use_cases_for_functional_api">13.1.11. Use Cases for Functional API</a></li>
+<li><a href="#marshalling_of_functions">14.1.10. Marshalling of Functions</a></li>
+<li><a href="#use_cases_for_functional_api">14.1.11. Use Cases for Functional API</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#anchored-keys">14. Anchored keys</a>
+<li><a href="#anchored-keys">15. Anchored keys</a>
 <ul class="sectlevel2">
-<li><a href="#anchored_keys_module">14.1. Anchored Keys module</a>
+<li><a href="#anchored_keys_module">15.1. Anchored Keys module</a>
 <ul class="sectlevel3">
-<li><a href="#background">14.1.1. Background</a></li>
-<li><a href="#architecture">14.1.2. Architecture</a></li>
-<li><a href="#limitations">14.1.3. Limitations</a></li>
-<li><a href="#configuration">14.1.4. Configuration</a></li>
-<li><a href="#implementation_status">14.1.5. Implementation status</a>
+<li><a href="#background">15.1.1. Background</a></li>
+<li><a href="#architecture">15.1.2. Architecture</a></li>
+<li><a href="#limitations">15.1.3. Limitations</a></li>
+<li><a href="#configuration">15.1.4. Configuration</a></li>
+<li><a href="#implementation_status">15.1.5. Implementation status</a>
 <ul class="sectlevel4">
 <li><a href="#functional_commands">Functional commands</a></li>
 <li><a href="#partition_handling">Partition handling</a></li>
 <li><a href="#listeners">Listeners</a></li>
 </ul>
 </li>
-<li><a href="#performance_considerations">14.1.6. Performance considerations</a>
+<li><a href="#performance_considerations">15.1.6. Performance considerations</a>
 <ul class="sectlevel4">
 <li><a href="#clientserver_latency">Client/Server Latency</a></li>
 <li><a href="#memory_overhead">Memory overhead</a></li>
@@ -776,15 +783,15 @@ $(addBlockSwitches);
 </li>
 </ul>
 </li>
-<li><a href="#extending">15. Extending Infinispan</a>
+<li><a href="#extending">16. Extending Infinispan</a>
 <ul class="sectlevel2">
-<li><a href="#custom_commands">15.1. Custom Commands</a>
+<li><a href="#custom_commands">16.1. Custom Commands</a>
 <ul class="sectlevel3">
-<li><a href="#an_example">15.1.1. An Example</a></li>
-<li><a href="#preassigned_custom_command_id_ranges">15.1.2. Preassigned Custom Command Id Ranges</a></li>
+<li><a href="#an_example">16.1.1. An Example</a></li>
+<li><a href="#preassigned_custom_command_id_ranges">16.1.2. Preassigned Custom Command Id Ranges</a></li>
 </ul>
 </li>
-<li><a href="#extending_the_configuration_builders_and_parsers">15.2. Extending the configuration builders and parsers</a></li>
+<li><a href="#extending_the_configuration_builders_and_parsers">16.2. Extending the configuration builders and parsers</a></li>
 </ul>
 </li>
 </ul>
@@ -840,7 +847,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;14.0.7.Final&lt;/version.infinispan&gt;
+  &lt;version.infinispan&gt;15.0.0.Dev01&lt;/version.infinispan&gt;
 &lt;/properties&gt;
 
 &lt;dependencyManagement&gt;
@@ -2596,7 +2603,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>5.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.7.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.0.Dev01.jar</code> file.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -5114,7 +5121,93 @@ Just remember that your operations need to be Serializable in some way.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="cdi_support"><a class="anchor" href="#cdi_support"></a>10. Using the CDI Extension</h2>
+<h2 id="quarkus_embedded"><a class="anchor" href="#quarkus_embedded"></a>10. Using the Quarkus extension</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Infinispan provides an extension that integrates with the Quarkus framework.
+The extension lets you create natively compiled Infinispan applications.</p>
+</div>
+<div class="sect2">
+<h3 id="quarkus_embedded_dependencies"><a class="anchor" href="#quarkus_embedded_dependencies"></a>10.1. Quarkus dependencies</h3>
+<div class="paragraph">
+<p>Include the Infinispan Quarkus extension in your <code>pom.xml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Embedded mode</div>
+<div class="content">
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
+  &lt;artifactId&gt;infinispan-quarkus-embedded&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="quarkus_inject_embedded"><a class="anchor" href="#quarkus_inject_embedded"></a>10.2. Injecting Embedded Caches</h3>
+<div class="paragraph">
+<p>Inject a <code>EmbeddedCacheManager</code> instance into your Quarkus application to interact with Infinispan caches..</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Optional: Use the <code>quarkus.infinispan-embedded.xml-config</code> property to set the path to an XML file that includes the configuration of the injected instance.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">quarkus.infinispan-embedded.xml-config=/example/path/to/config.xml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add the <code>@Inject</code> annotation to an uninitialized <code>EmbeddedCacheManager</code> class variable.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import javax.inject.Inject;
+import org.infinispan.manager.EmbeddedCacheManager;
+...
+@Path("/example")
+public class ExampleResource {
+
+    @Inject
+    EmbeddedCacheManager emc;
+}</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="quarkus_native_compilation"><a class="anchor" href="#quarkus_native_compilation"></a>10.3. Compiling Quarkus Infinispan application</h3>
+<div class="paragraph">
+<p>Generate a native executable for Quarkus Infinispan application.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have a Quarkus based project. For a complete list of prerequisites, see <a href="https://quarkus.io/guides/building-native-image#prerequisites">Quarkus native prerequisites</a>.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Procedure</div>
+<ul>
+<li>
+<p>Natively compile your Quarkus Infinispan application:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>mvn clean package -Pnative</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cdi_support"><a class="anchor" href="#cdi_support"></a>11. Using the CDI Extension</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan provides an extension that integrates with the CDI (Contexts and
@@ -5134,7 +5227,7 @@ Dependency Injection) programming model and allows you to:</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="cdi_dependencies"><a class="anchor" href="#cdi_dependencies"></a>10.1. CDI Dependencies</h3>
+<h3 id="cdi_dependencies"><a class="anchor" href="#cdi_dependencies"></a>11.1. CDI Dependencies</h3>
 <div class="paragraph">
 <p>Update your <code>pom.xml</code> with one of the following dependencies to include the
 Infinispan CDI extension in your project:</p>
@@ -5159,7 +5252,7 @@ Infinispan CDI extension in your project:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="cdi_inject_embed"><a class="anchor" href="#cdi_inject_embed"></a>10.2. Injecting Embedded Caches</h3>
+<h3 id="cdi_inject_embed"><a class="anchor" href="#cdi_inject_embed"></a>11.2. Injecting Embedded Caches</h3>
 <div class="paragraph">
 <p>Set up CDI beans to inject embedded caches.</p>
 </div>
@@ -5308,7 +5401,7 @@ public class GreetingService {
 </div>
 </div>
 <div class="sect2">
-<h3 id="cdi_inject_remote"><a class="anchor" href="#cdi_inject_remote"></a>10.3. Injecting Remote Caches</h3>
+<h3 id="cdi_inject_remote"><a class="anchor" href="#cdi_inject_remote"></a>11.3. Injecting Remote Caches</h3>
 <div class="paragraph">
 <p>Set up CDI beans to inject remote caches.</p>
 </div>
@@ -5414,7 +5507,7 @@ public class Config {
 </div>
 </div>
 <div class="sect2">
-<h3 id="cache_events"><a class="anchor" href="#cache_events"></a>10.4. Receiving Cache and Cache Manager Events</h3>
+<h3 id="cache_events"><a class="anchor" href="#cache_events"></a>11.4. Receiving Cache and Cache Manager Events</h3>
 <div class="paragraph">
 <p>You can use CDI Events to receive Cache and Cache Manager level events.</p>
 </div>
@@ -5449,18 +5542,18 @@ public class GreetingService {
 </div>
 </div>
 <div class="sect1">
-<h2 id="multimap-cache"><a class="anchor" href="#multimap-cache"></a>11. Multimap cache</h2>
+<h2 id="multimap-cache"><a class="anchor" href="#multimap-cache"></a>12. Multimap cache</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>MutimapCache is a type of Infinispan Cache that maps keys to values in which each key can contain multiple values.</p>
 </div>
 <div class="sect2">
-<h3 id="using-multimap-cache_multimap-cache"><a class="anchor" href="#using-multimap-cache_multimap-cache"></a>11.1. Multimap Cache</h3>
+<h3 id="using-multimap-cache_multimap-cache"><a class="anchor" href="#using-multimap-cache_multimap-cache"></a>12.1. Multimap Cache</h3>
 <div class="paragraph">
 <p>MutimapCache is a type of Infinispan Cache that maps keys to values in which each key can contain multiple values.</p>
 </div>
 <div class="sect3">
-<h4 id="installation_and_configuration"><a class="anchor" href="#installation_and_configuration"></a>11.1.1. Installation and configuration</h4>
+<h4 id="installation_and_configuration"><a class="anchor" href="#installation_and_configuration"></a>12.1.1. Installation and configuration</h4>
 <div class="listingblock">
 <div class="title">pom.xml</div>
 <div class="content">
@@ -5472,7 +5565,7 @@ public class GreetingService {
 </div>
 </div>
 <div class="sect3">
-<h4 id="multimapcache_api"><a class="anchor" href="#multimapcache_api"></a>11.1.2. MultimapCache API</h4>
+<h4 id="multimapcache_api"><a class="anchor" href="#multimapcache_api"></a>12.1.2. MultimapCache API</h4>
 <div class="paragraph">
 <p>MultimapCache API exposes several methods to interact with the Multimap Cache.
 These methods are non-blocking in most cases; see
@@ -5579,7 +5672,7 @@ The existence of a given value is determined by 'equals' and `hashcode' method&#
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating_a_multimap_cache"><a class="anchor" href="#creating_a_multimap_cache"></a>11.1.3. Creating a Multimap Cache</h4>
+<h4 id="creating_a_multimap_cache"><a class="anchor" href="#creating_a_multimap_cache"></a>12.1.3. Creating a Multimap Cache</h4>
 <div class="paragraph">
 <p>Currently the MultimapCache is configured as a regular cache. This can be done either by code or XML configuration.
 See how to configure a regular cache in <a href="../configuring/configuring.html#cache-configuration">Configuring Infinispan caches</a>.</p>
@@ -5604,7 +5697,7 @@ multimapCache = multimapCacheManager.get(multimapCacheName);</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="multimap_limitations"><a class="anchor" href="#multimap_limitations"></a>11.1.4. Limitations</h4>
+<h4 id="multimap_limitations"><a class="anchor" href="#multimap_limitations"></a>12.1.4. Limitations</h4>
 <div class="paragraph">
 <p>In almost every case the Multimap Cache will behave as a regular Cache, but some limitations exist in the current version, as follows:</p>
 </div>
@@ -5636,7 +5729,7 @@ Methods that will block are <code>size</code>, <code>containsEntry</code> and <c
 </div>
 </div>
 <div class="sect1">
-<h2 id="custom_interceptors_chapter"><a class="anchor" href="#custom_interceptors_chapter"></a>12. Custom Interceptors</h2>
+<h2 id="custom_interceptors_chapter"><a class="anchor" href="#custom_interceptors_chapter"></a>13. Custom Interceptors</h2>
 <div class="sectionbody">
 <div class="admonitionblock important">
 <table>
@@ -5657,7 +5750,7 @@ future version.</p>
 <p>Custom interceptors are a way of extending Infinispan by being able to influence or respond to any modifications to cache. Example of such modifications are: elements are added/removed/updated or transactions are committed.</p>
 </div>
 <div class="sect2">
-<h3 id="adding_custom_interceptors_declaratively"><a class="anchor" href="#adding_custom_interceptors_declaratively"></a>12.1. Adding custom interceptors declaratively</h3>
+<h3 id="adding_custom_interceptors_declaratively"><a class="anchor" href="#adding_custom_interceptors_declaratively"></a>13.1. Adding custom interceptors declaratively</h3>
 <div class="paragraph">
 <p>Custom interceptors can be added on a per named cache basis. This is because each named cache have its own interceptor stack. Following xml snippet depicts the ways in which a custom interceptor can be added.</p>
 </div>
@@ -5684,7 +5777,7 @@ future version.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding_custom_interceptors_programmatically"><a class="anchor" href="#adding_custom_interceptors_programmatically"></a>12.2. Adding custom interceptors programmatically</h3>
+<h3 id="adding_custom_interceptors_programmatically"><a class="anchor" href="#adding_custom_interceptors_programmatically"></a>13.2. Adding custom interceptors programmatically</h3>
 <div class="paragraph">
 <p>In order to do that one needs to obtain a reference to the <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/AdvancedCache.html"><code>AdvancedCache</code></a>. This can be done as follows:</p>
 </div>
@@ -5700,7 +5793,7 @@ AdvancedCache advCache = aCache.getAdvancedCache();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="custom_interceptor_design"><a class="anchor" href="#custom_interceptor_design"></a>12.3. Custom interceptor design</h3>
+<h3 id="custom_interceptor_design"><a class="anchor" href="#custom_interceptor_design"></a>13.3. Custom interceptor design</h3>
 <div class="paragraph">
 <p>When writing a custom interceptor, you need to abide by the following rules.</p>
 </div>
@@ -5718,19 +5811,19 @@ AdvancedCache advCache = aCache.getAdvancedCache();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="functional-map-api"><a class="anchor" href="#functional-map-api"></a>13. Functional Map API</h2>
+<h2 id="functional-map-api"><a class="anchor" href="#functional-map-api"></a>14. Functional Map API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan provides an experimental API for interacting with your data which takes advantage of the functional programming additions and improved asynchronous programming capabilities available in Java 8.</p>
 </div>
 <div class="sect2">
-<h3 id="using-functional-map-api"><a class="anchor" href="#using-functional-map-api"></a>13.1. Using the Functional Map API</h3>
+<h3 id="using-functional-map-api"><a class="anchor" href="#using-functional-map-api"></a>14.1. Using the Functional Map API</h3>
 <div class="paragraph">
 <p>Infinispan&#8217;s <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/FunctionalMap.html">Functional Map API</a>
 is a distilled map-like asynchronous API which uses functions to interact with data.</p>
 </div>
 <div class="sect3">
-<h4 id="asynchronous_and_lazy"><a class="anchor" href="#asynchronous_and_lazy"></a>13.1.1. Asynchronous and Lazy</h4>
+<h4 id="asynchronous_and_lazy"><a class="anchor" href="#asynchronous_and_lazy"></a>14.1.1. Asynchronous and Lazy</h4>
 <div class="paragraph">
 <p>Being an asynchronous API, all methods that return a single result,
 return a CompletableFuture which wraps the result, so you can use the
@@ -5747,7 +5840,7 @@ has completed, or you can chain or compose them with other CompletableFuture.</p
 </div>
 </div>
 <div class="sect3">
-<h4 id="function_transparency"><a class="anchor" href="#function_transparency"></a>13.1.2. Function transparency</h4>
+<h4 id="function_transparency"><a class="anchor" href="#function_transparency"></a>14.1.2. Function transparency</h4>
 <div class="paragraph">
 <p>Since the content of the functions is transparent to Infinispan, the API
 has been split into 3 interfaces for read-only (
@@ -5761,7 +5854,7 @@ internals on the type of work needed to support functions.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="constructing_functional_maps"><a class="anchor" href="#constructing_functional_maps"></a>13.1.3. Constructing Functional Maps</h4>
+<h4 id="constructing_functional_maps"><a class="anchor" href="#constructing_functional_maps"></a>14.1.3. Constructing Functional Maps</h4>
 <div class="paragraph">
 <p>To construct any of the read-only, write-only or read-write map
 instances, an Infinispan
@@ -5806,7 +5899,7 @@ is temporary.
 </div>
 </div>
 <div class="sect3">
-<h4 id="read_only_map_api"><a class="anchor" href="#read_only_map_api"></a>13.1.4. Read-Only Map API</h4>
+<h4 id="read_only_map_api"><a class="anchor" href="#read_only_map_api"></a>14.1.4. Read-Only Map API</h4>
 <div class="paragraph">
 <p>Read-only operations have the advantage that no locks are acquired
 for the duration of the operation. Here&#8217;s an example on how to the
@@ -5883,7 +5976,7 @@ See <a href="#meta_parameter">Metadata Parameter Handling</a> to find out more.<
 </div>
 </div>
 <div class="sect3">
-<h4 id="write_only_map_api"><a class="anchor" href="#write_only_map_api"></a>13.1.5. Write-Only Map API</h4>
+<h4 id="write_only_map_api"><a class="anchor" href="#write_only_map_api"></a>14.1.5. Write-Only Map API</h4>
 <div class="paragraph">
 <p>Write-only operations include operations that insert or update data in the
 cache and also removals. Crucially, a write-only operation does not attempt
@@ -5991,7 +6084,7 @@ parameters associated with this key.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="read_write_map_api"><a class="anchor" href="#read_write_map_api"></a>13.1.6. Read-Write Map API</h4>
+<h4 id="read_write_map_api"><a class="anchor" href="#read_write_map_api"></a>14.1.6. Read-Write Map API</h4>
 <div class="paragraph">
 <p>The final type of operations we have are read­write operations, and within
 this category CAS-like (Compare­And­Swap) operations can be found.
@@ -6090,7 +6183,7 @@ and <a href="#write_only_entry_view">write-only entry views</a>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="meta_parameter"><a class="anchor" href="#meta_parameter"></a>13.1.7. Metadata Parameter Handling</h4>
+<h4 id="meta_parameter"><a class="anchor" href="#meta_parameter"></a>14.1.7. Metadata Parameter Handling</h4>
 <div class="paragraph">
 <p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/MetaParam.html">Metadata parameters</a>
 provide extra information about the cache entry, such
@@ -6186,7 +6279,7 @@ for the metadata parameters already provided by the functional map API.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_invocation_parameter"><a class="anchor" href="#_invocation_parameter"></a>13.1.8. Invocation Parameter</h4>
+<h4 id="_invocation_parameter"><a class="anchor" href="#_invocation_parameter"></a>14.1.8. Invocation Parameter</h4>
 <div class="paragraph">
 <p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/Param.html">Per-invocation parameters</a>
 are applied to regular functional map API calls to
@@ -6259,7 +6352,7 @@ to query these parameters within the interceptors.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="functional_listeners"><a class="anchor" href="#functional_listeners"></a>13.1.9. Functional Listeners</h4>
+<h4 id="functional_listeners"><a class="anchor" href="#functional_listeners"></a>14.1.9. Functional Listeners</h4>
 <div class="paragraph">
 <p>The functional map offers a listener API, where clients can register for and
 get notified when events take place. These notifications are post-event, so
@@ -6459,7 +6552,7 @@ writeClose.close();</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="marshalling_of_functions"><a class="anchor" href="#marshalling_of_functions"></a>13.1.10. Marshalling of Functions</h4>
+<h4 id="marshalling_of_functions"><a class="anchor" href="#marshalling_of_functions"></a>14.1.10. Marshalling of Functions</h4>
 <div class="paragraph">
 <p>Running functional map in a cluster of nodes involves marshalling and
 replication of the operation parameters under certain circumstances.</p>
@@ -6572,7 +6665,7 @@ future.thenAccept(stored -&gt; System.out.printf("Value was put? %s%n", stored))
 </div>
 </div>
 <div class="sect3">
-<h4 id="use_cases_for_functional_api"><a class="anchor" href="#use_cases_for_functional_api"></a>13.1.11. Use Cases for Functional API</h4>
+<h4 id="use_cases_for_functional_api"><a class="anchor" href="#use_cases_for_functional_api"></a>14.1.11. Use Cases for Functional API</h4>
 <div class="paragraph">
 <p>This new API is meant to complement existing Key/Value Infinispan API
 offerings, so you&#8217;ll still be able to use
@@ -6609,16 +6702,16 @@ if you want to retrieve metadata information from values and so on.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="anchored-keys"><a class="anchor" href="#anchored-keys"></a>14. Anchored keys</h2>
+<h2 id="anchored-keys"><a class="anchor" href="#anchored-keys"></a>15. Anchored keys</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="anchored_keys_module"><a class="anchor" href="#anchored_keys_module"></a>14.1. Anchored Keys module</h3>
+<h3 id="anchored_keys_module"><a class="anchor" href="#anchored_keys_module"></a>15.1. Anchored Keys module</h3>
 <div class="paragraph">
 <p>Infinispan version 11 introduces an experimental module that allows scaling up a cluster
 and adding new nodes without expensive <strong>state transfer</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="background"><a class="anchor" href="#background"></a>14.1.1. Background</h4>
+<h4 id="background"><a class="anchor" href="#background"></a>15.1.1. Background</h4>
 <div class="paragraph">
 <p>For background, the preferred way to scale up the storage capacity of a Infinispan cluster
 is to use distributed caches.
@@ -6651,7 +6744,7 @@ it is common (though less so after
 </div>
 </div>
 <div class="sect3">
-<h4 id="architecture"><a class="anchor" href="#architecture"></a>14.1.2. Architecture</h4>
+<h4 id="architecture"><a class="anchor" href="#architecture"></a>15.1.2. Architecture</h4>
 <div class="paragraph">
 <p>The basic idea is to skip the static mapping of keys to segments and to map keys directly to nodes.</p>
 </div>
@@ -6667,7 +6760,7 @@ and values can stay on the anchor owner, minimizing the amount of traffic.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="limitations"><a class="anchor" href="#limitations"></a>14.1.3. Limitations</h4>
+<h4 id="limitations"><a class="anchor" href="#limitations"></a>15.1.3. Limitations</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Only one node can be added at a time</dt>
@@ -6713,12 +6806,12 @@ in order to retrieve the value.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuration"><a class="anchor" href="#configuration"></a>14.1.4. Configuration</h4>
+<h4 id="configuration"><a class="anchor" href="#configuration"></a>15.1.4. Configuration</h4>
 <div class="paragraph">
 <p>The module is still very young and does not yet support many Infinispan features.</p>
 </div>
 <div class="paragraph">
-<p>Eventually, if it proves useful, it may become another cache mode, just like scattered caches.
+<p>Eventually, if it proves useful, it may become another cache mode.
 For now, configuring a cache with anchored keys requires a replicated cache with a custom element <code>anchored-keys</code>:</p>
 </div>
 <div class="listingblock">
@@ -6766,7 +6859,7 @@ if state transfer is disabled, or if transactions are enabled.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="implementation_status"><a class="anchor" href="#implementation_status"></a>14.1.5. Implementation status</h4>
+<h4 id="implementation_status"><a class="anchor" href="#implementation_status"></a>15.1.5. Implementation status</h4>
 <div class="paragraph">
 <p>Basic operations are implemented: <code>put</code>, <code>putIfAbsent</code>, <code>get</code>, <code>replace</code>, <code>remove</code>, <code>putAll</code>, <code>getAll</code>.</p>
 </div>
@@ -6800,7 +6893,7 @@ where the value is stored.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="performance_considerations"><a class="anchor" href="#performance_considerations"></a>14.1.6. Performance considerations</h4>
+<h4 id="performance_considerations"><a class="anchor" href="#performance_considerations"></a>15.1.6. Performance considerations</h4>
 <div class="sect4">
 <h5 id="clientserver_latency"><a class="anchor" href="#clientserver_latency"></a>Client/Server Latency</h5>
 <div class="paragraph">
@@ -6877,14 +6970,14 @@ but also in server mode, if the client is not <code>HASH_DISTRIBUTION_AWARE</cod
 </div>
 </div>
 <div class="sect1">
-<h2 id="extending"><a class="anchor" href="#extending"></a>15. Extending Infinispan</h2>
+<h2 id="extending"><a class="anchor" href="#extending"></a>16. Extending Infinispan</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan can be extended to provide the ability for an end user to add
 additional configurations, operations and components outside of the scope of the ones normally provided by Infinispan.</p>
 </div>
 <div class="sect2">
-<h3 id="custom_commands"><a class="anchor" href="#custom_commands"></a>15.1. Custom Commands</h3>
+<h3 id="custom_commands"><a class="anchor" href="#custom_commands"></a>16.1. Custom Commands</h3>
 <div class="paragraph">
 <p>Infinispan makes use of a <a href="http://en.wikipedia.org/wiki/Command_pattern">command/visitor pattern</a> to
 implement the various top-level methods you see on the public-facing API.</p>
@@ -6919,7 +7012,7 @@ implementation in <code>META-INF/services/org.infinispan.commands.module.ModuleC
 </ol>
 </div>
 <div class="sect3">
-<h4 id="an_example"><a class="anchor" href="#an_example"></a>15.1.1. An Example</h4>
+<h4 id="an_example"><a class="anchor" href="#an_example"></a>16.1.1. An Example</h4>
 <div class="paragraph">
 <p>Here is an example of an <code>META-INF/services/org.infinispan.commands.module.ModuleCommandExtensions</code> file, configured accordingly:</p>
 </div>
@@ -6931,7 +7024,7 @@ implementation in <code>META-INF/services/org.infinispan.commands.module.ModuleC
 </div>
 </div>
 <div class="sect3">
-<h4 id="preassigned_custom_command_id_ranges"><a class="anchor" href="#preassigned_custom_command_id_ranges"></a>15.1.2. Preassigned Custom Command Id Ranges</h4>
+<h4 id="preassigned_custom_command_id_ranges"><a class="anchor" href="#preassigned_custom_command_id_ranges"></a>16.1.2. Preassigned Custom Command Id Ranges</h4>
 <div class="paragraph">
 <p>This is the list of <code>Command</code> identifiers that are used by Infinispan based modules or frameworks.
 Infinispan users should avoid using ids within these ranges. (RANGES to be finalised yet!)
@@ -6960,7 +7053,7 @@ Being this a single byte, ranges can&#8217;t be too large.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="extending_the_configuration_builders_and_parsers"><a class="anchor" href="#extending_the_configuration_builders_and_parsers"></a>15.2. Extending the configuration builders and parsers</h3>
+<h3 id="extending_the_configuration_builders_and_parsers"><a class="anchor" href="#extending_the_configuration_builders_and_parsers"></a>16.2. Extending the configuration builders and parsers</h3>
 <div class="paragraph">
 <p>If your custom module requires configuration, it is possible to enhance Infinispan&#8217;s configuration builders and
 parsers. Look at the <a href="https://github.com/infinispan/infinispan/blob/main/core/src/test/java/org/infinispan/configuration/module">custom module tests</a>
@@ -6972,7 +7065,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-21 17:25:26 +0200
+Last updated 2023-05-29 12:40:53 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
