@@ -533,18 +533,7 @@ $(addBlockSwitches);
 <ul class="sectlevel2">
 <li><a href="#indexing-caches_indexing-caches">1.1. Configuring Infinispan to index caches</a>
 <ul class="sectlevel3">
-<li><a href="#indexing-configuration_indexing-caches">1.1.1. Index configuration</a>
-<ul class="sectlevel4">
-<li><a href="#index_storage">Index storage</a>
-<ul class="sectlevel5">
-<li><a href="#index_path">Index path</a></li>
-</ul>
-</li>
-<li><a href="#index_startup_mode">Index startup mode</a></li>
-<li><a href="#index_reader">Index reader</a></li>
-<li><a href="#index_writer">Index writer</a></li>
-</ul>
-</li>
+<li><a href="#indexing-configuration_indexing-caches">1.1.1. Index configuration</a></li>
 </ul>
 </li>
 <li><a href="#indexing-annotations_indexing-caches">1.2. Infinispan native indexing annotations</a></li>
@@ -808,8 +797,7 @@ config.indexing().enable().storage(FILESYSTEM).path("/some/folder").addIndexedEn
 <div class="paragraph">
 <p>Infinispan configuration controls how indexes are stored and constructed.</p>
 </div>
-<div class="sect4">
-<h5 id="index_storage"><a class="anchor" href="#index_storage"></a>Index storage</h5>
+<h5 id="index_storage" class="discrete">Index storage</h5>
 <div class="paragraph">
 <p>You can configure how Infinispan stores indexes:</p>
 </div>
@@ -844,8 +832,7 @@ You should store indexes in JVM heap memory only for small datasets.</p>
 &lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
-<div class="sect5">
-<h6 id="index_path"><a class="anchor" href="#index_path"></a>Index path</h6>
+<h6 id="index_path" class="discrete">Index path</h6>
 <div class="paragraph">
 <p>Specifies a filesystem path for the index when storage is 'filesystem'.
 The value can be a relative or absolute path. Relative paths are created
@@ -869,10 +856,7 @@ working directory when global state is disabled.</p>
 </tr>
 </table>
 </div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="index_startup_mode"><a class="anchor" href="#index_startup_mode"></a>Index startup mode</h5>
+<h5 id="index_startup_mode" class="discrete">Index startup mode</h5>
 <div class="paragraph">
 <p>When Infinispan starts caches it can perform operations to ensure the index is consistent with data in the cache.
 By default no indexing operation takes place when a cache starts but you can configure Infinispan to:</p>
@@ -934,9 +918,7 @@ By default no indexing operation takes place when a cache starts but you can con
 &lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="index_reader"><a class="anchor" href="#index_reader"></a>Index reader</h5>
+<h5 id="index_reader" class="discrete">Index reader</h5>
 <div class="paragraph">
 <p>The index reader is an internal component that provides access to the indexes to perform queries. As the index content changes, Infinispan needs to refresh the reader so that search results are up to date.
 You can configure the refresh interval for the index reader.
@@ -953,9 +935,7 @@ By default Infinispan reads the index before each query if the index changed sin
 &lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
-</div>
-<div class="sect4">
-<h5 id="index_writer"><a class="anchor" href="#index_writer"></a>Index writer</h5>
+<h5 id="index_writer" class="discrete">Index writer</h5>
 <div class="paragraph">
 <p>The index writer is an internal component that constructs an index composed of one or more segments (sub-indexes) that can be merged over time to improve performance.
 Fewer segments usually means less overhead during a query because index reader operations need to take into account all segments.</p>
@@ -1094,7 +1074,6 @@ The defaults should work for most cases and custom configurations should only be
 <p><a href="https://docs.jboss.org/infinispan/14.0/configdocs/">Infinispan configuration schema reference</a></p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>
@@ -3246,7 +3225,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-26 14:22:46 UTC
+Last updated 2023-05-30 13:37:57 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
