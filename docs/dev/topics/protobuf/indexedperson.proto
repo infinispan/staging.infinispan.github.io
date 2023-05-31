@@ -2,17 +2,16 @@ package org.infinispan.example;
 
 /* @Indexed */
 message Person {
-
-    /* @Basic */
+    /* @Field(index=Index.YES, store = Store.NO, analyze = Analyze.NO) */
     optional int32 id = 1;
 
-    /* @Keyword(projectable = true) */
+    /* @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO) */
     required string name = 2;
 
-    /* @Keyword(projectable = true) */
+    /* @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO) */
     required string surname = 3;
 
-    /* @Basic(projectable = true, sortable = true) */
+    /* @Field(index=Index.YES, store = Store.YES, analyze = Analyze.NO) */
     optional int32 age = 6;
 
 }

@@ -546,7 +546,7 @@ $(addBlockSwitches);
 <li><a href="#verifying-cluster-views_server-getting-started">1.7. Verifying cluster views</a></li>
 <li><a href="#shutting-down-servers_server-getting-started">1.8. Shutting down Infinispan Server</a>
 <ul class="sectlevel3">
-<li><a href="#cluster-restarts_server-getting-started">1.8.1. Shutdown and restart of Infinispan clusters</a></li>
+<li><a href="#cluster-restarts_server-getting-started">1.8.1. Infinispan cluster restarts</a></li>
 </ul>
 </li>
 <li><a href="#server-directory-structure_server-getting-started">1.9. Infinispan Server installation directory structure</a>
@@ -688,42 +688,37 @@ $(addBlockSwitches);
 <li><a href="#monitor-xsite-replication">9.6. Monitoring the status of cross-site replication</a></li>
 </ul>
 </li>
-<li><a href="#opentelemetry-tracing">10. Enabling and configuring Infinispan OpenTelemetry tracing</a>
+<li><a href="#managed-datasources">10. Adding managed datasources to Infinispan Server</a>
 <ul class="sectlevel2">
-<li><a href="#configuring-metrics_opentelemetry-tracing">10.1. Enabling Infinispan tracing</a></li>
+<li><a href="#configuring-server-datasources_managed-datasources">10.1. Configuring managed datasources</a></li>
+<li><a href="#configuring-caches-with-jndi-names_managed-datasources">10.2. Configuring caches with JNDI names</a></li>
+<li><a href="#server-connection-pool-properties_managed-datasources">10.3. Connection pool tuning properties</a></li>
 </ul>
 </li>
-<li><a href="#managed-datasources">11. Adding managed datasources to Infinispan Server</a>
+<li><a href="#cluster-transport">11. Setting up Infinispan cluster transport</a>
 <ul class="sectlevel2">
-<li><a href="#configuring-server-datasources_managed-datasources">11.1. Configuring managed datasources</a></li>
-<li><a href="#configuring-caches-with-jndi-names_managed-datasources">11.2. Configuring caches with JNDI names</a></li>
-<li><a href="#server-connection-pool-properties_managed-datasources">11.3. Connection pool tuning properties</a></li>
+<li><a href="#default-jgroups-stacks_cluster-transport">11.1. Default JGroups stacks</a></li>
+<li><a href="#cluster-discovery-protocols_cluster-transport">11.2. Cluster discovery protocols</a>
+<ul class="sectlevel3">
+<li><a href="#discovery-ping_cluster-transport">11.2.1. PING</a></li>
+<li><a href="#discovery-tcpping_cluster-transport">11.2.2. TCPPING</a></li>
+<li><a href="#discovery-mping_cluster-transport">11.2.3. MPING</a></li>
+<li><a href="#discovery-tcp-gossip_cluster-transport">11.2.4. TCPGOSSIP</a></li>
+<li><a href="#discovery-jdbcping_cluster-transport">11.2.5. JDBC_PING</a></li>
+<li><a href="#discovery-dns-ping_cluster-transport">11.2.6. DNS_PING</a></li>
+<li><a href="#jgroups-cloud-discovery-protocols_cluster-transport">11.2.7. Cloud discovery protocols</a></li>
 </ul>
 </li>
-<li><a href="#cluster-transport">12. Setting up Infinispan cluster transport</a>
-<ul class="sectlevel2">
-<li><a href="#default-jgroups-stacks_cluster-transport">12.1. Default JGroups stacks</a></li>
-<li><a href="#cluster-discovery-protocols_cluster-transport">12.2. Cluster discovery protocols</a>
+<li><a href="#using-jgroups-default-stacks_cluster-transport">11.3. Using the default JGroups stacks</a></li>
+<li><a href="#customizing-jgroups-stacks_cluster-transport">11.4. Customizing JGroups stacks</a>
 <ul class="sectlevel3">
-<li><a href="#discovery-ping_cluster-transport">12.2.1. PING</a></li>
-<li><a href="#discovery-tcpping_cluster-transport">12.2.2. TCPPING</a></li>
-<li><a href="#discovery-mping_cluster-transport">12.2.3. MPING</a></li>
-<li><a href="#discovery-tcp-gossip_cluster-transport">12.2.4. TCPGOSSIP</a></li>
-<li><a href="#discovery-jdbcping_cluster-transport">12.2.5. JDBC_PING</a></li>
-<li><a href="#discovery-dns-ping_cluster-transport">12.2.6. DNS_PING</a></li>
-<li><a href="#jgroups-cloud-discovery-protocols_cluster-transport">12.2.7. Cloud discovery protocols</a></li>
+<li><a href="#jgroups-inheritance-attributes_cluster-transport">11.4.1. Inheritance attributes</a></li>
 </ul>
 </li>
-<li><a href="#using-jgroups-default-stacks_cluster-transport">12.3. Using the default JGroups stacks</a></li>
-<li><a href="#customizing-jgroups-stacks_cluster-transport">12.4. Customizing JGroups stacks</a>
+<li><a href="#using-jgroups-system-properties_cluster-transport">11.5. Using JGroups system properties</a>
 <ul class="sectlevel3">
-<li><a href="#jgroups-inheritance-attributes_cluster-transport">12.4.1. Inheritance attributes</a></li>
-</ul>
-</li>
-<li><a href="#using-jgroups-system-properties_cluster-transport">12.5. Using JGroups system properties</a>
-<ul class="sectlevel3">
-<li><a href="#jgroups-system-properties_cluster-transport">12.5.1. Cluster transport properties</a></li>
-<li><a href="#jgroups-extras-properties_cluster-transport">12.5.2. System properties for cloud discovery protocols</a>
+<li><a href="#jgroups-system-properties_cluster-transport">11.5.1. Cluster transport properties</a></li>
+<li><a href="#jgroups-extras-properties_cluster-transport">11.5.2. System properties for cloud discovery protocols</a>
 <ul class="sectlevel4">
 <li><a href="#amazon_ec2">Amazon EC2</a></li>
 <li><a href="#google_cloud_platform">Google Cloud Platform</a></li>
@@ -733,98 +728,98 @@ $(addBlockSwitches);
 </li>
 </ul>
 </li>
-<li><a href="#using-inline-jgroups-stacks_cluster-transport">12.6. Using inline JGroups stacks</a></li>
-<li><a href="#using-external-jgroups-stacks_cluster-transport">12.7. Using external JGroups stacks</a></li>
-<li><a href="#secure-cluster-transport">12.8. Encrypting cluster transport</a>
+<li><a href="#using-inline-jgroups-stacks_cluster-transport">11.6. Using inline JGroups stacks</a></li>
+<li><a href="#using-external-jgroups-stacks_cluster-transport">11.7. Using external JGroups stacks</a></li>
+<li><a href="#secure-cluster-transport">11.8. Encrypting cluster transport</a>
 <ul class="sectlevel3">
-<li><a href="#securing-cluster-transport-tls-identities_secure-cluster-transport">12.8.1. Securing cluster transport with TLS identities</a></li>
-<li><a href="#jgroups-encryption-protocols_secure-cluster-transport">12.8.2. JGroups encryption protocols</a></li>
-<li><a href="#configuring-jgroups-asym-encrypt_secure-cluster-transport">12.8.3. Securing cluster transport with asymmetric encryption</a></li>
-<li><a href="#configuring-jgroups-sym-encrypt_secure-cluster-transport">12.8.4. Securing cluster transport with symmetric encryption</a></li>
+<li><a href="#securing-cluster-transport-tls-identities_secure-cluster-transport">11.8.1. Securing cluster transport with TLS identities</a></li>
+<li><a href="#jgroups-encryption-protocols_secure-cluster-transport">11.8.2. JGroups encryption protocols</a></li>
+<li><a href="#configuring-jgroups-asym-encrypt_secure-cluster-transport">11.8.3. Securing cluster transport with asymmetric encryption</a></li>
+<li><a href="#configuring-jgroups-sym-encrypt_secure-cluster-transport">11.8.4. Securing cluster transport with symmetric encryption</a></li>
 </ul>
 </li>
-<li><a href="#jgroups-ports_cluster-transport">12.9. TCP and UDP ports for cluster traffic</a></li>
+<li><a href="#jgroups-ports_cluster-transport">11.9. TCP and UDP ports for cluster traffic</a></li>
 </ul>
 </li>
-<li><a href="#creating-remote-caches">13. Creating remote caches</a>
+<li><a href="#creating-remote-caches">12. Creating remote caches</a>
 <ul class="sectlevel2">
-<li><a href="#default-cache-manager-creating-remote-caches">13.1. Default Cache Manager</a></li>
-<li><a href="#creating-caches-console_creating-remote-caches">13.2. Creating caches with Infinispan Console</a></li>
-<li><a href="#creating-caches-cli_creating-remote-caches">13.3. Creating remote caches with the Infinispan CLI</a></li>
-<li><a href="#creating-caches-hotrod_creating-remote-caches">13.4. Creating remote caches from Hot Rod clients</a></li>
-<li><a href="#creating-caches-rest_creating-remote-caches">13.5. Creating remote caches with the REST API</a></li>
+<li><a href="#default-cache-manager-creating-remote-caches">12.1. Default Cache Manager</a></li>
+<li><a href="#creating-caches-console_creating-remote-caches">12.2. Creating caches with Infinispan Console</a></li>
+<li><a href="#creating-caches-cli_creating-remote-caches">12.3. Creating remote caches with the Infinispan CLI</a></li>
+<li><a href="#creating-caches-hotrod_creating-remote-caches">12.4. Creating remote caches from Hot Rod clients</a></li>
+<li><a href="#creating-caches-rest_creating-remote-caches">12.5. Creating remote caches with the REST API</a></li>
 </ul>
 </li>
-<li><a href="#remote-execution">14. Running scripts and tasks on Infinispan Server</a>
+<li><a href="#remote-execution">13. Running scripts and tasks on Infinispan Server</a>
 <ul class="sectlevel2">
-<li><a href="#adding-server-tasks_remote-execution">14.1. Adding tasks to Infinispan Server deployments</a>
+<li><a href="#adding-server-tasks_remote-execution">13.1. Adding tasks to Infinispan Server deployments</a>
 <ul class="sectlevel3">
-<li><a href="#server-tasks_remote-execution">14.1.1. Infinispan Server tasks</a></li>
+<li><a href="#server-tasks_remote-execution">13.1.1. Infinispan Server tasks</a></li>
 </ul>
 </li>
-<li><a href="#adding-scripts_remote-execution">14.2. Adding scripts to Infinispan Server deployments</a>
+<li><a href="#adding-scripts_remote-execution">13.2. Adding scripts to Infinispan Server deployments</a>
 <ul class="sectlevel3">
-<li><a href="#server-scripts_remote-execution">14.2.1. Infinispan Server scripts</a>
+<li><a href="#server-scripts_remote-execution">13.2.1. Infinispan Server scripts</a>
 <ul class="sectlevel4">
 <li><a href="#server-script-metdata_remote-execution">Script metadata</a></li>
 <li><a href="#server-script-bindings_remote-execution">Script bindings</a></li>
 <li><a href="#server-script-parameters_remote-execution">Script parameters</a></li>
 </ul>
 </li>
-<li><a href="#add_script_hotrod">14.2.2. Programmatically Creating Scripts</a></li>
+<li><a href="#add_script_hotrod">13.2.2. Programmatically Creating Scripts</a></li>
 </ul>
 </li>
-<li><a href="#running-scripts-tasks_remote-execution">14.3. Running scripts and tasks</a></li>
+<li><a href="#running-scripts-tasks_remote-execution">13.3. Running scripts and tasks</a></li>
 </ul>
 </li>
-<li><a href="#configuring-server-logging">15. Configuring Infinispan Server logging</a>
+<li><a href="#configuring-server-logging">14. Configuring Infinispan Server logging</a>
 <ul class="sectlevel2">
-<li><a href="#server-log-files_server-logging">15.1. Infinispan Server log files</a>
+<li><a href="#server-log-files_server-logging">14.1. Infinispan Server log files</a>
 <ul class="sectlevel3">
-<li><a href="#configuring-server-logs_server-logging">15.1.1. Configuring Infinispan Server logs</a></li>
-<li><a href="#log-levels_server-logging">15.1.2. Log levels</a></li>
-<li><a href="#logging-categories_server-logging">15.1.3. Infinispan logging categories</a></li>
-<li><a href="#log-appenders_server-logging">15.1.4. Log appenders</a></li>
-<li><a href="#log-pattern-formatters_server-logging">15.1.5. Log pattern formatters</a></li>
-<li><a href="#enabling-json-logging_server-logging">15.1.6. Enabling the JSON log handler</a></li>
+<li><a href="#configuring-server-logs_server-logging">14.1.1. Configuring Infinispan Server logs</a></li>
+<li><a href="#log-levels_server-logging">14.1.2. Log levels</a></li>
+<li><a href="#logging-categories_server-logging">14.1.3. Infinispan logging categories</a></li>
+<li><a href="#log-appenders_server-logging">14.1.4. Log appenders</a></li>
+<li><a href="#log-pattern-formatters_server-logging">14.1.5. Log pattern formatters</a></li>
+<li><a href="#enabling-json-logging_server-logging">14.1.6. Enabling the JSON log handler</a></li>
 </ul>
 </li>
-<li><a href="#access-logs_server-logging">15.2. Access logs</a>
+<li><a href="#access-logs_server-logging">14.2. Access logs</a>
 <ul class="sectlevel3">
-<li><a href="#enabling-access-logs_server-logging">15.2.1. Enabling access logs</a></li>
-<li><a href="#access-log-properties_server-logging">15.2.2. Access log properties</a></li>
+<li><a href="#enabling-access-logs_server-logging">14.2.1. Enabling access logs</a></li>
+<li><a href="#access-log-properties_server-logging">14.2.2. Access log properties</a></li>
 </ul>
 </li>
-<li><a href="#audit-logs_server-logging">15.3. Audit logs</a>
+<li><a href="#audit-logs_server-logging">14.3. Audit logs</a>
 <ul class="sectlevel3">
-<li><a href="#enabling-audit-logs-server-logging">15.3.1. Enabling audit logging</a></li>
-<li><a href="#configuring-audit-logs_server-logging">15.3.2. Configuring audit logging appenders</a></li>
-<li><a href="#customizing-audit-logs_server-logging">15.3.3. Using custom audit logging implementations</a></li>
+<li><a href="#enabling-audit-logs-server-logging">14.3.1. Enabling audit logging</a></li>
+<li><a href="#configuring-audit-logs_server-logging">14.3.2. Configuring audit logging appenders</a></li>
+<li><a href="#customizing-audit-logs_server-logging">14.3.3. Using custom audit logging implementations</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#rolling-upgrades">16. Performing rolling upgrades for Infinispan Server clusters</a>
+<li><a href="#rolling-upgrades">15. Performing rolling upgrades for Infinispan Server clusters</a>
 <ul class="sectlevel2">
-<li><a href="#setting-up-target-clusters_rolling-upgrades">16.1. Setting up target Infinispan clusters</a></li>
-<li><a href="#synchronizing-data-target-clusters_rolling-upgrades">16.2. Synchronizing data to target clusters</a></li>
+<li><a href="#setting-up-target-clusters_rolling-upgrades">15.1. Setting up target Infinispan clusters</a></li>
+<li><a href="#synchronizing-data-target-clusters_rolling-upgrades">15.2. Synchronizing data to target clusters</a></li>
 </ul>
 </li>
-<li><a href="#patching-servers">17. Patching Infinispan Server installations</a>
+<li><a href="#patching-servers">16. Patching Infinispan Server installations</a>
 <ul class="sectlevel2">
-<li><a href="#patches-patching-servers">17.1. Infinispan Server patches</a></li>
-<li><a href="#creating-server-patches_patching-servers">17.2. Creating Infinispan Server patches</a></li>
-<li><a href="#applying-server-patches_patching-servers">17.3. Applying patches to Infinispan Server installations</a></li>
-<li><a href="#rolling-back-server-patches_patching-servers">17.4. Rolling back patches</a></li>
+<li><a href="#patches-patching-servers">16.1. Infinispan Server patches</a></li>
+<li><a href="#creating-server-patches_patching-servers">16.2. Creating Infinispan Server patches</a></li>
+<li><a href="#applying-server-patches_patching-servers">16.3. Applying patches to Infinispan Server installations</a></li>
+<li><a href="#rolling-back-server-patches_patching-servers">16.4. Rolling back patches</a></li>
 </ul>
 </li>
-<li><a href="#tshoot_server">18. Troubleshooting Infinispan Server deployments</a>
+<li><a href="#tshoot_server">17. Troubleshooting Infinispan Server deployments</a>
 <ul class="sectlevel2">
-<li><a href="#getting-server-reports_server">18.1. Getting diagnostic reports from Infinispan Server</a></li>
-<li><a href="#configuring-server-logs-cli_server">18.2. Changing Infinispan Server logging configuration at runtime</a></li>
-<li><a href="#gathering-cli-statistics_server">18.3. Gathering resource statistics from the CLI</a></li>
-<li><a href="#accessing-health-rest_server">18.4. Accessing cluster health via REST</a></li>
-<li><a href="#accessing-health-jmx_server">18.5. Accessing cluster health via JMX</a></li>
+<li><a href="#getting-server-reports_server">17.1. Getting diagnostic reports from Infinispan Server</a></li>
+<li><a href="#configuring-server-logs-cli_server">17.2. Changing Infinispan Server logging configuration at runtime</a></li>
+<li><a href="#gathering-cli-statistics_server">17.3. Gathering resource statistics from the CLI</a></li>
+<li><a href="#accessing-health-rest_server">17.4. Accessing cluster health via REST</a></li>
+<li><a href="#accessing-health-jmx_server">17.5. Accessing cluster health via JMX</a></li>
 </ul>
 </li>
 </ul>
@@ -930,7 +925,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-15.0.0.Dev01.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.7.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1537,36 +1532,17 @@ ISPN080003: Infinispan Server stopped</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="cluster-restarts_server-getting-started"><a class="anchor" href="#cluster-restarts_server-getting-started"></a>1.8.1. Shutdown and restart of Infinispan clusters</h4>
+<h4 id="cluster-restarts_server-getting-started"><a class="anchor" href="#cluster-restarts_server-getting-started"></a>1.8.1. Infinispan cluster restarts</h4>
 <div class="paragraph">
-<p>Prevent data loss and ensure consistency of your cluster by properly shutting down and restarting nodes.</p>
-</div>
-<h5 id="cluster_shutdown" class="discrete">Cluster shutdown</h5>
-<div class="paragraph">
-<p>Infinispan recommends using the <code>shutdown cluster</code> command to stop all nodes in a cluster while saving cluster state and persisting all data in the cache.
-You can use the <code>shutdown cluster</code> command also for clusters with a single node.</p>
+<p>When you bring Infinispan clusters back online after shutting them down, you should wait for the cluster to be available before adding or removing nodes or modifying cluster state.</p>
 </div>
 <div class="paragraph">
-<p>When you bring Infinispan clusters back online, all nodes and caches in the cluster will be unavailable until all nodes rejoin.
-To prevent inconsistencies or data loss, Infinispan restricts access to the data stored in the cluster and modifications of the cluster state until the cluster is fully operational again.
-Additionally, Infinispan disables cluster rebalancing and prevents local cache stores purging on startup.</p>
+<p>If you shutdown clustered nodes with the <code class="command">shutdown server</code> command, you must restart each server in reverse order.<br>
+For example, if you shutdown <code>server1</code> and then shutdown <code>server2</code>, you should first start <code>server2</code> and then start <code>server1</code>.</p>
 </div>
 <div class="paragraph">
-<p>During the cluster recovery process, the coordinator node logs messages for each new node joining, indicating which nodes are available and which are still missing.
-Other nodes in the Infinispan cluster have the view from the time they join.<br>
-You can monitor availability of caches using the Infinispan Console or REST API.</p>
-</div>
-<h5 id="server_shutdown" class="discrete">Server shutdown</h5>
-<div class="paragraph">
-<p>After using the <code>shutdown server</code> command to bring nodes down, the first node to come back online will be available immediately without waiting for other members.
-The remaining nodes join the cluster immediately, triggering state transfer but loading the local persistence first, which might lead to stale entries.
-Local cache stores configured to purge on startup will be emptied when the server starts.
-Local cache stores marked as <code>purge=false</code> will be available after a server restarts but might contain stale entries.</p>
-</div>
-<div class="paragraph">
-<p>If you shutdown clustered nodes with the <code class="command">shutdown server</code> command, you must restart each server in reverse order to avoid potential issues related to data loss and stale entries in the cache.<br>
-For example, if you shutdown <code>server1</code> and then shutdown <code>server2</code>, you should first start <code>server2</code> and then start <code>server1</code>.
-However, restarting clustered nodes in reverse order does not completely prevent data loss and stale entries.</p>
+<p>If you shutdown a cluster with the <code class="command">shutdown cluster</code> command, clusters become fully operational only after all nodes rejoin.<br>
+You can restart nodes in any order but the cluster remains in DEGRADED state until all nodes that were joined before shutdown are running.</p>
 </div>
 </div>
 </div>
@@ -2520,7 +2496,7 @@ access and improved performance in comparison to text-based protocols.</p>
 <p>Infinispan provides Hot Rod client libraries in Java, C++, C#, Node.js and other programming languages.</p>
 </div>
 <div class="paragraph">
-<div class="title">Topology caches</div>
+<div class="title">Topology state transfer</div>
 <p>Infinispan uses topology caches to provide clients with cluster views.
 Topology caches contain entries that map internal JGroups transport addresses
 to exposed Hot Rod endpoints.</p>
@@ -2564,8 +2540,23 @@ occur.</p>
 <div class="sect3">
 <h4 id="memcached"><a class="anchor" href="#memcached"></a>3.1.4. Memcached</h4>
 <div class="paragraph">
-<p>Infinispan provides an implementation of the Memcached text and binary protocols for
+<p>Infinispan provides an implementation of the Memcached text protocol for
 remote client access.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The Memcached endpoint is deprecated and planned for removal in a future
+release.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The Infinispan Memcached endpoint supports clustering with replicated and
@@ -2582,11 +2573,10 @@ when cluster topology changes occur.</p>
 <h4 id="endpoint-protocol-comparison_server-endpoints"><a class="anchor" href="#endpoint-protocol-comparison_server-endpoints"></a>3.1.5. Comparison of endpoint protocols</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
 </colgroup>
 <thead>
 <tr>
@@ -2594,55 +2584,59 @@ when cluster topology changes occur.</p>
 <th class="tableblock halign-center valign-top">Hot Rod</th>
 <th class="tableblock halign-center valign-top">HTTP / REST</th>
 <th class="tableblock halign-center valign-top">Memcached</th>
-<th class="tableblock halign-center valign-top">RESP</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Topology-aware</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RESP</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Topology-aware</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hash-aware</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Hash-aware</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Encryption</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Encryption</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Authentication</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Conditional ops</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bulk ops</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Conditional ops</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Transactions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Bulk ops</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Transactions</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
@@ -2652,25 +2646,27 @@ when cluster topology changes occur.</p>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Query</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Query</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Execution</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Execution</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Cross-site failover</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-site failover</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong class="green">Y</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><strong class="red">N</strong></p></td>
@@ -2719,7 +2715,7 @@ For instance during a migration or upgrade to your Infinispan cluster, the Hot R
 <div class="sect2">
 <h3 id="configuring-server-endpoints_server-endpoints"><a class="anchor" href="#configuring-server-endpoints_server-endpoints"></a>3.2. Configuring Infinispan Server endpoints</h3>
 <div class="paragraph">
-<p>Control how the different protocol endpoints bind to sockets and use security realm configuration.
+<p>Control how Hot Rod and REST endpoints bind to sockets and use security realm configuration.
 You can also configure multiple endpoints and disable administrative capabilities.</p>
 </div>
 <div class="admonitionblock note">
@@ -2867,7 +2863,7 @@ You should only add these elements to custom configuration to specify authentica
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>rest-connector</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Includes the REST endpoint in the <code>endpoint</code> configuration.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Includes the Hot Rod endpoint in the <code>endpoint</code> configuration.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>resp-connector</code></p></td>
@@ -2875,7 +2871,7 @@ You should only add these elements to custom configuration to specify authentica
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>memcached-connector</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Includes the Memcached endpoint in the <code>endpoint</code> configuration.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configures the Memcached endpoint and is disabled by default.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3342,23 +3338,23 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SCRAM</code>, <code>DIGEST</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SCRAM-*, DIGEST-*, <code>SCRAM-*</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OAUTHBEARER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OAUTHBEARER</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXTERNAL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EXTERNAL</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GSSAPI</code>, <code>GS2-KRB5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GSSAPI, GS2-KRB5</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PLAIN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PLAIN</p></td>
 </tr>
 </tbody>
 </table>
@@ -3380,143 +3376,30 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DIGEST</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DIGEST</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BEARER_TOKEN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BEARER_TOKEN</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CLIENT_CERT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CLIENT_CERT</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SPNEGO</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SPNEGO</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BASIC</code></p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<div class="title">Memcached endpoints</div>
-<p>Infinispan Server enables the following SASL authentication mechanisms for Memcached binary protocol endpoints when your configuration includes the corresponding security realm:</p>
-</div>
-<table class="tableblock frame-all grid-all stripes-even fit-content">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Security realm</th>
-<th class="tableblock halign-left valign-top">SASL authentication mechanism</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SCRAM</code>, <code>DIGEST</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OAUTHBEARER</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXTERNAL</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GSSAPI, GS2-KRB5</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PLAIN</code></p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Infinispan Server enables authentication on Memcached text protocol endpoints only with security realms which support password-based authentication:</p>
-</div>
-<table class="tableblock frame-all grid-all stripes-even fit-content">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Security realm</th>
-<th class="tableblock halign-left valign-top">Memcached text authentication</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<div class="title">RESP endpoints</div>
-<p>Infinispan Server enables authentication on RESP endpoints only with security realms which support password-based authentication:</p>
-</div>
-<table class="tableblock frame-all grid-all stripes-even fit-content">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Security realm</th>
-<th class="tableblock halign-left valign-top">RESP authentication</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BASIC</p></td>
 </tr>
 </tbody>
 </table>
 <div class="sect3">
 <h4 id="sasl-authentication-mechanisms_endpoint-authentication"><a class="anchor" href="#sasl-authentication-mechanisms_endpoint-authentication"></a>4.3.1. SASL authentication mechanisms</h4>
 <div class="paragraph">
-<p>Infinispan Server supports the following SASL authentications mechanisms with Hot Rod and Memcached binary protocol endpoints:</p>
+<p>Infinispan Server supports the following SASL authentications mechanisms with Hot Rod endpoints:</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even fit-content">
 <colgroup>
@@ -3582,7 +3465,7 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <div class="sect3">
 <h4 id="sasl-quality-of-protection_endpoint-authentication"><a class="anchor" href="#sasl-quality-of-protection_endpoint-authentication"></a>4.3.2. SASL quality of protection (QoP)</h4>
 <div class="paragraph">
-<p>If SASL mechanisms support integrity and privacy protection (QoP) settings, you can add them to your Hot Rod and Memcached endpoint configuration with the <code>qop</code> attribute.</p>
+<p>If SASL mechanisms support integrity and privacy protection (QoP) settings, you can add them to your Hot Rod endpoint configuration with the <code>qop</code> attribute.</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even fit-content">
 <colgroup>
@@ -3614,7 +3497,7 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <div class="sect3">
 <h4 id="sasl-policies-hot-rod-authentication_endpoint-authentication"><a class="anchor" href="#sasl-policies-hot-rod-authentication_endpoint-authentication"></a>4.3.3. SASL policies</h4>
 <div class="paragraph">
-<p>SASL policies provide fine-grain control over Hot Rod and Memcached authentication mechanisms.</p>
+<p>SASL policies provide fine-grain control over Hot Rod authentication mechanisms.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -8259,88 +8142,13 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 </div>
 </div>
 <div class="sect1">
-<h2 id="opentelemetry-tracing"><a class="anchor" href="#opentelemetry-tracing"></a>10. Enabling and configuring Infinispan OpenTelemetry tracing</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Infinispan generates tracing spans compatible with the OpenTelemetry standard, allowing you to export, visualize, and analyze tracing data related to the most important cache operations.</p>
-</div>
-<div class="sect2">
-<h3 id="configuring-metrics_opentelemetry-tracing"><a class="anchor" href="#configuring-metrics_opentelemetry-tracing"></a>10.1. Enabling Infinispan tracing</h3>
-<div class="paragraph">
-<p>Configure OpenTelemetry tracing, to enable monitoring and tracing of cache operations.</p>
-</div>
-<div class="ulist">
-<div class="title">Procedure</div>
-<ul>
-<li>
-<p>Pass the system properties to Infinispan Server at startup.</p>
-<div class="paragraph">
-<p>Use <code>-D&lt;property-name&gt;=&lt;property-value&gt;</code> arguments like in the following example:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh -Dinfinispan.tracing.enabled=true -Dotel.traces.exporter=otlp -Dotel.service.name=my-infinispan-server -Dotel.exporter.otlp.endpoint=http://otlp-collector-host:4317</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<div class="title">Next steps</div>
-<p>To apply any configuration changes, stop the server and repeat the procedure.</p>
-</div>
-<h4 id="tracing_configuration" class="discrete">Tracing configuration</h4>
-<div class="paragraph">
-<p>Infinispan applies the tracing configuration globally to all caches.</p>
-</div>
-<div class="listingblock">
-<div class="title">tracing.properties</div>
-<div class="content">
-<pre class="highlight nowrap"><code>infinispan.tracing.enabled = true <i class="conum" data-value="1"></i><b>(1)</b>
-otel.traces.exporter = otlp <i class="conum" data-value="2"></i><b>(2)</b>
-otel.service.name = &lt;my-infinispan-server&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-otel.exporter.otlp.endpoint = http://otlp-collector-host:4317 <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Enables tracing for all cache operations.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Sets the exporter format. The OTLP (OpenTelemetry protocol) exporter is the recommended format to export tracing data.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Specifies the service name associated with the generated tracing spans. The default name is <code>Infinispan Server</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Specifies the endpoint URL of the OpenTelemetry collector where the tracing data is sent.</td>
-</tr>
-</table>
-</div>
-<div class="ulist _additional-resources">
-<div class="title">Additional resources</div>
-<ul>
-<li>
-<p><a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md">OpenTelemetry SDK Autoconfigure</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="managed-datasources"><a class="anchor" href="#managed-datasources"></a>11. Adding managed datasources to Infinispan Server</h2>
+<h2 id="managed-datasources"><a class="anchor" href="#managed-datasources"></a>10. Adding managed datasources to Infinispan Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Optimize connection pooling and performance for JDBC database connections by adding managed datasources to your Infinispan Server configuration.</p>
 </div>
 <div class="sect2">
-<h3 id="configuring-server-datasources_managed-datasources"><a class="anchor" href="#configuring-server-datasources_managed-datasources"></a>11.1. Configuring managed datasources</h3>
+<h3 id="configuring-server-datasources_managed-datasources"><a class="anchor" href="#configuring-server-datasources_managed-datasources"></a>10.1. Configuring managed datasources</h3>
 <div class="paragraph">
 <p>Create managed datasources as part of your Infinispan Server configuration to optimize connection pooling and performance for JDBC database connections.
 You can then specify the JDNI name of the managed datasources in your caches, which centralizes JDBC connection configuration for your deployment.</p>
@@ -8556,7 +8364,7 @@ configuration.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-caches-with-jndi-names_managed-datasources"><a class="anchor" href="#configuring-caches-with-jndi-names_managed-datasources"></a>11.2. Configuring caches with JNDI names</h3>
+<h3 id="configuring-caches-with-jndi-names_managed-datasources"><a class="anchor" href="#configuring-caches-with-jndi-names_managed-datasources"></a>10.2. Configuring caches with JNDI names</h3>
 <div class="paragraph">
 <p>When you add a managed datasource to Infinispan Server you can add the JNDI name to a JDBC-based cache store configuration.</p>
 </div>
@@ -8673,7 +8481,7 @@ configuration.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="server-connection-pool-properties_managed-datasources"><a class="anchor" href="#server-connection-pool-properties_managed-datasources"></a>11.3. Connection pool tuning properties</h3>
+<h3 id="server-connection-pool-properties_managed-datasources"><a class="anchor" href="#server-connection-pool-properties_managed-datasources"></a>10.3. Connection pool tuning properties</h3>
 <div class="paragraph">
 <p>You can tune JDBC connection pools for managed datasources in your Infinispan Server configuration.</p>
 </div>
@@ -8729,16 +8537,16 @@ Default is <code>0</code> meaning that a call will wait indefinitely.</p></td>
 </div>
 </div>
 <div class="sect1">
-<h2 id="cluster-transport"><a class="anchor" href="#cluster-transport"></a>12. Setting up Infinispan cluster transport</h2>
+<h2 id="cluster-transport"><a class="anchor" href="#cluster-transport"></a>11. Setting up Infinispan cluster transport</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan requires a transport layer so nodes can automatically join and leave clusters.
 The transport layer also enables Infinispan nodes to replicate or distribute data across the network and perform operations such as re-balancing and state transfer.</p>
 </div>
 <div class="sect2">
-<h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>12.1. Default JGroups stacks</h3>
+<h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>11.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.0.Dev01.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.7.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -8800,7 +8608,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 </div>
 </div>
 <div class="sect2">
-<h3 id="cluster-discovery-protocols_cluster-transport"><a class="anchor" href="#cluster-discovery-protocols_cluster-transport"></a>12.2. Cluster discovery protocols</h3>
+<h3 id="cluster-discovery-protocols_cluster-transport"><a class="anchor" href="#cluster-discovery-protocols_cluster-transport"></a>11.2. Cluster discovery protocols</h3>
 <div class="paragraph">
 <p>Infinispan supports different protocols that allow nodes to automatically find each other on the network and form clusters.</p>
 </div>
@@ -8841,7 +8649,7 @@ For instance the DNS_PING protocol performs discovery through DNS server records
 </ul>
 </div>
 <div class="sect3">
-<h4 id="discovery-ping_cluster-transport"><a class="anchor" href="#discovery-ping_cluster-transport"></a>12.2.1. PING</h4>
+<h4 id="discovery-ping_cluster-transport"><a class="anchor" href="#discovery-ping_cluster-transport"></a>11.2.1. PING</h4>
 <div class="paragraph">
 <p>PING, or UDPPING is a generic JGroups discovery mechanism that uses dynamic multicasting with the UDP protocol.</p>
 </div>
@@ -8866,7 +8674,7 @@ If no nodes respond to the PING request, the joining node becomes the coordinato
 </div>
 </div>
 <div class="sect3">
-<h4 id="discovery-tcpping_cluster-transport"><a class="anchor" href="#discovery-tcpping_cluster-transport"></a>12.2.2. TCPPING</h4>
+<h4 id="discovery-tcpping_cluster-transport"><a class="anchor" href="#discovery-tcpping_cluster-transport"></a>11.2.2. TCPPING</h4>
 <div class="paragraph">
 <p>TCPPING is a generic JGroups discovery mechanism that uses a list of static addresses for cluster members.</p>
 </div>
@@ -8893,7 +8701,7 @@ If no nodes respond to the PING request, the joining node becomes the coordinato
 </div>
 </div>
 <div class="sect3">
-<h4 id="discovery-mping_cluster-transport"><a class="anchor" href="#discovery-mping_cluster-transport"></a>12.2.3. MPING</h4>
+<h4 id="discovery-mping_cluster-transport"><a class="anchor" href="#discovery-mping_cluster-transport"></a>11.2.3. MPING</h4>
 <div class="paragraph">
 <p>MPING uses IP multicast to discover the initial membership of Infinispan clusters.</p>
 </div>
@@ -8920,7 +8728,7 @@ However, you can also use MPING with UDP stacks.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="discovery-tcp-gossip_cluster-transport"><a class="anchor" href="#discovery-tcp-gossip_cluster-transport"></a>12.2.4. TCPGOSSIP</h4>
+<h4 id="discovery-tcp-gossip_cluster-transport"><a class="anchor" href="#discovery-tcp-gossip_cluster-transport"></a>11.2.4. TCPGOSSIP</h4>
 <div class="paragraph">
 <p>Gossip routers provide a centralized location on the network from which your
 Infinispan cluster can retrieve addresses of other nodes.</p>
@@ -8957,7 +8765,7 @@ Infinispan cluster can retrieve addresses of other nodes.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="discovery-jdbcping_cluster-transport"><a class="anchor" href="#discovery-jdbcping_cluster-transport"></a>12.2.5. JDBC_PING</h4>
+<h4 id="discovery-jdbcping_cluster-transport"><a class="anchor" href="#discovery-jdbcping_cluster-transport"></a>11.2.5. JDBC_PING</h4>
 <div class="paragraph">
 <p>JDBC_PING uses shared databases to store information about Infinispan clusters.
 This protocol supports any database that can use a JDBC connection.</p>
@@ -9002,7 +8810,7 @@ When nodes leave Infinispan clusters, they delete their IP addresses from the sh
 </div>
 </div>
 <div class="sect3">
-<h4 id="discovery-dns-ping_cluster-transport"><a class="anchor" href="#discovery-dns-ping_cluster-transport"></a>12.2.6. DNS_PING</h4>
+<h4 id="discovery-dns-ping_cluster-transport"><a class="anchor" href="#discovery-dns-ping_cluster-transport"></a>11.2.6. DNS_PING</h4>
 <div class="paragraph">
 <p>JGroups DNS_PING queries DNS servers to discover Infinispan cluster members
 in Kubernetes environments such as OKD and Red Hat OpenShift.</p>
@@ -9026,7 +8834,7 @@ in Kubernetes environments such as OKD and Red Hat OpenShift.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="jgroups-cloud-discovery-protocols_cluster-transport"><a class="anchor" href="#jgroups-cloud-discovery-protocols_cluster-transport"></a>12.2.7. Cloud discovery protocols</h4>
+<h4 id="jgroups-cloud-discovery-protocols_cluster-transport"><a class="anchor" href="#jgroups-cloud-discovery-protocols_cluster-transport"></a>11.2.7. Cloud discovery protocols</h4>
 <div class="paragraph">
 <p>Infinispan includes default JGroups stacks that use discovery protocol implementations that are specific to cloud providers.</p>
 </div>
@@ -9104,7 +8912,7 @@ in Kubernetes environments such as OKD and Red Hat OpenShift.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="using-jgroups-default-stacks_cluster-transport"><a class="anchor" href="#using-jgroups-default-stacks_cluster-transport"></a>12.3. Using the default JGroups stacks</h3>
+<h3 id="using-jgroups-default-stacks_cluster-transport"><a class="anchor" href="#using-jgroups-default-stacks_cluster-transport"></a>11.3. Using the default JGroups stacks</h3>
 <div class="paragraph">
 <p>Infinispan uses JGroups protocol stacks so nodes can send each other messages on dedicated cluster channels.</p>
 </div>
@@ -9154,7 +8962,7 @@ You can use these default stacks as a starting point for building custom cluster
 </div>
 </div>
 <div class="sect2">
-<h3 id="customizing-jgroups-stacks_cluster-transport"><a class="anchor" href="#customizing-jgroups-stacks_cluster-transport"></a>12.4. Customizing JGroups stacks</h3>
+<h3 id="customizing-jgroups-stacks_cluster-transport"><a class="anchor" href="#customizing-jgroups-stacks_cluster-transport"></a>11.4. Customizing JGroups stacks</h3>
 <div class="paragraph">
 <p>Adjust and tune properties to create a cluster transport configuration that works for your network requirements.</p>
 </div>
@@ -9229,7 +9037,7 @@ You can inherit properties from the default stacks while combining, removing, an
 </ol>
 </div>
 <div class="sect3">
-<h4 id="jgroups-inheritance-attributes_cluster-transport"><a class="anchor" href="#jgroups-inheritance-attributes_cluster-transport"></a>12.4.1. Inheritance attributes</h4>
+<h4 id="jgroups-inheritance-attributes_cluster-transport"><a class="anchor" href="#jgroups-inheritance-attributes_cluster-transport"></a>11.4.1. Inheritance attributes</h4>
 <div class="paragraph">
 <p>When you extend a JGroups stack, inheritance attributes let you adjust protocols and properties in the stack you are extending.</p>
 </div>
@@ -9284,7 +9092,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="using-jgroups-system-properties_cluster-transport"><a class="anchor" href="#using-jgroups-system-properties_cluster-transport"></a>12.5. Using JGroups system properties</h3>
+<h3 id="using-jgroups-system-properties_cluster-transport"><a class="anchor" href="#using-jgroups-system-properties_cluster-transport"></a>11.5. Using JGroups system properties</h3>
 <div class="paragraph">
 <p>Pass system properties to Infinispan at startup to tune cluster transport.</p>
 </div>
@@ -9305,7 +9113,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="jgroups-system-properties_cluster-transport"><a class="anchor" href="#jgroups-system-properties_cluster-transport"></a>12.5.1. Cluster transport properties</h4>
+<h4 id="jgroups-system-properties_cluster-transport"><a class="anchor" href="#jgroups-system-properties_cluster-transport"></a>11.5.1. Cluster transport properties</h4>
 <div class="paragraph">
 <p>Use the following properties to customize JGroups cluster transport.</p>
 </div>
@@ -9412,7 +9220,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 </div>
 <div class="sect3">
-<h4 id="jgroups-extras-properties_cluster-transport"><a class="anchor" href="#jgroups-extras-properties_cluster-transport"></a>12.5.2. System properties for cloud discovery protocols</h4>
+<h4 id="jgroups-extras-properties_cluster-transport"><a class="anchor" href="#jgroups-extras-properties_cluster-transport"></a>11.5.2. System properties for cloud discovery protocols</h4>
 <div class="paragraph">
 <p>Use the following properties to configure JGroups discovery protocols for hosted platforms.</p>
 </div>
@@ -9557,7 +9365,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="using-inline-jgroups-stacks_cluster-transport"><a class="anchor" href="#using-inline-jgroups-stacks_cluster-transport"></a>12.6. Using inline JGroups stacks</h3>
+<h3 id="using-inline-jgroups-stacks_cluster-transport"><a class="anchor" href="#using-inline-jgroups-stacks_cluster-transport"></a>11.6. Using inline JGroups stacks</h3>
 <div class="paragraph">
 <p>You can insert complete JGroups stack definitions into <code>infinispan.xml</code> files.</p>
 </div>
@@ -9609,7 +9417,7 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="using-external-jgroups-stacks_cluster-transport"><a class="anchor" href="#using-external-jgroups-stacks_cluster-transport"></a>12.7. Using external JGroups stacks</h3>
+<h3 id="using-external-jgroups-stacks_cluster-transport"><a class="anchor" href="#using-external-jgroups-stacks_cluster-transport"></a>11.7. Using external JGroups stacks</h3>
 <div class="paragraph">
 <p>Reference external files that define custom JGroups stacks in <code>infinispan.xml</code> files.</p>
 </div>
@@ -9645,13 +9453,13 @@ Affects the protocol that you specify as the insertion point.</p></td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="secure-cluster-transport"><a class="anchor" href="#secure-cluster-transport"></a>12.8. Encrypting cluster transport</h3>
+<h3 id="secure-cluster-transport"><a class="anchor" href="#secure-cluster-transport"></a>11.8. Encrypting cluster transport</h3>
 <div class="paragraph">
 <p>Secure cluster transport so that nodes communicate with encrypted messages.
 You can also configure Infinispan clusters to perform certificate authentication so that only nodes with valid identities can join.</p>
 </div>
 <div class="sect3">
-<h4 id="securing-cluster-transport-tls-identities_secure-cluster-transport"><a class="anchor" href="#securing-cluster-transport-tls-identities_secure-cluster-transport"></a>12.8.1. Securing cluster transport with TLS identities</h4>
+<h4 id="securing-cluster-transport-tls-identities_secure-cluster-transport"><a class="anchor" href="#securing-cluster-transport-tls-identities_secure-cluster-transport"></a>11.8.1. Securing cluster transport with TLS identities</h4>
 <div class="paragraph">
 <p>Add SSL/TLS identities to a Infinispan Server security realm and use them to secure cluster transport.
 Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to encrypt JGroups messages, including RELAY messages if you configure cross-site replication.</p>
@@ -9753,7 +9561,7 @@ Nodes in the Infinispan Server cluster then exchange SSL/TLS certificates to enc
 </div>
 </div>
 <div class="sect3">
-<h4 id="jgroups-encryption-protocols_secure-cluster-transport"><a class="anchor" href="#jgroups-encryption-protocols_secure-cluster-transport"></a>12.8.2. JGroups encryption protocols</h4>
+<h4 id="jgroups-encryption-protocols_secure-cluster-transport"><a class="anchor" href="#jgroups-encryption-protocols_secure-cluster-transport"></a>11.8.2. JGroups encryption protocols</h4>
 <div class="paragraph">
 <p>To secure cluster traffic, you can configure Infinispan nodes to encrypt JGroups message payloads with secret keys.</p>
 </div>
@@ -9845,7 +9653,7 @@ Users are responsible for generating and distributing the secret keys that nodes
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-jgroups-asym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-asym-encrypt_secure-cluster-transport"></a>12.8.3. Securing cluster transport with asymmetric encryption</h4>
+<h4 id="configuring-jgroups-asym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-asym-encrypt_secure-cluster-transport"></a>11.8.3. Securing cluster transport with asymmetric encryption</h4>
 <div class="paragraph">
 <p>Configure Infinispan clusters to generate and distribute secret keys that encrypt JGroups messages.</p>
 </div>
@@ -9930,7 +9738,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-jgroups-sym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-sym-encrypt_secure-cluster-transport"></a>12.8.4. Securing cluster transport with symmetric encryption</h4>
+<h4 id="configuring-jgroups-sym-encrypt_secure-cluster-transport"><a class="anchor" href="#configuring-jgroups-sym-encrypt_secure-cluster-transport"></a>11.8.4. Securing cluster transport with symmetric encryption</h4>
 <div class="paragraph">
 <p>Configure Infinispan clusters to encrypt JGroups messages with secret keys from keystores that you provide.</p>
 </div>
@@ -10009,7 +9817,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="jgroups-ports_cluster-transport"><a class="anchor" href="#jgroups-ports_cluster-transport"></a>12.9. TCP and UDP ports for cluster traffic</h3>
+<h3 id="jgroups-ports_cluster-transport"><a class="anchor" href="#jgroups-ports_cluster-transport"></a>11.9. TCP and UDP ports for cluster traffic</h3>
 <div class="paragraph">
 <p>Infinispan uses the following ports for cluster transport messages:</p>
 </div>
@@ -10063,7 +9871,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="creating-remote-caches"><a class="anchor" href="#creating-remote-caches"></a>13. Creating remote caches</h2>
+<h2 id="creating-remote-caches"><a class="anchor" href="#creating-remote-caches"></a>12. Creating remote caches</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>When you create remote caches at runtime, Infinispan Server synchronizes your configuration across the cluster so that all nodes have a copy.
@@ -10083,7 +9891,7 @@ For this reason you should always create remote caches dynamically with the foll
 </ul>
 </div>
 <div class="sect2">
-<h3 id="default-cache-manager-creating-remote-caches"><a class="anchor" href="#default-cache-manager-creating-remote-caches"></a>13.1. Default Cache Manager</h3>
+<h3 id="default-cache-manager-creating-remote-caches"><a class="anchor" href="#default-cache-manager-creating-remote-caches"></a>12.1. Default Cache Manager</h3>
 <div class="paragraph">
 <p>Infinispan Server provides a default Cache Manager that controls the lifecycle of remote caches.
 Starting Infinispan Server automatically instantiates the Cache Manager so you can create and delete remote caches and other resources like Protobuf schema.</p>
@@ -10181,7 +9989,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-console_creating-remote-caches"><a class="anchor" href="#creating-caches-console_creating-remote-caches"></a>13.2. Creating caches with Infinispan Console</h3>
+<h3 id="creating-caches-console_creating-remote-caches"><a class="anchor" href="#creating-caches-console_creating-remote-caches"></a>12.2. Creating caches with Infinispan Console</h3>
 <div class="paragraph">
 <p>Use Infinispan Console to create remote caches in an intuitive visual interface from any web browser.</p>
 </div>
@@ -10212,7 +10020,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-cli_creating-remote-caches"><a class="anchor" href="#creating-caches-cli_creating-remote-caches"></a>13.3. Creating remote caches with the Infinispan CLI</h3>
+<h3 id="creating-caches-cli_creating-remote-caches"><a class="anchor" href="#creating-caches-cli_creating-remote-caches"></a>12.3. Creating remote caches with the Infinispan CLI</h3>
 <div class="paragraph">
 <p>Use the Infinispan Command Line Interface (CLI) to add remote caches on Infinispan Server.</p>
 </div>
@@ -10281,7 +10089,7 @@ mycache</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-hotrod_creating-remote-caches"><a class="anchor" href="#creating-caches-hotrod_creating-remote-caches"></a>13.4. Creating remote caches from Hot Rod clients</h3>
+<h3 id="creating-caches-hotrod_creating-remote-caches"><a class="anchor" href="#creating-caches-hotrod_creating-remote-caches"></a>12.4. Creating remote caches from Hot Rod clients</h3>
 <div class="paragraph">
 <p>Use the Infinispan Hot Rod API to create remote caches on Infinispan Server from Java, C++, .NET/C#, JS clients and more.</p>
 </div>
@@ -10359,7 +10167,7 @@ infinispan.client.hotrod.cache.[my.other.cache].configuration_uri=file:///path/t
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-caches-rest_creating-remote-caches"><a class="anchor" href="#creating-caches-rest_creating-remote-caches"></a>13.5. Creating remote caches with the REST API</h3>
+<h3 id="creating-caches-rest_creating-remote-caches"><a class="anchor" href="#creating-caches-rest_creating-remote-caches"></a>12.5. Creating remote caches with the REST API</h3>
 <div class="paragraph">
 <p>Use the Infinispan REST API to create remote caches on Infinispan Server from any suitable HTTP client.</p>
 </div>
@@ -10397,7 +10205,7 @@ infinispan.client.hotrod.cache.[my.other.cache].configuration_uri=file:///path/t
 </div>
 </div>
 <div class="sect1">
-<h2 id="remote-execution"><a class="anchor" href="#remote-execution"></a>14. Running scripts and tasks on Infinispan Server</h2>
+<h2 id="remote-execution"><a class="anchor" href="#remote-execution"></a>13. Running scripts and tasks on Infinispan Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Add tasks and scripts to Infinispan Server deployments for remote execution from the Command Line Interface (CLI) and Hot Rod or REST clients.
@@ -10405,7 +10213,7 @@ You can implement tasks as custom Java classes or define scripts in languages
 such as JavaScript.</p>
 </div>
 <div class="sect2">
-<h3 id="adding-server-tasks_remote-execution"><a class="anchor" href="#adding-server-tasks_remote-execution"></a>14.1. Adding tasks to Infinispan Server deployments</h3>
+<h3 id="adding-server-tasks_remote-execution"><a class="anchor" href="#adding-server-tasks_remote-execution"></a>13.1. Adding tasks to Infinispan Server deployments</h3>
 <div class="paragraph">
 <p>Add your custom server task classes to Infinispan Server.</p>
 </div>
@@ -10456,7 +10264,7 @@ configuration. Alternatively set the allow list using system properties.</p>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="server-tasks_remote-execution"><a class="anchor" href="#server-tasks_remote-execution"></a>14.1.1. Infinispan Server tasks</h4>
+<h4 id="server-tasks_remote-execution"><a class="anchor" href="#server-tasks_remote-execution"></a>13.1.1. Infinispan Server tasks</h4>
 <div class="paragraph">
 <p>Infinispan Server tasks are classes that extend the
 <code>org.infinispan.tasks.ServerTask</code> interface and generally include the following
@@ -10574,7 +10382,7 @@ public class HelloTask implements ServerTask&lt;String&gt; {
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-scripts_remote-execution"><a class="anchor" href="#adding-scripts_remote-execution"></a>14.2. Adding scripts to Infinispan Server deployments</h3>
+<h3 id="adding-scripts_remote-execution"><a class="anchor" href="#adding-scripts_remote-execution"></a>13.2. Adding scripts to Infinispan Server deployments</h3>
 <div class="paragraph">
 <p>Use the command line interface to add scripts to Infinispan Server.</p>
 </div>
@@ -10625,7 +10433,7 @@ multiplication</code></pre>
 </ol>
 </div>
 <div class="sect3">
-<h4 id="server-scripts_remote-execution"><a class="anchor" href="#server-scripts_remote-execution"></a>14.2.1. Infinispan Server scripts</h4>
+<h4 id="server-scripts_remote-execution"><a class="anchor" href="#server-scripts_remote-execution"></a>13.2.1. Infinispan Server scripts</h4>
 <div class="paragraph">
 <p>Infinispan Server scripting is based on the <code>javax.script</code> API and is
 compatible with any JVM-based ScriptEngine implementation.</p>
@@ -10784,7 +10592,7 @@ expression evaluation.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="add_script_hotrod"><a class="anchor" href="#add_script_hotrod"></a>14.2.2. Programmatically Creating Scripts</h4>
+<h4 id="add_script_hotrod"><a class="anchor" href="#add_script_hotrod"></a>13.2.2. Programmatically Creating Scripts</h4>
 <div class="paragraph">
 <p>Add scripts with the Hot Rod <code>RemoteCache</code> interface as in the following
 example:</p>
@@ -10804,7 +10612,7 @@ scriptCache.put("multiplication.js",
 </div>
 </div>
 <div class="sect2">
-<h3 id="running-scripts-tasks_remote-execution"><a class="anchor" href="#running-scripts-tasks_remote-execution"></a>14.3. Running scripts and tasks</h3>
+<h3 id="running-scripts-tasks_remote-execution"><a class="anchor" href="#running-scripts-tasks_remote-execution"></a>13.3. Running scripts and tasks</h3>
 <div class="paragraph">
 <p>Use the command line interface to run tasks and scripts on Infinispan Server deployments.
 Alternatively you can execute scripts and tasks from Hot Rod clients.</p>
@@ -10905,13 +10713,13 @@ System.out.println(greet);</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="configuring-server-logging"><a class="anchor" href="#configuring-server-logging"></a>15. Configuring Infinispan Server logging</h2>
+<h2 id="configuring-server-logging"><a class="anchor" href="#configuring-server-logging"></a>14. Configuring Infinispan Server logging</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan Server uses Apache Log4j 2 to provide configurable logging mechanisms that capture details about the environment and record cache operations for troubleshooting purposes and root cause analysis.</p>
 </div>
 <div class="sect2">
-<h3 id="server-log-files_server-logging"><a class="anchor" href="#server-log-files_server-logging"></a>15.1. Infinispan Server log files</h3>
+<h3 id="server-log-files_server-logging"><a class="anchor" href="#server-log-files_server-logging"></a>14.1. Infinispan Server log files</h3>
 <div class="paragraph">
 <p>Infinispan writes server logs to the following files in the <code>$ISPN_HOME/server/log</code> directory:</p>
 </div>
@@ -10930,7 +10738,7 @@ Infinispan creates this file when you enable the <code>JSON-FILE</code> appender
 </dl>
 </div>
 <div class="sect3">
-<h4 id="configuring-server-logs_server-logging"><a class="anchor" href="#configuring-server-logs_server-logging"></a>15.1.1. Configuring Infinispan Server logs</h4>
+<h4 id="configuring-server-logs_server-logging"><a class="anchor" href="#configuring-server-logs_server-logging"></a>14.1.1. Configuring Infinispan Server logs</h4>
 <div class="paragraph">
 <p>Infinispan uses Apache Log4j technology to write server log messages.
 You can configure server logs in the <code>log4j2.xml</code> file.</p>
@@ -10959,7 +10767,7 @@ You can configure server logs in the <code>log4j2.xml</code> file.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="log-levels_server-logging"><a class="anchor" href="#log-levels_server-logging"></a>15.1.2. Log levels</h4>
+<h4 id="log-levels_server-logging"><a class="anchor" href="#log-levels_server-logging"></a>14.1.2. Log levels</h4>
 <div class="paragraph">
 <p>Log levels indicate the nature and severity of messages.</p>
 </div>
@@ -11006,7 +10814,7 @@ You can configure server logs in the <code>log4j2.xml</code> file.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="logging-categories_server-logging"><a class="anchor" href="#logging-categories_server-logging"></a>15.1.3. Infinispan logging categories</h4>
+<h4 id="logging-categories_server-logging"><a class="anchor" href="#logging-categories_server-logging"></a>14.1.3. Infinispan logging categories</h4>
 <div class="paragraph">
 <p>Infinispan provides categories for <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>, <code>FATAL</code> level messages that organize logs by functional area.</p>
 </div>
@@ -11044,7 +10852,7 @@ You can configure server logs in the <code>log4j2.xml</code> file.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="log-appenders_server-logging"><a class="anchor" href="#log-appenders_server-logging"></a>15.1.4. Log appenders</h4>
+<h4 id="log-appenders_server-logging"><a class="anchor" href="#log-appenders_server-logging"></a>14.1.4. Log appenders</h4>
 <div class="paragraph">
 <p>Log appenders define how Infinispan Server records log messages.</p>
 </div>
@@ -11069,7 +10877,7 @@ Uses the <code>org.apache.logging.log4j.core.appender.RollingFileAppender</code>
 </div>
 </div>
 <div class="sect3">
-<h4 id="log-pattern-formatters_server-logging"><a class="anchor" href="#log-pattern-formatters_server-logging"></a>15.1.5. Log pattern formatters</h4>
+<h4 id="log-pattern-formatters_server-logging"><a class="anchor" href="#log-pattern-formatters_server-logging"></a>14.1.5. Log pattern formatters</h4>
 <div class="paragraph">
 <p>The <code>CONSOLE</code> and <code>FILE</code> appenders use a
 <a href="https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout"><code>PatternLayout</code></a>
@@ -11111,7 +10919,7 @@ to format the log messages according to a <strong>pattern</strong>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="enabling-json-logging_server-logging"><a class="anchor" href="#enabling-json-logging_server-logging"></a>15.1.6. Enabling the JSON log handler</h4>
+<h4 id="enabling-json-logging_server-logging"><a class="anchor" href="#enabling-json-logging_server-logging"></a>14.1.6. Enabling the JSON log handler</h4>
 <div class="paragraph">
 <p>Infinispan Server provides a log handler to write messages in JSON format.</p>
 </div>
@@ -11165,7 +10973,7 @@ You cannot dynamically enable log handlers.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="access-logs_server-logging"><a class="anchor" href="#access-logs_server-logging"></a>15.2. Access logs</h3>
+<h3 id="access-logs_server-logging"><a class="anchor" href="#access-logs_server-logging"></a>14.2. Access logs</h3>
 <div class="paragraph">
 <p>Access logs record all inbound client requests for Hot Rod and REST endpoints to files in the <code>$ISPN_HOME/server/log</code> directory.</p>
 </div>
@@ -11182,9 +10990,9 @@ You cannot dynamically enable log handlers.</p>
 </dl>
 </div>
 <div class="sect3">
-<h4 id="enabling-access-logs_server-logging"><a class="anchor" href="#enabling-access-logs_server-logging"></a>15.2.1. Enabling access logs</h4>
+<h4 id="enabling-access-logs_server-logging"><a class="anchor" href="#enabling-access-logs_server-logging"></a>14.2.1. Enabling access logs</h4>
 <div class="paragraph">
-<p>To record Hot Rod, REST and Memcached endpoint access messages, you need to enable the logging categories in <code>log4j2.xml</code>.</p>
+<p>To record Hot Rod and REST endpoint access messages, you need to enable the logging categories in <code>log4j2.xml</code>.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -11193,7 +11001,7 @@ You cannot dynamically enable log handlers.</p>
 <p>Open <code>$ISPN_HOME/server/conf/log4j2.xml</code> with any text editor.</p>
 </li>
 <li>
-<p>Change the level for the <code>org.infinispan.HOTROD_ACCESS_LOG</code>, <code>org.infinispan.REST_ACCESS_LOG</code> and <code>org.infinispan.MEMCACHED_ACCESS_LOG</code> logging categories to <code>TRACE</code>.</p>
+<p>Change the level for the <code>org.infinispan.HOTROD_ACCESS_LOG</code> and <code>org.infinispan.REST_ACCESS_LOG</code> logging categories to <code>TRACE</code>.</p>
 </li>
 <li>
 <p>Save and close <code>log4j2.xml</code>.</p>
@@ -11209,7 +11017,7 @@ You cannot dynamically enable log handlers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="access-log-properties_server-logging"><a class="anchor" href="#access-log-properties_server-logging"></a>15.2.2. Access log properties</h4>
+<h4 id="access-log-properties_server-logging"><a class="anchor" href="#access-log-properties_server-logging"></a>14.2.2. Access log properties</h4>
 <div class="paragraph">
 <p>The default format for access logs is as follows:</p>
 </div>
@@ -11250,11 +11058,11 @@ You cannot dynamically enable log handlers.</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>method</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The protocol-specific method used. <code>PUT</code>, <code>GET</code>, and so on.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Method used. <code>PUT</code>, <code>GET</code>, and so on.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>protocol</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol used. <code>HTTP/1.1</code>, <code>HTTP/2</code>, <code>HOTROD/2.9</code>, <code>MCTXT</code>, <code>MCBIN</code> and so on.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protocol used. <code>HTTP/1.1</code>, <code>HTTP/2</code>, <code>HOTROD/2.9</code>, and so on.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
@@ -11291,7 +11099,7 @@ You cannot dynamically enable log handlers.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="audit-logs_server-logging"><a class="anchor" href="#audit-logs_server-logging"></a>15.3. Audit logs</h3>
+<h3 id="audit-logs_server-logging"><a class="anchor" href="#audit-logs_server-logging"></a>14.3. Audit logs</h3>
 <div class="paragraph">
 <p>Audit logs let you track changes to your Infinispan Server deployment so you know when changes occur and which users make them.
 Enable and configure audit logging to record server configuration events and administrative operations.</p>
@@ -11305,7 +11113,7 @@ Enable and configure audit logging to record server configuration events and adm
 </dl>
 </div>
 <div class="sect3">
-<h4 id="enabling-audit-logs-server-logging"><a class="anchor" href="#enabling-audit-logs-server-logging"></a>15.3.1. Enabling audit logging</h4>
+<h4 id="enabling-audit-logs-server-logging"><a class="anchor" href="#enabling-audit-logs-server-logging"></a>14.3.1. Enabling audit logging</h4>
 <div class="paragraph">
 <p>To record security audit messages, you need to enable the logging category in <code>log4j2.xml</code>.</p>
 </div>
@@ -11333,7 +11141,7 @@ Enable and configure audit logging to record server configuration events and adm
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-audit-logs_server-logging"><a class="anchor" href="#configuring-audit-logs_server-logging"></a>15.3.2. Configuring audit logging appenders</h4>
+<h4 id="configuring-audit-logs_server-logging"><a class="anchor" href="#configuring-audit-logs_server-logging"></a>14.3.2. Configuring audit logging appenders</h4>
 <div class="paragraph">
 <p>Apache Log4j provides different appenders that you can use to send audit messages to a destination other than the default log file.
 For instance, if you want to send audit logs to a syslog daemon, JDBC database, or Apache Kafka server, you can configure an appender in <code>log4j2.xml</code>.</p>
@@ -11383,7 +11191,7 @@ For instance, if you want to send audit logs to a syslog daemon, JDBC database, 
 </div>
 </div>
 <div class="sect3">
-<h4 id="customizing-audit-logs_server-logging"><a class="anchor" href="#customizing-audit-logs_server-logging"></a>15.3.3. Using custom audit logging implementations</h4>
+<h4 id="customizing-audit-logs_server-logging"><a class="anchor" href="#customizing-audit-logs_server-logging"></a>14.3.3. Using custom audit logging implementations</h4>
 <div class="paragraph">
 <p>You can create custom implementations of the <code>org.infinispan.security.AuditLogger</code> API if configuring Log4j appenders does not meet your needs.</p>
 </div>
@@ -11433,14 +11241,14 @@ For instance, if you want to send audit logs to a syslog daemon, JDBC database, 
 </div>
 </div>
 <div class="sect1">
-<h2 id="rolling-upgrades"><a class="anchor" href="#rolling-upgrades"></a>16. Performing rolling upgrades for Infinispan Server clusters</h2>
+<h2 id="rolling-upgrades"><a class="anchor" href="#rolling-upgrades"></a>15. Performing rolling upgrades for Infinispan Server clusters</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Perform rolling upgrades of your Infinispan clusters to change between
 versions without downtime or data loss and migrate data over the Hot Rod protocol.</p>
 </div>
 <div class="sect2">
-<h3 id="setting-up-target-clusters_rolling-upgrades"><a class="anchor" href="#setting-up-target-clusters_rolling-upgrades"></a>16.1. Setting up target Infinispan clusters</h3>
+<h3 id="setting-up-target-clusters_rolling-upgrades"><a class="anchor" href="#setting-up-target-clusters_rolling-upgrades"></a>15.1. Setting up target Infinispan clusters</h3>
 <div class="paragraph">
 <p>Create a cluster that uses the Infinispan version to which you plan to upgrade and then connect the source cluster to the target cluster using a remote cache store.</p>
 </div>
@@ -11555,7 +11363,7 @@ Depending on your environment you can also use different network interfaces and 
 </div>
 </div>
 <div class="sect2">
-<h3 id="synchronizing-data-target-clusters_rolling-upgrades"><a class="anchor" href="#synchronizing-data-target-clusters_rolling-upgrades"></a>16.2. Synchronizing data to target clusters</h3>
+<h3 id="synchronizing-data-target-clusters_rolling-upgrades"><a class="anchor" href="#synchronizing-data-target-clusters_rolling-upgrades"></a>15.2. Synchronizing data to target clusters</h3>
 <div class="paragraph">
 <p>When you set up a target Infinispan cluster and connect it to a source cluster, the target cluster can handle client requests using a remote cache store and load data on demand.
 To completely migrate data to the target cluster, so you can decommission the source cluster, you can synchronize data.
@@ -11636,7 +11444,7 @@ You can now decommission the source cluster.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="patching-servers"><a class="anchor" href="#patching-servers"></a>17. Patching Infinispan Server installations</h2>
+<h2 id="patching-servers"><a class="anchor" href="#patching-servers"></a>16. Patching Infinispan Server installations</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Install and manage patches for Infinispan Server installations.</p>
@@ -11647,7 +11455,7 @@ However, patches do not take effect if Infinispan Server is running.
 If you want to upgrade Infinispan clusters without downtime, create a new cluster with the target version and perform a rolling upgrade to that version instead of patching.</p>
 </div>
 <div class="sect2">
-<h3 id="patches-patching-servers"><a class="anchor" href="#patches-patching-servers"></a>17.1. Infinispan Server patches</h3>
+<h3 id="patches-patching-servers"><a class="anchor" href="#patches-patching-servers"></a>16.1. Infinispan Server patches</h3>
 <div class="paragraph">
 <p>Infinispan Server patches are <code>.zip</code> archives that contain artifacts that you can apply to your <code>$ISPN_HOME</code> directory to fix issues and add new features.</p>
 </div>
@@ -11661,7 +11469,7 @@ Server patches do not modify or replace any custom configuration or data.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-server-patches_patching-servers"><a class="anchor" href="#creating-server-patches_patching-servers"></a>17.2. Creating Infinispan Server patches</h3>
+<h3 id="creating-server-patches_patching-servers"><a class="anchor" href="#creating-server-patches_patching-servers"></a>16.2. Creating Infinispan Server patches</h3>
 <div class="paragraph">
 <p>You can create patches for Infinispan Server from an existing installation.</p>
 </div>
@@ -11759,7 +11567,7 @@ install "mypatch.zip".</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="applying-server-patches_patching-servers"><a class="anchor" href="#applying-server-patches_patching-servers"></a>17.3. Applying patches to Infinispan Server installations</h3>
+<h3 id="applying-server-patches_patching-servers"><a class="anchor" href="#applying-server-patches_patching-servers"></a>16.3. Applying patches to Infinispan Server installations</h3>
 <div class="paragraph">
 <p>Upgrade or downgrade Infinispan Server installation to a Infinispan version by installing patches.</p>
 </div>
@@ -11863,7 +11671,7 @@ directory, for example:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="rolling-back-server-patches_patching-servers"><a class="anchor" href="#rolling-back-server-patches_patching-servers"></a>17.4. Rolling back patches</h3>
+<h3 id="rolling-back-server-patches_patching-servers"><a class="anchor" href="#rolling-back-server-patches_patching-servers"></a>16.4. Rolling back patches</h3>
 <div class="paragraph">
 <p>Remove patches from Infinispan Server by rolling them back and restoring the previous Infinispan version.</p>
 </div>
@@ -11985,14 +11793,14 @@ directory, for example:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="tshoot_server"><a class="anchor" href="#tshoot_server"></a>18. Troubleshooting Infinispan Server deployments</h2>
+<h2 id="tshoot_server"><a class="anchor" href="#tshoot_server"></a>17. Troubleshooting Infinispan Server deployments</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Gather diagnostic information about Infinispan Server deployments and perform
 troubleshooting steps to resolve issues.</p>
 </div>
 <div class="sect2">
-<h3 id="getting-server-reports_server"><a class="anchor" href="#getting-server-reports_server"></a>18.1. Getting diagnostic reports from Infinispan Server</h3>
+<h3 id="getting-server-reports_server"><a class="anchor" href="#getting-server-reports_server"></a>17.1. Getting diagnostic reports from Infinispan Server</h3>
 <div class="paragraph">
 <p>Infinispan Server provides aggregated reports in <code>tar.gz</code> archives that
 contain diagnostic information about server instances and host systems.
@@ -12032,7 +11840,7 @@ Downloaded report 'infinispan-&lt;hostname&gt;-&lt;timestamp&gt;-report.tar.gz'<
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-server-logs-cli_server"><a class="anchor" href="#configuring-server-logs-cli_server"></a>18.2. Changing Infinispan Server logging configuration at runtime</h3>
+<h3 id="configuring-server-logs-cli_server"><a class="anchor" href="#configuring-server-logs-cli_server"></a>17.2. Changing Infinispan Server logging configuration at runtime</h3>
 <div class="paragraph">
 <p>Modify the logging configuration for Infinispan Server at runtime to
 temporarily adjust logging to troubleshoot issues and perform root cause
@@ -12157,7 +11965,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="gathering-cli-statistics_server"><a class="anchor" href="#gathering-cli-statistics_server"></a>18.3. Gathering resource statistics from the CLI</h3>
+<h3 id="gathering-cli-statistics_server"><a class="anchor" href="#gathering-cli-statistics_server"></a>17.3. Gathering resource statistics from the CLI</h3>
 <div class="paragraph">
 <p>You can inspect server-collected statistics for some Infinispan Server resources with the <code class="command">stats</code> command.</p>
 </div>
@@ -12232,7 +12040,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="accessing-health-rest_server"><a class="anchor" href="#accessing-health-rest_server"></a>18.4. Accessing cluster health via REST</h3>
+<h3 id="accessing-health-rest_server"><a class="anchor" href="#accessing-health-rest_server"></a>17.4. Accessing cluster health via REST</h3>
 <div class="paragraph">
 <p>Get Infinispan cluster health via the REST API.</p>
 </div>
@@ -12310,7 +12118,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="accessing-health-jmx_server"><a class="anchor" href="#accessing-health-jmx_server"></a>18.5. Accessing cluster health via JMX</h3>
+<h3 id="accessing-health-jmx_server"><a class="anchor" href="#accessing-health-jmx_server"></a>17.5. Accessing cluster health via JMX</h3>
 <div class="paragraph">
 <p>Retrieve Infinispan cluster health statistics via JMX.</p>
 </div>
@@ -12336,7 +12144,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-30 13:38:18 UTC
+Last updated 2023-04-17 14:46:28 +0200
 </div>
 </div>
 <script type="text/x-mathjax-config">
