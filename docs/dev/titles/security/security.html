@@ -2551,23 +2551,23 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SCRAM-*, DIGEST-*, <code>SCRAM-*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SCRAM</code>, <code>DIGEST</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">OAUTHBEARER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OAUTHBEARER</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">EXTERNAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXTERNAL</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GSSAPI, GS2-KRB5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GSSAPI</code>, <code>GS2-KRB5</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">PLAIN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PLAIN</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -2589,30 +2589,143 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">DIGEST</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DIGEST</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BEARER_TOKEN</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BEARER_TOKEN</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CLIENT_CERT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CLIENT_CERT</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SPNEGO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SPNEGO</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BASIC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BASIC</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<div class="title">Memcached endpoints</div>
+<p>Infinispan Server enables the following SASL authentication mechanisms for Memcached binary protocol endpoints when your configuration includes the corresponding security realm:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Security realm</th>
+<th class="tableblock halign-left valign-top">SASL authentication mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SCRAM</code>, <code>DIGEST</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OAUTHBEARER</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXTERNAL</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GSSAPI, GS2-KRB5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PLAIN</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Infinispan Server enables authentication on Memcached text protocol endpoints only with security realms which support password-based authentication:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Security realm</th>
+<th class="tableblock halign-left valign-top">Memcached text authentication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<div class="title">RESP endpoints</div>
+<p>Infinispan Server enables authentication on RESP endpoints only with security realms which support password-based authentication:</p>
+</div>
+<table class="tableblock frame-all grid-all stripes-even fit-content">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Security realm</th>
+<th class="tableblock halign-left valign-top">RESP authentication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property realms and LDAP realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Token realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trust realms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kerberos identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SSL/TLS identities</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
 </tr>
 </tbody>
 </table>
 <div class="sect3">
 <h4 id="sasl-authentication-mechanisms_endpoint-authentication"><a class="anchor" href="#sasl-authentication-mechanisms_endpoint-authentication"></a>4.3.1. SASL authentication mechanisms</h4>
 <div class="paragraph">
-<p>Infinispan Server supports the following SASL authentications mechanisms with Hot Rod endpoints:</p>
+<p>Infinispan Server supports the following SASL authentications mechanisms with Hot Rod and Memcached binary protocol endpoints:</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even fit-content">
 <colgroup>
@@ -2678,7 +2791,7 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <div class="sect3">
 <h4 id="sasl-quality-of-protection_endpoint-authentication"><a class="anchor" href="#sasl-quality-of-protection_endpoint-authentication"></a>4.3.2. SASL quality of protection (QoP)</h4>
 <div class="paragraph">
-<p>If SASL mechanisms support integrity and privacy protection (QoP) settings, you can add them to your Hot Rod endpoint configuration with the <code>qop</code> attribute.</p>
+<p>If SASL mechanisms support integrity and privacy protection (QoP) settings, you can add them to your Hot Rod and Memcached endpoint configuration with the <code>qop</code> attribute.</p>
 </div>
 <table class="tableblock frame-all grid-all stripes-even fit-content">
 <colgroup>
@@ -2710,7 +2823,7 @@ For example, if you add a Kerberos security realm then Infinispan Server enables
 <div class="sect3">
 <h4 id="sasl-policies-hot-rod-authentication_endpoint-authentication"><a class="anchor" href="#sasl-policies-hot-rod-authentication_endpoint-authentication"></a>4.3.3. SASL policies</h4>
 <div class="paragraph">
-<p>SASL policies provide fine-grain control over Hot Rod authentication mechanisms.</p>
+<p>SASL policies provide fine-grain control over Hot Rod and Memcached authentication mechanisms.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -4978,7 +5091,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-21 17:25:26 +0200
+Last updated 2023-05-31 09:26:54 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
