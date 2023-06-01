@@ -626,6 +626,17 @@ $(addBlockSwitches);
 <li><a href="#token-security-realms_security-realms">5.5. Token realms</a></li>
 <li><a href="#trust-store-security-realms_security-realms">5.6. Trust store realms</a></li>
 <li><a href="#distributed-security-realms_security-realms">5.7. Distributed security realms</a></li>
+<li><a href="#aggregate-security-realms_security-realms">5.8. Aggregate security realms</a>
+<ul class="sectlevel3">
+<li><a href="#name_rewriters">5.8.1. Name rewriters</a>
+<ul class="sectlevel4">
+<li><a href="#case_principal_transformer">Case Principal Transformer</a></li>
+<li><a href="#common_name_principal_transformer">Common Name Principal Transformer</a></li>
+<li><a href="#regex_principal_transformer">Regex Principal Transformer</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#configuring-encryption">6. Configuring TLS/SSL encryption</a>
@@ -4943,6 +4954,297 @@ When users attempt to access the Hot Rod or REST endpoints, Infinispan Server us
           groupProperties:
             path: "groups.properties"
         distributedRealm: ~</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="aggregate-security-realms_security-realms"><a class="anchor" href="#aggregate-security-realms_security-realms"></a>5.8. Aggregate security realms</h3>
+<div class="paragraph">
+<p>Aggregate realms combine multiple realms: the first one for the authentication steps and the others for loading the identity for the authorization steps.
+For example, this can be used to authenticate users via a client certificate, and retrieve identity from a properties or LDAP realm.</p>
+</div>
+<h4 id="aggregate_realm_configuration" class="discrete">Aggregate realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
+   &lt;security&gt;
+      &lt;security-realms&gt;
+         &lt;security-realm name="default" default-realm="aggregate"&gt;
+            &lt;server-identities&gt;
+               &lt;ssl&gt;
+                  &lt;keystore path="server.pfx" password="secret" alias="server"/&gt;
+                  &lt;truststore path="trust.pfx" password="secret"/&gt;
+               &lt;/ssl&gt;
+            &lt;/server-identities&gt;
+            &lt;properties-realm name="properties" groups-attribute="Roles"&gt;
+               &lt;user-properties path="users.properties" relative-to="infinispan.server.config.path"/&gt;
+               &lt;group-properties path="groups.properties" relative-to="infinispan.server.config.path"/&gt;
+            &lt;/properties-realm&gt;
+            &lt;truststore-realm name="trust"/&gt;
+            &lt;aggregate-realm authentication-realm="trust" authorization-realms="properties"&gt;
+               &lt;name-rewriter&gt;
+                  &lt;common-name-principal-transformer/&gt;
+               &lt;/name-rewriter&gt;
+            &lt;/aggregate-realm&gt;
+         &lt;/security-realm&gt;
+      &lt;/security-realms&gt;
+   &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [
+        {
+          "name": "aggregate-realm",
+          "default-realm": "aggregate",
+          "server-identities": {
+            "ssl": {
+              "keystore": {
+                "path": "server.p12",
+                "relative-to": "infinispan.server.config.path",
+                "keystore-password": "secret",
+                "alias": "server"
+              },
+              "truststore": {
+                "path": "trust.p12",
+                "relative-to": "infinispan.server.config.path",
+                "password": "secret"
+              }
+            }
+          },
+          "properties-realm": {
+            "name": "properties",
+            "groups-attribute": "Roles",
+            "user-properties": {
+              "digest-realm-name": "distributed-realm",
+              "path": "users.properties"
+            },
+            "group-properties": {
+              "path": "groups.properties"
+            }
+          },
+          "truststore-realm": {
+            "name": "trust"
+          },
+          "aggregate-realm": {
+            "authentication-realm": "trust",
+            "authorization-realms": ["properties"],
+            "name-rewriter": {
+              "common-name-principal-transformer": {}
+            }
+          }
+        }
+      ]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "aggregate-realm"
+        defaultRealm: "aggregate"
+        serverIdentities:
+          ssl:
+            keystore:
+              path: "server.p12"
+              relative-to: "infinispan.server.config.path"
+              keystore-password: "secret"
+              alias: "server"
+            truststore:
+              path: "trust.p12"
+              relative-to: "infinispan.server.config.path"
+              password: "secret"
+        truststoreRealm:
+          name: "trust"
+        propertiesRealm:
+          name: "properties"
+          groupsAttribute: "Roles"
+          userProperties:
+            digestRealmName: "distributed-realm"
+            path: "users.properties"
+          groupProperties:
+            path: "groups.properties"
+        aggregateRealm:
+          authenticationRealm: "trust"
+          authorizationRealms:
+            - "properties"
+          nameRewriter:
+            common-name-principal-transformer: ~</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="name_rewriters"><a class="anchor" href="#name_rewriters"></a>5.8.1. Name rewriters</h4>
+<div class="paragraph">
+<p>Principal names may have different forms, depending on the security realm type:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Properties and Token realms may return simple strings</p>
+</li>
+<li>
+<p>Trust and LDAP realms may return X.500-style distinguished names</p>
+</li>
+<li>
+<p>Kerberos realms may return <code>user@domain</code>-style names</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Names must be normalized to a common form when using the aggregate realm using one of the following transformers.</p>
+</div>
+<div class="sect4">
+<h5 id="case_principal_transformer"><a class="anchor" href="#case_principal_transformer"></a>Case Principal Transformer</h5>
+<div class="paragraph">
+<p>The <code>case-principal-transformer</code> transforms a name to all uppercase or all lowercase letters.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;aggregate-realm authentication-realm="trust" authorization-realms="properties"&gt;
+   &lt;name-rewriter&gt;
+      &lt;case-principal-transformer uppercase="false"/&gt;
+   &lt;/name-rewriter&gt;
+&lt;/aggregate-realm&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "aggregate-realm": {
+    "authentication-realm": "trust",
+    "authorization-realms": [
+      "properties"
+    ],
+    "name-rewriter": {
+      "case-principal-transformer": {
+        "uppercase": "false"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">aggregateRealm:
+  authenticationRealm: "trust"
+  authorizationRealms:
+    - "properties"
+  nameRewriter:
+    casePrincipalTransformer:
+      uppercase: false</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="common_name_principal_transformer"><a class="anchor" href="#common_name_principal_transformer"></a>Common Name Principal Transformer</h5>
+<div class="paragraph">
+<p>The <code>common-name-principal-transformer</code> extracts the first <code>CN</code> element from a <code>DN</code> used by LDAP or Certificates.
+For example, given a principal in the form <code>CN=app1,CN=serviceA,OU=applications,DC=infinispan,DC=org</code>, the following
+configuration will extract <code>app1</code> as the principal.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;aggregate-realm authentication-realm="trust" authorization-realms="properties"&gt;
+   &lt;name-rewriter&gt;
+      &lt;common-name-principal-transformer/&gt;
+   &lt;/name-rewriter&gt;
+&lt;/aggregate-realm&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "aggregate-realm": {
+    "authentication-realm": "trust",
+    "authorization-realms": [
+      "properties"
+    ],
+    "name-rewriter": {
+      "common-name-principal-transformer": {}
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">aggregateRealm:
+  authenticationRealm: "trust"
+  authorizationRealms:
+    - "properties"
+  nameRewriter:
+    commonNamePrincipalTransformer: ~</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="regex_principal_transformer"><a class="anchor" href="#regex_principal_transformer"></a>Regex Principal Transformer</h5>
+<div class="paragraph">
+<p>The <code>regex-principal-transformer</code> can perform find and replace using a regular expression.
+The example shows how to extract the local-part from a <code>user@domain.com</code> identifier.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;aggregate-realm authentication-realm="trust" authorization-realms="properties"&gt;
+   &lt;name-rewriter&gt;
+      &lt;regex-principal-transformer pattern="([^@]+)@.*" replacement="$1" replace-all="false"/&gt;
+   &lt;/name-rewriter&gt;
+&lt;/aggregate-realm&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "aggregate-realm": {
+    "authentication-realm": "trust",
+    "authorization-realms": [
+      "properties"
+    ],
+    "name-rewriter": {
+      "regex-principal-transformer": {
+        "pattern" : "([^@]+)@.*",
+        "replacement": "$1",
+        "replace-all": false
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">aggregateRealm:
+  authenticationRealm: "trust"
+  authorizationRealms:
+    - "properties"
+  nameRewriter:
+    regexPrincipalTransformer:
+      pattern: "([^@]+)@.*"
+      replacement: "$1"
+      replaceAll: false</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -12336,7 +12638,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-31 15:29:18 UTC
+Last updated 2023-06-01 09:17:16 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

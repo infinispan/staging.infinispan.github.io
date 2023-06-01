@@ -775,6 +775,16 @@ $(addBlockSwitches);
 <li><a href="#user-permissions_security-authorization">8.1.1. Permissions</a></li>
 <li><a href="#role-mappers_security-authorization">8.1.2. Role and permission mappers</a></li>
 <li><a href="#configuring-role-mappers_security-authorization">8.1.3. Configuring role mappers</a></li>
+<li><a href="#configuring-cluster-role-mapper_security-authorization">8.1.4. Configuring the cluster role mapper</a>
+<ul class="sectlevel4">
+<li><a href="#cluster_role_mapper_name_rewriters">Cluster role mapper name rewriters</a>
+<ul class="sectlevel5">
+<li><a href="#case_principal_transformer">Case Principal Transformer</a></li>
+<li><a href="#regex_principal_transformer">Regex Principal Transformer</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#configuring-cache-authorization_security-authorization">8.2. Configuring caches with security authorization</a></li>
@@ -10592,6 +10602,160 @@ For example, if your deployment integrates with an LDAP directory and you want t
 </ul>
 </div>
 </div>
+<div class="sect3">
+<h4 id="configuring-cluster-role-mapper_security-authorization"><a class="anchor" href="#configuring-cluster-role-mapper_security-authorization"></a>8.1.4. Configuring the cluster role mapper</h4>
+<div class="paragraph">
+<p>The cluster role mapper maintains a dynamic mapping between principals and roles.
+You can manipulate these mappings using either the CLI or the REST API.
+By default, the mapping is performed using a strict string equivalence between principal names and roles. It is possible to configure the cluster role mapper to apply transformation to the principal name before performing a lookup.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Specify a name rewriter for the cluster role mapper as part of the security authorization in the Cache Manager configuration.</p>
+</li>
+<li>
+<p>Save the changes to your configuration.</p>
+</li>
+</ol>
+</div>
+<div class="sect4">
+<h5 id="cluster_role_mapper_name_rewriters"><a class="anchor" href="#cluster_role_mapper_name_rewriters"></a>Cluster role mapper name rewriters</h5>
+<div class="paragraph">
+<p>Principal names may have different forms, depending on the security realm type:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Properties and Token realms may return simple strings</p>
+</li>
+<li>
+<p>Trust and LDAP realms may return X.500-style distinguished names</p>
+</li>
+<li>
+<p>Kerberos realms may return <code>user@domain</code>-style names</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Names can be normalized to a common form using one of the following transformers.</p>
+</div>
+<div class="sect5">
+<h6 id="case_principal_transformer"><a class="anchor" href="#case_principal_transformer"></a>Case Principal Transformer</h6>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache-container&gt;
+   &lt;security&gt;
+      &lt;authorization&gt;
+         &lt;cluster-role-mapper&gt;
+            &lt;name-rewriter&gt;
+               &lt;case-principal-transformer uppercase="false"/&gt;
+            &lt;/name-rewriter&gt;
+         &lt;/cluster-role-mapper&gt;
+      &lt;/authorization&gt;
+   &lt;/security&gt;
+&lt;/cache-container&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "cache-container": {
+    "security": {
+      "authorization": {
+        "cluster-role-mapper": {
+          "name-rewriter": {
+            "case-principal-transformer": {}
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">cacheContainer:
+  security:
+    authorization:
+      clusterRoleMapper:
+        nameRewriter:
+          casePrincipalTransformer:
+            uppercase: false</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="regex_principal_transformer"><a class="anchor" href="#regex_principal_transformer"></a>Regex Principal Transformer</h6>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;cache-container&gt;
+   &lt;security&gt;
+      &lt;authorization&gt;
+         &lt;cluster-role-mapper&gt;
+            &lt;name-rewriter&gt;
+               &lt;regex-principal-transformer pattern="cn=([^,]+),.*" replacement="$1"/&gt;
+            &lt;/name-rewriter&gt;
+         &lt;/cluster-role-mapper&gt;
+      &lt;/authorization&gt;
+   &lt;/security&gt;
+&lt;/cache-container&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "cache-container": {
+    "security": {
+      "authorization": {
+        "cluster-role-mapper": {
+          "name-rewriter": {
+            "regex-principal-transformer": {
+              "pattern": "cn=([^,]+),.*",
+              "replacement": "$1"
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">cacheContainer:
+  security:
+    authorization:
+      clusterRoleMapper:
+        nameRewriter:
+          regexPrincipalTransformer:
+            pattern: "cn=([^,]+),.*"
+            replacement: "$1"</code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.jboss.org/infinispan/15.0/configdocs/">Infinispan configuration schema reference</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="configuring-cache-authorization_security-authorization"><a class="anchor" href="#configuring-cache-authorization_security-authorization"></a>8.2. Configuring caches with security authorization</h3>
@@ -12524,7 +12688,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-31 15:29:18 UTC
+Last updated 2023-06-01 09:17:16 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
