@@ -635,10 +635,9 @@ $(addBlockSwitches);
 <li><a href="#rest_server_counters_inc_weak">2.2.6. Incrementing Counters</a></li>
 <li><a href="#rest_server_counters_add_weak">2.2.7. Adding Deltas to Counters</a></li>
 <li><a href="#rest_server_counters_dec">2.2.8. Decrementing Counter Values</a></li>
-<li><a href="#rest_server_counters_set">2.2.9. Performing <code>getAndSet</code> atomic operations on Strong Counters</a></li>
-<li><a href="#rest_server_counters_cmpset">2.2.10. Performing compareAndSet Operations on Strong Counters</a></li>
-<li><a href="#rest_server_counters_cmpswp">2.2.11. Performing compareAndSwap Operations on Strong Counters</a></li>
-<li><a href="#rest_server_counters_list">2.2.12. Listing Counters</a></li>
+<li><a href="#rest_server_counters_cmpset">2.2.9. Performing compareAndSet Operations on Strong Counters</a></li>
+<li><a href="#rest_server_counters_cmpswp">2.2.10. Performing compareAndSwap Operations on Strong Counters</a></li>
+<li><a href="#rest_server_counters_list">2.2.11. Listing Counters</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_protobuf_schemas">2.3. Working with Protobuf Schemas</a>
@@ -756,11 +755,6 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_get_principal_roles">2.9.4. Retrieving the roles for a principal</a></li>
 <li><a href="#rest_v2_grant_principal_roles">2.9.5. Granting roles to a principal</a></li>
 <li><a href="#rest_v2_deny_principal_roles">2.9.6. Denying roles to a principal</a></li>
-</ul>
-</li>
-<li><a href="#rest_v2_tracing_propagation">2.10. Enabling Tracing Propagation</a>
-<ul class="sectlevel3">
-<li><a href="#propagation_rest_tracing_rest">2.10.1. Enabling tracing propagation between Infinispan Server and REST API</a></li>
 </ul>
 </li>
 </ul>
@@ -2587,34 +2581,22 @@ When content-negotiation is used, the response will contain two headers: <code>k
 <div class="content">
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">[
     {
-        "key": 1,
-        "value": "value1",
-        "timeToLiveSeconds": -1,
-        "maxIdleTimeSeconds": -1,
-        "created": -1,
-        "lastUsed": -1,
-        "expireTime": -1
+        "key":1,
+        "value":"value1",
+        "timeToLiveSeconds":-1,
+        "maxIdleTimeSeconds":-1,
+        "created":-1,
+        "lastUsed":-1,
+        "expireTime":-1
     },
     {
-        "key": 2,
-        "value": "value2",
-        "timeToLiveSeconds": 10,
-        "maxIdleTimeSeconds": 45,
-        "created": 1607966017944,
+        "key":2,
+        "value":"value2",
+        "timeToLiveSeconds":10,
+        "maxIdleTimeSeconds":45,
+        "created":1607966017944,
         "lastUsed": 1607966017944,
-        "expireTime": 1607966027944,
-        "version": 7
-    },
-    {
-        "key": 3,
-        "value": "value2",
-        "timeToLiveSeconds": 10,
-        "maxIdleTimeSeconds": 45,
-        "created": 1607966017944,
-        "lastUsed": 1607966017944,
-        "expireTime": 1607966027944,
-        "version": 7,
-        "topologyId": 9
+        "expireTime":1607966027944
     }
 ]</code></pre>
 </div>
@@ -2641,12 +2623,6 @@ When content-negotiation is used, the response will contain two headers: <code>k
 </li>
 <li>
 <p><code>expireTime</code> Time when the entry expires or <code>-1</code> for immortal entries. It&#8217;s not returned unless you set metadata="true".</p>
-</li>
-<li>
-<p><code>version</code> The metadata version related to the cache entry. Only if the value is present.</p>
-</li>
-<li>
-<p><code>topologyId</code> The topology Id of a clustered version metadata. Only if the value is present.</p>
 </li>
 </ul>
 </div>
@@ -4111,21 +4087,7 @@ parameter.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_server_counters_set"><a class="anchor" href="#rest_server_counters_set"></a>2.2.9. Performing <code>getAndSet</code> atomic operations on Strong Counters</h4>
-<div class="paragraph">
-<p>Atomically set values for strong counters with <code>POST</code> requests and the <code>getAndSet</code> parameter.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>POST /rest/v2/counters/{counterName}?action=getAndSet&amp;value={value}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If the operation is successful, Infinispan returns the previous value in the payload.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="rest_server_counters_cmpset"><a class="anchor" href="#rest_server_counters_cmpset"></a>2.2.10. Performing compareAndSet Operations on Strong Counters</h4>
+<h4 id="rest_server_counters_cmpset"><a class="anchor" href="#rest_server_counters_cmpset"></a>2.2.9. Performing compareAndSet Operations on Strong Counters</h4>
 <div class="paragraph">
 <p>Atomically set values for strong counters with <code>GET</code> requests and the
 <code>compareAndSet</code> parameter.</p>
@@ -4137,12 +4099,11 @@ parameter.</p>
 </div>
 <div class="paragraph">
 <p>Infinispan atomically sets the value to <code>{update}</code> if the current value is
-<code>{expect}</code>.
-If the operation is successful, Infinispan returns <code><em>true</em></code>.</p>
+<code>{expect}</code>. If the operation is successful, Infinispan returns <code><em>true</em></code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_server_counters_cmpswp"><a class="anchor" href="#rest_server_counters_cmpswp"></a>2.2.11. Performing compareAndSwap Operations on Strong Counters</h4>
+<h4 id="rest_server_counters_cmpswp"><a class="anchor" href="#rest_server_counters_cmpswp"></a>2.2.10. Performing compareAndSwap Operations on Strong Counters</h4>
 <div class="paragraph">
 <p>Atomically set values for strong counters with <code>GET</code> requests and the
 <code>compareAndSwap</code> parameter.</p>
@@ -4154,12 +4115,12 @@ If the operation is successful, Infinispan returns <code><em>true</em></code>.</
 </div>
 <div class="paragraph">
 <p>Infinispan atomically sets the value to <code>{update}</code> if the current value is
-<code>{expect}</code>.
-If the operation is successful, Infinispan returns the previous value in the payload.</p>
+<code>{expect}</code>. If the operation is successful, Infinispan returns the previous
+value in the payload.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_server_counters_list"><a class="anchor" href="#rest_server_counters_list"></a>2.2.12. Listing Counters</h4>
+<h4 id="rest_server_counters_list"><a class="anchor" href="#rest_server_counters_list"></a>2.2.11. Listing Counters</h4>
 <div class="paragraph">
 <p>Retrieve a list of counters in Infinispan clusters with <code>GET</code> requests.</p>
 </div>
@@ -6810,70 +6771,6 @@ The principal need not exist in the realm in use.</p>
 </table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="rest_v2_tracing_propagation"><a class="anchor" href="#rest_v2_tracing_propagation"></a>2.10. Enabling Tracing Propagation</h3>
-<div class="paragraph">
-<p>Tracing with Infinispan Server and REST API lets you monitor and analyze the flow of requests and track the execution path across different components.</p>
-</div>
-<div class="sect3">
-<h4 id="propagation_rest_tracing_rest"><a class="anchor" href="#propagation_rest_tracing_rest"></a>2.10.1. Enabling tracing propagation between Infinispan Server and REST API</h4>
-<div class="paragraph">
-<p>When you enable tracing propagation between the Infinispan Server and REST API, you must configure tracing on both the client side and the server side.</p>
-</div>
-<div class="paragraph">
-<p>To propagate the OpenTelemetry tracing spans to the Infinispan spans, you must set the trace context on each REST invocation.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisite</div>
-<ul>
-<li>
-<p>Have tracing enabled on Infinispan Server and remote client side.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Extract the current tracing context using the <code>io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator</code>.</p>
-<div class="paragraph">
-<p>The extraction produces a context map that stores trace context information.</p>
-</div>
-</li>
-<li>
-<p>Pass the context map in the header of the REST call to ensure that the trace context is preserved.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">HashMap&lt;String, String&gt; contextMap = new HashMap&lt;&gt;();
-
-// Inject the request with the *current* Context, which contains our current Span.
-W3CTraceContextPropagator.getInstance().inject(Context.current(), contextMap,
-(carrier, key, value) -&gt; carrier.put(key, value));
-
-// Pass the context map in the header
-RestCacheClient client = restClient.cache(CACHE_NAME);
-client.put("aaa", MediaType.TEXT_PLAIN.toString(),RestEntity.create(MediaType.TEXT_PLAIN, "bbb"), contextMap);</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>The tracing spans that the client application generates are correlated with the dependent spans generated by the Infinispan Server.</p>
-</div>
-<div class="ulist _additional-resources">
-<div class="title">Additional resources</div>
-<ul>
-<li>
-<p><a href="../server/server.html#opentelemetry-tracing">Enabling Infinispan tracing</a></p>
-</li>
-<li>
-<p><a href="../hotrod_java/hotrod_java.html#propagation-hotrod-client-tracing">Hot Rod client tracing propagation</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -7230,7 +7127,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-05 15:09:21 UTC
+Last updated 2023-04-21 17:25:26 +0200
 </div>
 </div>
 <script type="text/x-mathjax-config">
