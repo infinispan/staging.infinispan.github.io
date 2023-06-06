@@ -546,7 +546,7 @@ $(addBlockSwitches);
 </li>
 <li><a href="#shutting-down-servers_getting-started">1.4. Shutting down Infinispan Server</a>
 <ul class="sectlevel3">
-<li><a href="#cluster-restarts_getting-started">1.4.1. Infinispan cluster restarts</a></li>
+<li><a href="#cluster-restarts_getting-started">1.4.1. Shutdown and restart of Infinispan clusters</a></li>
 </ul>
 </li>
 </ul>
@@ -1626,17 +1626,36 @@ ISPN080003: Infinispan Server stopped</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="cluster-restarts_getting-started"><a class="anchor" href="#cluster-restarts_getting-started"></a>1.4.1. Infinispan cluster restarts</h4>
+<h4 id="cluster-restarts_getting-started"><a class="anchor" href="#cluster-restarts_getting-started"></a>1.4.1. Shutdown and restart of Infinispan clusters</h4>
 <div class="paragraph">
-<p>When you bring Infinispan clusters back online after shutting them down, you should wait for the cluster to be available before adding or removing nodes or modifying cluster state.</p>
+<p>Prevent data loss and ensure consistency of your cluster by properly shutting down and restarting nodes.</p>
+</div>
+<h5 id="cluster_shutdown" class="discrete">Cluster shutdown</h5>
+<div class="paragraph">
+<p>Infinispan recommends using the <code>shutdown cluster</code> command to stop all nodes in a cluster while saving cluster state and persisting all data in the cache.
+You can use the <code>shutdown cluster</code> command also for clusters with a single node.</p>
 </div>
 <div class="paragraph">
-<p>If you shutdown clustered nodes with the <code class="command">shutdown server</code> command, you must restart each server in reverse order.<br>
-For example, if you shutdown <code>server1</code> and then shutdown <code>server2</code>, you should first start <code>server2</code> and then start <code>server1</code>.</p>
+<p>When you bring Infinispan clusters back online, all nodes and caches in the cluster will be unavailable until all nodes rejoin.
+To prevent inconsistencies or data loss, Infinispan restricts access to the data stored in the cluster and modifications of the cluster state until the cluster is fully operational again.
+Additionally, Infinispan disables cluster rebalancing and prevents local cache stores purging on startup.</p>
 </div>
 <div class="paragraph">
-<p>If you shutdown a cluster with the <code class="command">shutdown cluster</code> command, clusters become fully operational only after all nodes rejoin.<br>
-You can restart nodes in any order but the cluster remains in DEGRADED state until all nodes that were joined before shutdown are running.</p>
+<p>During the cluster recovery process, the coordinator node logs messages for each new node joining, indicating which nodes are available and which are still missing.
+Other nodes in the Infinispan cluster have the view from the time they join.<br>
+You can monitor availability of caches using the Infinispan Console or REST API.</p>
+</div>
+<h5 id="server_shutdown" class="discrete">Server shutdown</h5>
+<div class="paragraph">
+<p>After using the <code>shutdown server</code> command to bring nodes down, the first node to come back online will be available immediately without waiting for other members.
+The remaining nodes join the cluster immediately, triggering state transfer but loading the local persistence first, which might lead to stale entries.
+Local cache stores configured to purge on startup will be emptied when the server starts.
+Local cache stores marked as <code>purge=false</code> will be available after a server restarts but might contain stale entries.</p>
+</div>
+<div class="paragraph">
+<p>If you shutdown clustered nodes with the <code class="command">shutdown server</code> command, you must restart each server in reverse order to avoid potential issues related to data loss and stale entries in the cache.<br>
+For example, if you shutdown <code>server1</code> and then shutdown <code>server2</code>, you should first start <code>server2</code> and then start <code>server1</code>.
+However, restarting clustered nodes in reverse order does not completely prevent data loss and stale entries.</p>
 </div>
 </div>
 </div>
@@ -5630,6 +5649,9 @@ Registers a <code>person.proto</code> Protobuf schema.</p>
 <p><strong>server heap-dump</strong> [--live]</p>
 </div>
 <div class="paragraph">
+<p><strong>server connections ls</strong> [--global]</p>
+</div>
+<div class="paragraph">
 <p><strong>server connector ls</strong></p>
 </div>
 <div class="paragraph">
@@ -5677,6 +5699,11 @@ Obtains a server report, including information about network, threads, memory, e
 <div class="paragraph">
 <p><code>server heap-dump</code><br>
 Generates a JVM heap dump in the server data directory, returning the name of the generated file.</p>
+</div>
+<div class="paragraph">
+<p><code>server connections ls</code><br>
+Lists all active client connections to the server. The <code>--global</code> argument will return connections from all cluster
+members.</p>
 </div>
 <div class="paragraph">
 <p><code>server connector ls</code><br>
@@ -6254,7 +6281,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-17 14:46:28 +0200
+Last updated 2023-06-06 12:34:53 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
