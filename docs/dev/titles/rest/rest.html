@@ -1685,11 +1685,19 @@ Infinispan configuration payload; either <code>application/xml</code> or
 <div class="sect3">
 <h4 id="rest_v2_cache_exists"><a class="anchor" href="#rest_v2_cache_exists"></a>2.1.3. Verifying Caches</h4>
 <div class="paragraph">
-<p>Check if caches are available in Infinispan clusters with <code>HEAD</code> requests.</p>
+<p>Check if a cache exists in Infinispan clusters with <code>HEAD</code> requests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>HEAD /rest/v2/caches/{cacheName}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Retrieve a caches health with <code>GET</code> requests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/caches/{cacheName}?action=health</code></pre>
 </div>
 </div>
 </div>
@@ -7301,7 +7309,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-06 17:42:45 UTC
+Last updated 2023-06-07 10:49:39 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
