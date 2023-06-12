@@ -710,6 +710,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_server_report">2.5.11. Getting Diagnostic Reports for Infinispan Servers</a></li>
 <li><a href="#rest_v2_server_stop">2.5.12. Stopping Infinispan Servers</a></li>
 <li><a href="#rest_v2_server_connections">2.5.13. Retrieving Client Connection Information</a></li>
+<li><a href="#rest_v2_server_caches_defaults">2.5.14. Retrieving Default values for Cache Configuration</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_cluster">2.6. Working with Infinispan Clusters</a>
@@ -6081,6 +6082,20 @@ routing, threads, in addition to configuration and log files.</p>
 </tbody>
 </table>
 </div>
+<div class="sect3">
+<h4 id="rest_v2_server_caches_defaults"><a class="anchor" href="#rest_v2_server_caches_defaults"></a>2.5.14. Retrieving Default values for Cache Configuration</h4>
+<div class="paragraph">
+<p>Retrieve default values for cache configuration with <code>GET</code> requests.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>POST /rest/v2/server/caches/defaults</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan responds with the default values for cache configuration in JSON format.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="rest_v2_cluster"><a class="anchor" href="#rest_v2_cluster"></a>2.6. Working with Infinispan Clusters</h3>
@@ -7309,7 +7324,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-12 12:36:41 UTC
+Last updated 2023-06-12 15:11:45 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
