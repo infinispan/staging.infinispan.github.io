@@ -536,12 +536,14 @@ $(addBlockSwitches);
 <li><a href="#securitymanager">1.1.1. SecurityManager</a></li>
 <li><a href="#jakarta_and_java_ee">1.1.2. Jakarta and Java EE</a></li>
 <li><a href="#removals">1.1.3. Removals</a></li>
-<li><a href="#resp_endpoint">1.1.4. RESP Endpoint</a></li>
-<li><a href="#search">1.1.5. Search</a>
+<li><a href="#hot_rod_client_defaults">1.1.4. Hot Rod client defaults</a></li>
+<li><a href="#resp_endpoint">1.1.5. RESP Endpoint</a></li>
+<li><a href="#search">1.1.6. Search</a>
 <ul class="sectlevel4">
 <li><a href="#indexing">Indexing</a></li>
 </ul>
 </li>
+<li><a href="#scattered_cache_removal">1.1.7. Scattered cache removal</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_13_0_to_14_0">1.2. Upgrading from 13.0 to 14.0</a>
@@ -984,7 +986,29 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="resp_endpoint"><a class="anchor" href="#resp_endpoint"></a>1.1.4. RESP Endpoint</h4>
+<h4 id="hot_rod_client_defaults"><a class="anchor" href="#hot_rod_client_defaults"></a>1.1.4. Hot Rod client defaults</h4>
+<div class="paragraph">
+<p>The following defaults have changed for the Hot Rod client:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>connection_timeout</code> is now 2000 ms / 2 seconds (previously 60000 ms / 60 seconds)</p>
+</li>
+<li>
+<p><code>socket_timeout</code> is now 2000 ms / 2 seconds (previously 60000 ms / 60 seconds)</p>
+</li>
+<li>
+<p><code>max_retries</code> is now 3 (was 10)</p>
+</li>
+<li>
+<p><code>min_evictable_idle_time</code> is now 180000 ms / 3 minutes (previously 1800000 ms / 30 minutes)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="resp_endpoint"><a class="anchor" href="#resp_endpoint"></a>1.1.5. RESP Endpoint</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -994,7 +1018,7 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="search"><a class="anchor" href="#search"></a>1.1.5. Search</h4>
+<h4 id="search"><a class="anchor" href="#search"></a>1.1.6. Search</h4>
 <div class="sect4">
 <h5 id="indexing"><a class="anchor" href="#indexing"></a>Indexing</h5>
 <div class="ulist">
@@ -1010,6 +1034,12 @@ SecurityManager.</p>
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="scattered_cache_removal"><a class="anchor" href="#scattered_cache_removal"></a>1.1.7. Scattered cache removal</h4>
+<div class="paragraph">
+<p>The scattered cache mode have been removed a bit earlier. Please use Distributed caches instead.</p>
 </div>
 </div>
 </div>
@@ -4704,7 +4734,7 @@ cache stores.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-06 12:19:43 -0400
+Last updated 2023-06-30 19:45:56 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

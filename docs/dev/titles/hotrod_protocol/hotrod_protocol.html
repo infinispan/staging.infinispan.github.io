@@ -8106,13 +8106,97 @@ to not send a notification on many false positives.</p></td>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<div class="title">Counter get-and-set operation</div>
+<p>Sets a value to the counter and returns the previous value.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 30. Request (0x7F)</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 13.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-center valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request header</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The counter&#8217;s name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The counter’s value to set.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 31. Response (0x80)</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 13.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-center valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Response header</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) the counter&#8217;s previous value.
+Only present if <code>Status==0x00</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Response Header <code>Status</code> possible values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>0x00</code>: Operation successful.</p>
+</li>
+<li>
+<p><code>0x02</code>: The counter isn&#8217;t defined.</p>
+</li>
+<li>
+<p><code>0x04</code>: The counter reached its boundary.
+Only possible for <code>STRONG</code> counters.</p>
+</li>
+<li>
+<p>See the <a href="#hot_rod_response_header">Response Header</a> for error codes.</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-06 12:19:43 -0400
+Last updated 2023-06-30 19:45:56 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

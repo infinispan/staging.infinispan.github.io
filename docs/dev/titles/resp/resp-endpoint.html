@@ -704,65 +704,266 @@ OK
 <div class="paragraph">
 <p>The Infinispan RESP endpoint implements the following Redis commands:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://redis.io/commands/auth">AUTH</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/decr">DECR</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/del">DEL</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/echo">ECHO</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/get">GET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/hello">HELLO</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/incr">INCR</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/mget">MGET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/mset">MSET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/ping">PING</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/publish">PUBLISH</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/quit">QUIT</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/reset">RESET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/set">SET</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/subscribe">SUBSCRIBE</a></p>
-</li>
-<li>
-<p><a href="https://redis.io/commands/unsubscribe">UNSUBSCRIBE</a></p>
-</li>
-</ul>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Command</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/append">APPEND</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/auth">AUTH</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/command">COMMAND</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/cluster-shards/">CLUSTER SHARDS</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/cluster-nodes/">CLUSTER NODES</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This commands includes all required fields, some are set to 0 as they do not apply to {Infinispan}.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/dbsize">DBSIZE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/decr">DECR</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/decrby">DECRBY</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/del">DEL</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/echo">ECHO</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/exists">EXISTS</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/flushall">FLUSHALL</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Behaves like <strong>FLUSHDB</strong> since {Infinispan} does not support multiple Redis databases yet.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/flushdb">FLUSHDB</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/get">GET</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/getdel">GETDEL</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/getrange">GETRANGE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/hello">HELLO</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/incr">INCR</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/incrby">INCRBY</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/incrbyfloat">INCRBYFLOAT</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/info">INFO</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This implementation attempts to return all attributes that a real Redis server returns. However, in most cases, the values are set to 0, because they cannot be retrieved or don&#8217;t make any sense in {Infinispan}.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/info">LLEN</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/info">LINDEX</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/memory-info">MEMORY-USAGE</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This command will return the memory used by the key and the value. It doesn&#8217;t include the memory used by additional metadata associated with the entry.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/memory-stats">MEMORY-STATS</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This command will return the same fields as a real Redis server, but all values will be set to 0.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/mget">MGET</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/mset">MSET</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/linsert">LINSERT</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current implementation time complexity is O(N), where N is the size of the list.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lmove">LMOVE</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current implementation is atomic for rotation (source and destination are the same list). For different lists there is relaxed consistency
+for concurrent operations or failures unless the resp cache is configured to used transactions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lpop">LPOP</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lpos">LPOS</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lpush">LPUSH</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lpushx">LPUSHX</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lrange">LRANGE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lrem">LREM</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/lset">LSET</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/ltrim">LTRIM</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/ping">PING</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/psubscribe">PSUBSCRIBE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/pttl">PTTL</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/publish">PUBLISH</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/punsubscribe">PUNSUBSCRIBE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/quit">QUIT</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/rpop">RPOP</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/rpush">RPUSH</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/rpushx">RPUSHX</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/readonly">READONLY</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/readwrite">READWRITE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/reset">RESET</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/scan">SCAN</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cursors are reaped in case they have not been used within a timeout (5 minutes)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/select">SELECT</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Always returns <code>-ERR Select not supported in cluster mode</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/set">SET</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/set">SETRANGE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/subscribe">SUBSCRIBE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/ttl">TTL</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/type">TYPE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/unsubscribe">UNSUBSCRIBE</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/zadd">ZADD</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/zcard">ZCARD</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">:leveloffset: 1</p>
+<p class="tableblock">:!context:</p>
+<p class="tableblock">:leveloffset!:</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-06 12:19:43 -0400
+Last updated 2023-06-30 19:45:56 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
