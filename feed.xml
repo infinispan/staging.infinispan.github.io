@@ -1,4 +1,82 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-06-05T20:03:19+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15.0.0.Dev01</title><link href="https://infinispan.org/blog/2023/04/24/infinispan-15dev01" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev01" /><published>2023-04-24T02:00:00+02:00</published><updated>2023-04-24T02:00:00+02:00</updated><id>https://infinispan.org/blog/2023/04/24/infinispan-15.0.0.Dev01</id><content type="html" xml:base="https://infinispan.org/blog/2023/04/24/infinispan-15dev01">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-06-30T05:25:08-04:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Reviving MongoDB cache store</title><link href="https://infinispan.org/blog/2023/05/03/reviving-mongodb-cachestore" rel="alternate" type="text/html" title="Reviving MongoDB cache store" /><published>2023-05-03T20:00:00-04:00</published><updated>2023-05-03T20:00:00-04:00</updated><id>https://infinispan.org/blog/2023/05/03/reviving-mongodb-cachestore</id><content type="html" xml:base="https://infinispan.org/blog/2023/05/03/reviving-mongodb-cachestore">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After a long period of inactivity, the MongoDB store is now back to life.
+It has been upgraded to work with Infinispan 15.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;reactive-mongodb-driver&quot;&gt;Reactive MongoDB driver&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Since the Infinispan cache store API is now fully reactive, the store has also been modified to use the reactive MongoDB driver.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;database-formats&quot;&gt;Database formats&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The older MongoDB cache store worked by persisting keys and values as binary blobs.
+This should be the most efficient way, but it makes it harder to inspect the documents stored in Mongo.
+Therefore, the new implementation allows choosing between two formats:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;binary&lt;/code&gt;: the binary format similar to that used with the previous MongoDB store:&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-json hljs&quot; data-lang=&quot;json&quot;&gt;[
+  {
+    &quot;_id&quot;: {&quot;$binary&quot;: {&quot;base64&quot;: &quot;mAEBigERCg9KDTAtNjc5LTc3NTQzLTk=&quot;, &quot;subType&quot;: &quot;00&quot;}},
+    &quot;value&quot;: {&quot;$binary&quot;: {&quot;base64&quot;: &quot;mAELigFLCkmCARBib29rX3NhbXBsZS5Cb29rigEzChpUaGUgV2luZC1VcCBCaXJkIENocm9uaWNsZRjNDyISCgZIYXJ1a2kSCE11cmFrYW1p&quot;, &quot;subType&quot;: &quot;00&quot;}}
+    ...
+  }
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;structured&lt;/code&gt;: a structured BSON representation of the objects:&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-json hljs&quot; data-lang=&quot;json&quot;&gt;[
+  {
+    &quot;_id&quot;: {
+      &quot;_type&quot;: &quot;string&quot;,
+      &quot;_value&quot;: &quot;0-679-77543-9&quot;
+    },
+    &quot;value&quot;: {
+      &quot;_type&quot;: &quot;book_sample.Book&quot;,
+      &quot;title&quot;: &quot;The Wind-Up Bird Chronicle&quot;,
+      &quot;publicationYear&quot;: 1997,
+      &quot;authors&quot;: [
+        {
+          &quot;name&quot;: &quot;Haruki&quot;,
+          &quot;surname&quot;: &quot;Murakami&quot;
+        }
+      ]
+    },
+    ...
+  }
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;expiration&quot;&gt;Expiration&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The MongoDB store supports expiration. However, in order to ensure correctness the expired entries are removed from the database one by one, instead of using a bulk operation. Therefore, make sure this does not have a negative impact on MongoDB instances.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Antonio Macrì</name></author><category term="cache store" /><category term="mongodb" /><category term="persistence" /><summary type="html">After a long period of inactivity, the MongoDB store is now back to life. It has been upgraded to work with Infinispan 15.</summary></entry><entry><title type="html">Infinispan 15.0.0.Dev01</title><link href="https://infinispan.org/blog/2023/04/23/infinispan-15dev01" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev01" /><published>2023-04-23T20:00:00-04:00</published><updated>2023-04-23T20:00:00-04:00</updated><id>https://infinispan.org/blog/2023/04/23/infinispan-15.0.0.Dev01</id><content type="html" xml:base="https://infinispan.org/blog/2023/04/23/infinispan-15dev01">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Infinispan 15.0.0.Dev01 marks the beginning of a new development cycle, and there are a number of
@@ -346,7 +424,7 @@ https://issues.redhat.com/browse/ISPN-14784[ISPN-14784] - Build with JDK 21&lt;/
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Infinispan 15.0.0.Dev01 marks the beginning of a new development cycle, and there are a number of notable changes that we are making that deserve a detailed post.</summary></entry><entry><title type="html">Infinispan 14.0.7.Final</title><link href="https://infinispan.org/blog/2023/03/13/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.7.Final" /><published>2023-03-13T01:00:00+01:00</published><updated>2023-03-13T01:00:00+01:00</updated><id>https://infinispan.org/blog/2023/03/13/infinispan-14.0.7.Final</id><content type="html" xml:base="https://infinispan.org/blog/2023/03/13/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Infinispan 15.0.0.Dev01 marks the beginning of a new development cycle, and there are a number of notable changes that we are making that deserve a detailed post.</summary></entry><entry><title type="html">Infinispan 14.0.7.Final</title><link href="https://infinispan.org/blog/2023/03/12/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.7.Final" /><published>2023-03-12T20:00:00-04:00</published><updated>2023-03-12T20:00:00-04:00</updated><id>https://infinispan.org/blog/2023/03/12/infinispan-14.0.7.Final</id><content type="html" xml:base="https://infinispan.org/blog/2023/03/12/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;We rarely do announcements for micro-releases, but 14.0.7.Final is a bit special, because it finally adds support for Spring 6 and Spring Boot 3.&lt;/p&gt;
@@ -570,7 +648,7 @@ if you use it for your persistent caches you should really upgrade !&lt;/p&gt;
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.]&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">We rarely do announcements for micro-releases, but 14.0.7.Final is a bit special, because it finally adds support for Spring 6 and Spring Boot 3.</summary></entry><entry><title type="html">Infinispan 14 supporting duplicates on multimap</title><link href="https://infinispan.org/blog/2022/10/02/infinispan-14-supporting-duplicates-on-multimap" rel="alternate" type="text/html" title="Infinispan 14 supporting duplicates on multimap" /><published>2022-10-02T02:00:00+02:00</published><updated>2022-10-02T02:00:00+02:00</updated><id>https://infinispan.org/blog/2022/10/02/infinispan-14-supporting-duplicates-on-multimap</id><content type="html" xml:base="https://infinispan.org/blog/2022/10/02/infinispan-14-supporting-duplicates-on-multimap">&lt;div id=&quot;preamble&quot;&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">We rarely do announcements for micro-releases, but 14.0.7.Final is a bit special, because it finally adds support for Spring 6 and Spring Boot 3.</summary></entry><entry><title type="html">Infinispan 14 supporting duplicates on multimap</title><link href="https://infinispan.org/blog/2022/10/01/infinispan-14-supporting-duplicates-on-multimap" rel="alternate" type="text/html" title="Infinispan 14 supporting duplicates on multimap" /><published>2022-10-01T20:00:00-04:00</published><updated>2022-10-01T20:00:00-04:00</updated><id>https://infinispan.org/blog/2022/10/01/infinispan-14-supporting-duplicates-on-multimap</id><content type="html" xml:base="https://infinispan.org/blog/2022/10/01/infinispan-14-supporting-duplicates-on-multimap">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan community,&lt;/p&gt;
@@ -634,7 +712,7 @@ Multimap size: 3&lt;/code&gt;&lt;/pre&gt;
 &lt;a href=&quot;https://infinispan.org/docs/14.0.x/titles/embedding/embedding.html#multimap-cache&quot;&gt;Infinispan MultimapCache Guide&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Yusuf Karadag</name></author><category term="multimap" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14.0.0.Final</title><link href="https://infinispan.org/blog/2022/09/29/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Final" /><published>2022-09-29T14:00:00+02:00</published><updated>2022-09-29T14:00:00+02:00</updated><id>https://infinispan.org/blog/2022/09/29/infinispan-14.0.0.Final</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/29/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
+&lt;/div&gt;</content><author><name>Yusuf Karadag</name></author><category term="multimap" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14.0.0.Final</title><link href="https://infinispan.org/blog/2022/09/29/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Final" /><published>2022-09-29T08:00:00-04:00</published><updated>2022-09-29T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/09/29/infinispan-14.0.0.Final</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/29/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Flying saucers are probably the most common type of UFO. They are sleek and shiny and, most importantly, they come in peace bringing lots of goodies from outer space!
@@ -971,7 +1049,7 @@ Oh, and the fact that it’s also the &lt;a href=&quot;https://untappd.com/b/kin
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Flying saucers are probably the most common type of UFO. They are sleek and shiny and, most importantly, they come in peace bringing lots of goodies from outer space! Just like Infinispan 14! Oh, and the fact that it’s also the name of a beer is no sheer coincidence.</summary></entry><entry><title type="html">Infinispan Node.js client supports query</title><link href="https://infinispan.org/blog/2022/09/25/infinispan-js-client" rel="alternate" type="text/html" title="Infinispan Node.js client supports query" /><published>2022-09-25T14:00:00+02:00</published><updated>2022-09-25T14:00:00+02:00</updated><id>https://infinispan.org/blog/2022/09/25/nodejs-010-query</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/25/infinispan-js-client">&lt;div class=&quot;sect1&quot;&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Flying saucers are probably the most common type of UFO. They are sleek and shiny and, most importantly, they come in peace bringing lots of goodies from outer space! Just like Infinispan 14! Oh, and the fact that it’s also the name of a beer is no sheer coincidence.</summary></entry><entry><title type="html">Infinispan Node.js client supports query</title><link href="https://infinispan.org/blog/2022/09/25/infinispan-js-client" rel="alternate" type="text/html" title="Infinispan Node.js client supports query" /><published>2022-09-25T08:00:00-04:00</published><updated>2022-09-25T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/09/25/nodejs-010-query</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/25/infinispan-js-client">&lt;div class=&quot;sect1&quot;&gt;
 &lt;h2 id=&quot;node-js-client-0-10-0&quot;&gt;Node.js Client 0.10.0&lt;/h2&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -1018,7 +1096,7 @@ You must set the data-format as &lt;code&gt;application/x-protostream&lt;/code&g
 &lt;p&gt;Jira tracker for this client is available &lt;a href=&quot;https://issues.redhat.com/projects/HRJS&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Neeraj Gartia</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><category term="Protobuf" /><category term="query" /><summary type="html">Node.js Client 0.10.0</summary></entry><entry><title type="html">Creating cache with wizard - Infinispan 14</title><link href="https://infinispan.org/blog/2022/09/13/infinispan-14-console-wizard" rel="alternate" type="text/html" title="Creating cache with wizard - Infinispan 14" /><published>2022-09-13T02:00:00+02:00</published><updated>2022-09-13T02:00:00+02:00</updated><id>https://infinispan.org/blog/2022/09/13/infinispan-14-console-wizard</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/13/infinispan-14-console-wizard">&lt;div id=&quot;preamble&quot;&gt;
+&lt;/div&gt;</content><author><name>Neeraj Gartia</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><category term="Protobuf" /><category term="query" /><summary type="html">Node.js Client 0.10.0</summary></entry><entry><title type="html">Creating cache with wizard - Infinispan 14</title><link href="https://infinispan.org/blog/2022/09/12/infinispan-14-console-wizard" rel="alternate" type="text/html" title="Creating cache with wizard - Infinispan 14" /><published>2022-09-12T20:00:00-04:00</published><updated>2022-09-12T20:00:00-04:00</updated><id>https://infinispan.org/blog/2022/09/12/infinispan-14-console-wizard</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/12/infinispan-14-console-wizard">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan Community,&lt;/p&gt;
@@ -1199,7 +1277,7 @@ Creating a cache will now be effortless and user-centric with a wizard based int
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Dipanshu Gupta</name></author><category term="console" /><summary type="html">Dear Infinispan Community,</summary></entry><entry><title type="html">Infinispan 14.0.0.CR1</title><link href="https://infinispan.org/blog/2022/08/09/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.CR1" /><published>2022-08-09T14:00:00+02:00</published><updated>2022-08-09T14:00:00+02:00</updated><id>https://infinispan.org/blog/2022/08/09/infinispan-14.0.0.CR1</id><content type="html" xml:base="https://infinispan.org/blog/2022/08/09/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
+&lt;/div&gt;</content><author><name>Dipanshu Gupta</name></author><category term="console" /><summary type="html">Dear Infinispan Community,</summary></entry><entry><title type="html">Infinispan 14.0.0.CR1</title><link href="https://infinispan.org/blog/2022/08/09/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.CR1" /><published>2022-08-09T08:00:00-04:00</published><updated>2022-08-09T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/08/09/infinispan-14.0.0.CR1</id><content type="html" xml:base="https://infinispan.org/blog/2022/08/09/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan community,&lt;/p&gt;
@@ -1251,7 +1329,7 @@ Creating a cache will now be effortless and user-centric with a wizard based int
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14 OpenTelemetry tracing integration</title><link href="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing" rel="alternate" type="text/html" title="Infinispan 14 OpenTelemetry tracing integration" /><published>2022-07-18T21:37:00+02:00</published><updated>2022-07-18T21:37:00+02:00</updated><id>https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing</id><content type="html" xml:base="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing">&lt;div id=&quot;preamble&quot;&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14 OpenTelemetry tracing integration</title><link href="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing" rel="alternate" type="text/html" title="Infinispan 14 OpenTelemetry tracing integration" /><published>2022-07-18T15:37:00-04:00</published><updated>2022-07-18T15:37:00-04:00</updated><id>https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing</id><content type="html" xml:base="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan community,&lt;/p&gt;
@@ -1434,7 +1512,7 @@ In this case, OTLP gRPC Exporter protocol is used and the server runs on the sam
 &lt;p&gt;You can find a complete application example here: &lt;a href=&quot;https://github.com/fax4ever/infinispan-play/tree/main/tracing-rest-client&quot; class=&quot;bare&quot;&gt;https://github.com/fax4ever/infinispan-play/tree/main/tracing-rest-client&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Fabio Massimo Ercoli</name></author><category term="opentelemetry" /><category term="tracing" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14.0.0.Dev04</title><link href="https://infinispan.org/blog/2022/07/14/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Dev04" /><published>2022-07-14T14:00:00+02:00</published><updated>2022-07-14T14:00:00+02:00</updated><id>https://infinispan.org/blog/2022/07/14/infinispan-14.0.0.Dev04</id><content type="html" xml:base="https://infinispan.org/blog/2022/07/14/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
+&lt;/div&gt;</content><author><name>Fabio Massimo Ercoli</name></author><category term="opentelemetry" /><category term="tracing" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14.0.0.Dev04</title><link href="https://infinispan.org/blog/2022/07/14/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.Dev04" /><published>2022-07-14T08:00:00-04:00</published><updated>2022-07-14T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/07/14/infinispan-14.0.0.Dev04</id><content type="html" xml:base="https://infinispan.org/blog/2022/07/14/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan community,&lt;/p&gt;
@@ -1529,147 +1607,4 @@ For example, your data may be &lt;code&gt;A = [1,2,3,3,5]&lt;/code&gt; when dupl
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>William Burns</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news" rel="alternate" type="text/html" title="Infinispan 14 indexing &amp;amp; query news" /><published>2022-06-14T20:00:00+02:00</published><updated>2022-06-14T20:00:00+02:00</updated><id>https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news</id><content type="html" xml:base="https://infinispan.org/blog/2022/06/14/infinispan-14-indexing-query-news">&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispan community,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;with the Infinispan 14 development release 03 we introduced improvements on indexing and search capabilities.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;infinispan-indexing-annotations&quot;&gt;Infinispan indexing annotations&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We are going to replace Hibernate annotations with Infinispan indexing annotations.
-The new annotations can be used in the same way for both embedded and remote queries.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Here are examples of two annotated POJOs:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Poem.java&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;@Indexed
-public class Poem {
-
-   private Author author;
-   private String description;
-   private Integer year;
-
-   @Embedded(includeDepth = 2, structure = Structure.NESTED)
-   public Author getAuthor() {
-      return author;
-   }
-
-   @Text(projectable = true, analyzer = &quot;whitespace&quot;, termVector = TermVector.WITH_OFFSETS)
-   public String getDescription() {
-      return description;
-   }
-
-   @Basic(projectable = true, sortable = true, indexNullAs = &quot;1800&quot;)
-   public Integer getYear() {
-      return year;
-   }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Author.java&lt;/div&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;@Indexed
-public class Author {
-
-   private String name;
-
-   public Author(String name) {
-      this.name = name;
-   }
-
-   @Keyword(projectable = true, sortable = true, normalizer = &quot;lowercase&quot;, indexNullAs = &quot;unnamed&quot;, norms = false)
-   public String getName() {
-      return name;
-   }
-
-   public void setName(String name) {
-      this.name = name;
-   }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Use the &lt;code&gt;@Basic&lt;/code&gt; annotation for indexed fields without any special string/text transformation.
-When you apply a normalizer to a String field, use the &lt;code&gt;@Keyword&lt;/code&gt; annotation.
-When you apply an analyzer to a String field, use the &lt;code&gt;@Text&lt;/code&gt; annotation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The new annotations allow you to set a single annotation per indexed field if the field should be &lt;code&gt;sortable&lt;/code&gt; or &lt;code&gt;projectable&lt;/code&gt; and if you want to use an &lt;code&gt;analyzer&lt;/code&gt; or &lt;code&gt;normalizer&lt;/code&gt; on the field.
-However, the combination of an attribute and the annotation must be supported, for instance the attribute &lt;code&gt;sortable&lt;/code&gt; cannot be used with the &lt;code&gt;@Text&lt;/code&gt; annotation, since an analyzed field cannot be used to sort the result set.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When indexing entities with null values, define a default value with the &lt;code&gt;indexNullAs&lt;/code&gt; attribute.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For embedded indexes use the &lt;code&gt;@Embedded&lt;/code&gt; annotation and choose between two structures.
-The &lt;code&gt;NESTED&lt;/code&gt; structure preserves the original object relationship structure and the &lt;code&gt;FLATTENED&lt;/code&gt; structure makes the leaf fields multi-valued of the parent entity, so the embedded entity will not be present in the index.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;index-startup-mode&quot;&gt;Index startup mode&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Indexes can be persistent and cache data can be volatile and vice versa.
-You can perform some operations to keep the index consistent with data in the cache.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We introduced the &lt;code&gt;startup-mode&lt;/code&gt; configuration. Here is an example:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-xml hljs&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;distributed-cache&amp;gt;
-  &amp;lt;indexing storage=&quot;filesystem&quot; startup-mode=&quot;purge&quot;&amp;gt;
-    &amp;lt;!-- Additional indexing configuration goes here. --&amp;gt;
-  &amp;lt;/indexing&amp;gt;
-&amp;lt;/distributed-cache&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With this configuration every time the cache is started, the indexes will be purged.
-Possible values are: &lt;code&gt;purge&lt;/code&gt;, &lt;code&gt;reindex&lt;/code&gt;, &lt;code&gt;none&lt;/code&gt;, and &lt;code&gt;auto&lt;/code&gt;.
-When you choose &lt;code&gt;auto&lt;/code&gt; mode, Infinispan decides what is the right operation to run to align cache data and indexes.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;index-schema-update&quot;&gt;Index schema update&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is an advanced feature to be used only in case your model needs to be evolved while continuing querying the cache data without data migrations or re-indexing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For a comprehensive guide about when to use schema update instead of migrating or re-indexing the data refer to the documentation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The command can be triggered from the HotRod remote administration API:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-none hljs&quot;&gt;remoteCacheManager.administration().updateIndexSchema(CACHE_NAME);&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;or using the REST API, targeting the uri:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-none hljs&quot;&gt;POST .../v2/caches/{cacheName}/search/indexes?action=updateSchema&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;or using the Infinispan CLI by running &lt;code&gt;update-schema&lt;/code&gt; on the runtime cache instance.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Fabio Massimo Ercoli</name></author><category term="indexing" /><category term="query" /><category term="schema" /><category term="startup" /><category term="annotations" /><summary type="html">Dear Infinispan community,</summary></entry></feed>
+&lt;/div&gt;</content><author><name>William Burns</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry></feed>
