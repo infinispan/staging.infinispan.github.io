@@ -758,6 +758,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_get_principal_roles">2.9.4. Retrieving the roles for a principal</a></li>
 <li><a href="#rest_v2_grant_principal_roles">2.9.5. Granting roles to a principal</a></li>
 <li><a href="#rest_v2_deny_principal_roles">2.9.6. Denying roles to a principal</a></li>
+<li><a href="#rest_v2_list_principals">2.9.7. Listing principals</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_tracing_propagation">2.10. Enabling Tracing Propagation</a>
@@ -6903,6 +6904,25 @@ The principal need not exist in the realm in use.</p>
 </tbody>
 </table>
 </div>
+<div class="sect3">
+<h4 id="rest_v2_list_principals"><a class="anchor" href="#rest_v2_list_principals"></a>2.9.7. Listing principals</h4>
+<div class="paragraph">
+<p>List the principal names for all security realms that can enumerate users (<code>properties</code>, <code>ldap</code>)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/security/principals</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan responds with a list of principals keyed to each realm</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{"default:properties":["admin","user1","user2"]}</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="rest_v2_tracing_propagation"><a class="anchor" href="#rest_v2_tracing_propagation"></a>2.10. Enabling Tracing Propagation</h3>
@@ -7324,7 +7344,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-30 19:45:56 UTC
+Last updated 2023-07-03 13:00:28 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
