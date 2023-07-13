@@ -4559,7 +4559,7 @@ operations to be sent to the other nodes.</p>
 Infinispan overrides all of the various Stream intermediate and terminal methods to take
 Serializable versions of the arguments (ie. SerializableFunction, SerializablePredicate&#8230;&#8203;)
 You can find these methods at
-<a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/stream/CacheStream.html">CacheStream</a>.
+<a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/CacheStream.html">CacheStream</a>.
 This relies on the spec to pick the most specific method as defined <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.12.2.5">here</a>.</p>
 </div>
 <div class="paragraph">
@@ -4853,7 +4853,7 @@ operation returns just the first value they find, whether it was from a remote n
 or locally.  Note this supports early termination in that once a value is found it
 will not process others.  Note the findFirst method is special since it requires a sorted
 intermediate operation, which is detailed in the
-<a href="user_guide.html#intermediate_operation_exceptions">exceptions</a> section.</p>
+<a href="../embedding/embedding.html#intermediate_operation_exceptions">exceptions</a> section.</p>
 </dd>
 <dt class="hdlist1">max min</dt>
 <dd>
@@ -7065,7 +7065,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-11 18:32:00 UTC
+Last updated 2023-07-13 07:15:24 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
