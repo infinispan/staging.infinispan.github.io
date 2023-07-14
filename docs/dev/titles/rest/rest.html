@@ -753,7 +753,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_security">2.9. Working with Infinispan Security</a>
 <ul class="sectlevel3">
 <li><a href="#rest_v2_get_user_acl">2.9.1. Retrieving the ACL of a user</a></li>
-<li><a href="#rest_v2_flush_acl_cache">2.9.2. Flushing the ACL cache</a></li>
+<li><a href="#rest_v2_flush_acl_cache">2.9.2. Flushing the security caches</a></li>
 <li><a href="#rest_v2_get_roles">2.9.3. Retrieving the available roles</a></li>
 <li><a href="#rest_v2_get_principal_roles">2.9.4. Retrieving the roles for a principal</a></li>
 <li><a href="#rest_v2_grant_principal_roles">2.9.5. Granting roles to a principal</a></li>
@@ -6793,9 +6793,9 @@ The list includes the principals of the user, and a list of resources and the pe
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_flush_acl_cache"><a class="anchor" href="#rest_v2_flush_acl_cache"></a>2.9.2. Flushing the ACL cache</h4>
+<h4 id="rest_v2_flush_acl_cache"><a class="anchor" href="#rest_v2_flush_acl_cache"></a>2.9.2. Flushing the security caches</h4>
 <div class="paragraph">
-<p>Flush the access-control list cache across the cluster.</p>
+<p>Flush the security caches across the cluster.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -7349,7 +7349,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-14 12:59:25 UTC
+Last updated 2023-07-14 13:02:06 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

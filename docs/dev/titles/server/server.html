@@ -646,6 +646,11 @@ $(addBlockSwitches);
 </li>
 </ul>
 </li>
+<li><a href="#caching-security-realms_security-realms">5.9. Security realm caching</a>
+<ul class="sectlevel3">
+<li><a href="#flushing_realm_caches">5.9.1. Flushing realm caches</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#configuring-encryption">6. Configuring TLS/SSL encryption</a>
@@ -693,7 +698,11 @@ $(addBlockSwitches);
 <li><a href="#creating-custom-roles-statically_rbac-remote">8.5. Adding custom roles to Cache Manager configuration</a></li>
 <li><a href="#configuring-cache-authorization_rbac-remote">8.6. Configuring caches with security authorization</a></li>
 <li><a href="#disabling-authorization_rbac-remote">8.7. Disabling security authorization</a></li>
-<li><a href="#configuring-acl-cache_rbac-remote">8.8. Configuring the access control list (ACL) cache</a></li>
+<li><a href="#configuring-acl-cache_rbac-remote">8.8. Configuring the access control list (ACL) cache</a>
+<ul class="sectlevel3">
+<li><a href="#flushing_acl_caches">8.8.1. Flushing ACL caches</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#statistics-jmx">9. Enabling and configuring Infinispan statistics and JMX monitoring</a>
@@ -5535,6 +5544,65 @@ The example shows how to extract the local-part from a <code>user@domain.com</co
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="caching-security-realms_security-realms"><a class="anchor" href="#caching-security-realms_security-realms"></a>5.9. Security realm caching</h3>
+<div class="paragraph">
+<p>Security realms implement caching to avoid having to repeatedly retrieve data which usually changes very infrequently.
+By default</p>
+</div>
+<h4 id="realm_caching_realm_configuration" class="discrete">Realm caching realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
+    &lt;security&gt;
+        &lt;security-realms&gt;
+            &lt;security-realm name="default" cache-max-size="1024" cache-lifespan="120000"&gt;
+            &lt;/security-realm&gt;
+        &lt;/security-realms&gt;
+    &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "default",
+        "cache-max-size": 1024,
+        "cache-lifespan": 120000
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "default"
+        cache-max-size: 1024
+        cache-lifespan: 120000</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="flushing_realm_caches"><a class="anchor" href="#flushing_realm_caches"></a>5.9.1. Flushing realm caches</h4>
+<div class="paragraph">
+<p>Use the CLI to flush security realm caches across the whole cluster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>[node-1@mycluster//containers/default]&gt; server aclcache flush</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -8040,6 +8108,11 @@ You should disable the ACL cache only if you disable authorization.</p>
       authorization: ~</code></pre>
 </div>
 </div>
+<div class="sect3">
+<h4 id="flushing_acl_caches"><a class="anchor" href="#flushing_acl_caches"></a>8.8.1. Flushing ACL caches</h4>
+<div class="paragraph">
+<p>It is possible to flush the ACL cache using the <code>GlobalSecurityManager</code> MBean, accessible over JMX.</p>
+</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -8047,6 +8120,7 @@ You should disable the ACL cache only if you disable authorization.</p>
 <p><a href="https://docs.jboss.org/infinispan/15.0/configdocs/">Infinispan configuration schema reference</a></p>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -12982,7 +13056,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-14 12:59:25 UTC
+Last updated 2023-07-14 13:02:06 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
