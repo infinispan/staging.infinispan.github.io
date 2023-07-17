@@ -3128,13 +3128,13 @@ You can inherit properties from the default stacks while combining, removing, an
                    stack.combine="INSERT_AFTER"
                    stack.position="VERIFY_SUSPECT2" /&gt;
     &lt;/stack&gt;
-    &lt;cache-container name="default" statistics="true"&gt;
-      &lt;!-- Uses "my-stack" for cluster transport. --&gt;
-      &lt;transport cluster="${infinispan.cluster.name}"
-                 stack="my-stack"
-                 node-name="${infinispan.node.name:}"/&gt;
-   &lt;/cache-container&gt;
   &lt;/jgroups&gt;
+  &lt;cache-container name="default" statistics="true"&gt;
+    &lt;!-- Uses "my-stack" for cluster transport. --&gt;
+    &lt;transport cluster="${infinispan.cluster.name}"
+               stack="my-stack"
+               node-name="${infinispan.node.name:}"/&gt;
+  &lt;/cache-container&gt;
 &lt;/infinispan&gt;</code></pre>
 </div>
 </div>
@@ -7624,7 +7624,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-17 11:41:36 UTC
+Last updated 2023-07-17 14:32:49 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
