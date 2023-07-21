@@ -773,16 +773,10 @@ $(addBlockSwitches);
 <li><a href="#default-user-roles_security-authorization">8.1. Infinispan user roles and permissions</a>
 <ul class="sectlevel3">
 <li><a href="#user-permissions_security-authorization">8.1.1. Permissions</a></li>
-<li><a href="#role-mappers_security-authorization">8.1.2. Role and permission mappers</a>
-<ul class="sectlevel4">
-<li><a href="#mapping_users_to_roles_and_permissions_in_infinispan">Mapping users to roles and permissions in Infinispan</a></li>
-</ul>
-</li>
+<li><a href="#role-mappers_security-authorization">8.1.2. Role and permission mappers</a></li>
 <li><a href="#configuring-role-mappers_security-authorization">8.1.3. Configuring role mappers</a></li>
-<li><a href="#configuring-cluster-role-mapper_security-authorization">8.1.4. Configuring the cluster role and permission mappers</a>
+<li><a href="#configuring-cluster-role-mapper_security-authorization">8.1.4. Configuring the cluster role mapper</a>
 <ul class="sectlevel4">
-<li><a href="#creating-roles_security-authorization">Creating new roles</a></li>
-<li><a href="#granting-roles-to-users_security-authorization">Granting roles to users</a></li>
 <li><a href="#cluster_role_mapper_name_rewriters">Cluster role mapper name rewriters</a>
 <ul class="sectlevel5">
 <li><a href="#case_principal_transformer">Case Principal Transformer</a></li>
@@ -6104,32 +6098,6 @@ In these cases manual recovery is not possible with cache stores.</p>
 <div class="paragraph">
 <p>Infinispan preserves global state so that it can restore cluster topology and cached data after restart.</p>
 </div>
-<div class="paragraph">
-<p>Infinispan uses file locking to prevent concurrent access to the global persistent location. The lock is acquired on
-startup and released on a node shutdown. The presence of a dangling lock file indicates that the node was not shutdown cleanly, either because of a crash or external termination.
-In the default configuration, Infinispan will refuse to start up to avoid data corruption with the following message:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>ISPN000693: Dangling lock file '%s' in persistent global state, probably left behind by an unclean shutdown</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The behavior can be changed by configuring the global state <code>unclean-shutdown-action</code> setting to one of the following:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>FAIL</code>: Prevents startup of the cache manager if a dangling lock file is found in the persistent global state. This is the default behavior.</p>
-</li>
-<li>
-<p><code>PURGE</code>: Clears the persistent global state if a dangling lock file is found in the persistent global state.</p>
-</li>
-<li>
-<p><code>IGNORE</code>: Ignores the presence of a dangling lock file in the persistent global state.</p>
-</li>
-</ul>
-</div>
 <h4 id="remote_caches" class="discrete">Remote caches</h4>
 <div class="paragraph">
 <p>Infinispan Server saves cluster state to the <code>$ISPN_HOME/server/data</code> directory.</p>
@@ -10515,17 +10483,11 @@ crm.resolveConflicts((preferredEntry, otherEntries) -&gt; preferredEntry);</code
 <div class="sect3">
 <h4 id="role-mappers_security-authorization"><a class="anchor" href="#role-mappers_security-authorization"></a>8.1.2. Role and permission mappers</h4>
 <div class="paragraph">
-<p>Infinispan implements users as a collection of principals.
-Principals represent either an individual user identity, such as a username, or a group to which the users belong. Internally, these are implemented with the <code>javax.security.auth.Subject</code> class.</p>
+<p>Infinispan users are implemented with the <code>javax.security.auth.Subject</code> class and represent a grouping of security principals of type <code>java.security.Principal</code>.</p>
 </div>
 <div class="paragraph">
-<p>To enable authorization, the principals must be mapped to role names, which are then expanded into a set of permissions.</p>
-</div>
-<div class="paragraph">
-<p>Infinispan includes the <code>PrincipalRoleMapper</code> API for associating security principals to roles, and the <code>RolePermissionMapper</code> API for associating roles with specific permissions.</p>
-</div>
-<div class="paragraph">
-<p>Infinispan provides the following role and permission mapper implementations:</p>
+<p>Infinispan includes the <code>PrincipalRoleMapper</code> API to associate security principals to roles and the <code>RolePermissionMapper</code> API to associate roles with sets of permissions.
+Infinispan also provides the following role and permission mapper implementations:</p>
 </div>
 <div class="dlist">
 <dl>
@@ -10535,68 +10497,17 @@ Principals represent either an individual user identity, such as a username, or 
 </dd>
 <dt class="hdlist1">Cluster permission mapper</dt>
 <dd>
-<p>Stores role to permission mappings in the cluster registry. Allows you to dynamically modify user roles and permissions.</p>
+<p>Stores role to permission mappings in the cluster registry and allows you to dynamically modify user roles and permissions.</p>
 </dd>
 <dt class="hdlist1">Identity role mapper</dt>
 <dd>
-<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example, in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
+<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
 </dd>
 <dt class="hdlist1">Common name role mapper</dt>
 <dd>
-<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory or with client certificates that contain Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
+<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory that contains Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
 </dd>
 </dl>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-By default, principal-to-role mapping is only applied to principals which represent groups.
-It is possible to configure Infinispan to also perform the mapping for user principals.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect4">
-<h5 id="mapping_users_to_roles_and_permissions_in_infinispan"><a class="anchor" href="#mapping_users_to_roles_and_permissions_in_infinispan"></a>Mapping users to roles and permissions in Infinispan</h5>
-<div class="paragraph">
-<p>Consider the following user retrieved from an LDAP server, as a collection of DNs:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>CN=myapplication,OU=applications,DC=mycompany
-CN=dataprocessors,OU=groups,DC=mycompany
-CN=finance,OU=groups,DC=mycompany</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Using the <strong>Common name role mapper</strong>, the user would be mapped to the following roles:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>dataprocessors
-finance</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Infinispan has the following role definitions:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>dataprocessors: ALL_WRITE ALL_READ
-finance: LISTEN</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The user would have the following permissions:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>ALL_WRITE ALL_READ LISTEN</pre>
-</div>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -10619,12 +10530,12 @@ finance: LISTEN</pre>
 </ul>
 </div>
 </div>
-</div>
 <div class="sect3">
 <h4 id="configuring-role-mappers_security-authorization"><a class="anchor" href="#configuring-role-mappers_security-authorization"></a>8.1.3. Configuring role mappers</h4>
 <div class="paragraph">
 <p>Infinispan enables the cluster role mapper and cluster permission mapper by default.
-To use a different implementation for role mapping, you must configure the role mappers.</p>
+You should configure role mappers if you want to use the identity role mapper, Common Name (CN) role mapper, or a custom implementation.
+For example, if your deployment integrates with an LDAP directory and you want to use the Distinguished Name (DN) as the security principal you can configure Infinispan to use the Common Name (CN) role mapper.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -10692,129 +10603,11 @@ To use a different implementation for role mapping, you must configure the role 
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-cluster-role-mapper_security-authorization"><a class="anchor" href="#configuring-cluster-role-mapper_security-authorization"></a>8.1.4. Configuring the cluster role and permission mappers</h4>
+<h4 id="configuring-cluster-role-mapper_security-authorization"><a class="anchor" href="#configuring-cluster-role-mapper_security-authorization"></a>8.1.4. Configuring the cluster role mapper</h4>
 <div class="paragraph">
 <p>The cluster role mapper maintains a dynamic mapping between principals and roles.
-The cluster permission mapper maintains a dynamic set of role definitions.
-In both cases, the mappings are stored in the cluster registry and can be manipulated at runtime using either the CLI or the REST API.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
-</li>
-<li>
-<p>Start the Infinispan CLI.</p>
-</li>
-<li>
-<p>Connect to a running Infinispan cluster.</p>
-</li>
-</ul>
-</div>
-<div class="sect4">
-<h5 id="creating-roles_security-authorization"><a class="anchor" href="#creating-roles_security-authorization"></a>Creating new roles</h5>
-<div class="paragraph">
-<p>Create new roles and set the permissions.</p>
-</div>
-<div class="ulist">
-<div class="title">Procedure</div>
-<ul>
-<li>
-<p>Create roles with the <code class="command">user roles create</code> command, for example:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>user roles create --permissions=ALL_READ,ALL_WRITE simple</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<div class="title">Verification</div>
-<p>List roles that you grant to users with the <code class="command">user roles ls</code> command.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>user roles ls
-["observer","application","admin","monitor","simple","deployer"]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Describe roles with the <code class="command">user roles describe</code> command.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>user roles describe simple
-{
-  "name" : "simple",
-  "permissions" : [ "ALL_READ","ALL_WRITE" ]
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="granting-roles-to-users_security-authorization"><a class="anchor" href="#granting-roles-to-users_security-authorization"></a>Granting roles to users</h5>
-<div class="paragraph">
-<p>Assign roles to users and grant them permissions to perform cache operations and interact with Infinispan resources.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Grant roles to groups instead of users if you want to assign the same role to multiple users and centrally maintain their permissions.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
-</li>
-<li>
-<p>Create Infinispan users.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Create a CLI connection to Infinispan.</p>
-</li>
-<li>
-<p>Assign roles to users with the <code class="command">user roles grant</code> command, for example:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>user roles grant --roles=deployer katie</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<div class="title">Verification</div>
-<p>List roles that you grant to users with the <code class="command">user roles ls</code> command.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>user roles ls katie
-["deployer"]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="cluster_role_mapper_name_rewriters"><a class="anchor" href="#cluster_role_mapper_name_rewriters"></a>Cluster role mapper name rewriters</h5>
-<div class="paragraph">
-<p>By default, the mapping is performed using a strict string equivalence between principal names and roles.
-It is possible to configure the cluster role mapper to apply transformation to the principal name before performing a lookup.</p>
+You can manipulate these mappings using either the CLI or the REST API.
+By default, the mapping is performed using a strict string equivalence between principal names and roles. It is possible to configure the cluster role mapper to apply transformation to the principal name before performing a lookup.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -10830,6 +10623,8 @@ It is possible to configure the cluster role mapper to apply transformation to t
 </li>
 </ol>
 </div>
+<div class="sect4">
+<h5 id="cluster_role_mapper_name_rewriters"><a class="anchor" href="#cluster_role_mapper_name_rewriters"></a>Cluster role mapper name rewriters</h5>
 <div class="paragraph">
 <p>Principal names may have different forms, depending on the security realm type:</p>
 </div>
@@ -10847,7 +10642,7 @@ It is possible to configure the cluster role mapper to apply transformation to t
 </ul>
 </div>
 <div class="paragraph">
-<p>Names can be normalized to a common form using one of the following transformers:</p>
+<p>Names can be normalized to a common form using one of the following transformers.</p>
 </div>
 <div class="sect5">
 <h6 id="case_principal_transformer"><a class="anchor" href="#case_principal_transformer"></a>Case Principal Transformer</h6>
@@ -12893,7 +12688,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-19 12:02:58 UTC
+Last updated 2023-07-07 02:32:44 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -1775,6 +1775,9 @@ For most deployments, though, the default indexing configuration is suitable and
 It all depends on what you want to achieve.
 Faster queries means faster reads but comes at the expense of slower writes that come with indexing.</p>
 </div>
+<div class="paragraph">
+<p>Indexed query performances can be greatly improved by setting properly the max result and the total hit count accuracy values.</p>
+</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -1826,7 +1829,7 @@ In this way, the transaction either modifies the cache state in a consistent way
 </div>
 <div class="paragraph">
 <div class="title">Write locks with transactions</div>
-<p>Configuring the wrong locking mode can negatively the performance of your transactions.
+<p>Configuring the wrong locking mode can negatively affect the performance of your transactions.
 The right locking mode depends on whether your Infinispan deployment has a high or low rate of contention for keys.</p>
 </div>
 <div class="paragraph">
@@ -2400,7 +2403,7 @@ cb.unsafe().unreliableReturnValues(true);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-04-06 12:19:43 -0400
+Last updated 2023-07-07 02:32:44 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -775,7 +775,11 @@ $(addBlockSwitches);
 <li><a href="#default-user-roles_security-authorization">8.1. Infinispan user roles and permissions</a>
 <ul class="sectlevel3">
 <li><a href="#user-permissions_security-authorization">8.1.1. Permissions</a></li>
-<li><a href="#role-mappers_security-authorization">8.1.2. Role and permission mappers</a></li>
+<li><a href="#role-mappers_security-authorization">8.1.2. Role and permission mappers</a>
+<ul class="sectlevel4">
+<li><a href="#mapping_users_to_roles_and_permissions_in_infinispan">Mapping users to roles and permissions in Infinispan</a></li>
+</ul>
+</li>
 <li><a href="#configuring-role-mappers_security-authorization">8.1.3. Configuring role mappers</a></li>
 </ul>
 </li>
@@ -10621,11 +10625,17 @@ crm.resolveConflicts((preferredEntry, otherEntries) -&gt; preferredEntry);</code
 <div class="sect3">
 <h4 id="role-mappers_security-authorization"><a class="anchor" href="#role-mappers_security-authorization"></a>8.1.2. Role and permission mappers</h4>
 <div class="paragraph">
-<p>Infinispan users are implemented with the <code>javax.security.auth.Subject</code> class and represent a grouping of security principals of type <code>java.security.Principal</code>.</p>
+<p>Infinispan implements users as a collection of principals.
+Principals represent either an individual user identity, such as a username, or a group to which the users belong. Internally, these are implemented with the <code>javax.security.auth.Subject</code> class.</p>
 </div>
 <div class="paragraph">
-<p>Infinispan includes the <code>PrincipalRoleMapper</code> API to associate security principals to roles and the <code>RolePermissionMapper</code> API to associate roles with sets of permissions.
-Infinispan also provides the following role and permission mapper implementations:</p>
+<p>To enable authorization, the principals must be mapped to role names, which are then expanded into a set of permissions.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan includes the <code>PrincipalRoleMapper</code> API for associating security principals to roles, and the <code>RolePermissionMapper</code> API for associating roles with specific permissions.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan provides the following role and permission mapper implementations:</p>
 </div>
 <div class="dlist">
 <dl>
@@ -10635,17 +10645,55 @@ Infinispan also provides the following role and permission mapper implementation
 </dd>
 <dt class="hdlist1">Cluster permission mapper</dt>
 <dd>
-<p>Stores role to permission mappings in the cluster registry and allows you to dynamically modify user roles and permissions.</p>
+<p>Stores role to permission mappings in the cluster registry. Allows you to dynamically modify user roles and permissions.</p>
 </dd>
 <dt class="hdlist1">Identity role mapper</dt>
 <dd>
-<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
+<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example, in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
 </dd>
 <dt class="hdlist1">Common name role mapper</dt>
 <dd>
-<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory that contains Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
+<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory or with client certificates that contain Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
 </dd>
 </dl>
+</div>
+<div class="sect4">
+<h5 id="mapping_users_to_roles_and_permissions_in_infinispan"><a class="anchor" href="#mapping_users_to_roles_and_permissions_in_infinispan"></a>Mapping users to roles and permissions in Infinispan</h5>
+<div class="paragraph">
+<p>Consider the following user retrieved from an LDAP server, as a collection of DNs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>CN=myapplication,OU=applications,DC=mycompany
+CN=dataprocessors,OU=groups,DC=mycompany
+CN=finance,OU=groups,DC=mycompany</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using the <strong>Common name role mapper</strong>, the user would be mapped to the following roles:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>dataprocessors
+finance</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan has the following role definitions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>dataprocessors: ALL_WRITE ALL_READ
+finance: LISTEN</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The user would have the following permissions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ALL_WRITE ALL_READ LISTEN</pre>
+</div>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -10668,12 +10716,12 @@ Infinispan also provides the following role and permission mapper implementation
 </ul>
 </div>
 </div>
+</div>
 <div class="sect3">
 <h4 id="configuring-role-mappers_security-authorization"><a class="anchor" href="#configuring-role-mappers_security-authorization"></a>8.1.3. Configuring role mappers</h4>
 <div class="paragraph">
 <p>Infinispan enables the cluster role mapper and cluster permission mapper by default.
-You should configure role mappers if you want to use the identity role mapper, Common Name (CN) role mapper, or a custom implementation.
-For example, if your deployment integrates with an LDAP directory and you want to use the Distinguished Name (DN) as the security principal you can configure Infinispan to use the Common Name (CN) role mapper.</p>
+To use a different implementation for role mapping, you must configure the role mappers.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -12672,7 +12720,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-14 03:41:45 -0400
+Last updated 2023-07-07 03:23:43 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

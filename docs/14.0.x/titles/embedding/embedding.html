@@ -560,7 +560,11 @@ $(addBlockSwitches);
 <li><a href="#default-user-roles_rbac-embedded">3.1. Infinispan user roles and permissions</a>
 <ul class="sectlevel3">
 <li><a href="#user-permissions_rbac-embedded">3.1.1. Permissions</a></li>
-<li><a href="#role-mappers_rbac-embedded">3.1.2. Role and permission mappers</a></li>
+<li><a href="#role-mappers_rbac-embedded">3.1.2. Role and permission mappers</a>
+<ul class="sectlevel4">
+<li><a href="#mapping_users_to_roles_and_permissions_in_infinispan">Mapping users to roles and permissions in Infinispan</a></li>
+</ul>
+</li>
 <li><a href="#configuring-role-mappers_rbac-embedded">3.1.3. Configuring role mappers</a></li>
 </ul>
 </li>
@@ -859,7 +863,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;14.0.11.Final&lt;/version.infinispan&gt;
+  &lt;version.infinispan&gt;14.0.13.Final&lt;/version.infinispan&gt;
 &lt;/properties&gt;
 
 &lt;dependencyManagement&gt;
@@ -1408,11 +1412,17 @@ These are, in order of cost:</p>
 <div class="sect3">
 <h4 id="role-mappers_rbac-embedded"><a class="anchor" href="#role-mappers_rbac-embedded"></a>3.1.2. Role and permission mappers</h4>
 <div class="paragraph">
-<p>Infinispan users are implemented with the <code>javax.security.auth.Subject</code> class and represent a grouping of security principals of type <code>java.security.Principal</code>.</p>
+<p>Infinispan implements users as a collection of principals.
+Principals represent either an individual user identity, such as a username, or a group to which the users belong. Internally, these are implemented with the <code>javax.security.auth.Subject</code> class.</p>
 </div>
 <div class="paragraph">
-<p>Infinispan includes the <code>PrincipalRoleMapper</code> API to associate security principals to roles and the <code>RolePermissionMapper</code> API to associate roles with sets of permissions.
-Infinispan also provides the following role and permission mapper implementations:</p>
+<p>To enable authorization, the principals must be mapped to role names, which are then expanded into a set of permissions.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan includes the <code>PrincipalRoleMapper</code> API for associating security principals to roles, and the <code>RolePermissionMapper</code> API for associating roles with specific permissions.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan provides the following role and permission mapper implementations:</p>
 </div>
 <div class="dlist">
 <dl>
@@ -1422,17 +1432,55 @@ Infinispan also provides the following role and permission mapper implementation
 </dd>
 <dt class="hdlist1">Cluster permission mapper</dt>
 <dd>
-<p>Stores role to permission mappings in the cluster registry and allows you to dynamically modify user roles and permissions.</p>
+<p>Stores role to permission mappings in the cluster registry. Allows you to dynamically modify user roles and permissions.</p>
 </dd>
 <dt class="hdlist1">Identity role mapper</dt>
 <dd>
-<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
+<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example, in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
 </dd>
 <dt class="hdlist1">Common name role mapper</dt>
 <dd>
-<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory that contains Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
+<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory or with client certificates that contain Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
 </dd>
 </dl>
+</div>
+<div class="sect4">
+<h5 id="mapping_users_to_roles_and_permissions_in_infinispan"><a class="anchor" href="#mapping_users_to_roles_and_permissions_in_infinispan"></a>Mapping users to roles and permissions in Infinispan</h5>
+<div class="paragraph">
+<p>Consider the following user retrieved from an LDAP server, as a collection of DNs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>CN=myapplication,OU=applications,DC=mycompany
+CN=dataprocessors,OU=groups,DC=mycompany
+CN=finance,OU=groups,DC=mycompany</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using the <strong>Common name role mapper</strong>, the user would be mapped to the following roles:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>dataprocessors
+finance</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan has the following role definitions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>dataprocessors: ALL_WRITE ALL_READ
+finance: LISTEN</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The user would have the following permissions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ALL_WRITE ALL_READ LISTEN</pre>
+</div>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -1455,12 +1503,12 @@ Infinispan also provides the following role and permission mapper implementation
 </ul>
 </div>
 </div>
+</div>
 <div class="sect3">
 <h4 id="configuring-role-mappers_rbac-embedded"><a class="anchor" href="#configuring-role-mappers_rbac-embedded"></a>3.1.3. Configuring role mappers</h4>
 <div class="paragraph">
 <p>Infinispan enables the cluster role mapper and cluster permission mapper by default.
-You should configure role mappers if you want to use the identity role mapper, Common Name (CN) role mapper, or a custom implementation.
-For example, if your deployment integrates with an LDAP directory and you want to use the Distinguished Name (DN) as the security principal you can configure Infinispan to use the Common Name (CN) role mapper.</p>
+To use a different implementation for role mapping, you must configure the role mappers.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -2615,7 +2663,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>5.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.11.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.13.Final.jar</code> file.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -3080,13 +3128,13 @@ You can inherit properties from the default stacks while combining, removing, an
                    stack.combine="INSERT_AFTER"
                    stack.position="VERIFY_SUSPECT2" /&gt;
     &lt;/stack&gt;
-    &lt;cache-container name="default" statistics="true"&gt;
-      &lt;!-- Uses "my-stack" for cluster transport. --&gt;
-      &lt;transport cluster="${infinispan.cluster.name}"
-                 stack="my-stack"
-                 node-name="${infinispan.node.name:}"/&gt;
-   &lt;/cache-container&gt;
   &lt;/jgroups&gt;
+  &lt;cache-container name="default" statistics="true"&gt;
+    &lt;!-- Uses "my-stack" for cluster transport. --&gt;
+    &lt;transport cluster="${infinispan.cluster.name}"
+               stack="my-stack"
+               node-name="${infinispan.node.name:}"/&gt;
+  &lt;/cache-container&gt;
 &lt;/infinispan&gt;</code></pre>
 </div>
 </div>
@@ -4571,7 +4619,7 @@ operations to be sent to the other nodes.</p>
 Infinispan overrides all of the various Stream intermediate and terminal methods to take
 Serializable versions of the arguments (ie. SerializableFunction, SerializablePredicate&#8230;&#8203;)
 You can find these methods at
-<a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/stream/CacheStream.html">CacheStream</a>.
+<a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/CacheStream.html">CacheStream</a>.
 This relies on the spec to pick the most specific method as defined <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.12.2.5">here</a>.</p>
 </div>
 <div class="paragraph">
@@ -4865,7 +4913,7 @@ operation returns just the first value they find, whether it was from a remote n
 or locally.  Note this supports early termination in that once a value is found it
 will not process others.  Note the findFirst method is special since it requires a sorted
 intermediate operation, which is detailed in the
-<a href="user_guide.html#intermediate_operation_exceptions">exceptions</a> section.</p>
+<a href="../embedding/embedding.html#intermediate_operation_exceptions">exceptions</a> section.</p>
 </dd>
 <dt class="hdlist1">max min</dt>
 <dd>
@@ -7576,7 +7624,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-14 03:41:45 -0400
+Last updated 2023-07-07 03:23:43 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
