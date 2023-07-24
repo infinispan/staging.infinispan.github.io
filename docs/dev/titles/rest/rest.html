@@ -2943,16 +2943,16 @@ However, it is possible to define the current cluster topology as stable for a s
 <div class="ulist">
 <ul>
 <li>
-<p><code>hit_count</code> displays the total number of results from the query.</p>
+<p><code>hit_count</code> shows the total number of results from the query.</p>
 </li>
 <li>
-<p><code>hit_count_exact</code> is <code>true</code> whether the <code>hit_count</code> is exact, otherwise it is a lower-bound.</p>
+<p><code>hit_count_exact</code> is <code>true</code> which means the <code>hit_count</code> is exact. When it&#8217;s <code>false</code>, it implies that the hit count value is a lower bound.</p>
 </li>
 <li>
-<p><code>hits</code> is an array of matches from the query.</p>
+<p><code>hits</code> represents an array of individual matches from the query.</p>
 </li>
 <li>
-<p><code>hit</code> is an object that matches the query.</p>
+<p><code>hit</code> refers to each object that corresponds to a match in the query.</p>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -3003,7 +3003,7 @@ However, it is possible to define the current cluster topology as stable for a s
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>hit_count_accuracy</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Limit the required accuracy of the hit count for the indexed queries to an upper-bound. The default is <code>10_000</code>. You can change the default limit by setting the <code>query.hit-count-accuracy</code> cache property.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Limits the required accuracy of the hit count for the indexed queries to an upper-bound. The default is <code>10_000</code>. You can change the default limit by setting the <code>query.hit-count-accuracy</code> cache property.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>local</code></p></td>
@@ -7479,7 +7479,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-24 08:54:16 UTC
+Last updated 2023-07-24 14:55:03 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
