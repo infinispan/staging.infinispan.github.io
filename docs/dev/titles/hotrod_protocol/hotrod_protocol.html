@@ -7331,7 +7331,8 @@ max_results: the maximum number of results to return.</pre>
 <div class="literalblock">
 <div class="content">
 <pre>{
-  "total_results":801,
+  "hit_count":801,
+  "hit_count_exact":true,
   "hits":[
      {
         "hit":{
@@ -7354,7 +7355,8 @@ max_results: the maximum number of results to return.</pre>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>total_results: the total number of results of the query.
+<pre>hit_count: the total number of results of the query.
+hit_count_exact: is true whether the "hit_count" is exact, otherwise it is a lower-bound.
 hits: an ARRAY of OBJECT representing the results.
 hit: each OBJECT above contain another OBJECT in the "hit" field, containing the result of the query, in JSON format.</pre>
 </div>
@@ -8196,7 +8198,7 @@ Only possible for <code>STRONG</code> counters.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-07 02:32:44 -0400
+Last updated 2023-07-24 08:54:16 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

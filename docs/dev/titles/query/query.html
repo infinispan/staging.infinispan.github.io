@@ -602,7 +602,6 @@ $(addBlockSwitches);
 <ul class="sectlevel2">
 <li><a href="#querying-embedded-caches_query-embedded">4.1. Querying embedded caches</a></li>
 <li><a href="#entity-mapping-annotations_query-embedded">4.2. Entity mapping annotations</a></li>
-<li><a href="#programmatic-entity-mapping_query-embedded">4.3. Programmatically mapping entities</a></li>
 </ul>
 </li>
 <li><a href="#query-continuous">5. Creating continuous queries</a>
@@ -1469,15 +1468,21 @@ You can change the default limit by setting the <code>query.default-max-results<
 <div class="sect3">
 <h4 id="number_of_hits"><a class="anchor" href="#number_of_hits"></a>2.1.2. Number of hits</h4>
 <div class="paragraph">
-<p>The <code>QueryResult</code> object has the <code>.hitCount()</code> method to return the total number of results of the query, regardless
-of any pagination parameter. The hit count is only available for indexed queries for performance reasons.</p>
+<p>The <code>QueryResult</code> object has the <code>.hitCount()</code> method to return a total hit count object whose value
+is the number of results of the query, regardless of any pagination parameter.</p>
+</div>
+<div class="paragraph">
+<p>The same object contains a boolean returned by the <code>.isExact()</code> method which indicates whether the result is exact or a lower bound.
+The hit count is only available for indexed queries for performance reasons.</p>
 </div>
 <div class="sect4">
 <h5 id="hit_count_accuracy"><a class="anchor" href="#hit_count_accuracy"></a>Hit Count Accuracy</h5>
 <div class="paragraph">
 <p>For performance reasons, the default accuracy of the hit count is limited to <code>10,000</code>.
-This means that, if the effective hit count is higher than <code>10,000</code>, the value cannot be returned.
-In this case a <code>null</code> (if the HotRod client or embedded query API is used) or <code>-1L</code> (if the REST query API is used) will be returned.
+This means that, if the effective hit count is higher than <code>10,000</code>, a lower bound of the actual value will be returned.</p>
+</div>
+<div class="paragraph">
+<p>In this case <code>.isExact()</code> method or the <code>hit_count_exact</code> JSON field will be <code>false</code>.
 Setting this value to <code>Integer.MAX</code> would return accurate results for any query, but it would have a very adverse effect on query performance.</p>
 </div>
 <div class="paragraph">
@@ -2929,62 +2934,6 @@ public class CustomTransformer implements Transformer {
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="programmatic-entity-mapping_query-embedded"><a class="anchor" href="#programmatic-entity-mapping_query-embedded"></a>4.3. Programmatically mapping entities</h3>
-<div class="paragraph">
-<p>You can programmatically map entities to the index as an alternative to annotating Java classes.</p>
-</div>
-<div class="paragraph">
-<p>In the following example we map an object <code>Author</code> which is to be stored in the grid and made searchable on two properties:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import org.apache.lucene.search.Query;
-import org.hibernate.search.cfg.Environment;
-import org.hibernate.search.cfg.SearchMapping;
-import org.hibernate.search.query.dsl.QueryBuilder;
-import org.infinispan.Cache;
-import org.infinispan.configuration.cache.Configuration;
-import org.infinispan.configuration.cache.ConfigurationBuilder;
-import org.infinispan.configuration.cache.Index;
-import org.infinispan.manager.DefaultCacheManager;
-import org.infinispan.query.CacheQuery;
-import org.infinispan.query.Search;
-import org.infinispan.query.SearchManager;
-
-import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.util.Properties;
-
-SearchMapping mapping = new SearchMapping();
-mapping.entity(Author.class).indexed()
-       .property("name", ElementType.METHOD).field()
-       .property("surname", ElementType.METHOD).field();
-
-Properties properties = new Properties();
-properties.put(Environment.MODEL_MAPPING, mapping);
-properties.put("hibernate.search.[other options]", "[...]");
-
-Configuration infinispanConfiguration = new ConfigurationBuilder()
-        .indexing().index(Index.NONE)
-        .withProperties(properties)
-        .build();
-
-DefaultCacheManager cacheManager = new DefaultCacheManager(infinispanConfiguration);
-
-Cache&lt;Long, Author&gt; cache = cacheManager.getCache();
-SearchManager sm = Search.getSearchManager(cache);
-
-Author author = new Author(1, "Manik", "Surtani");
-cache.put(author.getId(), author);
-
-QueryBuilder qb = sm.buildQueryBuilderForClass(Author.class).get();
-Query q = qb.keyword().onField("name").matching("Manik").createQuery();
-CacheQuery cq = sm.getQuery(q, Author.class);
-assert cq.getResultSize() == 1;</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -3293,7 +3242,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-07 02:32:44 -0400
+Last updated 2023-07-24 08:54:16 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
