@@ -2028,7 +2028,7 @@ Write succinct file names.</p>
 </div>
 </div>
 <h5 id="multiple_caches" class="discrete">Multiple caches</h5>
-<div class="listingblock">
+<div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan
@@ -2059,39 +2059,7 @@ Write succinct file names.</p>
 &lt;/infinispan&gt;</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="title">YAML</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
-  cacheContainer:
-    name: "default"
-    statistics: "true"
-    caches:
-      mycacheone:
-       distributedCache:
-          mode: "ASYNC"
-          statistics: "true"
-          encoding:
-            mediaType: "application/x-protostream"
-          expiration:
-            lifespan: "300000"
-          memory:
-            maxSize: "400MB"
-            whenFull: "REMOVE"
-      mycachetwo:
-        distributedCache:
-          mode: "SYNC"
-          statistics: "true"
-          encoding:
-            mediaType: "application/x-protostream"
-          expiration:
-            lifespan: "300000"
-          memory:
-            maxSize: "400MB"
-            whenFull: "REMOVE"</code></pre>
-</div>
-</div>
-<div class="listingblock">
+<div class="listingblock secondary">
 <div class="title">JSON</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
@@ -2136,6 +2104,38 @@ Write succinct file names.</p>
     }
   }
 }</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  cacheContainer:
+    name: "default"
+    statistics: "true"
+    caches:
+      mycacheone:
+       distributedCache:
+          mode: "ASYNC"
+          statistics: "true"
+          encoding:
+            mediaType: "application/x-protostream"
+          expiration:
+            lifespan: "300000"
+          memory:
+            maxSize: "400MB"
+            whenFull: "REMOVE"
+      mycachetwo:
+        distributedCache:
+          mode: "SYNC"
+          statistics: "true"
+          encoding:
+            mediaType: "application/x-protostream"
+          expiration:
+            lifespan: "300000"
+          memory:
+            maxSize: "400MB"
+            whenFull: "REMOVE"</code></pre>
 </div>
 </div>
 <div class="ulist _additional-resources">
@@ -6375,7 +6375,7 @@ Returns the version for the server and the CLI.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-25 16:26:50 UTC
+Last updated 2023-07-27 16:21:31 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
