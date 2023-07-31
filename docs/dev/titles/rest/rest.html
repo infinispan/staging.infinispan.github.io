@@ -4450,8 +4450,19 @@ Infinispan updates the schema and returns the error in the response body.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Infinispan responds with information in JSON format, as in the following
-example:</p>
+<p>Infinispan responds with information in JSON format, as in the following example:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Information about caches with security authorization is available only to users with the specific roles and permissions assigned to them.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4524,7 +4535,7 @@ example:</p>
 <p><code>coordinator</code> is true if the Cache Manager is the coordinator of the cluster</p>
 </li>
 <li>
-<p><code>cache_configuration_names</code> contains an array of all caches configurations defined in the Cache Manager</p>
+<p><code>cache_configuration_names</code> contains an array of all caches configurations defined in the Cache Manager that are accessible to the current user</p>
 </li>
 <li>
 <p><code>cluster_name</code> contains the name of the cluster as defined in the configuration</p>
@@ -7479,7 +7490,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-27 16:21:31 UTC
+Last updated 2023-07-31 13:16:44 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
