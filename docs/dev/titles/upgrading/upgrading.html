@@ -546,6 +546,7 @@ $(addBlockSwitches);
 <li><a href="#security">1.1.7. Security</a></li>
 <li><a href="#scattered_cache_removal">1.1.8. Scattered cache removal</a></li>
 <li><a href="#global_state">1.1.9. Global State</a></li>
+<li><a href="#persistence">1.1.10. Persistence</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_13_0_to_14_0">1.2. Upgrading from 13.0 to 14.0</a>
@@ -640,7 +641,7 @@ $(addBlockSwitches);
 <li><a href="#allow_lists">Allow lists</a></li>
 </ul>
 </li>
-<li><a href="#persistence">1.5.7. Persistence</a>
+<li><a href="#persistence_2">1.5.7. Persistence</a>
 <ul class="sectlevel4">
 <li><a href="#jdbcstringbasedstore">JdbcStringBasedStore</a></li>
 <li><a href="#rest_store">Rest Store</a></li>
@@ -668,7 +669,7 @@ $(addBlockSwitches);
 </ul>
 </li>
 <li><a href="#threadfactoryconfiguration_changes">1.6.8. ThreadFactoryConfiguration changes</a></li>
-<li><a href="#persistence_2">1.6.9. Persistence</a>
+<li><a href="#persistence_3">1.6.9. Persistence</a>
 <ul class="sectlevel4">
 <li><a href="#single_file_store">Single File Store</a></li>
 <li><a href="#clusterloader">ClusterLoader</a></li>
@@ -1056,6 +1057,12 @@ Use the <code>cache-manager.security.authorization.group-only-mapping=false</cod
 <div class="paragraph">
 <p>Infinispan will now refuse to start if a dangling lock file is found in the persistent global state, indicating
 an unclean shutdown. The behavior can be changed by configuring the global state <code>unclean-shutdown-action</code> setting.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="persistence"><a class="anchor" href="#persistence"></a>1.1.10. Persistence</h4>
+<div class="paragraph">
+<p>The default <code>availability-interval</code> has been increased to 30 seconds. The previous default was 1 second.</p>
 </div>
 </div>
 </div>
@@ -1894,7 +1901,7 @@ incompatibility issues can occur.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="persistence"><a class="anchor" href="#persistence"></a>1.5.7. Persistence</h4>
+<h4 id="persistence_2"><a class="anchor" href="#persistence_2"></a>1.5.7. Persistence</h4>
 <div class="sect4">
 <h5 id="jdbcstringbasedstore"><a class="anchor" href="#jdbcstringbasedstore"></a>JdbcStringBasedStore</h5>
 <div class="paragraph">
@@ -2092,7 +2099,7 @@ consistent.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="persistence_2"><a class="anchor" href="#persistence_2"></a>1.6.9. Persistence</h4>
+<h4 id="persistence_3"><a class="anchor" href="#persistence_3"></a>1.6.9. Persistence</h4>
 <div class="sect4">
 <h5 id="single_file_store"><a class="anchor" href="#single_file_store"></a>Single File Store</h5>
 <div class="paragraph">
@@ -4750,7 +4757,7 @@ cache stores.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-02 10:51:31 UTC
+Last updated 2023-08-02 14:43:06 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
