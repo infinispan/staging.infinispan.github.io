@@ -589,6 +589,9 @@ You can enable the RESP endpoint with:</p>
 <p>Cache configuration cannot enable capabilities that violate the RESP protocol.
 For example, specifying expiration values in a cache for the RESP endpoint results in a fatal error at startup.</p>
 </div>
+<div class="paragraph">
+<p>If the cache is defined you must define the key encoding as <code>application/octet-stream</code>.</p>
+</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -597,7 +600,7 @@ For example, specifying expiration values in a cache for the RESP endpoint resul
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Configure your cache with Protobuf encoding if you want to view cache entries in the Infinispan Console (<code>encoding media-type="application/x-protostream"</code>).</p>
+<p>Configure your cache value encoding with Protobuf encoding if you want to view cache entries in the Infinispan Console (<code>value media-type="application/x-protostream"</code>).</p>
 </div>
 </td>
 </tr>
@@ -1083,7 +1086,7 @@ for concurrent operations or failures unless the resp cache is configured to use
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-02 14:43:06 UTC
+Last updated 2023-08-03 10:43:59 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
