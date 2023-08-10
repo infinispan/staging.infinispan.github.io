@@ -599,15 +599,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#configuring-sites-manually_cross-site">13.3. Manually configuring cross-site connections</a></li>
-<li><a href="#disabling-gossip-router-cross-site_cross-site">13.4. Disabling local Gossip router and service</a></li>
-<li><a href="#cross-site-resources-automatic_cross-site">13.5. Resources for configuring cross-site replication</a></li>
-<li><a href="#securing-cross-site-connections_cross-site">13.6. Securing cross-site connections</a>
+<li><a href="#allocating-cpu-and-memory-cross-site_cross-site">13.4. Allocating CPU and memory for Gossip router pod</a></li>
+<li><a href="#disabling-gossip-router-cross-site_cross-site">13.5. Disabling local Gossip router and service</a></li>
+<li><a href="#cross-site-resources-automatic_cross-site">13.6. Resources for configuring cross-site replication</a></li>
+<li><a href="#securing-cross-site-connections_cross-site">13.7. Securing cross-site connections</a>
 <ul class="sectlevel3">
-<li><a href="#cross-site-encryption-resources_cross-site">13.6.1. Resources for configuring cross-site encryption</a></li>
-<li><a href="#cross-site-encryption-secrets_cross-site">13.6.2. Cross-site encryption secrets</a></li>
+<li><a href="#cross-site-encryption-resources_cross-site">13.7.1. Resources for configuring cross-site encryption</a></li>
+<li><a href="#cross-site-encryption-secrets_cross-site">13.7.2. Cross-site encryption secrets</a></li>
 </ul>
 </li>
-<li><a href="#configuring-sites-in-clusters_cross-site">13.7. Configuring sites in the same Kubernetes cluster</a></li>
+<li><a href="#configuring-sites-in-clusters_cross-site">13.8. Configuring sites in the same Kubernetes cluster</a></li>
 </ul>
 </li>
 <li><a href="#monitoring-services">14. Monitoring Infinispan services</a>
@@ -4996,7 +4997,54 @@ This prevents a large number of log files from uses container storage.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="disabling-gossip-router-cross-site_cross-site"><a class="anchor" href="#disabling-gossip-router-cross-site_cross-site"></a>13.4. Disabling local Gossip router and service</h3>
+<h3 id="allocating-cpu-and-memory-cross-site_cross-site"><a class="anchor" href="#allocating-cpu-and-memory-cross-site_cross-site"></a>13.4. Allocating CPU and memory for Gossip router pod</h3>
+<div class="paragraph _abstract">
+<p>Allocate CPU and memory resources to Infinispan Gossip router.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisite</div>
+<ul>
+<li>
+<p>Have Gossip router enabled. The <code>service.sites.local.discovery.launchGossipRouter</code> property must be set to <code>true</code>, which is the default value.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Allocate the number of CPU units using the <code>service.sites.local.discovery.cpu</code> field.</p>
+</li>
+<li>
+<p>Allocate the amount of memory, in bytes, using the <code>service.sites.local.discovery.memory</code> field.</p>
+<div class="paragraph">
+<p>The <code>cpu</code> and <code>memory</code> fields have values in the format of <code>&lt;limit&gt;:&lt;requests&gt;</code>.
+For example, <code>cpu: "2000m:1000m"</code> limits pods to a maximum of <code>2000m</code> of CPU and requests <code>1000m</code> of CPU for each pod at startup.
+Specifying a single value sets both the limit and request.</p>
+</div>
+</li>
+<li>
+<p>Apply your <code>Infinispan</code> CR.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>spec:
+  service:
+    type: DataGrid
+    sites:
+      local:
+        name: LON
+        discovery:
+          launchGossipRouter: true
+          memory: "2Gi:1Gi"
+          cpu: "2000m:1000m"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="disabling-gossip-router-cross-site_cross-site"><a class="anchor" href="#disabling-gossip-router-cross-site_cross-site"></a>13.5. Disabling local Gossip router and service</h3>
 <div class="paragraph _abstract">
 <p>The Infinispan Operator starts a Gossip router on each site, but you only need a single Gossip router to manage traffic between the Infinispan cluster members.
 You can disable the additional Gossip routers to save resources.</p>
@@ -5094,7 +5142,7 @@ If a single Gossip router is defined, and it becomes unavailable, the connection
 </div>
 </div>
 <div class="sect2">
-<h3 id="cross-site-resources-automatic_cross-site"><a class="anchor" href="#cross-site-resources-automatic_cross-site"></a>13.5. Resources for configuring cross-site replication</h3>
+<h3 id="cross-site-resources-automatic_cross-site"><a class="anchor" href="#cross-site-resources-automatic_cross-site"></a>13.6. Resources for configuring cross-site replication</h3>
 <div class="paragraph _abstract">
 <p>The following tables provides fields and descriptions for cross-site resources.</p>
 </div>
@@ -5140,7 +5188,15 @@ If a single Gossip router is defined, and it becomes unavailable, the connection
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.discovery.launchGossipRouter</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>false</code>, the cross-site services and the Gossip Router pod are not created in the local site. The default value is <code>true</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>false</code>, the cross-site services and the Gossip router pod are not created in the local site. The default value is <code>true</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.discovery.memory</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocates the amount of memory in bytes. It uses the following format <code>&lt;limit&gt;:&lt;requests&gt;</code> (example <code>"2Gi:1Gi"</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.discovery.cpu</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allocates the number of CPU units. It uses the following format <code>&lt;limit&gt;:&lt;requests&gt;</code> (example <code>"2000m:1000m"</code>).</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.sites.local.expose.type</code></p></td>
@@ -5245,7 +5301,7 @@ If you set up cross-site on Kubernetes this field specifies the access secret fo
 </div>
 </div>
 <div class="sect2">
-<h3 id="securing-cross-site-connections_cross-site"><a class="anchor" href="#securing-cross-site-connections_cross-site"></a>13.6. Securing cross-site connections</h3>
+<h3 id="securing-cross-site-connections_cross-site"><a class="anchor" href="#securing-cross-site-connections_cross-site"></a>13.7. Securing cross-site connections</h3>
 <div class="paragraph _abstract">
 <p>Add keystores and trust stores so that Infinispan clusters can secure cross-site replication traffic.</p>
 </div>
@@ -5345,7 +5401,7 @@ spec:
 </ol>
 </div>
 <div class="sect3">
-<h4 id="cross-site-encryption-resources_cross-site"><a class="anchor" href="#cross-site-encryption-resources_cross-site"></a>13.6.1. Resources for configuring cross-site encryption</h4>
+<h4 id="cross-site-encryption-resources_cross-site"><a class="anchor" href="#cross-site-encryption-resources_cross-site"></a>13.7.1. Resources for configuring cross-site encryption</h4>
 <div class="paragraph _abstract">
 <p>The following tables provides fields and descriptions for encrypting cross-site connections.</p>
 </div>
@@ -5467,7 +5523,7 @@ The default value is <code>truststore.p12</code>.</p></td>
 </table>
 </div>
 <div class="sect3">
-<h4 id="cross-site-encryption-secrets_cross-site"><a class="anchor" href="#cross-site-encryption-secrets_cross-site"></a>13.6.2. Cross-site encryption secrets</h4>
+<h4 id="cross-site-encryption-secrets_cross-site"><a class="anchor" href="#cross-site-encryption-secrets_cross-site"></a>13.7.2. Cross-site encryption secrets</h4>
 <div class="paragraph _abstract">
 <p>Cross-site replication encryption secrets add keystores and optional trust stores for securing cross-site connections.</p>
 </div>
@@ -5515,7 +5571,7 @@ data:
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-sites-in-clusters_cross-site"><a class="anchor" href="#configuring-sites-in-clusters_cross-site"></a>13.7. Configuring sites in the same Kubernetes cluster</h3>
+<h3 id="configuring-sites-in-clusters_cross-site"><a class="anchor" href="#configuring-sites-in-clusters_cross-site"></a>13.8. Configuring sites in the same Kubernetes cluster</h3>
 <div class="paragraph _abstract">
 <p>For evaluation and demonstration purposes, you can configure Infinispan to back up between pods in the same Kubernetes cluster.</p>
 </div>
@@ -8303,7 +8359,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-01 08:41:09 UTC
+Last updated 2023-08-10 13:20:02 UTC
 </div>
 </div>
 <script>
