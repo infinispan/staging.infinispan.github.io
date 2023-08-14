@@ -539,6 +539,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#adding-custom-labels_services">7.10. Adding labels and annotations to Infinispan resources</a></li>
 <li><a href="#adding-labels-annotations-env_services">7.11. Adding labels and annotations with environment variables</a></li>
+<li><a href="#defining-environment-variables_services">7.12. Defining environment variables in the Infinispan Operator subscription</a></li>
 </ul>
 </li>
 <li><a href="#configuring-authentication">8. Configuring authentication</a>
@@ -1041,7 +1042,7 @@ Infinispan Operator updates clusters one node at a time, gracefully shutting dow
 <p>Run the <code class="command">oc infinispan install</code> command to create Infinispan Operator subscriptions, for example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl infinispan install --channel=2.3
+<pre class="highlight nowrap"><code>kubectl infinispan install --channel=2.3.x
                            --source=redhat-operators
                            --source-namespace=openshift-marketplace</code></pre>
 </div>
@@ -3049,7 +3050,7 @@ metadata:
 <p>Use the <code>kubectl edit subscription</code> command.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl edit subscription infinispan -n openshift-operators</code></pre>
+<pre class="highlight nowrap"><code>kubectl edit subscription infinispan -n operators</code></pre>
 </div>
 </div>
 </li>
@@ -3058,7 +3059,7 @@ metadata:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to <strong>Operators</strong> &gt; <strong>Installed Operators</strong> &gt; <strong>Subscription</strong>.</p>
+<p>Navigate to <strong>Operators</strong> &gt; <strong>Installed Operators</strong> &gt; click the <strong>Infinispan Operator</strong>.</p>
 </li>
 <li>
 <p>Select <strong>Edit Subscription</strong> from the <strong>Actions</strong> menu.</p>
@@ -3091,6 +3092,110 @@ metadata:
          {"pod-annotation1":"value",
          "pod-annotation2":"value"}</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="defining-environment-variables_services"><a class="anchor" href="#defining-environment-variables_services"></a>7.12. Defining environment variables in the Infinispan Operator subscription</h3>
+<div class="paragraph _abstract">
+<p>You can define environment variables in your Infinispan Operator subscription either when you create the subscription or by editing it later on.</p>
+</div>
+<div class="paragraph">
+<p>Environment variables in your subscription automatically propagate to each Infinispan pod that is managed by the corresponding Operator.
+The <code>spec.config.env</code> field is an array of environment variable definitions.
+When one environment variable references another, you must define the variables in a specific order for proper referencing and processing.
+The referenced variable must be available when the variable that refers to it is processed.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Ensure the Operator Lifecycle Manager (OLM) is installed.</p>
+</li>
+<li>
+<p>Have an <code>oc</code> or a <code>kubectl</code> client.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create a subscription definition YAML for your Infinispan Operator:</p>
+<div class="listingblock">
+<div class="title">subscription-infinispan.yaml</div>
+<div class="content">
+<pre class="highlight nowrap"><code>apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: infinispan
+  namespace: operators
+spec:
+  channel: 2.3.x
+  installPlanApproval: Automatic
+  name: infinispan
+  source: operatorhubio-catalog
+  sourceNamespace: olm
+  config:
+    env:
+    - name: VAR_NAME
+      value: $(VAR_NAME_VALUE)
+    - name: ANOTHER_VAR
+      value: $(ANOTHER_VAR_VALUE)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example, use <code>spec.config.env</code> field to set the local timezone:</p>
+</div>
+<div class="listingblock">
+<div class="title">subscription-infinispan.yaml</div>
+<div class="content">
+<pre class="highlight nowrap"><code>kind: Subscription
+spec:
+  ...
+  config:
+    env:
+    - name: ADDITIONAL_VARS
+      value: "[\"TZ\"]"
+    - name: TZ
+      value: "Asia/Tokyo"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create a subscription for Infinispan Operator.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>kubectl apply -f subscription-infinispan.yaml</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Verification</div>
+<ul>
+<li>
+<p>Retrieve the environment variables from the <code>subscription-infinispan.yaml</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>kubectl get subscription infinispan -n operators -o jsonpath='{.spec.config.env[*].name}'</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Next steps</div>
+<ul>
+<li>
+<p>Use the <code>kubectl edit subscription</code> command to modify the environment variable:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>kubectl edit subscription infinispan -n operators</code></pre>
+</div>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -8359,7 +8464,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-14 10:14:26 UTC
+Last updated 2023-08-14 12:57:52 UTC
 </div>
 </div>
 <script>
