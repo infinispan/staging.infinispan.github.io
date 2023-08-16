@@ -756,8 +756,16 @@ OK
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/discard">DISCARD</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/echo">ECHO</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/exec">EXEC</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See <a href="#multi_command"><strong>MULTI</strong></a>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/exists">EXISTS</a></p></td>
@@ -913,6 +921,11 @@ for concurrent operations or failures unless the resp cache is configured to use
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/multi">MULTI</a> <a id="multi_command"></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The current implementation has a relaxed isolation level. Redis offers serializable transactions, but {Infinispan}
+provides a read-uncommitted isolation.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/ping">PING</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1013,6 +1026,14 @@ for concurrent operations or failures unless the resp cache is configured to use
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/unwatch">UNWATCH</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/watch">WATCH</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/zadd">ZADD</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1102,7 +1123,7 @@ for concurrent operations or failures unless the resp cache is configured to use
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-11 19:50:24 UTC
+Last updated 2023-08-16 14:19:48 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
