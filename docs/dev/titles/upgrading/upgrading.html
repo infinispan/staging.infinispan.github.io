@@ -533,22 +533,23 @@ $(addBlockSwitches);
 <ul class="sectlevel2">
 <li><a href="#upgrading_from_14_0_to_15_0">1.1. Upgrading from 14.0 to 15.0</a>
 <ul class="sectlevel3">
-<li><a href="#securitymanager">1.1.1. SecurityManager</a></li>
-<li><a href="#jakarta_and_java_ee">1.1.2. Jakarta and Java EE</a></li>
-<li><a href="#removals">1.1.3. Removals</a></li>
-<li><a href="#hot_rod_client_defaults">1.1.4. Hot Rod client defaults</a></li>
-<li><a href="#resp_endpoint">1.1.5. RESP Endpoint</a></li>
-<li><a href="#search">1.1.6. Search</a>
+<li><a href="#metrics">1.1.1. Metrics</a></li>
+<li><a href="#securitymanager">1.1.2. SecurityManager</a></li>
+<li><a href="#jakarta_and_java_ee">1.1.3. Jakarta and Java EE</a></li>
+<li><a href="#removals">1.1.4. Removals</a></li>
+<li><a href="#hot_rod_client_defaults">1.1.5. Hot Rod client defaults</a></li>
+<li><a href="#resp_endpoint">1.1.6. RESP Endpoint</a></li>
+<li><a href="#search">1.1.7. Search</a>
 <ul class="sectlevel4">
 <li><a href="#indexing">Indexing</a></li>
 </ul>
 </li>
-<li><a href="#indexing_annotations">1.1.7. Indexing annotations</a></li>
-<li><a href="#security">1.1.8. Security</a></li>
-<li><a href="#scattered_cache_removal">1.1.9. Scattered cache removal</a></li>
-<li><a href="#global_state">1.1.10. Global State</a></li>
-<li><a href="#persistence">1.1.11. Persistence</a></li>
-<li><a href="#resp_endpoint_2">1.1.12. RESP endpoint</a></li>
+<li><a href="#indexing_annotations">1.1.8. Indexing annotations</a></li>
+<li><a href="#security">1.1.9. Security</a></li>
+<li><a href="#scattered_cache_removal">1.1.10. Scattered cache removal</a></li>
+<li><a href="#global_state">1.1.11. Global State</a></li>
+<li><a href="#persistence">1.1.12. Persistence</a></li>
+<li><a href="#resp_endpoint_2">1.1.13. RESP endpoint</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_to_14_0_14_or_newer">1.2. Upgrading to 14.0.14 or newer</a>
@@ -951,14 +952,46 @@ Find out how to perform rolling upgrades of Infinispan Server deployments and ho
 <div class="sect2">
 <h3 id="upgrading_from_14_0_to_15_0"><a class="anchor" href="#upgrading_from_14_0_to_15_0"></a>1.1. Upgrading from 14.0 to 15.0</h3>
 <div class="sect3">
-<h4 id="securitymanager"><a class="anchor" href="#securitymanager"></a>1.1.1. SecurityManager</h4>
+<h4 id="metrics"><a class="anchor" href="#metrics"></a>1.1.1. Metrics</h4>
+<div class="paragraph">
+<p>The JGroups and cross-site metrics name changed when <code>names-as-tags</code> is set to <code>true</code>,
+where the cluster&#8217;s name and the site&#8217;s name are no longer present in the metrics name but as a tag.</p>
+</div>
+<div class="paragraph">
+<p>As an example, when <code>names-as-tags</code> is set to <code>false</code>,
+we got 2 different metrics with the channel name distinguishing between them.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code># TYPE vendor_jgroups_xsite_frag4_get_number_of_sent_fragments gauge
+# HELP vendor_jgroups_xsite_frag4_get_number_of_sent_fragments Number of sent fragments
+vendor_jgroups_xsite_frag4_get_number_of_sent_fragments{cluster="xsite",node="..."} 0.0
+# TYPE vendor_jgroups_cluster_frag4_get_number_of_sent_fragments gauge
+# HELP vendor_jgroups_cluster_frag4_get_number_of_sent_fragments Number of sent fragments
+vendor_jgroups_cluster_frag4_get_number_of_sent_fragments{cluster="cluster",node="..."} 2.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When <code>names-as-tags</code> is set to <code>true</code>, we got a single metric:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code># TYPE vendor_jgroups_frag4_get_number_of_sent_fragments gauge
+# HELP vendor_jgroups_frag4_get_number_of_sent_fragments Number of sent fragments
+vendor_jgroups_frag4_get_number_of_sent_fragments{cache_manager="default",cluster="xsite",node="..."} 0.0
+vendor_jgroups_frag4_get_number_of_sent_fragments{cache_manager="default",cluster="cluster",node="..."} 2.0</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="securitymanager"><a class="anchor" href="#securitymanager"></a>1.1.2. SecurityManager</h4>
 <div class="paragraph">
 <p>Aligning with the deprecation for removal of the SecurityManager since JDK 17, we no longer support integration with a
 SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="jakarta_and_java_ee"><a class="anchor" href="#jakarta_and_java_ee"></a>1.1.2. Jakarta and Java EE</h4>
+<h4 id="jakarta_and_java_ee"><a class="anchor" href="#jakarta_and_java_ee"></a>1.1.3. Jakarta and Java EE</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -974,7 +1007,7 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="removals"><a class="anchor" href="#removals"></a>1.1.3. Removals</h4>
+<h4 id="removals"><a class="anchor" href="#removals"></a>1.1.4. Removals</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -996,7 +1029,7 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="hot_rod_client_defaults"><a class="anchor" href="#hot_rod_client_defaults"></a>1.1.4. Hot Rod client defaults</h4>
+<h4 id="hot_rod_client_defaults"><a class="anchor" href="#hot_rod_client_defaults"></a>1.1.5. Hot Rod client defaults</h4>
 <div class="paragraph">
 <p>The following defaults have changed for the Hot Rod client:</p>
 </div>
@@ -1018,7 +1051,7 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="resp_endpoint"><a class="anchor" href="#resp_endpoint"></a>1.1.5. RESP Endpoint</h4>
+<h4 id="resp_endpoint"><a class="anchor" href="#resp_endpoint"></a>1.1.6. RESP Endpoint</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1028,7 +1061,7 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="search"><a class="anchor" href="#search"></a>1.1.6. Search</h4>
+<h4 id="search"><a class="anchor" href="#search"></a>1.1.7. Search</h4>
 <div class="sect4">
 <h5 id="indexing"><a class="anchor" href="#indexing"></a>Indexing</h5>
 <div class="ulist">
@@ -1047,7 +1080,7 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="indexing_annotations"><a class="anchor" href="#indexing_annotations"></a>1.1.7. Indexing annotations</h4>
+<h4 id="indexing_annotations"><a class="anchor" href="#indexing_annotations"></a>1.1.8. Indexing annotations</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1060,33 +1093,33 @@ SecurityManager.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="security"><a class="anchor" href="#security"></a>1.1.8. Security</h4>
+<h4 id="security"><a class="anchor" href="#security"></a>1.1.9. Security</h4>
 <div class="paragraph">
 <p>The principal role mapper now applies only to groups instead of both groups and user principals.
 Use the <code>cache-manager.security.authorization.group-only-mapping=false</code> configuration to use the old behavior.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="scattered_cache_removal"><a class="anchor" href="#scattered_cache_removal"></a>1.1.9. Scattered cache removal</h4>
+<h4 id="scattered_cache_removal"><a class="anchor" href="#scattered_cache_removal"></a>1.1.10. Scattered cache removal</h4>
 <div class="paragraph">
 <p>The scattered cache mode have been removed a bit earlier. Please use Distributed caches instead.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="global_state"><a class="anchor" href="#global_state"></a>1.1.10. Global State</h4>
+<h4 id="global_state"><a class="anchor" href="#global_state"></a>1.1.11. Global State</h4>
 <div class="paragraph">
 <p>Infinispan will now refuse to start if a dangling lock file is found in the persistent global state, indicating
 an unclean shutdown. The behavior can be changed by configuring the global state <code>unclean-shutdown-action</code> setting.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="persistence"><a class="anchor" href="#persistence"></a>1.1.11. Persistence</h4>
+<h4 id="persistence"><a class="anchor" href="#persistence"></a>1.1.12. Persistence</h4>
 <div class="paragraph">
 <p>The default <code>availability-interval</code> has been increased to 30 seconds. The previous default was 1 second.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="resp_endpoint_2"><a class="anchor" href="#resp_endpoint_2"></a>1.1.12. RESP endpoint</h4>
+<h4 id="resp_endpoint_2"><a class="anchor" href="#resp_endpoint_2"></a>1.1.13. RESP endpoint</h4>
 <div class="paragraph">
 <p>The RESP endpoint cache now requires the key storage media type to be
 application/octet-stream.</p>
@@ -4795,7 +4828,7 @@ cache stores.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-17 12:18:17 UTC
+Last updated 2023-08-23 11:11:08 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
