@@ -3107,11 +3107,18 @@ metadata:
 <div class="paragraph _abstract">
 <p>You can define environment variables in your Infinispan Operator subscription either when you create or edit the subscription.</p>
 </div>
-<div class="paragraph">
-<p>Environment variables in your subscription automatically propagate to each Infinispan pod that is managed by the corresponding Operator.
-The <code>spec.config.env</code> field is an array of environment variable definitions.
-When one environment variable references another, you must define the variables in a specific order for proper referencing and processing.
-The referenced variable must be available when the variable that refers to it is processed.</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>spec.config.env</code> field</dt>
+<dd>
+<p>Includes the <code>name</code> and <code>value</code> fields to define environment variables.</p>
+</dd>
+<dt class="hdlist1"><code>ADDITIONAL_VARS</code> variable</dt>
+<dd>
+<p>Includes the names of environment variables in a format of JSON array.
+Environment variables within the <code>value</code> of the <code>ADDITIONAL_VARS</code> variable automatically propagate to each Infinispan Server pod managed by the associated Operator.</p>
+</dd>
+</dl>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
@@ -3129,6 +3136,13 @@ The referenced variable must be available when the variable that refers to it is
 <ol class="arabic">
 <li>
 <p>Create a subscription definition YAML for your Infinispan Operator:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Use the <code>spec.config.env</code> field to define environment variables.</p>
+</li>
+<li>
+<p>Within the <code>ADDITIONAL_VARS</code> variable, include environment variable names in a JSON array.</p>
 <div class="listingblock">
 <div class="title">subscription-infinispan.yaml</div>
 <div class="content">
@@ -3145,6 +3159,8 @@ spec:
   sourceNamespace: olm
   config:
     env:
+    - name: ADDITIONAL_VARS
+      value: "[\"VAR_NAME\", \"ANOTHER_VAR\"]"
     - name: VAR_NAME
       value: $(VAR_NAME_VALUE)
     - name: ANOTHER_VAR
@@ -3152,7 +3168,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>For example, use the <code>spec.config.env</code> field to set the local time zone:</p>
+<p>For example, use the environment variables to set the local time zone:</p>
 </div>
 <div class="listingblock">
 <div class="title">subscription-infinispan.yaml</div>
@@ -3167,6 +3183,9 @@ spec:
     - name: TZ
       value: "Asia/Tokyo"</code></pre>
 </div>
+</div>
+</li>
+</ol>
 </div>
 </li>
 <li>
@@ -3192,9 +3211,9 @@ spec:
 </li>
 </ul>
 </div>
-<div class="ulist">
+<div class="olist arabic">
 <div class="title">Next steps</div>
-<ul>
+<ol class="arabic">
 <li>
 <p>Use the <code>kubectl edit subscription</code> command to modify the environment variable:</p>
 <div class="listingblock">
@@ -3203,7 +3222,11 @@ spec:
 </div>
 </div>
 </li>
-</ul>
+<li>
+<p>To ensure the changes take effect on your Infinispan clusters, you must recreate the existing clusters.
+Terminate the pods by deleting the <code>StatefulSet</code> associated with the existing <code>Infinispan</code> CRs.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -8472,7 +8495,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-25 08:50:51 UTC
+Last updated 2023-08-28 15:10:33 UTC
 </div>
 </div>
 <script>
