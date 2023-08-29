@@ -2588,8 +2588,26 @@ remote client access.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The Memcached endpoint is deprecated and planned for removal in a future
-release.</p>
+<p>The current implementation of the Memcached protocol is deprecated and planned for removal in future release. However, it will be replaced with new Memcached connector that offers the following improvements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>support for both the <code>TEXT</code> and <code>BINARY</code> protocols</p>
+</li>
+<li>
+<p>authentication against the server security realms</p>
+</li>
+<li>
+<p>encryption (TLS)</p>
+</li>
+<li>
+<p>performance improvements</p>
+</li>
+<li>
+<p>protocol auto-detection which allows the connector to be enabled on the default server port by default</p>
+</li>
+</ul>
 </div>
 </td>
 </tr>
@@ -12576,7 +12594,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-28 14:25:03 UTC
+Last updated 2023-08-29 16:17:54 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
