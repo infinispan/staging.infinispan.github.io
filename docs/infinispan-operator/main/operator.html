@@ -6240,7 +6240,7 @@ Depending on your requirements, you can store and analyze your recordings using 
 <p>Install the Cryostat Operator. You can install the Cryostat Operator in your Kubernetes project by using Operator Lifecycle Manager (OLM).</p>
 </li>
 <li>
-<p><a href="https://infinispan.org/docs/infinispan-operator/main/operator.html#enabling-jmx_monitor">Enable JMX</a> on your cluster.</p>
+<p>Have JMX enabled on your Infinispan cluster. You must enable JMX before deploying the cluster, as JMX settings cannot be modified after deployment.</p>
 </li>
 </ul>
 </div>
@@ -6260,12 +6260,28 @@ spec:
   enableCertManager: true</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The Cryostat Operator requires cert-manager for traffic encryption.
+If the cert-manager is enabled but not installed, the deployment fails.
+For details, see the <a href="https://cryostat.io/get-started/#installing-cryostat-operator">Installing Cryostat Operator</a> guide.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </li>
 <li>
 <p>Wait for the <code>Cryostat</code> CR to be ready.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl wait -n &lt;namespace&gt; --for=condition=MainDeploymentAvailable cryostat/test-cryostat-provisioning-cs</code></pre>
+<pre class="highlight nowrap"><code>kubectl wait -n &lt;namespace&gt; --for=condition=MainDeploymentAvailable cryostat/cryostat-sample</code></pre>
 </div>
 </div>
 </li>
@@ -6273,7 +6289,7 @@ spec:
 <p>Open the Cryostat <code>status.applicationUrl</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>kubectl -n &lt;namespace&gt; get cryostat infinispan-cs</code></pre>
+<pre class="highlight nowrap"><code>kubectl -n &lt;namespace&gt; get cryostat cryostat-sample</code></pre>
 </div>
 </div>
 </li>
@@ -6286,7 +6302,14 @@ spec:
 </div>
 </li>
 <li>
-<p>Optionally store the credentials from the previous step, using the following "Match Expression":</p>
+<p>In the Cryostat UI, navigate to the <strong>Security</strong> menu.</p>
+</li>
+<li>
+<p>In the <strong>Store Credentials</strong> window, click the <strong>Add</strong> button.
+The <strong>Store Credentials</strong> window opens.</p>
+</li>
+<li>
+<p>In the <strong>Match Expression</strong> filed, enter match expression details in the following format:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>target.labels['infinispan_cr'] == '&lt;cluster_name&gt;'</code></pre>
@@ -6303,6 +6326,9 @@ spec:
 </li>
 <li>
 <p><a href="https://cryostat.io/guides/#store-credentials">Configuring Cryostat Credentials</a></p>
+</li>
+<li>
+<p><a href="https://infinispan.org/docs/infinispan-operator/main/operator.html#enabling-jmx_monitor">Enabling JMX remote ports for Infinispan clusters</a></p>
 </li>
 </ul>
 </div>
@@ -8495,7 +8521,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-29 12:54:51 UTC
+Last updated 2023-09-05 08:55:03 UTC
 </div>
 </div>
 <script>
