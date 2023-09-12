@@ -2135,7 +2135,8 @@ You must also enable statistics otherwise Infinispan provides <code>0</code> val
 <ul>
 <li>
 <p>For remote JMX with authentication, define JMX specific user roles using the default security realm.
-Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.</p>
+Users must have <code>controlRole</code> with read/write access or the <code>monitorRole</code> with read-only access to access any JMX resources.
+Infinispan automatically maps global <code>ADMIN</code> and <code>MONITOR</code> permissions to the JMX <code>controlRole</code> and <code>monitorRole</code> roles.</p>
 </li>
 </ul>
 </div>
@@ -7136,7 +7137,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-11 17:46:58 UTC
+Last updated 2023-09-12 08:20:08 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
