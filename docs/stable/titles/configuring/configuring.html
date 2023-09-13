@@ -7383,24 +7383,37 @@ With Infinispan Server you can add schema through the Infinispan Console or Comm
 </li>
 </ul>
 </div>
-<div class="admonitionblock note">
+<div class="admonitionblock warning">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>SQL cache stores do not support expiration when writes are allowed or segmentation.</p>
+<p>The SQL cache store is intended for use with an existing database table.
+As a result, it does not store any metadata, which includes expiration, segments, and, versioning metadata.
+Due to the absence of version storage, SQL store does not support optimistic transactional caching and asynchronous cross-site replication.
+This limitation also extends to Hot Rod versioned operations.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>Since a SQL cache store is designed to be used with an existing database table it would not contain expiration or segmentation metadata.
-However, expiration can be used with a SQL Store when it is configured as read only.
-When used as such, expiration acts as a way to remove stale values from memory, causing the cache to fetch the values from the database again to be cached.</p>
+<p>Use expiration with the SQL cache store when it is configured as read only.
+Expiration removes stale values from memory, causing the cache to fetch the values from the database again and cache them anew.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -12720,7 +12733,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-12 07:50:41 UTC
+Last updated 2023-09-13 11:05:16 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
