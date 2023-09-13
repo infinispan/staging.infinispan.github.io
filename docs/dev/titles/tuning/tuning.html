@@ -1738,8 +1738,7 @@ If you wanted to implement a leaderboard with the top ten players at any one tim
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-java" data-lang="java">QueryFactory queryFactory = Search.getQueryFactory(playersScores);
-Query topTenQuery = queryFactory
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">Query topTenQuery = playersScores
   .create("from com.redhat.PlayerScore ORDER BY p.score DESC, p.timestamp ASC")
   .maxResults(10);
 List&lt;PlayerScore&gt; topTen = topTenQuery.execute().list();</code></pre>
@@ -2403,7 +2402,7 @@ cb.unsafe().unreliableReturnValues(true);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-12 16:47:03 UTC
+Last updated 2023-09-13 09:25:54 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

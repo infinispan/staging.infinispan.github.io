@@ -1398,21 +1398,18 @@ However you can query caches that are non-indexed.</p>
 <div class="sect2">
 <h3 id="ickle-queries_ickle-query-language"><a class="anchor" href="#ickle-queries_ickle-query-language"></a>2.1. Ickle queries</h3>
 <div class="paragraph">
-<p>To use the API, first obtain a QueryFactory to the cache and then call the <code>.create()</code> method, passing in the string to use in the query.
-Each <code>QueryFactory</code> instance is bound to the same <code>Cache</code> instance as the <code>Search</code>, but it is otherwise a stateless and thread-safe object that can be used for creating multiple queries in parallel.</p>
+<p>To use the API, call the cache <code>.query()</code> method and provide the query string.</p>
 </div>
 <div class="paragraph">
 <p>For instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">// Remote Query, using protobuf
-QueryFactory qf = org.infinispan.client.hotrod.Search.getQueryFactory(remoteCache);
-Query&lt;Transaction&gt; q = qf.create("from sample_bank_account.Transaction where amount &gt; 20");
+<pre class="highlight"><code class="language-java" data-lang="java">// Remote Query using protobuf
+Query&lt;Transaction&gt; q = remoteCache.create("from sample_bank_account.Transaction where amount &gt; 20");
 
 // Embedded Query using Java Objects
-QueryFactory qf = org.infinispan.query.Search.getQueryFactory(cache);
-Query&lt;Transaction&gt; q = qf.create("from org.infinispan.sample.Book where price &gt; 20");
+Query&lt;Transaction&gt; q = cache.create("from org.infinispan.sample.Book where price &gt; 20");
 
 // Execute the query
 QueryResult&lt;Book&gt; queryResult = q.execute();</code></pre>
@@ -1446,7 +1443,7 @@ conjunction with <code>Query.startOffset(long startOffset)</code> to achieve pag
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">// sorted by year and match all books that have "clustering" in their title
 // and return the third page of 10 results
-Query&lt;Book&gt; query = queryFactory.create("FROM org.infinispan.sample.Book WHERE title like '%clustering%' ORDER BY year").startOffset(20).maxResults(10)</code></pre>
+Query&lt;Book&gt; query = cache.query("FROM org.infinispan.sample.Book WHERE title like '%clustering%' ORDER BY year").startOffset(20).maxResults(10)</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1531,9 +1528,8 @@ the operator instead of the usual constant value. Once the parameters have been 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">QueryFactory queryFactory = Search.getQueryFactory(cache);
-// Defining a query to search for various authors and publication years
-Query&lt;Book&gt; query = queryFactory.create("SELECT title FROM org.infinispan.sample.Book WHERE author = :authorName AND publicationYear = :publicationYear").build();
+<pre class="highlight"><code class="language-java" data-lang="java">// Defining a query to search for various authors and publication years
+Query&lt;Book&gt; query = cache.query("SELECT title FROM org.infinispan.sample.Book WHERE author = :authorName AND publicationYear = :publicationYear").build();
 
 // Set actual parameter values
 query.setParameter("authorName", "Doe");
@@ -2306,8 +2302,7 @@ public class RemoteQuery {
       remoteCache.put(2, book2);
 
       // Execute a full-text query
-      QueryFactory queryFactory = Search.getQueryFactory(remoteCache);
-      Query&lt;Book&gt; query = queryFactory.create("FROM book_sample.Book WHERE title:'java'");
+      Query&lt;Book&gt; query = remoteCache.query("FROM book_sample.Book WHERE title:'java'");
 
       List&lt;Book&gt; list = query.execute().list(); // Voila! We have our book back from the cache!
    }
@@ -2371,11 +2366,11 @@ public interface CalculusIndexedSchema extends GeneratedSchema {
 <p>Perform queries:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>Query&lt;Product&gt; query = queryFactory.create("from lab.indexed.CalculusIndexed c where c.purchases &gt; 9");
+<pre class="highlight"><code>Query&lt;Product&gt; query = cache.query("from lab.indexed.CalculusIndexed c where c.purchases &gt; 9");
 QueryResult&lt;Product&gt; result = query.execute();
 // play with the result
 
-query = queryFactory.create("from lab.indexed.CalculusIndexed c where c.prospect = 2.2");
+query = cache.query("from lab.indexed.CalculusIndexed c where c.prospect = 2.2");
 result = query.execute();
 // play with the result</code></pre>
 </div>
@@ -2837,19 +2832,16 @@ Cache&lt;String, Book&gt; cache = manager.getCache("books");</code></pre>
 <p>Perform queries for fields in the <code>Book</code> instances that are stored in the Infinispan cache, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">// Get the query factory from the cache
-QueryFactory queryFactory = org.infinispan.query.Search.getQueryFactory(cache);
-
-// Create an Ickle query that performs a full-text search using the ':' operator on the 'title' and 'authors.name' fields
+<pre class="highlight"><code class="language-java" data-lang="java">// Create an Ickle query that performs a full-text search using the ':' operator on the 'title' and 'authors.name' fields
 // You can perform full-text search only on indexed caches
-Query&lt;Book&gt; fullTextQuery = queryFactory.create("FROM org.infinispan.sample.Book b WHERE b.title:'infinispan' AND b.authors.name:'sanne'");
+Query&lt;Book&gt; fullTextQuery = cache.query("FROM org.infinispan.sample.Book b WHERE b.title:'infinispan' AND b.authors.name:'sanne'");
 
 // Use the '=' operator to query fields in caches that are indexed or not
 // Non full-text operators apply only to fields that are not analyzed
-Query&lt;Book&gt; exactMatchQuery=queryFactory.create("FROM org.infinispan.sample.Book b WHERE b.isbn = '12345678' AND b.authors.name : 'sanne'");
+Query&lt;Book&gt; exactMatchQuery= cache.query("FROM org.infinispan.sample.Book b WHERE b.isbn = '12345678' AND b.authors.name : 'sanne'");
 
 // You can use full-text and non-full text operators in the same query
-Query&lt;Book&gt; query=queryFactory.create("FROM org.infinispan.sample.Book b where b.authors.name : 'Stephen' and b.description : (+'dark' -'tower')");
+Query&lt;Book&gt; query= cache.query("FROM org.infinispan.sample.Book b where b.authors.name : 'Stephen' and b.description : (+'dark' -'tower')");
 
 // Get the results
 List&lt;Book&gt; found=query.execute().list();</code></pre>
@@ -3128,8 +3120,7 @@ ContinuousQuery&lt;Integer, Person&gt; continuousQuery = Search.getContinuousQue
 
 // Define a query.
 // In this example, we search for Person instances under 21 years of age.
-QueryFactory queryFactory = Search.getQueryFactory(cache);
-Query query = queryFactory.create("FROM Person p WHERE p.age &lt; 21");
+Query query = cache.create("FROM Person p WHERE p.age &lt; 21");
 
 final Map&lt;Integer, Person&gt; matches = new ConcurrentHashMap&lt;Integer, Person&gt;();
 
@@ -3245,7 +3236,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-12 16:47:03 UTC
+Last updated 2023-09-13 09:25:54 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
