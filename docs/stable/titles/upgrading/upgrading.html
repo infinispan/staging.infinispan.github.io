@@ -564,13 +564,9 @@ $(addBlockSwitches);
 <li><a href="#jakarta_ee_compatible_jars_available">1.4.9. Jakarta EE compatible jars available</a></li>
 <li><a href="#hibernate_6_0_2lc_update">1.4.10. Hibernate 6.0 2LC Update</a></li>
 <li><a href="#jpastore_has_been_removed">1.4.11. JPAStore has been removed</a></li>
-<li><a href="#query_api">1.4.12. Query API</a>
-<ul class="sectlevel4">
-<li><a href="#infinispan_native_annotations">Infinispan native annotations</a></li>
-</ul>
-</li>
-<li><a href="#query_efficiency">1.4.13. Query efficiency</a></li>
-<li><a href="#the_undocumented_server_filesystem_realm_has_been_removed">1.4.14. The (undocumented) server filesystem-realm has been removed</a></li>
+<li><a href="#protodoc_annotations_are_no_longer_necessary">1.4.12. ProtoDoc annotations are no longer necessary</a></li>
+<li><a href="#the_undocumented_server_filesystem_realm_has_been_removed">1.4.13. The (undocumented) server filesystem-realm has been removed</a></li>
+<li><a href="#query_efficiency">1.4.14. Query efficiency</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_from_12_1_to_13_0">1.5. Upgrading from 12.1 to 13.0</a>
@@ -917,12 +913,13 @@ $(addBlockSwitches);
 <li><a href="#migrating-data-between-stores">4. Migrating data between cache stores</a>
 <ul class="sectlevel2">
 <li><a href="#store-migrator_store-migrator">4.1. Cache store migrator</a></li>
-<li><a href="#configuring-store-migrator_store-migrator">4.2. Configuring the cache store migrator</a>
+<li><a href="#getting-store-migrator_store-migrator">4.2. Getting the cache store migrator</a></li>
+<li><a href="#configuring-store-migrator_store-migrator">4.3. Configuring the cache store migrator</a>
 <ul class="sectlevel3">
-<li><a href="#store-migrator-properties_store-migrator">4.2.1. Configuration properties for the cache store migrator</a></li>
+<li><a href="#store-migrator-properties_store-migrator">4.3.1. Configuration properties for the cache store migrator</a></li>
 </ul>
 </li>
-<li><a href="#migrating-cache-stores_store-migrator">4.3. Migrating Infinispan cache stores</a></li>
+<li><a href="#migrating-cache-stores_store-migrator">4.4. Migrating Infinispan cache stores</a></li>
 </ul>
 </li>
 </ul>
@@ -1183,89 +1180,25 @@ It is suggested instead to use the new SQL Table or Query Stores that were added
 </div>
 </div>
 <div class="sect3">
-<h4 id="query_api"><a class="anchor" href="#query_api"></a>1.4.12. Query API</h4>
-<div class="sect4">
-<h5 id="infinispan_native_annotations"><a class="anchor" href="#infinispan_native_annotations"></a>Infinispan native annotations</h5>
+<h4 id="protodoc_annotations_are_no_longer_necessary"><a class="anchor" href="#protodoc_annotations_are_no_longer_necessary"></a>1.4.12. ProtoDoc annotations are no longer necessary</h4>
 <div class="paragraph">
-<p>This release introduces new indexing annotations: <code>@Indexed</code>, <code>@Basic</code>, <code>@Decimal</code>, <code>@Keyword</code>, <code>@Text</code>, and <code>@Embedded</code>.
-Each of the annotations supports a set of attributes that you can use to further describe how the entity is indexed.</p>
-</div>
-<div class="paragraph">
-<p>These new annotations replaced Hibernate Search annotations which means that you are no longer required to annotate your Java classes with the <code>@ProtoDoc</code> annotation for remote caches.
-Any annotations will be copied as comments to the generated <code>.proto</code> files.</p>
-</div>
-<div class="paragraph">
-<p>The following table summarizes the mapping of fields between Hibernate Search 5 (HS5) annotations and Infinispan native annotations:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">HS5 annotations</th>
-<th class="tableblock halign-left valign-top">Indexing attributes</th>
-<th class="tableblock halign-left valign-top">Infinispan native annotations</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Field(index=Index.YES)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">searchable</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Basic, @Decimal, @Keyword, @Text</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fields previously marked as indexed are now searchable.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Field(store = Store.YES)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">projectable = true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Basic, @Decimal, @Keyword, @Text</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fields previously marked as stored are now projectable.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">type String &amp;&amp; @Field(analyze = Analyze.YES)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">analyzer = "&lt;definition&gt;"</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Text</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">String fields that were marked with analyzer definitions remain being analyzed during indexing.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Field(analyze = Analyze.NO) &amp;&amp; (@Field(store = Store.YES) OR @Field(sortable = Sortable.YES))</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sortable = true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Basic, @Decimal, @Keyword</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fields that were not analyzed but were either stored in the index or marked as sortable are now considered sortable.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">aggregable = true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Basic, @Decimal, @Keyword</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Performing aggregation operations using the Hibernate 5 Search annotations was not possible.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">normalizer = "lowercase"</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">@Keyword</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mapping fields that were analyzed or normalized is not possible due to the potential data loss in the process.</p></td>
-</tr>
-</tbody>
-</table>
+<p>It is no longer necessary to wrap annotations, such as those required for indexing, within <code>@ProtoDoc</code> annotations.
+Any annotations will simply be copied as comments to the generated <code>.proto</code> files.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="query_efficiency"><a class="anchor" href="#query_efficiency"></a>1.4.13. Query efficiency</h4>
+<h4 id="the_undocumented_server_filesystem_realm_has_been_removed"><a class="anchor" href="#the_undocumented_server_filesystem_realm_has_been_removed"></a>1.4.13. The (undocumented) server filesystem-realm has been removed</h4>
+<div class="paragraph">
+<p>The <code>filesystem-realm</code>, an experimental feature which has never been documented, has been removed.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="query_efficiency"><a class="anchor" href="#query_efficiency"></a>1.4.14. Query efficiency</h4>
 <div class="paragraph">
 <p>The default for maximum results returned by a query that was present in Infinispan 12.1.5.Final and earlier versions has been restored.
 You can now change the default limit by setting the default-max-results cache property.
 The default value of default-max-results is 100.
 Limiting the number of results returned by a query significantly improves performance of queries that don&#8217;t have an explicit limit set.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="the_undocumented_server_filesystem_realm_has_been_removed"><a class="anchor" href="#the_undocumented_server_filesystem_realm_has_been_removed"></a>1.4.14. The (undocumented) server filesystem-realm has been removed</h4>
-<div class="paragraph">
-<p>The <code>filesystem-realm</code>, an experimental feature which has never been documented, has been removed.</p>
 </div>
 </div>
 </div>
@@ -4348,7 +4281,67 @@ implementations.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-store-migrator_store-migrator"><a class="anchor" href="#configuring-store-migrator_store-migrator"></a>4.2. Configuring the cache store migrator</h3>
+<h3 id="getting-store-migrator_store-migrator"><a class="anchor" href="#getting-store-migrator_store-migrator"></a>4.2. Getting the cache store migrator</h3>
+<div class="paragraph">
+<p><code>StoreMigrator</code> is available as part of the Infinispan tools library,
+<code>infinispan-tools</code>, and is included in the Maven repository.</p>
+</div>
+<div class="ulist">
+<div class="title">Procedure</div>
+<ul>
+<li>
+<p>Configure your <code>pom.xml</code> for <code>StoreMigrator</code> as follows:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;org.infinispan.example&lt;/groupId&gt;
+    &lt;artifactId&gt;jdbc-migrator-example&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;dependencies&gt;
+      &lt;dependency&gt;
+        &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
+        &lt;artifactId&gt;infinispan-tools&lt;/artifactId&gt;
+      &lt;/dependency&gt;
+      &lt;!-- Additional dependencies --&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+      &lt;plugins&gt;
+        &lt;plugin&gt;
+          &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+          &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+          &lt;version&gt;1.2.1&lt;/version&gt;
+          &lt;executions&gt;
+            &lt;execution&gt;
+              &lt;goals&gt;
+                &lt;goal&gt;java&lt;/goal&gt;
+              &lt;/goals&gt;
+            &lt;/execution&gt;
+          &lt;/executions&gt;
+          &lt;configuration&gt;
+            &lt;mainClass&gt;org.infinispan.tools.store.migrator.StoreMigrator&lt;/mainClass&gt;
+            &lt;arguments&gt;
+              &lt;argument&gt;path/to/migrator.properties&lt;/argument&gt;
+            &lt;/arguments&gt;
+          &lt;/configuration&gt;
+        &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-store-migrator_store-migrator"><a class="anchor" href="#configuring-store-migrator_store-migrator"></a>4.3. Configuring the cache store migrator</h3>
 <div class="paragraph">
 <p>Use the <code>migrator.properties</code> file to configure properties for source and target cache stores.</p>
 </div>
@@ -4407,7 +4400,7 @@ target.location=/path/to/target/sfs.dat</code></pre>
 </ol>
 </div>
 <div class="sect3">
-<h4 id="store-migrator-properties_store-migrator"><a class="anchor" href="#store-migrator-properties_store-migrator"></a>4.2.1. Configuration properties for the cache store migrator</h4>
+<h4 id="store-migrator-properties_store-migrator"><a class="anchor" href="#store-migrator-properties_store-migrator"></a>4.3.1. Configuration properties for the cache store migrator</h4>
 <div class="paragraph">
 <p>Configure source and target cache stores in a <code>StoreMigrator</code> properties.</p>
 </div>
@@ -4720,7 +4713,7 @@ target.location=path/to/sifs/index</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="migrating-cache-stores_store-migrator"><a class="anchor" href="#migrating-cache-stores_store-migrator"></a>4.3. Migrating Infinispan cache stores</h3>
+<h3 id="migrating-cache-stores_store-migrator"><a class="anchor" href="#migrating-cache-stores_store-migrator"></a>4.4. Migrating Infinispan cache stores</h3>
 <div class="paragraph">
 <p>You can use the <code>StoreMigrator</code> to migrate data between cache stores with different Infinispan versions or to migrate data from one type of cache store to another.</p>
 </div>
@@ -4770,7 +4763,7 @@ target.location=path/to/sifs/index</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-13 11:05:16 UTC
+Last updated 2023-09-08 06:44:01 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -549,7 +549,7 @@ $(addBlockSwitches);
 <li><a href="#pagination">2.1.1. Pagination</a></li>
 <li><a href="#number_of_hits">2.1.2. Number of hits</a>
 <ul class="sectlevel4">
-<li><a href="#hit_count_accuracy">Hit count accuracy</a></li>
+<li><a href="#hit_count_accuracy">Hit Count Accuracy</a></li>
 </ul>
 </li>
 <li><a href="#iteration">2.1.3. Iteration</a></li>
@@ -602,6 +602,7 @@ $(addBlockSwitches);
 <ul class="sectlevel2">
 <li><a href="#querying-embedded-caches_query-embedded">4.1. Querying embedded caches</a></li>
 <li><a href="#entity-mapping-annotations_query-embedded">4.2. Entity mapping annotations</a></li>
+<li><a href="#programmatic-entity-mapping_query-embedded">4.3. Programmatically mapping entities</a></li>
 </ul>
 </li>
 <li><a href="#query-continuous">5. Creating continuous queries</a>
@@ -1398,18 +1399,21 @@ However you can query caches that are non-indexed.</p>
 <div class="sect2">
 <h3 id="ickle-queries_ickle-query-language"><a class="anchor" href="#ickle-queries_ickle-query-language"></a>2.1. Ickle queries</h3>
 <div class="paragraph">
-<p>To use the API, call the cache <code>.query()</code> method and provide the query string.</p>
+<p>To use the API, first obtain a QueryFactory to the cache and then call the <code>.create()</code> method, passing in the string to use in the query.
+Each <code>QueryFactory</code> instance is bound to the same <code>Cache</code> instance as the <code>Search</code>, but it is otherwise a stateless and thread-safe object that can be used for creating multiple queries in parallel.</p>
 </div>
 <div class="paragraph">
 <p>For instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">// Remote Query using protobuf
-Query&lt;Transaction&gt; q = remoteCache.create("from sample_bank_account.Transaction where amount &gt; 20");
+<pre class="highlight"><code class="language-java" data-lang="java">// Remote Query, using protobuf
+QueryFactory qf = org.infinispan.client.hotrod.Search.getQueryFactory(remoteCache);
+Query&lt;Transaction&gt; q = qf.create("from sample_bank_account.Transaction where amount &gt; 20");
 
 // Embedded Query using Java Objects
-Query&lt;Transaction&gt; q = cache.create("from org.infinispan.sample.Book where price &gt; 20");
+QueryFactory qf = org.infinispan.query.Search.getQueryFactory(cache);
+Query&lt;Transaction&gt; q = qf.create("from org.infinispan.sample.Book where price &gt; 20");
 
 // Execute the query
 QueryResult&lt;Book&gt; queryResult = q.execute();</code></pre>
@@ -1443,7 +1447,7 @@ conjunction with <code>Query.startOffset(long startOffset)</code> to achieve pag
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">// sorted by year and match all books that have "clustering" in their title
 // and return the third page of 10 results
-Query&lt;Book&gt; query = cache.query("FROM org.infinispan.sample.Book WHERE title like '%clustering%' ORDER BY year").startOffset(20).maxResults(10)</code></pre>
+Query&lt;Book&gt; query = queryFactory.create("FROM org.infinispan.sample.Book WHERE title like '%clustering%' ORDER BY year").startOffset(20).maxResults(10)</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1465,32 +1469,23 @@ You can change the default limit by setting the <code>query.default-max-results<
 <div class="sect3">
 <h4 id="number_of_hits"><a class="anchor" href="#number_of_hits"></a>2.1.2. Number of hits</h4>
 <div class="paragraph">
-<p>The <code>QueryResult</code> object includes the <code>.hitCount()</code> method, which returns a hit count value that represents the total number of results from a query, regardless of any pagination parameter.</p>
-</div>
-<div class="paragraph">
-<p>Additionally, <code>QueryResult</code> object contains a boolean value returned by the <code>.isExact()</code> method which indicates whether the hit count number is exact or a lower bound.
-The hit count is only available for indexed queries for performance reasons.</p>
+<p>The <code>QueryResult</code> object has the <code>.hitCount()</code> method to return the total number of results of the query, regardless
+of any pagination parameter. The hit count is only available for indexed queries for performance reasons.</p>
 </div>
 <div class="sect4">
-<h5 id="hit_count_accuracy"><a class="anchor" href="#hit_count_accuracy"></a>Hit count accuracy</h5>
+<h5 id="hit_count_accuracy"><a class="anchor" href="#hit_count_accuracy"></a>Hit Count Accuracy</h5>
 <div class="paragraph">
-<p>You can limit the required accuracy of hit counts by setting <code>hit-count-accuracy</code> attribute.
-When dealing with large data sets, precise hit counts can impact performance.
-Setting a limit to the hit count accuracy, lets you achieve faster query responses while ensuring that the provided hit counts remain sufficiently accurate for your application&#8217;s needs.</p>
+<p>For performance reasons, the default accuracy of the hit count is limited to <code>10,000</code>.
+This means that, if the effective hit count is higher than <code>10,000</code>, the value cannot be returned.
+In this case a <code>null</code> (if the HotRod client or embedded query API is used) or <code>-1L</code> (if the REST query API is used) will be returned.
+Setting this value to <code>Integer.MAX</code> would return accurate results for any query, but it would have a very adverse effect on query performance.</p>
 </div>
 <div class="paragraph">
-<p>The default accuracy of the <code>hit-count-accuracy</code> attribute is limited to <code>10000</code>.
-This means that for any query, Infinispan provides exact hit count up to maximum of 10,000.
-If the effective hit count is higher than 10,000, Infinispan returns a lower bound estimate of the count.
-You can change the default limit by setting the <code>query.hit-count-accuracy</code> cache property.
+<p>You can change the default limit by setting the <code>query.hit-count-accuracy</code> cache property.
 Alternatively, it can be set on each query instance.</p>
 </div>
 <div class="paragraph">
-<p>When the actual hit count exceeds the limit set by the <code>hit-count-accuracy</code>, the <code>.isExact()</code> method or the <code>hit_count_exact</code> JSON field will be <code>false</code>, indicating that the returned hit count is an estimation.
-Setting this value to <code>Integer.MAX</code> would return accurate results for any query, but this can severely impact query performance.</p>
-</div>
-<div class="paragraph">
-<p>For optimal performance set the property value slightly above the expected hit count. If you do not require accurate hit counts, set it to a low value.</p>
+<p>For optimal performances set this value not much above the expected hit count. If you do not require accurate hit counts, set it to a low value.</p>
 </div>
 </div>
 </div>
@@ -1528,8 +1523,9 @@ the operator instead of the usual constant value. Once the parameters have been 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">// Defining a query to search for various authors and publication years
-Query&lt;Book&gt; query = cache.query("SELECT title FROM org.infinispan.sample.Book WHERE author = :authorName AND publicationYear = :publicationYear").build();
+<pre class="highlight"><code class="language-java" data-lang="java">QueryFactory queryFactory = Search.getQueryFactory(cache);
+// Defining a query to search for various authors and publication years
+Query&lt;Book&gt; query = queryFactory.create("SELECT title FROM org.infinispan.sample.Book WHERE author = :authorName AND publicationYear = :publicationYear").build();
 
 // Set actual parameter values
 query.setParameter("authorName", "Doe");
@@ -2302,7 +2298,8 @@ public class RemoteQuery {
       remoteCache.put(2, book2);
 
       // Execute a full-text query
-      Query&lt;Book&gt; query = remoteCache.query("FROM book_sample.Book WHERE title:'java'");
+      QueryFactory queryFactory = Search.getQueryFactory(remoteCache);
+      Query&lt;Book&gt; query = queryFactory.create("FROM book_sample.Book WHERE title:'java'");
 
       List&lt;Book&gt; list = query.execute().list(); // Voila! We have our book back from the cache!
    }
@@ -2366,11 +2363,11 @@ public interface CalculusIndexedSchema extends GeneratedSchema {
 <p>Perform queries:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>Query&lt;Product&gt; query = cache.query("from lab.indexed.CalculusIndexed c where c.purchases &gt; 9");
+<pre class="highlight"><code>Query&lt;Product&gt; query = queryFactory.create("from lab.indexed.CalculusIndexed c where c.purchases &gt; 9");
 QueryResult&lt;Product&gt; result = query.execute();
 // play with the result
 
-query = cache.query("from lab.indexed.CalculusIndexed c where c.prospect = 2.2");
+query = queryFactory.create("from lab.indexed.CalculusIndexed c where c.prospect = 2.2");
 result = query.execute();
 // play with the result</code></pre>
 </div>
@@ -2832,16 +2829,19 @@ Cache&lt;String, Book&gt; cache = manager.getCache("books");</code></pre>
 <p>Perform queries for fields in the <code>Book</code> instances that are stored in the Infinispan cache, as in the following example:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">// Create an Ickle query that performs a full-text search using the ':' operator on the 'title' and 'authors.name' fields
+<pre class="highlight"><code class="language-java" data-lang="java">// Get the query factory from the cache
+QueryFactory queryFactory = org.infinispan.query.Search.getQueryFactory(cache);
+
+// Create an Ickle query that performs a full-text search using the ':' operator on the 'title' and 'authors.name' fields
 // You can perform full-text search only on indexed caches
-Query&lt;Book&gt; fullTextQuery = cache.query("FROM org.infinispan.sample.Book b WHERE b.title:'infinispan' AND b.authors.name:'sanne'");
+Query&lt;Book&gt; fullTextQuery = queryFactory.create("FROM org.infinispan.sample.Book b WHERE b.title:'infinispan' AND b.authors.name:'sanne'");
 
 // Use the '=' operator to query fields in caches that are indexed or not
 // Non full-text operators apply only to fields that are not analyzed
-Query&lt;Book&gt; exactMatchQuery= cache.query("FROM org.infinispan.sample.Book b WHERE b.isbn = '12345678' AND b.authors.name : 'sanne'");
+Query&lt;Book&gt; exactMatchQuery=queryFactory.create("FROM org.infinispan.sample.Book b WHERE b.isbn = '12345678' AND b.authors.name : 'sanne'");
 
 // You can use full-text and non-full text operators in the same query
-Query&lt;Book&gt; query= cache.query("FROM org.infinispan.sample.Book b where b.authors.name : 'Stephen' and b.description : (+'dark' -'tower')");
+Query&lt;Book&gt; query=queryFactory.create("FROM org.infinispan.sample.Book b where b.authors.name : 'Stephen' and b.description : (+'dark' -'tower')");
 
 // Get the results
 List&lt;Book&gt; found=query.execute().list();</code></pre>
@@ -2926,6 +2926,62 @@ public class CustomTransformer implements Transformer {
 <pre class="highlight"><code class="language-java" data-lang="java">   ConfigurationBuilder builder = ...
    builder.indexing().enable()
          .addKeyTransformer(CustomKey.class, CustomTransformer.class);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="programmatic-entity-mapping_query-embedded"><a class="anchor" href="#programmatic-entity-mapping_query-embedded"></a>4.3. Programmatically mapping entities</h3>
+<div class="paragraph">
+<p>You can programmatically map entities to the index as an alternative to annotating Java classes.</p>
+</div>
+<div class="paragraph">
+<p>In the following example we map an object <code>Author</code> which is to be stored in the grid and made searchable on two properties:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import org.apache.lucene.search.Query;
+import org.hibernate.search.cfg.Environment;
+import org.hibernate.search.cfg.SearchMapping;
+import org.hibernate.search.query.dsl.QueryBuilder;
+import org.infinispan.Cache;
+import org.infinispan.configuration.cache.Configuration;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
+import org.infinispan.configuration.cache.Index;
+import org.infinispan.manager.DefaultCacheManager;
+import org.infinispan.query.CacheQuery;
+import org.infinispan.query.Search;
+import org.infinispan.query.SearchManager;
+
+import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.util.Properties;
+
+SearchMapping mapping = new SearchMapping();
+mapping.entity(Author.class).indexed()
+       .property("name", ElementType.METHOD).field()
+       .property("surname", ElementType.METHOD).field();
+
+Properties properties = new Properties();
+properties.put(Environment.MODEL_MAPPING, mapping);
+properties.put("hibernate.search.[other options]", "[...]");
+
+Configuration infinispanConfiguration = new ConfigurationBuilder()
+        .indexing().index(Index.NONE)
+        .withProperties(properties)
+        .build();
+
+DefaultCacheManager cacheManager = new DefaultCacheManager(infinispanConfiguration);
+
+Cache&lt;Long, Author&gt; cache = cacheManager.getCache();
+SearchManager sm = Search.getSearchManager(cache);
+
+Author author = new Author(1, "Manik", "Surtani");
+cache.put(author.getId(), author);
+
+QueryBuilder qb = sm.buildQueryBuilderForClass(Author.class).get();
+Query q = qb.keyword().onField("name").matching("Manik").createQuery();
+CacheQuery cq = sm.getQuery(q, Author.class);
+assert cq.getResultSize() == 1;</code></pre>
 </div>
 </div>
 </div>
@@ -3120,7 +3176,8 @@ ContinuousQuery&lt;Integer, Person&gt; continuousQuery = Search.getContinuousQue
 
 // Define a query.
 // In this example, we search for Person instances under 21 years of age.
-Query query = cache.create("FROM Person p WHERE p.age &lt; 21");
+QueryFactory queryFactory = Search.getQueryFactory(cache);
+Query query = queryFactory.create("FROM Person p WHERE p.age &lt; 21");
 
 final Map&lt;Integer, Person&gt; matches = new ConcurrentHashMap&lt;Integer, Person&gt;();
 
@@ -3236,7 +3293,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-14 14:10:33 UTC
+Last updated 2023-07-07 02:32:44 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

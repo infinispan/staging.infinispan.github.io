@@ -926,7 +926,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;15.0.0.Dev01&lt;/version.infinispan&gt;
+  &lt;version.infinispan&gt;15.0.0.Dev02&lt;/version.infinispan&gt;
 &lt;/properties&gt;
 
 &lt;dependencyManagement&gt;
@@ -1540,9 +1540,6 @@ authenticate with Kerberos and verify <code>krb5.conf</code>.</p>
 <p>To verify certificates issued to Infinispan Server, Hot Rod clients require either the full certificate chain or a partial chain that starts with the Root CA.
 You provide server certificates to Hot Rod clients as trust stores.</p>
 </div>
-<div class="paragraph">
-<p>By default, Hot Rod clients will also perform hostname validation by matching the <code>dNSName</code> or <code>iPAddress</code> or both types contained by the server certificate&#8217;s <code>subjectAltName</code> extension with the expected hostname.</p>
-</div>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -1621,7 +1618,6 @@ clientBuilder
 <div class="content">
 <pre class="highlight nowrap"><code>infinispan.client.hotrod.server_list = 127.0.0.1:11222
 infinispan.client.hotrod.use_ssl = true
-# Use SNI for hostname validation
 infinispan.client.hotrod.sni_host_name = myservername
 # Keystore that contains the public keys for Infinispan Server.
 # Clients use the trust store to verify Infinispan Server identities.
@@ -1654,7 +1650,7 @@ infinispan.client.hotrod.sasl_mechanism = EXTERNAL</code></pre>
 <p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/client/hotrod/configuration/package-summary.html">Hot Rod client configuration properties</a></p>
 </li>
 <li>
-<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/securing_networks/using-shared-system-certificates_securing-networks">Using Shared System Certificates</a> (Red Hat Enterprise Linux 9 Securing Networks)</p>
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-shared-system-certificates">Using Shared System Certificates</a> (Red Hat Enterprise Linux 7 Security Guide)</p>
 </li>
 </ul>
 </div>
@@ -3500,7 +3496,7 @@ container.start();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-14 14:10:33 UTC
+Last updated 2023-07-07 02:32:44 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

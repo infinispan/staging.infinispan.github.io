@@ -943,7 +943,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.13.Final.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-14.0.17.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2588,8 +2588,26 @@ remote client access.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The Memcached endpoint is deprecated and planned for removal in a future
-release.</p>
+<p>The current implementation of the Memcached protocol is deprecated and planned for removal in future release. However, it will be replaced with new Memcached connector that offers the following improvements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>support for both the <code>TEXT</code> and <code>BINARY</code> protocols</p>
+</li>
+<li>
+<p>authentication against the server security realms</p>
+</li>
+<li>
+<p>encryption (TLS)</p>
+</li>
+<li>
+<p>performance improvements</p>
+</li>
+<li>
+<p>protocol auto-detection which allows the connector to be enabled on the default server port by default</p>
+</li>
+</ul>
 </div>
 </td>
 </tr>
@@ -8976,7 +8994,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>12.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.13.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-14.0.17.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -12576,7 +12594,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-07 03:23:43 -0400
+Last updated 2023-09-08 06:44:01 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
