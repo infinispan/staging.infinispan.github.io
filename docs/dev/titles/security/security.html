@@ -535,10 +535,16 @@ $(addBlockSwitches);
 <li><a href="#default-user-roles_security-authorization">2.1. Infinispan user roles and permissions</a>
 <ul class="sectlevel3">
 <li><a href="#user-permissions_security-authorization">2.1.1. Permissions</a></li>
-<li><a href="#role-mappers_security-authorization">2.1.2. Role and permission mappers</a></li>
-<li><a href="#configuring-role-mappers_security-authorization">2.1.3. Configuring role mappers</a></li>
-<li><a href="#configuring-cluster-role-mapper_security-authorization">2.1.4. Configuring the cluster role mapper</a>
+<li><a href="#role-mappers_security-authorization">2.1.2. Role and permission mappers</a>
 <ul class="sectlevel4">
+<li><a href="#mapping_users_to_roles_and_permissions_in_infinispan">Mapping users to roles and permissions in Infinispan</a></li>
+</ul>
+</li>
+<li><a href="#configuring-role-mappers_security-authorization">2.1.3. Configuring role mappers</a></li>
+<li><a href="#configuring-cluster-role-mapper_security-authorization">2.1.4. Configuring the cluster role and permission mappers</a>
+<ul class="sectlevel4">
+<li><a href="#creating-roles_security-authorization">Creating new roles</a></li>
+<li><a href="#granting-roles-to-users_security-authorization">Granting roles to users</a></li>
 <li><a href="#cluster_role_mapper_name_rewriters">Cluster role mapper name rewriters</a>
 <ul class="sectlevel5">
 <li><a href="#case_principal_transformer">Case Principal Transformer</a></li>
@@ -559,7 +565,16 @@ $(addBlockSwitches);
 <li><a href="#property-security-realms_security-realms">3.3. Property realms</a></li>
 <li><a href="#ldap-security-realms_security-realms">3.4. LDAP realms</a>
 <ul class="sectlevel3">
-<li><a href="#ldap-realm-principal-rewriting_security-realms">3.4.1. LDAP realm principal re-writing</a></li>
+<li><a href="#ldap_connection_properties">3.4.1. LDAP connection properties</a></li>
+<li><a href="#ldap_realm_user_authentication_methods">3.4.2. LDAP realm user authentication methods</a></li>
+<li><a href="#mapping_user_entries_to_their_associated_groups">3.4.3. Mapping user entries to their associated groups</a></li>
+<li><a href="#ldap_realm_configuration_reference">3.4.4. LDAP realm configuration reference</a>
+<ul class="sectlevel4">
+<li><a href="#ldap-realm-principal-rewriting_security-realms">LDAP realm principal rewriting</a></li>
+<li><a href="#ldap_principal_rewriting_configuration_reference">LDAP principal rewriting configuration reference</a></li>
+<li><a href="#ldap_user_and_group_mapping_process_with_infinispan">LDAP user and group mapping process with Infinispan</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#token-security-realms_security-realms">3.5. Token realms</a></li>
@@ -569,11 +584,16 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#name_rewriters">3.8.1. Name rewriters</a>
 <ul class="sectlevel4">
-<li><a href="#case_principal_transformer_2">Case Principal Transformer</a></li>
-<li><a href="#common_name_principal_transformer">Common Name Principal Transformer</a></li>
-<li><a href="#regex_principal_transformer_2">Regex Principal Transformer</a></li>
+<li><a href="#case_principal_transformer_3">Case Principal Transformer</a></li>
+<li><a href="#common_name_principal_transformer_2">Common Name Principal Transformer</a></li>
+<li><a href="#regex_principal_transformer_3">Regex Principal Transformer</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#caching-security-realms_security-realms">3.9. Security realm caching</a>
+<ul class="sectlevel3">
+<li><a href="#flushing_realm_caches">3.9.1. Flushing realm caches</a></li>
 </ul>
 </li>
 </ul>
@@ -908,11 +928,17 @@ to readily integrate with enterprise-level security frameworks.</p>
 <div class="sect3">
 <h4 id="role-mappers_security-authorization"><a class="anchor" href="#role-mappers_security-authorization"></a>2.1.2. Role and permission mappers</h4>
 <div class="paragraph">
-<p>Infinispan users are implemented with the <code>javax.security.auth.Subject</code> class and represent a grouping of security principals of type <code>java.security.Principal</code>.</p>
+<p>Infinispan implements users as a collection of principals.
+Principals represent either an individual user identity, such as a username, or a group to which the users belong. Internally, these are implemented with the <code>javax.security.auth.Subject</code> class.</p>
 </div>
 <div class="paragraph">
-<p>Infinispan includes the <code>PrincipalRoleMapper</code> API to associate security principals to roles and the <code>RolePermissionMapper</code> API to associate roles with sets of permissions.
-Infinispan also provides the following role and permission mapper implementations:</p>
+<p>To enable authorization, the principals must be mapped to role names, which are then expanded into a set of permissions.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan includes the <code>PrincipalRoleMapper</code> API for associating security principals to roles, and the <code>RolePermissionMapper</code> API for associating roles with specific permissions.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan provides the following role and permission mapper implementations:</p>
 </div>
 <div class="dlist">
 <dl>
@@ -922,17 +948,68 @@ Infinispan also provides the following role and permission mapper implementation
 </dd>
 <dt class="hdlist1">Cluster permission mapper</dt>
 <dd>
-<p>Stores role to permission mappings in the cluster registry and allows you to dynamically modify user roles and permissions.</p>
+<p>Stores role to permission mappings in the cluster registry. Allows you to dynamically modify user roles and permissions.</p>
 </dd>
 <dt class="hdlist1">Identity role mapper</dt>
 <dd>
-<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
+<p>Uses the principal name as the role name. The type or format of the principal name depends on the source. For example, in an LDAP directory the principal name could be a Distinguished Name (DN).</p>
 </dd>
 <dt class="hdlist1">Common name role mapper</dt>
 <dd>
-<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory that contains Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
+<p>Uses the Common Name (CN) as the role name. You can use this role mapper with an LDAP directory or with client certificates that contain Distinguished Names (DN); for example <code>cn=managers,ou=people,dc=example,dc=com</code> maps to the <code>managers</code> role.</p>
 </dd>
 </dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+By default, principal-to-role mapping is only applied to principals which represent groups.
+It is possible to configure Infinispan to also perform the mapping for user principals.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="mapping_users_to_roles_and_permissions_in_infinispan"><a class="anchor" href="#mapping_users_to_roles_and_permissions_in_infinispan"></a>Mapping users to roles and permissions in Infinispan</h5>
+<div class="paragraph">
+<p>Consider the following user retrieved from an LDAP server, as a collection of DNs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>CN=myapplication,OU=applications,DC=mycompany
+CN=dataprocessors,OU=groups,DC=mycompany
+CN=finance,OU=groups,DC=mycompany</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using the <strong>Common name role mapper</strong>, the user would be mapped to the following roles:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>dataprocessors
+finance</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan has the following role definitions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>dataprocessors: ALL_WRITE ALL_READ
+finance: LISTEN</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The user would have the following permissions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ALL_WRITE ALL_READ LISTEN</pre>
+</div>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -955,12 +1032,12 @@ Infinispan also provides the following role and permission mapper implementation
 </ul>
 </div>
 </div>
+</div>
 <div class="sect3">
 <h4 id="configuring-role-mappers_security-authorization"><a class="anchor" href="#configuring-role-mappers_security-authorization"></a>2.1.3. Configuring role mappers</h4>
 <div class="paragraph">
 <p>Infinispan enables the cluster role mapper and cluster permission mapper by default.
-You should configure role mappers if you want to use the identity role mapper, Common Name (CN) role mapper, or a custom implementation.
-For example, if your deployment integrates with an LDAP directory and you want to use the Distinguished Name (DN) as the security principal you can configure Infinispan to use the Common Name (CN) role mapper.</p>
+To use a different implementation for role mapping, you must configure the role mappers.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -1028,11 +1105,129 @@ For example, if your deployment integrates with an LDAP directory and you want t
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-cluster-role-mapper_security-authorization"><a class="anchor" href="#configuring-cluster-role-mapper_security-authorization"></a>2.1.4. Configuring the cluster role mapper</h4>
+<h4 id="configuring-cluster-role-mapper_security-authorization"><a class="anchor" href="#configuring-cluster-role-mapper_security-authorization"></a>2.1.4. Configuring the cluster role and permission mappers</h4>
 <div class="paragraph">
 <p>The cluster role mapper maintains a dynamic mapping between principals and roles.
-You can manipulate these mappings using either the CLI or the REST API.
-By default, the mapping is performed using a strict string equivalence between principal names and roles. It is possible to configure the cluster role mapper to apply transformation to the principal name before performing a lookup.</p>
+The cluster permission mapper maintains a dynamic set of role definitions.
+In both cases, the mappings are stored in the cluster registry and can be manipulated at runtime using either the CLI or the REST API.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
+</li>
+<li>
+<p>Start the Infinispan CLI.</p>
+</li>
+<li>
+<p>Connect to a running Infinispan cluster.</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="creating-roles_security-authorization"><a class="anchor" href="#creating-roles_security-authorization"></a>Creating new roles</h5>
+<div class="paragraph">
+<p>Create new roles and set the permissions.</p>
+</div>
+<div class="ulist">
+<div class="title">Procedure</div>
+<ul>
+<li>
+<p>Create roles with the <code class="command">user roles create</code> command, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles create --permissions=ALL_READ,ALL_WRITE simple</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Verification</div>
+<p>List roles that you grant to users with the <code class="command">user roles ls</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles ls
+["observer","application","admin","monitor","simple","deployer"]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Describe roles with the <code class="command">user roles describe</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles describe simple
+{
+  "name" : "simple",
+  "permissions" : [ "ALL_READ","ALL_WRITE" ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="granting-roles-to-users_security-authorization"><a class="anchor" href="#granting-roles-to-users_security-authorization"></a>Granting roles to users</h5>
+<div class="paragraph">
+<p>Assign roles to users and grant them permissions to perform cache operations and interact with Infinispan resources.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Grant roles to groups instead of users if you want to assign the same role to multiple users and centrally maintain their permissions.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have <code>ADMIN</code> permissions for Infinispan.</p>
+</li>
+<li>
+<p>Create Infinispan users.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create a CLI connection to Infinispan.</p>
+</li>
+<li>
+<p>Assign roles to users with the <code class="command">user roles grant</code> command, for example:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles grant --roles=deployer katie</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Verification</div>
+<p>List roles that you grant to users with the <code class="command">user roles ls</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>user roles ls katie
+["deployer"]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="cluster_role_mapper_name_rewriters"><a class="anchor" href="#cluster_role_mapper_name_rewriters"></a>Cluster role mapper name rewriters</h5>
+<div class="paragraph">
+<p>By default, the mapping is performed using a strict string equivalence between principal names and roles.
+It is possible to configure the cluster role mapper to apply transformation to the principal name before performing a lookup.</p>
 </div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
@@ -1048,8 +1243,6 @@ By default, the mapping is performed using a strict string equivalence between p
 </li>
 </ol>
 </div>
-<div class="sect4">
-<h5 id="cluster_role_mapper_name_rewriters"><a class="anchor" href="#cluster_role_mapper_name_rewriters"></a>Cluster role mapper name rewriters</h5>
 <div class="paragraph">
 <p>Principal names may have different forms, depending on the security realm type:</p>
 </div>
@@ -1067,7 +1260,7 @@ By default, the mapping is performed using a strict string equivalence between p
 </ul>
 </div>
 <div class="paragraph">
-<p>Names can be normalized to a common form using one of the following transformers.</p>
+<p>Names can be normalized to a common form using one of the following transformers:</p>
 </div>
 <div class="sect5">
 <h6 id="case_principal_transformer"><a class="anchor" href="#case_principal_transformer"></a>Case Principal Transformer</h6>
@@ -1874,6 +2067,42 @@ It is beyond the scope of this document to provide examples for all possible con
 </tr>
 </table>
 </div>
+<div class="sect3">
+<h4 id="ldap_connection_properties"><a class="anchor" href="#ldap_connection_properties"></a>3.4.1. LDAP connection properties</h4>
+<div class="paragraph">
+<p>Specify the LDAP connection properties in the LDAP realm configuration.</p>
+</div>
+<div class="paragraph">
+<p>The following properties are required:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+url
+</td>
+<td class="hdlist2">
+<p>Specifies the URL of the LDAP server. The URL should be in format <code>ldap://hostname:port</code> or <code>ldaps://hostname:port</code> for secure connections using TLS.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+principal
+</td>
+<td class="hdlist2">
+<p>Specifies a distinguished name (DN) of a valid user in the LDAp server. The DN uniquely identifies the user within the LDAP directory structure.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+credential
+</td>
+<td class="hdlist2">
+<p>Corresponds to the password associated with the principal mentioned above.</p>
+</td>
+</tr>
+</table>
+</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1882,28 +2111,53 @@ It is beyond the scope of this document to provide examples for all possible con
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The principal for LDAP connections must have necessary privileges to perform
-LDAP queries and access specific attributes.</p>
+<p>The principal for LDAP connections must have necessary privileges to perform LDAP queries and access specific attributes.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>As an alternative to verifying user credentials with the <code>direct-verification</code> attribute, you can specify an LDAP attribute that validates passwords with the <code>user-password-mapper</code> element.</p>
 </div>
-<div class="admonitionblock note">
+<div class="sect3">
+<h4 id="ldap_realm_user_authentication_methods"><a class="anchor" href="#ldap_realm_user_authentication_methods"></a>3.4.2. LDAP realm user authentication methods</h4>
+<div class="paragraph">
+<p>Configure the user authentication method in the LDAP realm.</p>
+</div>
+<div class="paragraph">
+<p>The LDAP realm can authenticate users in two ways:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+Hashed password comparison
+</td>
+<td class="hdlist2">
+<p>by comparing the hashed password stored in a user&#8217;s password attribute (usually <code>userPassword</code>)</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+Direct verification
+</td>
+<td class="hdlist2">
+<p>by authenticating against the LDAP server using the supplied credentials</p>
+<div class="paragraph">
+<p>Direct verification is the only approach that works with Active Directory, because access to the <code>password</code> attribute is forbidden.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-note" title="Note"></i>
+<i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>You cannot use endpoint authentication mechanisms that perform hashing with the <code>direct-verification</code> attribute.</p>
-</div>
-<div class="paragraph">
-<p>Because Active Directory does not expose the <code>password</code> attribute you can use the <code>direct-verification</code> attribute only and not the <code>user-password-mapper</code> element.
+<p>You cannot use endpoint authentication mechanisms that performs hashing with the <code>direct-verification</code> attribute, since this method requires having the password in clear text.
 As a result you must use the <code>BASIC</code> authentication mechanism with the REST endpoint and <code>PLAIN</code> with the Hot Rod endpoint to integrate with Active Directory Server.
 A more secure alternative is to use Kerberos, which allows the <code>SPNEGO</code>, <code>GSSAPI</code>, and <code>GS2-KRB5</code> authentication mechanisms.</p>
 </div>
@@ -1912,33 +2166,40 @@ A more secure alternative is to use Kerberos, which allows the <code>SPNEGO</cod
 </table>
 </div>
 <div class="paragraph">
-<p>The <code>rdn-identifier</code> attribute specifies an LDAP attribute that finds the user entry based on a provided identifier, which is typically a username; for example, the <code>uid</code> or <code>sAMAccountName</code> attribute.
+<p>The LDAP realm searches the directory to find the entry which corresponds to the authenticated user.
+The <code>rdn-identifier</code> attribute specifies an LDAP attribute that finds the user entry based on a provided identifier, which is typically a username; for example, the <code>uid</code> or <code>sAMAccountName</code> attribute.
 Add <code>search-recursive="true"</code> to the configuration to search the directory recursively.
 By default, the search for the user entry uses the <code>(rdn_identifier={0})</code> filter.
-Specify a different filter with the <code>filter-name</code> attribute.</p>
+You can specify a different filter using the <code>filter-name</code> attribute.</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>The `attribute-mapping` element retrieves all the groups of which the user is a member. There are typically two ways in which membership information is stored:</pre>
 </div>
+<div class="sect3">
+<h4 id="mapping_user_entries_to_their_associated_groups"><a class="anchor" href="#mapping_user_entries_to_their_associated_groups"></a>3.4.3. Mapping user entries to their associated groups</h4>
+<div class="paragraph">
+<p>In the LDAP realm configuration, specify the <code>attribute-mapping</code> element to retrieve and associate all groups that a user is a member of.</p>
+</div>
+<div class="paragraph">
+<p>The membership information is stored typically in two ways:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Under group entries that usually have class <code>groupOfNames</code> in the <code>member</code> attribute. In this case, you can use an attribute filter as in the preceding example configuration. This filter searches for entries that match the supplied filter, which locates groups with a <code>member</code> attribute equal to the user&#8217;s DN. The filter then extracts the group entry&#8217;s CN as specified by <code>from</code>, and adds it to the user&#8217;s <code>Roles</code>.</p>
+<p>Under group entries that usually have class <code>groupOfNames</code> or <code>groupOfUniqueNames</code> in the <code>member</code> attribute. This is the default behavior in most LDAP installations, except for Active Directory. In this case, you can use an attribute filter. This filter searches for entries that match the supplied filter, which locates groups with a <code>member</code> attribute equal to the user&#8217;s DN. The filter then extracts the group entry&#8217;s CN as specified by <code>from</code>, and adds it to the user&#8217;s <code>Roles</code>.</p>
 </li>
 <li>
-<p>In the user entry in the <code>memberOf</code> attribute. In this case you should use an attribute reference such as the following:</p>
+<p>In the user entry in the <code>memberOf</code> attribute. This is typically the case for Active Directory. In this case you should use an attribute reference such as the following:</p>
 <div class="paragraph">
 <p><code>&lt;attribute-reference reference="memberOf" from="cn" to="Roles" /&gt;</code></p>
 </div>
 <div class="paragraph">
-<p>This reference gets all <code>memberOf</code> attributes from the user&#8217;s entry, extracts the CN as specified by <code>from</code>, and adds them to the user&#8217;s <code>Roles</code>.</p>
+<p>This reference gets all <code>memberOf</code> attributes from the user&#8217;s entry, extracts the CN as specified by <code>from</code>, and adds them to the user&#8217;s groups (<code>Roles</code> is the internal name used to map the groups).</p>
 </div>
 </li>
 </ul>
 </div>
-<h4 id="ldap_realm_configuration" class="discrete">LDAP realm configuration</h4>
+</div>
+<div class="sect3">
+<h4 id="ldap_realm_configuration_reference"><a class="anchor" href="#ldap_realm_configuration_reference"></a>3.4.4. LDAP realm configuration reference</h4>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
@@ -2038,12 +2299,173 @@ Specify a different filter with the <code>filter-name</code> attribute.</p>
                 to: Roles</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="ldap-realm-principal-rewriting_security-realms"><a class="anchor" href="#ldap-realm-principal-rewriting_security-realms"></a>3.4.1. LDAP realm principal re-writing</h4>
+<div class="sect4">
+<h5 id="ldap-realm-principal-rewriting_security-realms"><a class="anchor" href="#ldap-realm-principal-rewriting_security-realms"></a>LDAP realm principal rewriting</h5>
 <div class="paragraph">
-<p>SASL authentication mechanisms such as <code>GSSAPI</code>, <code>GS2-KRB5</code> and <code>Negotiate</code> include a username that needs to be <em>cleaned up</em> before you can use
-it to search LDAP directories.</p>
+<p>Principals obtained by SASL authentication mechanisms such as <code>GSSAPI</code>, <code>GS2-KRB5</code> and <code>Negotiate</code> usually include the domain name, for example <code>myuser@INFINISPAN.ORG</code>.
+Before using these principals in LDAP queries, it is necessary to transform them to ensure their compatibility.
+This process is called rewriting.</p>
 </div>
+<div class="paragraph">
+<p>Infinispan includes the following transformers:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+case-principal-transformer
+</td>
+<td class="hdlist2">
+<p>rewrites the principal to either all uppercase or all lowercase. For example <code>MyUser</code> would be rewritten as <code>MYUSER</code> in uppercase mode and <code>myuser</code> in lowercase mode.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+common-name-principal-transformer
+</td>
+<td class="hdlist2">
+<p>rewrites principals in the LDAP Distinguished Name format (as defined by <a href="https://www.ietf.org/rfc/rfc4514.txt">RFC 4514</a>). It extracts the first attribute of type <code>CN</code> (commonName). For example, <code>DN=CN=myuser,OU=myorg,DC=mydomain</code> would be rewritten as <code>myuser</code>.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+regex-principal-transformer
+</td>
+<td class="hdlist2">
+<p>rewrites principals using a regular expression with capturing groups, allowing, for example, for extractions of any substring.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="ldap_principal_rewriting_configuration_reference"><a class="anchor" href="#ldap_principal_rewriting_configuration_reference"></a>LDAP principal rewriting configuration reference</h5>
+<h5 id="case_principal_transformer_2" class="discrete">Case principal transformer</h5>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="ldap-realm"&gt;
+        &lt;ldap-realm url="ldap://${org.infinispan.test.host.address}:10389"
+                    principal="uid=admin,ou=People,dc=infinispan,dc=org"
+                    credential="strongPassword"&gt;
+          &lt;name-rewriter&gt;
+            &lt;!-- Defines a rewriter that transforms usernames to lowercase --&gt;
+            &lt;case-principal-transformer uppercase="false"/&gt;
+          &lt;/name-rewriter&gt;
+          &lt;!-- further configuration omitted --&gt;
+        &lt;/ldap-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "ldap-realm",
+        "ldap-realm": {
+          "principal": "uid=admin,ou=People,dc=infinispan,dc=org",
+          "url": "ldap://${org.infinispan.test.host.address}:10389",
+          "credential": "strongPassword",
+          "name-rewriter": {
+            "case-principal-transformer": {
+              "uppercase": false
+            }
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "ldap-realm"
+        ldapRealm:
+          principal: "uid=admin,ou=People,dc=infinispan,dc=org"
+          url: "ldap://${org.infinispan.test.host.address}:10389"
+          credential: "strongPassword"
+          nameRewriter:
+            casePrincipalTransformer:
+              uppercase: false
+          # further configuration omitted</code></pre>
+</div>
+</div>
+<h5 id="common_name_principal_transformer" class="discrete">Common name principal transformer</h5>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
+  &lt;security&gt;
+    &lt;security-realms&gt;
+      &lt;security-realm name="ldap-realm"&gt;
+        &lt;ldap-realm url="ldap://${org.infinispan.test.host.address}:10389"
+                    principal="uid=admin,ou=People,dc=infinispan,dc=org"
+                    credential="strongPassword"&gt;
+          &lt;name-rewriter&gt;
+            &lt;!-- Defines a rewriter that obtains the first CN from a DN --&gt;
+            &lt;common-name-principal-transformer /&gt;
+          &lt;/name-rewriter&gt;
+          &lt;!-- further configuration omitted --&gt;
+        &lt;/ldap-realm&gt;
+      &lt;/security-realm&gt;
+    &lt;/security-realms&gt;
+  &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "ldap-realm",
+        "ldap-realm": {
+          "principal": "uid=admin,ou=People,dc=infinispan,dc=org",
+          "url": "ldap://${org.infinispan.test.host.address}:10389",
+          "credential": "strongPassword",
+          "name-rewriter": {
+            "common-name-principal-transformer": {}
+          }
+        }
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "ldap-realm"
+        ldapRealm:
+          principal: "uid=admin,ou=People,dc=infinispan,dc=org"
+          url: "ldap://${org.infinispan.test.host.address}:10389"
+          credential: "strongPassword"
+          nameRewriter:
+            commonNamePrincipalTransformer: ~
+          # further configuration omitted</code></pre>
+</div>
+</div>
+<h5 id="regex_principal_transformer_2" class="discrete">Regex principal transformer</h5>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
@@ -2056,19 +2478,10 @@ it to search LDAP directories.</p>
                     credential="strongPassword"&gt;
           &lt;name-rewriter&gt;
             &lt;!-- Defines a rewriter that extracts the username from the principal using a regular expression. --&gt;
-            &lt;regex-principal-transformer name="domain-remover"
-                                         pattern="(.*)@INFINISPAN\.ORG"
+            &lt;regex-principal-transformer pattern="(.*)@INFINISPAN\.ORG"
                                          replacement="$1"/&gt;
           &lt;/name-rewriter&gt;
-          &lt;identity-mapping rdn-identifier="uid"
-                            search-dn="ou=People,dc=infinispan,dc=org"&gt;
-            &lt;attribute-mapping&gt;
-              &lt;attribute from="cn" to="Roles"
-                         filter="(&amp;amp;(objectClass=groupOfNames)(member={1}))"
-                         filter-dn="ou=Roles,dc=infinispan,dc=org"/&gt;
-            &lt;/attribute-mapping&gt;
-            &lt;user-password-mapper from="userPassword"/&gt;
-          &lt;/identity-mapping&gt;
+          &lt;!-- further configuration omitted --&gt;
         &lt;/ldap-realm&gt;
       &lt;/security-realm&gt;
     &lt;/security-realms&gt;
@@ -2093,21 +2506,6 @@ it to search LDAP directories.</p>
               "pattern": "(.*)@INFINISPAN\\.ORG",
               "replacement": "$1"
             }
-          },
-          "identity-mapping": {
-            "rdn-identifier": "uid",
-            "search-dn": "ou=People,dc=infinispan,dc=org",
-            "attribute-mapping": {
-              "attribute": {
-                "filter": "(&amp;(objectClass=groupOfNames)(member={1}))",
-                "filter-dn": "ou=Roles,dc=infinispan,dc=org",
-                "from": "cn",
-                "to": "Roles"
-              }
-            },
-            "user-password-mapper": {
-              "from": "userPassword"
-            }
           }
         }
       }]
@@ -2131,17 +2529,86 @@ it to search LDAP directories.</p>
             regexPrincipalTransformer:
               pattern: (.*)@INFINISPAN\.ORG
               replacement: "$1"
-          identityMapping:
-            rdnIdentifier: "uid"
-            searchDn: "ou=People,dc=infinispan,dc=org"
-            attributeMapping:
-              attribute:
-                filter: "(&amp;(objectClass=groupOfNames)(member={1}))"
-                filterDn: "ou=Roles,dc=infinispan,dc=org"
-                from: "cn"
-                to: "Roles"
-            userPasswordMapper:
-              from: "userPassword"</code></pre>
+          # further configuration omitted</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="ldap_user_and_group_mapping_process_with_infinispan"><a class="anchor" href="#ldap_user_and_group_mapping_process_with_infinispan"></a>LDAP user and group mapping process with Infinispan</h5>
+<div class="paragraph">
+<p>This example illustrates the process of loading and internally mapping LDAP users and groups to Infinispan subjects.
+The following is a LDIF (LDAP Data Interchange Format) file, which describes multiple LDAP entries:</p>
+</div>
+<div class="listingblock">
+<div class="title">LDIF</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-ldif" data-lang="ldif"># Users
+
+dn: uid=root,ou=People,dc=infinispan,dc=org
+objectclass: top
+objectclass: uidObject
+objectclass: person
+uid: root
+cn: root
+sn: root
+userPassword: strongPassword
+
+# Groups
+
+dn: cn=admin,ou=Roles,dc=infinispan,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: admin
+description: the Infinispan admin group
+member: uid=root,ou=People,dc=infinispan,dc=org
+
+dn: cn=monitor,ou=Roles,dc=infinispan,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: monitor
+description: the Infinispan monitor group
+member: uid=root,ou=People,dc=infinispan,dc=org</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>root</code> user is a member of the <code>admin</code> and <code>monitor</code> groups.</p>
+</div>
+<div class="paragraph">
+<p>When a request to authenticate the user <code>root</code> with the password <code>strongPassword</code> is made on one of the endpoints, the following operations are performed:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The username is optionally rewritten using the chosen principal transformer.</p>
+</li>
+<li>
+<p>The realm searches within the <code>ou=People,dc=infinispan,dc=org</code> tree for an entry whose <code>uid</code> attribute is equal to <code>root</code> and finds the entry with DN <code>uid=root,ou=People,dc=infinispan,dc=org</code>, which becomes the user principal.</p>
+</li>
+<li>
+<p>The realm searches within the <code>u=Roles,dc=infinispan,dc=org</code> tree for entries of <code>objectClass=groupOfNames</code> that include <code>uid=root,ou=People,dc=infinispan,dc=org</code> in the <code>member</code> attribute. In this case it finds two entries:
+<code>cn=admin,ou=Roles,dc=infinispan,dc=org</code> and <code>cn=monitor,ou=Roles,dc=infinispan,dc=org</code>. From these entries, it extracts the <code>cn</code> attributes which become the group principals.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The resulting subject will therefore look like:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NamePrincipal: <code>uid=root,ou=People,dc=infinispan,dc=org</code></p>
+</li>
+<li>
+<p>RolePrincipal: <code>admin</code></p>
+</li>
+<li>
+<p>RolePrincipal: <code>monitor</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>At this point, the global authorization mappers are applied on the above subject to convert the principals into roles.
+The roles are then expanded into a set of permissions, which are validated against the requested cache and operation.</p>
 </div>
 </div>
 </div>
@@ -2578,7 +3045,7 @@ For example, this can be used to authenticate users via a client certificate, an
 <p>Names must be normalized to a common form when using the aggregate realm using one of the following transformers.</p>
 </div>
 <div class="sect4">
-<h5 id="case_principal_transformer_2"><a class="anchor" href="#case_principal_transformer_2"></a>Case Principal Transformer</h5>
+<h5 id="case_principal_transformer_3"><a class="anchor" href="#case_principal_transformer_3"></a>Case Principal Transformer</h5>
 <div class="paragraph">
 <p>The <code>case-principal-transformer</code> transforms a name to all uppercase or all lowercase letters.</p>
 </div>
@@ -2624,7 +3091,7 @@ For example, this can be used to authenticate users via a client certificate, an
 </div>
 </div>
 <div class="sect4">
-<h5 id="common_name_principal_transformer"><a class="anchor" href="#common_name_principal_transformer"></a>Common Name Principal Transformer</h5>
+<h5 id="common_name_principal_transformer_2"><a class="anchor" href="#common_name_principal_transformer_2"></a>Common Name Principal Transformer</h5>
 <div class="paragraph">
 <p>The <code>common-name-principal-transformer</code> extracts the first <code>CN</code> element from a <code>DN</code> used by LDAP or Certificates.
 For example, given a principal in the form <code>CN=app1,CN=serviceA,OU=applications,DC=infinispan,DC=org</code>, the following
@@ -2669,7 +3136,7 @@ configuration will extract <code>app1</code> as the principal.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="regex_principal_transformer_2"><a class="anchor" href="#regex_principal_transformer_2"></a>Regex Principal Transformer</h5>
+<h5 id="regex_principal_transformer_3"><a class="anchor" href="#regex_principal_transformer_3"></a>Regex Principal Transformer</h5>
 <div class="paragraph">
 <p>The <code>regex-principal-transformer</code> can perform find and replace using a regular expression.
 The example shows how to extract the local-part from a <code>user@domain.com</code> identifier.</p>
@@ -2717,6 +3184,65 @@ The example shows how to extract the local-part from a <code>user@domain.com</co
       replacement: "$1"
       replaceAll: false</code></pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="caching-security-realms_security-realms"><a class="anchor" href="#caching-security-realms_security-realms"></a>3.9. Security realm caching</h3>
+<div class="paragraph">
+<p>Security realms implement caching to avoid having to repeatedly retrieve data which usually changes very infrequently.
+By default</p>
+</div>
+<h4 id="realm_caching_realm_configuration" class="discrete">Realm caching realm configuration</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
+    &lt;security&gt;
+        &lt;security-realms&gt;
+            &lt;security-realm name="default" cache-max-size="1024" cache-lifespan="120000"&gt;
+            &lt;/security-realm&gt;
+        &lt;/security-realms&gt;
+    &lt;/security&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "server": {
+    "security": {
+      "security-realms": [{
+        "name": "default",
+        "cache-max-size": 1024,
+        "cache-lifespan": 120000
+      }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">server:
+  security:
+    securityRealms:
+      - name: "default"
+        cache-max-size: 1024
+        cache-lifespan: 120000</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="flushing_realm_caches"><a class="anchor" href="#flushing_realm_caches"></a>3.9.1. Flushing realm caches</h4>
+<div class="paragraph">
+<p>Use the CLI to flush security realm caches across the whole cluster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>[node-1@mycluster//containers/default]&gt; server aclcache flush</code></pre>
 </div>
 </div>
 </div>
@@ -3512,6 +4038,11 @@ If a security realm contains TLS/SSL identities, it encrypts any connections to 
 <p>Infinispan Server supports the following keystore formats: JKS, JCEKS, PKCS12/PFX and PEM.
 BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle.org/">Bouncy Castle</a> library is present.</p>
 </div>
+<div class="paragraph">
+<p>Certificates should include the <code>subjectAltName</code> extension of type <code>dNSName</code> and/or <code>iPAddress</code> so that clients can correctly perform
+hostname validation, according to the rules defined by the <a href="https://datatracker.ietf.org/doc/html/rfc2818">RFC 2818</a> specification.
+The server will issue a warning if it is started with a certificate which does not include such an extension.</p>
+</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -3907,7 +4438,7 @@ You can configure your Infinispan Server to use encryption ciphers that adhere t
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://docs.oracle.com/en/java/javase/11/security/pkcs11-reference-guide1.html">Java PKCS#11 cryptographic provider</a></p>
+<p><a href="https://docs.oracle.com/en/java/javase/17/security/pkcs11-reference-guide1.html">Java PKCS#11 cryptographic provider</a></p>
 </li>
 <li>
 <p><a href="https://www.bouncycastle.org/fips_faq.html">The Legion of the Bouncy Castle cryptographic provider</a></p>
@@ -5557,7 +6088,7 @@ nftables utility.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-07 02:32:44 -0400
+Last updated 2023-09-19 12:46:40 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
