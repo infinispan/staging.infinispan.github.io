@@ -8767,6 +8767,27 @@ In other words if <code>shared="true"</code> in your configuration then you must
 </table>
 </div>
 <div class="paragraph">
+<div class="title">Shared remote cache containers</div>
+<p>Each remote cache store creates a dedicated remote cache manager. In case there are multiple remote stores connecting
+to the same server, this wastes resources. Use the <code>remote-cache-containers</code> configuration to create shared remote
+cache managers and reference them by name within your <code>remote-store</code> definitions.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If there is only a single <code>remote-cache-container</code>, it will be used by default by all remote cache stores which
+don&#8217;t specify one explicitly.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
 <div class="title">Segmentation</div>
 <p><code>RemoteStore</code> supports segmentation and can publish keys and entries by
 segment, which makes bulk operations more efficient. However, segmentation is
@@ -8792,7 +8813,97 @@ case, you should disable segmentation for <code>RemoteStore</code>.</p>
 </tr>
 </table>
 </div>
-<h4 id="remote_cache_store_configuration" class="discrete">Remote cache store configuration</h4>
+<h4 id="remote_cache_store_configuration_with_shared_remote_containers" class="discrete">Remote cache store configuration with shared remote containers</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
+
+    &lt;remote-cache-containers&gt;
+        &lt;remote-cache-container uri="hotrod://one,two:12111?max-active=10&amp;amp;exhausted-action=CREATE_NEW"/&gt;
+    &lt;/remote-cache-containers&gt;
+
+    &lt;cache-container&gt;
+        &lt;distributed-cache&gt;
+            &lt;persistence&gt;
+                &lt;remote-store xmlns="urn:infinispan:config:store:remote:15.0"
+                              cache="mycache"
+                              raw-values="true"
+                /&gt;
+            &lt;/persistence&gt;
+        &lt;/distributed-cache&gt;
+    &lt;/cache-container&gt;
+&lt;/infinispan&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "infinispan": {
+    "remote-cache-containers": [
+      {
+        "uri": "hotrod://one,two:12111?max-active=10&amp;exhausted-action=CREATE_NEW"
+      }
+    ],
+    "cache-container": {
+      "caches": {
+        "mycache": {
+          "distributed-cache": {
+            "remote-store": {
+              "cache": "mycache",
+              "raw-values": "true"
+            }
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  remoteCacheContainers:
+    - uri: "hotrod://one,two:12111?max-active=10&amp;exhausted-action=CREATE_NEW"
+  cacheContainer:
+    caches:
+      mycache:
+        distributedCache:
+          remoteStore:
+            cache: "mycache"
+            rawValues: "true"
+            remoteServer:
+              - host: "one"
+                port: "12111"
+              - host: "two"
+            connectionPool:
+              maxActive: "10"
+              exhaustedAction: "CREATE_NEW"</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">ConfigurationBuilder</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">ConfigurationBuilder b = new ConfigurationBuilder();
+b.persistence().addStore(RemoteStoreConfigurationBuilder.class)
+      .ignoreModifications(false)
+      .purgeOnStartup(false)
+      .remoteCacheName("mycache")
+      .rawValues(true)
+.addServer()
+      .host("one").port(12111)
+      .addServer()
+      .host("two")
+      .connectionPool()
+      .maxActive(10)
+      .exhaustedAction(ExhaustedAction.CREATE_NEW)
+      .async().enable();</code></pre>
+</div>
+</div>
+<h4 id="remote_cache_store_configuration_with_private_remote_container" class="discrete">Remote cache store configuration with private remote container</h4>
 <div class="listingblock primary">
 <div class="title">XML</div>
 <div class="content">
@@ -12907,7 +13018,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-21 13:57:10 UTC
+Last updated 2023-09-21 14:04:01 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
