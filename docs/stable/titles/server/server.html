@@ -5183,7 +5183,8 @@ If a security realm contains TLS/SSL identities, it encrypts any connections to 
 </div>
 <div class="paragraph">
 <p>Infinispan Server supports the following keystore formats: JKS, JCEKS, PKCS12/PFX and PEM.
-BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle.org/">Bouncy Castle</a> library is present.</p>
+BKS, BCFKS, and UBER are also supported if the <a href="https://www.bouncycastle.org/">Bouncy Castle</a> library is present.
+When using client hostname validation, according to the rules defined by the <a href="https://datatracker.ietf.org/doc/html/rfc2818">RFC 2818</a> specification, server certificates should include the <code>subjectAltName</code> extension of type <code>dNSName</code> and/or <code>iPAddress</code>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -12594,7 +12595,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-08 06:44:01 -0400
+Last updated 2023-10-06 09:28:14 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
