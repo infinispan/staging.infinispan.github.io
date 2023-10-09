@@ -1038,11 +1038,13 @@ that modification happened after you initiated the push.</p>
 </div>
 <h4 id="automatic_state_transfer" class="discrete">Automatic state transfer</h4>
 <div class="paragraph">
-<p>By default you must manually perform cross-site state transfer operations with the CLI or via JMX or REST.</p>
+<p>By default, you must manually perform cross-site state transfer operations with the CLI or via JMX or REST.</p>
 </div>
 <div class="paragraph">
-<p>However, when using the asynchronous backup strategy, Infinispan can automatically perform cross-site state transfer operations.
-When it detects that a backup location has come back online, and the network connection is stable, Infinispan initiates bi-directional state transfer between backup locations.
+<p>However, when using the asynchronous backup strategy, Infinispan can automatically perform cross-site state transfer operations.</p>
+</div>
+<div class="paragraph">
+<p>When a backup location comes back online, and the network connection is stable, Infinispan initiates bidirectional state transfer between backup locations.
 For example, Infinispan simultaneously transfers state from <strong>LON</strong> to <strong>NYC</strong> and <strong>NYC</strong> to <strong>LON</strong>.</p>
 </div>
 <div class="admonitionblock note">
@@ -1059,6 +1061,13 @@ The status of a backup location must be offline and it must not be included in t
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>The automatic state transfer is also triggered when a cache starts.</p>
+</div>
+<div class="paragraph">
+<p>In the scenario where <strong>LON</strong> is starting up, after a cache starts, it sends a notification to <strong>NYC</strong>.
+Following this, <strong>NYC</strong> starts a unidirectional state transfer to <strong>LON</strong>.</p>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -2843,7 +2852,7 @@ and statistics, see the <em>Infinispan JMX Components</em> documentation.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-05 14:48:56 UTC
+Last updated 2023-10-09 09:02:26 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
