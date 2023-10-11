@@ -1033,7 +1033,7 @@ You also need to provide Infinispan with a structured representation of the enti
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>store</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Allows Infinispan to store fields in indexes so you can use them for projections.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Store.YES</code> or <code>Store.NO</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Store.YES</code> or <code>Store.NO</code>. Use <code>Store.YES</code> and set <code>sortable = true</code> for fields that need to be used for sorting.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>analyze</code></p></td>
@@ -1064,10 +1064,13 @@ You then upload your Protobuf schema to Infinispan Server.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="comment">/**
-   * @Field(analyze = Analyze.YES, store = Store.YES)
+   * @Field(analyze = Analyze.YES, store = Store.YES, sortable = true)
    */</span>
 required string street = <span class="integer">1</span>;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>By including <code>store = Store.YES</code> and <code>sortable = true</code> in the <code>@Field</code> annotation, you can use the <code>street</code> field for sorting queries without encountering warning messages or unexpected results.</p>
 </div>
 </li>
 </ul>
@@ -2926,7 +2929,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-24 03:29:36 -0400
+Last updated 2023-07-07 03:23:43 -0400
 </div>
 </div>
 <style>

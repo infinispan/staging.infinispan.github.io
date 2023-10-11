@@ -903,7 +903,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;properties&gt;</span>
-  <span class="tag">&lt;version.infinispan&gt;</span>13.0.18.Final<span class="tag">&lt;/version.infinispan&gt;</span>
+  <span class="tag">&lt;version.infinispan&gt;</span>13.0.19.Final<span class="tag">&lt;/version.infinispan&gt;</span>
 <span class="tag">&lt;/properties&gt;</span>
 
 <span class="tag">&lt;dependencyManagement&gt;</span>
@@ -5011,7 +5011,7 @@ operations to be sent to the other nodes.</p>
 Infinispan overrides all of the various Stream intermediate and terminal methods to take
 Serializable versions of the arguments (ie. SerializableFunction, SerializablePredicate&#8230;&#8203;)
 You can find these methods at
-<a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/stream/CacheStream.html">CacheStream</a>.
+<a href="https://docs.jboss.org/infinispan/13.0/apidocs/org/infinispan/CacheStream.html">CacheStream</a>.
 This relies on the spec to pick the most specific method as defined <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.12.2.5">here</a>.</p>
 </div>
 <div class="paragraph">
@@ -5305,7 +5305,7 @@ operation returns just the first value they find, whether it was from a remote n
 or locally.  Note this supports early termination in that once a value is found it
 will not process others.  Note the findFirst method is special since it requires a sorted
 intermediate operation, which is detailed in the
-<a href="user_guide.html#intermediate_operation_exceptions">exceptions</a> section.</p>
+<a href="../embedding/embedding.html#intermediate_operation_exceptions">exceptions</a> section.</p>
 </dd>
 <dt class="hdlist1">max min</dt>
 <dd>
@@ -6877,7 +6877,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-07 08:09:34 -0400
+Last updated 2023-10-11 12:08:37 -0400
 </div>
 </div>
 <style>
