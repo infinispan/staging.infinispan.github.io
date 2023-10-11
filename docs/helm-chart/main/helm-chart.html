@@ -493,7 +493,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#connecting-console_connecting-clusters">5.1. Accessing Infinispan Console</a></li>
 <li><a href="#connecting-cli_connecting-clusters">5.2. Connecting with the command line interface (CLI)</a></li>
-<li><a href="#connecting-clients-internal_connecting-clusters">5.3. Connecting Hot Rod clients running on Kubernetes</a></li>
+<li><a href="#connecting-clients-internal_connecting-clusters">5.3. Connecting Hot Rod clients running on Kubernetes</a>
+<ul class="sectlevel3">
+<li><a href="#obtaining_IP_addresses_connecting-clusters">5.3.1. Obtaining IP addresses for all Infinispan pods</a></li>
+</ul>
+</li>
 <li><a href="#connecting-clients-external_connecting-clusters">5.4. Connecting Hot Rod clients running outside Kubernetes</a></li>
 <li><a href="#connecting-rest_connecting-clusters">5.5. Accessing the REST API</a></li>
 </ul>
@@ -1839,6 +1843,65 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </li>
 </ul>
 </div>
+<div class="sect3">
+<h4 id="obtaining_IP_addresses_connecting-clusters"><a class="anchor" href="#obtaining_IP_addresses_connecting-clusters"></a>5.3.1. Obtaining IP addresses for all Infinispan pods</h4>
+<div class="paragraph _abstract">
+<p>You can retrieve a list of all IP addresses for running Infinispan pods.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><a href="{helm_docs}#connecting-clients-internal_connecting-clusters">Connecting Hot Rod clients running on Kubernetes</a> is the recommended approach as it ensures the initial connection to one of the available pods.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>Obtain all the IP addresses for a running Infinispan pods in the following ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Using the Kubernetes API:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Access <code>${APISERVER}/api/v1/namespaces/&lt;chart-namespace&gt;/endpoints/&lt;helm-release-name&gt;</code> to retrieve the <code>endpoints</code> Kubernetes resource associated with the <code>&lt;helm-release-name&gt;</code> service.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Using the Kubernetes DNS service:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Query the DNS service for the name <code>&lt;helm-release-name&gt;-ping</code> to obtain IPs for all the nodes in a cluster.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://kubernetes.io/docs/tasks/run-application/access-api-from-pod/">Accessing the Kubernetes API from a Pod</a></p>
+</li>
+<li>
+<p><a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">DNS for Services and Pods</a></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="connecting-clients-external_connecting-clusters"><a class="anchor" href="#connecting-clients-external_connecting-clusters"></a>5.4. Connecting Hot Rod clients running outside Kubernetes</h3>
@@ -1962,7 +2025,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-04 10:33:56 +0200
+Last updated 2023-10-10 16:43:47 +0200
 </div>
 </div>
 <script>
