@@ -806,39 +806,42 @@ $(addBlockSwitches);
 <li><a href="#enabling-statistics_server">15.1. Enabling Infinispan Statistics</a></li>
 <li><a href="#configuring-metrics_server">15.2. Configuring Infinispan Metrics</a></li>
 <li><a href="#collect_metrics">15.3. Collecting Infinispan Metrics</a></li>
-<li><a href="#enabling-jmx_server">15.4. Configuring Infinispan to Register JMX MBeans</a></li>
-</ul>
-</li>
-<li><a href="#jmx-mbeans_server">16. Infinispan MBeans</a></li>
-<li><a href="#server-health">17. Retrieving Health Statistics</a>
-<ul class="sectlevel2">
-<li><a href="#accessing_the_health_api_via_jmx">17.1. Accessing the Health API via JMX</a></li>
-<li><a href="#accessing_the_health_api_via_rest">17.2. Accessing the Health API via REST</a></li>
-</ul>
-</li>
-<li><a href="#rolling_server_upgrades">18. Performing Rolling Upgrades for Infinispan Servers</a>
-<ul class="sectlevel2">
-<li><a href="#upgrade_target">18.1. Setting Up Target Clusters</a>
+<li><a href="#enabling-jmx_server">15.4. Configuring Infinispan to Register JMX MBeans</a>
 <ul class="sectlevel3">
-<li><a href="#upgrade_remote_store">18.1.1. Remote Cache Stores for Rolling Upgrades</a></li>
+<li><a href="#jmx-mbeans_server">15.4.1. Infinispan MBeans</a></li>
 </ul>
 </li>
-<li><a href="#sync_data">18.2. Synchronizing Data to Target Clusters</a></li>
 </ul>
 </li>
-<li><a href="#patching">19. Patching Infinispan Server Installations</a>
+<li><a href="#server-health">16. Retrieving Health Statistics</a>
 <ul class="sectlevel2">
-<li><a href="#patches-server">19.1. Infinispan Server Patches</a></li>
-<li><a href="#patching_create-server">19.2. Creating Server Patches</a></li>
-<li><a href="#patching_install-server">19.3. Installing Server Patches</a></li>
-<li><a href="#patching_rollback-server">19.4. Rolling Back Server Patches</a></li>
+<li><a href="#accessing_the_health_api_via_jmx">16.1. Accessing the Health API via JMX</a></li>
+<li><a href="#accessing_the_health_api_via_rest">16.2. Accessing the Health API via REST</a></li>
 </ul>
 </li>
-<li><a href="#tshoot_server">20. Troubleshooting Infinispan Servers</a>
+<li><a href="#rolling_server_upgrades">17. Performing Rolling Upgrades for Infinispan Servers</a>
 <ul class="sectlevel2">
-<li><a href="#server_reports-server">20.1. Getting Diagnostic Reports for Infinispan Servers</a></li>
-<li><a href="#configuring_server_logs_cli-server">20.2. Changing Infinispan Server Logging Configuration at Runtime</a></li>
-<li><a href="#resource_statistics">20.3. Resource Statistics</a></li>
+<li><a href="#upgrade_target">17.1. Setting Up Target Clusters</a>
+<ul class="sectlevel3">
+<li><a href="#upgrade_remote_store">17.1.1. Remote Cache Stores for Rolling Upgrades</a></li>
+</ul>
+</li>
+<li><a href="#sync_data">17.2. Synchronizing Data to Target Clusters</a></li>
+</ul>
+</li>
+<li><a href="#patching">18. Patching Infinispan Server Installations</a>
+<ul class="sectlevel2">
+<li><a href="#patches-server">18.1. Infinispan Server Patches</a></li>
+<li><a href="#patching_create-server">18.2. Creating Server Patches</a></li>
+<li><a href="#patching_install-server">18.3. Installing Server Patches</a></li>
+<li><a href="#patching_rollback-server">18.4. Rolling Back Server Patches</a></li>
+</ul>
+</li>
+<li><a href="#tshoot_server">19. Troubleshooting Infinispan Servers</a>
+<ul class="sectlevel2">
+<li><a href="#server_reports-server">19.1. Getting Diagnostic Reports for Infinispan Servers</a></li>
+<li><a href="#configuring_server_logs_cli-server">19.2. Changing Infinispan Server Logging Configuration at Runtime</a></li>
+<li><a href="#resource_statistics">19.3. Resource Statistics</a></li>
 </ul>
 </li>
 </ul>
@@ -931,7 +934,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code>$ unzip infinispan-server-12.1.14.Final.zip</code></pre>
+<pre class="CodeRay highlight nowrap"><code>$ unzip infinispan-server-12.1.16.Final.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4830,7 +4833,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="jgroups-default_cluster-transport"><a class="anchor" href="#jgroups-default_cluster-transport"></a>10.1. Default JGroups Stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-12.1.14.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-12.1.16.Final.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -7795,16 +7798,8 @@ You must enable statistics separately to JMX otherwise Infinispan provides <code
   .build();</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in ../../stories/assembly_server_statistics.adoc - include::../topics/proc_enabling_jmx_port.adoc[leveloffset=+2]
-:leveloffset: +2</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="jmx-mbeans_server"><a class="anchor" href="#jmx-mbeans_server"></a>16. Infinispan MBeans</h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="jmx-mbeans_server"><a class="anchor" href="#jmx-mbeans_server"></a>15.4.1. Infinispan MBeans</h4>
 <div class="paragraph">
 <p>Infinispan exposes JMX MBeans that represent manageable resources.</p>
 </div>
@@ -7835,8 +7830,10 @@ documentation.</p>
 </div>
 </div>
 </div>
+</div>
+</div>
 <div class="sect1">
-<h2 id="server-health"><a class="anchor" href="#server-health"></a>17. Retrieving Health Statistics</h2>
+<h2 id="server-health"><a class="anchor" href="#server-health"></a>16. Retrieving Health Statistics</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Monitor the health of your Infinispan clusters in the following ways:</p>
@@ -7855,7 +7852,7 @@ documentation.</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="accessing_the_health_api_via_jmx"><a class="anchor" href="#accessing_the_health_api_via_jmx"></a>17.1. Accessing the Health API via JMX</h3>
+<h3 id="accessing_the_health_api_via_jmx"><a class="anchor" href="#accessing_the_health_api_via_jmx"></a>16.1. Accessing the Health API via JMX</h3>
 <div class="paragraph">
 <p>Retrieve Infinispan cluster health statistics via JMX.</p>
 </div>
@@ -7877,7 +7874,7 @@ documentation.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="accessing_the_health_api_via_rest"><a class="anchor" href="#accessing_the_health_api_via_rest"></a>17.2. Accessing the Health API via REST</h3>
+<h3 id="accessing_the_health_api_via_rest"><a class="anchor" href="#accessing_the_health_api_via_rest"></a>16.2. Accessing the Health API via REST</h3>
 <div class="paragraph">
 <p>Get Infinispan cluster health via the REST API.</p>
 </div>
@@ -7958,7 +7955,7 @@ documentation.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="rolling_server_upgrades"><a class="anchor" href="#rolling_server_upgrades"></a>18. Performing Rolling Upgrades for Infinispan Servers</h2>
+<h2 id="rolling_server_upgrades"><a class="anchor" href="#rolling_server_upgrades"></a>17. Performing Rolling Upgrades for Infinispan Servers</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Perform rolling upgrades of your Infinispan clusters to change between
@@ -7966,7 +7963,7 @@ versions without downtime or data loss. Rolling upgrades migrate both your
 Infinispan servers and your data to the target version over Hot Rod.</p>
 </div>
 <div class="sect2">
-<h3 id="upgrade_target"><a class="anchor" href="#upgrade_target"></a>18.1. Setting Up Target Clusters</h3>
+<h3 id="upgrade_target"><a class="anchor" href="#upgrade_target"></a>17.1. Setting Up Target Clusters</h3>
 <div class="paragraph">
 <p>Create a cluster that runs the target Infinispan version and uses a remote
 cache store to load data from the source cluster.</p>
@@ -8026,7 +8023,7 @@ requests.</p>
 </ol>
 </div>
 <div class="sect3">
-<h4 id="upgrade_remote_store"><a class="anchor" href="#upgrade_remote_store"></a>18.1.1. Remote Cache Stores for Rolling Upgrades</h4>
+<h4 id="upgrade_remote_store"><a class="anchor" href="#upgrade_remote_store"></a>17.1.1. Remote Cache Stores for Rolling Upgrades</h4>
 <div class="paragraph">
 <p>You must use specific remote cache store configuration to perform rolling
 upgrades, as follows:</p>
@@ -8075,7 +8072,7 @@ upgrades, as follows:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="sync_data"><a class="anchor" href="#sync_data"></a>18.2. Synchronizing Data to Target Clusters</h3>
+<h3 id="sync_data"><a class="anchor" href="#sync_data"></a>17.2. Synchronizing Data to Target Clusters</h3>
 <div class="paragraph">
 <p>When your target cluster is running and handling client requests using a remote
 cache store to load data on demand, you can synchronize data from the source
@@ -8137,7 +8134,7 @@ process is complete. You can now decommission the source cluster.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="patching"><a class="anchor" href="#patching"></a>19. Patching Infinispan Server Installations</h2>
+<h2 id="patching"><a class="anchor" href="#patching"></a>18. Patching Infinispan Server Installations</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Install and manage patches for Infinispan Server installations.</p>
@@ -8148,7 +8145,7 @@ However, patches do not take effect if Infinispan Server is running.
 If you want to upgrade Infinispan clusters without downtime, create a new cluster with the target version and perform a rolling upgrade to that version instead of patching.</p>
 </div>
 <div class="sect2">
-<h3 id="patches-server"><a class="anchor" href="#patches-server"></a>19.1. Infinispan Server Patches</h3>
+<h3 id="patches-server"><a class="anchor" href="#patches-server"></a>18.1. Infinispan Server Patches</h3>
 <div class="paragraph">
 <p>Infinispan Server patches are <code>.zip</code> archives that contain artifacts that you can apply to your <code>$ISPN_HOME</code> directory to fix issues and add new features.</p>
 </div>
@@ -8162,7 +8159,7 @@ Server patches do not modify or replace any custom configuration or data.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="patching_create-server"><a class="anchor" href="#patching_create-server"></a>19.2. Creating Server Patches</h3>
+<h3 id="patching_create-server"><a class="anchor" href="#patching_create-server"></a>18.2. Creating Server Patches</h3>
 <div class="paragraph">
 <p>You can create patches for Infinispan Server from an existing installation.</p>
 </div>
@@ -8258,7 +8255,7 @@ Infinispan patch target=$target_version(my test patch)  source=$source_version c
 </div>
 </div>
 <div class="sect2">
-<h3 id="patching_install-server"><a class="anchor" href="#patching_install-server"></a>19.3. Installing Server Patches</h3>
+<h3 id="patching_install-server"><a class="anchor" href="#patching_install-server"></a>18.3. Installing Server Patches</h3>
 <div class="paragraph">
 <p>Apply patches to Infinispan Server to upgrade or downgrade an existing version.</p>
 </div>
@@ -8363,7 +8360,7 @@ directory, for example:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="patching_rollback-server"><a class="anchor" href="#patching_rollback-server"></a>19.4. Rolling Back Server Patches</h3>
+<h3 id="patching_rollback-server"><a class="anchor" href="#patching_rollback-server"></a>18.4. Rolling Back Server Patches</h3>
 <div class="paragraph">
 <p>Remove patches from Infinispan Server by rolling them back and restoring the previous Infinispan version.</p>
 </div>
@@ -8480,14 +8477,14 @@ directory, for example:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="tshoot_server"><a class="anchor" href="#tshoot_server"></a>20. Troubleshooting Infinispan Servers</h2>
+<h2 id="tshoot_server"><a class="anchor" href="#tshoot_server"></a>19. Troubleshooting Infinispan Servers</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Gather diagnostic information about Infinispan server deployments and perform
 troubleshooting steps to resolve issues.</p>
 </div>
 <div class="sect2">
-<h3 id="server_reports-server"><a class="anchor" href="#server_reports-server"></a>20.1. Getting Diagnostic Reports for Infinispan Servers</h3>
+<h3 id="server_reports-server"><a class="anchor" href="#server_reports-server"></a>19.1. Getting Diagnostic Reports for Infinispan Servers</h3>
 <div class="paragraph">
 <p>Infinispan servers provide aggregated reports in <code>tar.gz</code> archives that
 contain diagnostic information about both the Infinispan server and the host.
@@ -8519,7 +8516,7 @@ Downloaded report 'infinispan-&lt;hostname&gt;-&lt;timestamp&gt;-report.tar.gz'<
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring_server_logs_cli-server"><a class="anchor" href="#configuring_server_logs_cli-server"></a>20.2. Changing Infinispan Server Logging Configuration at Runtime</h3>
+<h3 id="configuring_server_logs_cli-server"><a class="anchor" href="#configuring_server_logs_cli-server"></a>19.2. Changing Infinispan Server Logging Configuration at Runtime</h3>
 <div class="paragraph">
 <p>Modify the logging configuration for Infinispan servers at runtime to
 temporarily adjust logging to troubleshoot issues and perform root cause
@@ -8656,7 +8653,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="resource_statistics"><a class="anchor" href="#resource_statistics"></a>20.3. Resource Statistics</h3>
+<h3 id="resource_statistics"><a class="anchor" href="#resource_statistics"></a>19.3. Resource Statistics</h3>
 <div class="paragraph">
 <p>You can inspect server-collected statistics for some of the resources within a
 Infinispan server using the <code class="command">stats</code> command.</p>
@@ -8731,7 +8728,7 @@ collects statistics (containers, caches) or with a path to such a resource:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-01-12 02:23:03 -0500
+Last updated 2023-10-12 07:20:07 -0400
 </div>
 </div>
 <style>
