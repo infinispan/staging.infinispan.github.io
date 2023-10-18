@@ -550,6 +550,7 @@ $(addBlockSwitches);
 <li><a href="#global_state">1.1.11. Global State</a></li>
 <li><a href="#persistence">1.1.12. Persistence</a></li>
 <li><a href="#resp_endpoint_2">1.1.13. RESP endpoint</a></li>
+<li><a href="#client_listeners_remove_events">1.1.14. Client listeners remove events</a></li>
 </ul>
 </li>
 <li><a href="#upgrading_to_14_0_14_or_newer">1.2. Upgrading to 14.0.14 or newer</a>
@@ -1130,6 +1131,14 @@ an unclean shutdown. The behavior can be changed by configuring the global state
 <div class="paragraph">
 <p>The RESP endpoint cache now requires the key storage media type to be
 application/octet-stream.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="client_listeners_remove_events"><a class="anchor" href="#client_listeners_remove_events"></a>1.1.14. Client listeners remove events</h4>
+<div class="paragraph">
+<p>Client listeners remove events will now be propagated even if the remove did not remove a value.
+This is required to properly support new changes around the new <code>includeOldValue</code> method on <code>CacheEventConverter</code>.
+NOTE: Remote events do not include any values by default</p>
 </div>
 </div>
 </div>
@@ -4893,7 +4902,7 @@ cache stores.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-16 15:30:21 UTC
+Last updated 2023-10-18 09:10:30 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
