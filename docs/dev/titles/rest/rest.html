@@ -756,13 +756,14 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_get_user_acl">2.9.1. Retrieving the ACL of a user</a></li>
 <li><a href="#rest_v2_flush_acl_cache">2.9.2. Flushing the security caches</a></li>
 <li><a href="#rest_v2_get_roles">2.9.3. Retrieving the available roles</a></li>
-<li><a href="#rest_v2_get_principal_roles">2.9.4. Retrieving the roles for a principal</a></li>
-<li><a href="#rest_v2_grant_principal_roles">2.9.5. Granting roles to a principal</a></li>
-<li><a href="#rest_v2_deny_principal_roles">2.9.6. Denying roles to a principal</a></li>
-<li><a href="#rest_v2_list_principals">2.9.7. Listing principals</a></li>
-<li><a href="#rest_v2_create_role">2.9.8. Creating roles</a></li>
-<li><a href="#rest_v2_create_role">2.9.9. Deleting roles</a></li>
-<li><a href="#rest_v2_get_principal_roles">2.9.10. Retrieving the permissions for a role</a></li>
+<li><a href="#rest_v2_get_roles_detailed">2.9.4. Retrieving the available roles detailed</a></li>
+<li><a href="#rest_v2_get_principal_roles">2.9.5. Retrieving the roles for a principal</a></li>
+<li><a href="#rest_v2_grant_principal_roles">2.9.6. Granting roles to a principal</a></li>
+<li><a href="#rest_v2_deny_principal_roles">2.9.7. Denying roles to a principal</a></li>
+<li><a href="#rest_v2_list_principals">2.9.8. Listing principals</a></li>
+<li><a href="#rest_v2_create_role">2.9.9. Creating roles</a></li>
+<li><a href="#rest_v2_create_role">2.9.10. Deleting roles</a></li>
+<li><a href="#rest_v2_get_principal_roles">2.9.11. Retrieving the permissions for a role</a></li>
 </ul>
 </li>
 <li><a href="#rest_v2_tracing_propagation">2.10. Enabling Tracing Propagation</a>
@@ -6902,7 +6903,78 @@ If authorization is enabled, only a user with the <code>ADMIN</code> permission 
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_get_principal_roles"><a class="anchor" href="#rest_v2_get_principal_roles"></a>2.9.4. Retrieving the roles for a principal</h4>
+<h4 id="rest_v2_get_roles_detailed"><a class="anchor" href="#rest_v2_get_roles_detailed"></a>2.9.4. Retrieving the available roles detailed</h4>
+<div class="paragraph">
+<p>View all the available roles defined in the server with their full detail.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/security/roles-detail</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan responds with a list of available roles and their detail.
+If authorization is enabled, only a user with the <code>ADMIN</code> permission can call this API.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "observer": {
+    "inheritable": true,
+    "permissions": [
+      "MONITOR",
+      "ALL_READ"
+    ],
+    "implicit": true,
+    "description": "..."
+  },
+  "application": {
+    "inheritable": true,
+    "permissions": [
+      "MONITOR",
+      "ALL_WRITE",
+      "EXEC",
+      "LISTEN",
+      "ALL_READ"
+    ],
+    "implicit": true,
+    "description": "..."
+  },
+  "admin": {
+    "inheritable": true,
+    "permissions": [
+      "ALL"
+    ],
+    "implicit": true,
+    "description": "..."
+  },
+  "monitor": {
+    "inheritable": true,
+    "permissions": [
+      "MONITOR"
+    ],
+    "implicit": true,
+    "description": "..."
+  },
+  "deployer": {
+    "inheritable": true,
+    "permissions": [
+      "CREATE",
+      "MONITOR",
+      "ALL_WRITE",
+      "EXEC",
+      "LISTEN",
+      "ALL_READ"
+    ],
+    "implicit": true,
+    "description": "..."
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="rest_v2_get_principal_roles"><a class="anchor" href="#rest_v2_get_principal_roles"></a>2.9.5. Retrieving the roles for a principal</h4>
 <div class="paragraph">
 <p>View all the roles which map to a principal.</p>
 </div>
@@ -6922,7 +6994,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_grant_principal_roles"><a class="anchor" href="#rest_v2_grant_principal_roles"></a>2.9.5. Granting roles to a principal</h4>
+<h4 id="rest_v2_grant_principal_roles"><a class="anchor" href="#rest_v2_grant_principal_roles"></a>2.9.6. Granting roles to a principal</h4>
 <div class="paragraph">
 <p>Grant one or more new roles to a principal.</p>
 </div>
@@ -6955,7 +7027,7 @@ The principal need not exist in the realm in use.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_deny_principal_roles"><a class="anchor" href="#rest_v2_deny_principal_roles"></a>2.9.6. Denying roles to a principal</h4>
+<h4 id="rest_v2_deny_principal_roles"><a class="anchor" href="#rest_v2_deny_principal_roles"></a>2.9.7. Denying roles to a principal</h4>
 <div class="paragraph">
 <p>Remove one or more roles that were previously granted to a principal.</p>
 </div>
@@ -6988,7 +7060,7 @@ The principal need not exist in the realm in use.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_list_principals"><a class="anchor" href="#rest_v2_list_principals"></a>2.9.7. Listing principals</h4>
+<h4 id="rest_v2_list_principals"><a class="anchor" href="#rest_v2_list_principals"></a>2.9.8. Listing principals</h4>
 <div class="paragraph">
 <p>List the principal names for all security realms that can enumerate users (<code>properties</code>, <code>ldap</code>)</p>
 </div>
@@ -7007,7 +7079,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_create_role"><a class="anchor" href="#rest_v2_create_role"></a>2.9.8. Creating roles</h4>
+<h4 id="rest_v2_create_role"><a class="anchor" href="#rest_v2_create_role"></a>2.9.9. Creating roles</h4>
 <div class="paragraph">
 <p>Create a role by defining its permissions.</p>
 </div>
@@ -7040,7 +7112,7 @@ The principal need not exist in the realm in use.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_create_role"><a class="anchor" href="#rest_v2_create_role"></a>2.9.9. Deleting roles</h4>
+<h4 id="rest_v2_create_role"><a class="anchor" href="#rest_v2_create_role"></a>2.9.10. Deleting roles</h4>
 <div class="paragraph">
 <p>Delete an existing role.</p>
 </div>
@@ -7051,7 +7123,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_get_principal_roles"><a class="anchor" href="#rest_v2_get_principal_roles"></a>2.9.10. Retrieving the permissions for a role</h4>
+<h4 id="rest_v2_get_principal_roles"><a class="anchor" href="#rest_v2_get_principal_roles"></a>2.9.11. Retrieving the permissions for a role</h4>
 <div class="paragraph">
 <p>View all the permissions of a role.</p>
 </div>
@@ -7068,7 +7140,10 @@ The principal need not exist in the realm in use.</p>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-json" data-lang="json">{
   "name" : "application",
-  "permissions" : [ "LISTEN","ALL_READ","MONITOR","ALL_WRITE","EXEC" ]
+  "permissions" : [ "LISTEN","ALL_READ","MONITOR","ALL_WRITE","EXEC" ],
+  "inheritable": true,
+  "implicit": true,
+  "description": "..."
 }</code></pre>
 </div>
 </div>
@@ -7494,7 +7569,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-18 09:10:30 UTC
+Last updated 2023-10-18 09:13:27 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
