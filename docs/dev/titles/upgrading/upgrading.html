@@ -1429,7 +1429,7 @@ Use <code><code>reindex</code></code> instead:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>/v2/caches/{cacheName}/search/indexes?action=reindex</pre>
+<pre>/rest/v2/caches/{cacheName}/search/indexes?action=reindex</pre>
 </div>
 </div>
 </div>
@@ -1441,7 +1441,7 @@ Use <code><code>reindex</code></code> instead:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code><code>POST /v2/caches/{cacheName}?action=disconnect-source</code></code></p>
+<p><code><code>POST /rest/v2/caches/{cacheName}?action=disconnect-source</code></code></p>
 </li>
 </ul>
 </div>
@@ -1451,7 +1451,7 @@ Use <code><code>reindex</code></code> instead:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code><code>DELETE /v2/caches/{cacheName}/rolling-upgrade/source-connection</code></code></p>
+<p><code><code>DELETE /rest/v2/caches/{cacheName}/rolling-upgrade/source-connection</code></code></p>
 </li>
 </ul>
 </div>
@@ -3956,7 +3956,7 @@ Depending on your environment you can also use different network interfaces and 
 <p>REST API: Invoke a POST request that includes the remote store configuration in the payload with the <code>rolling-upgrade/source-connection</code> method.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
 </div>
 </div>
 </li>
@@ -4026,7 +4026,7 @@ You must perform the synchronization for each cache that you want to migrate to 
 <p>REST API: Use the <code>?action=sync-data</code> parameter with a POST request.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/myCache?action=sync-data</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/myCache?action=sync-data</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4053,7 +4053,7 @@ entries copied to the target cluster.</p>
 <p>REST API: Invoke a DELETE request.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>DELETE /v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
+<pre class="highlight nowrap"><code>DELETE /rest/v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
 </div>
 </div>
 </li>
@@ -4902,7 +4902,7 @@ cache stores.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-19 10:55:06 UTC
+Last updated 2023-10-19 14:40:43 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
