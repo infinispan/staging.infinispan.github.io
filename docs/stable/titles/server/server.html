@@ -11777,7 +11777,7 @@ Depending on your environment you can also use different network interfaces and 
 <p>REST API: Invoke a POST request that includes the remote store configuration in the payload with the <code>rolling-upgrade/source-connection</code> method.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
 </div>
 </div>
 </li>
@@ -11847,7 +11847,7 @@ You must perform the synchronization for each cache that you want to migrate to 
 <p>REST API: Use the <code>?action=sync-data</code> parameter with a POST request.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/myCache?action=sync-data</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/myCache?action=sync-data</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -11874,7 +11874,7 @@ entries copied to the target cluster.</p>
 <p>REST API: Invoke a DELETE request.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>DELETE /v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
+<pre class="highlight nowrap"><code>DELETE /rest/v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
 </div>
 </div>
 </li>
@@ -12595,7 +12595,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-16 13:00:00 UTC
+Last updated 2023-10-19 16:06:11 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
