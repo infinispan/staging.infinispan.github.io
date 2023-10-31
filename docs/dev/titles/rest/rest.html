@@ -582,13 +582,14 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_cache_size">2.1.23. Getting Cache Size</a></li>
 <li><a href="#rest_v2_cache_stats">2.1.24. Getting Cache Statistics</a></li>
 <li><a href="#rest_v2_list_caches">2.1.25. Listing Caches</a></li>
-<li><a href="#rest_v2_cache_listen">2.1.26. Listening to cache events</a></li>
-<li><a href="#rest_v2_caches_enable_rebalancing">2.1.27. Enabling rebalancing</a></li>
-<li><a href="#rest_v2_caches_disable_rebalancing">2.1.28. Disabling rebalancing</a></li>
-<li><a href="#rest_v2_caches_get_availability">2.1.29. Getting Cache Availability</a></li>
-<li><a href="#rest_v2_caches_set_availability">2.1.30. Setting Cache Availability</a></li>
-<li><a href="#rest_v2_caches_set_topology_stable">2.1.31. Set a Stable Topology</a></li>
-<li><a href="#rest_v2_query_cache">2.1.32. Indexing and Querying with the REST API</a>
+<li><a href="#rest_v2_list_caches_by_role">2.1.26. Listing accessible caches for a role</a></li>
+<li><a href="#rest_v2_cache_listen">2.1.27. Listening to cache events</a></li>
+<li><a href="#rest_v2_caches_enable_rebalancing">2.1.28. Enabling rebalancing</a></li>
+<li><a href="#rest_v2_caches_disable_rebalancing">2.1.29. Disabling rebalancing</a></li>
+<li><a href="#rest_v2_caches_get_availability">2.1.30. Getting Cache Availability</a></li>
+<li><a href="#rest_v2_caches_set_availability">2.1.31. Setting Cache Availability</a></li>
+<li><a href="#rest_v2_caches_set_topology_stable">2.1.32. Set a Stable Topology</a></li>
+<li><a href="#rest_v2_query_cache">2.1.33. Indexing and Querying with the REST API</a>
 <ul class="sectlevel4">
 <li><a href="#rest_v2_query_reindex">Rebuilding indexes</a></li>
 <li><a href="#rest_v2_query_updateIndexSchema">Updating index schema</a></li>
@@ -601,7 +602,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_query_stats_clear">Clearing Query Statistics (Deprecated)</a></li>
 </ul>
 </li>
-<li><a href="#rest_v2_xsite_cache">2.1.33. Cross-Site Operations with Caches</a>
+<li><a href="#rest_v2_xsite_cache">2.1.34. Cross-Site Operations with Caches</a>
 <ul class="sectlevel4">
 <li><a href="#rest_v2_xsite_sites_status_rest">Getting status of all backup locations</a></li>
 <li><a href="#rest_v2_xsite_site_status_rest">Getting status of specific backup locations</a></li>
@@ -615,7 +616,7 @@ $(addBlockSwitches);
 <li><a href="#rest_v2_xsite_cancel_receive_state_rest">Canceling state transfer from receiving sites</a></li>
 </ul>
 </li>
-<li><a href="#rest_v2_rolling_upgrades">2.1.34. Rolling Upgrades</a>
+<li><a href="#rest_v2_rolling_upgrades">2.1.35. Rolling Upgrades</a>
 <ul class="sectlevel4">
 <li><a href="#rest_v2_sync_data">Connecting Source Clusters</a></li>
 <li><a href="#obtaining_source_cluster_connection_details">Obtaining Source Cluster connection details</a></li>
@@ -2721,7 +2722,52 @@ the <code>?action=size</code> parameter.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_cache_listen"><a class="anchor" href="#rest_v2_cache_listen"></a>2.1.26. Listening to cache events</h4>
+<h4 id="rest_v2_list_caches_by_role"><a class="anchor" href="#rest_v2_list_caches_by_role"></a>2.1.26. Listing accessible caches for a role</h4>
+<div class="paragraph">
+<p>When security is enabled, retrieve a list of all the accessible caches for a role.
+This operation requires ADMIN permission.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>GET /rest/v2/cache-managers/{cacheManagerName}/caches?action=role-accessible&amp;role=observer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Infinispan responds with JSON as in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "secured" : ["securedCache1", "securedCache2"],
+  "non-secured" : ["cache1", "cache2", "cache3"]
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 10. Request parameters</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Required or Optional</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OPTIONAL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <code>true</code> returns formatted content, including additional spacing and line separators which improve readability but increase payload size. The default is <code>false</code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="rest_v2_cache_listen"><a class="anchor" href="#rest_v2_cache_listen"></a>2.1.27. Listening to cache events</h4>
 <div class="paragraph">
 <p>Receive cache events using <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html">Server-Sent Events</a>.
 The <code>event</code> value will be one of <code>cache-entry-created</code>, <code>cache-entry-removed</code>, <code>cache-entry-updated</code>, <code>cache-entry-expired</code>.
@@ -2733,7 +2779,7 @@ The <code>data</code> value will contain the key of the entry that has fired the
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 10. Headers</caption>
+<caption class="title">Table 11. Headers</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2756,7 +2802,7 @@ The <code>data</code> value will contain the key of the entry that has fired the
 </table>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_caches_enable_rebalancing"><a class="anchor" href="#rest_v2_caches_enable_rebalancing"></a>2.1.27. Enabling rebalancing</h4>
+<h4 id="rest_v2_caches_enable_rebalancing"><a class="anchor" href="#rest_v2_caches_enable_rebalancing"></a>2.1.28. Enabling rebalancing</h4>
 <div class="paragraph">
 <p>Turn on automatic rebalancing for a specific cache.</p>
 </div>
@@ -2767,7 +2813,7 @@ The <code>data</code> value will contain the key of the entry that has fired the
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_caches_disable_rebalancing"><a class="anchor" href="#rest_v2_caches_disable_rebalancing"></a>2.1.28. Disabling rebalancing</h4>
+<h4 id="rest_v2_caches_disable_rebalancing"><a class="anchor" href="#rest_v2_caches_disable_rebalancing"></a>2.1.29. Disabling rebalancing</h4>
 <div class="paragraph">
 <p>Turn off automatic rebalancing for a specific cache.</p>
 </div>
@@ -2778,7 +2824,7 @@ The <code>data</code> value will contain the key of the entry that has fired the
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_caches_get_availability"><a class="anchor" href="#rest_v2_caches_get_availability"></a>2.1.29. Getting Cache Availability</h4>
+<h4 id="rest_v2_caches_get_availability"><a class="anchor" href="#rest_v2_caches_get_availability"></a>2.1.30. Getting Cache Availability</h4>
 <div class="paragraph">
 <p>Retrieve the availability of a cache.</p>
 </div>
@@ -2801,7 +2847,7 @@ You can get the availability of internal caches but this is subject to change in
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_caches_set_availability"><a class="anchor" href="#rest_v2_caches_set_availability"></a>2.1.30. Setting Cache Availability</h4>
+<h4 id="rest_v2_caches_set_availability"><a class="anchor" href="#rest_v2_caches_set_availability"></a>2.1.31. Setting Cache Availability</h4>
 <div class="paragraph">
 <p>Change the availability of clustered caches when using either the DENY_READ_WRITES or ALLOW_READS partition handling strategy.</p>
 </div>
@@ -2811,7 +2857,7 @@ You can get the availability of internal caches but this is subject to change in
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 11. Request Parameters</caption>
+<caption class="title">Table 12. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2856,7 +2902,7 @@ You can set the availability of internal caches but this is subject to change in
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_caches_set_topology_stable"><a class="anchor" href="#rest_v2_caches_set_topology_stable"></a>2.1.31. Set a Stable Topology</h4>
+<h4 id="rest_v2_caches_set_topology_stable"><a class="anchor" href="#rest_v2_caches_set_topology_stable"></a>2.1.32. Set a Stable Topology</h4>
 <div class="paragraph">
 <p>By default, after a cluster shutdown, Infinispan waits for all nodes to join the cluster and restore the topology.
 However, it is possible to define the current cluster topology as stable for a specific cache using the REST operation.</p>
@@ -2867,7 +2913,7 @@ However, it is possible to define the current cluster topology as stable for a s
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 12. Request Parameters</caption>
+<caption class="title">Table 13. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2911,7 +2957,7 @@ However, it is possible to define the current cluster topology as stable for a s
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_query_cache"><a class="anchor" href="#rest_v2_query_cache"></a>2.1.32. Indexing and Querying with the REST API</h4>
+<h4 id="rest_v2_query_cache"><a class="anchor" href="#rest_v2_query_cache"></a>2.1.33. Indexing and Querying with the REST API</h4>
 <div class="paragraph">
 <p>Query remote caches with <code>GET</code> requests and the <code>?action=search&amp;query</code> parameter from any HTTP client.</p>
 </div>
@@ -2976,7 +3022,7 @@ However, it is possible to define the current cluster topology as stable for a s
 </ul>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. Request Parameters</caption>
+<caption class="title">Table 14. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3065,7 +3111,7 @@ Remote clients might have different versions of the Protostream entity and this 
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 14. Request Parameters</caption>
+<caption class="title">Table 15. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3281,7 +3327,7 @@ parameter.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 15. Request Parameters</caption>
+<caption class="title">Table 16. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3542,7 +3588,7 @@ requests.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_xsite_cache"><a class="anchor" href="#rest_v2_xsite_cache"></a>2.1.33. Cross-Site Operations with Caches</h4>
+<h4 id="rest_v2_xsite_cache"><a class="anchor" href="#rest_v2_xsite_cache"></a>2.1.34. Cross-Site Operations with Caches</h4>
 <div class="paragraph">
 <p>Perform cross-site replication operations with the Infinispan REST API.</p>
 </div>
@@ -3582,7 +3628,7 @@ in the following example:</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 16. Returned Status</caption>
+<caption class="title">Table 17. Returned Status</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -3632,7 +3678,7 @@ format, as in the following example:</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 17. Returned Status</caption>
+<caption class="title">Table 18. Returned Status</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -3729,7 +3775,7 @@ in JSON format, as in the following example:</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 18. Returned status</caption>
+<caption class="title">Table 19. Returned status</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -3834,7 +3880,7 @@ local cache with the <code>?action=cancel-receive-state</code> parameter.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="rest_v2_rolling_upgrades"><a class="anchor" href="#rest_v2_rolling_upgrades"></a>2.1.34. Rolling Upgrades</h4>
+<h4 id="rest_v2_rolling_upgrades"><a class="anchor" href="#rest_v2_rolling_upgrades"></a>2.1.35. Rolling Upgrades</h4>
 <div class="paragraph">
 <p>Perform rolling upgrades of cache data between Infinispan clusters</p>
 </div>
@@ -4070,7 +4116,7 @@ It no source was connected, it returns code 304 (Not Modified).</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 19. Headers</caption>
+<caption class="title">Table 20. Headers</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4751,7 +4797,7 @@ running and serving requests.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 20. Headers</caption>
+<caption class="title">Table 21. Headers</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4773,7 +4819,7 @@ running and serving requests.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 21. Request parameters</caption>
+<caption class="title">Table 22. Request parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4843,7 +4889,7 @@ configuration, as in the following example:</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 22. Request parameters</caption>
+<caption class="title">Table 23. Request parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4890,7 +4936,7 @@ configuration, as in the following example:</p>
 </table>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 23. Request parameters</caption>
+<caption class="title">Table 24. Request parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4958,7 +5004,7 @@ cache, as in the following example:</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 24. Request parameters</caption>
+<caption class="title">Table 25. Request parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5176,7 +5222,7 @@ A <code>202</code> response indicates that the backup request is accepted for pr
 for the backup operation, as follows:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 25. JSON Parameters</caption>
+<caption class="title">Table 26. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5203,7 +5249,7 @@ for the backup operation, as follows:</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 26. Resource Parameters</caption>
+<caption class="title">Table 27. Resource Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5364,7 +5410,7 @@ that the restore request has been accepted for processing.</p>
 an archive that is available on the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 27. JSON Parameters</caption>
+<caption class="title">Table 28. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5391,7 +5437,7 @@ an archive that is available on the server.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 28. Resource Parameters</caption>
+<caption class="title">Table 29. Resource Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5453,7 +5499,7 @@ an archive that is available on the server.</p>
 local backup archive to the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 29. Form Data</caption>
+<caption class="title">Table 30. Form Data</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -5571,7 +5617,7 @@ The <code>data</code> value will contain the declarative configuration of the en
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 30. Headers</caption>
+<caption class="title">Table 31. Headers</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5593,7 +5639,7 @@ The <code>data</code> value will contain the declarative configuration of the en
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 31. Request parameters</caption>
+<caption class="title">Table 32. Request parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5635,7 +5681,7 @@ Currently, we expose only <code>LIFECYCLE</code> events.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 32. Headers</caption>
+<caption class="title">Table 33. Headers</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5657,7 +5703,7 @@ Currently, we expose only <code>LIFECYCLE</code> events.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 33. Request parameters</caption>
+<caption class="title">Table 34. Request parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -5726,7 +5772,7 @@ requests.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 34. Returned status</caption>
+<caption class="title">Table 35. Returned status</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -6145,7 +6191,7 @@ routing, threads, in addition to configuration and log files.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 35. Request Parameters</caption>
+<caption class="title">Table 36. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6233,7 +6279,7 @@ and so on) currently stored in the cache container for the cluster.</p>
 for the backup operation, as follows:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 36. JSON Parameters</caption>
+<caption class="title">Table 37. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6356,7 +6402,7 @@ matches the container name for the cluster.</p>
 an archive that is available on the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 37. JSON Parameters</caption>
+<caption class="title">Table 38. JSON Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6383,7 +6429,7 @@ an archive that is available on the server.</p>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 38. Resource Parameters</caption>
+<caption class="title">Table 39. Resource Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -6445,7 +6491,7 @@ an archive that is available on the server.</p>
 local backup archive to the server.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 39. Form Data</caption>
+<caption class="title">Table 40. Form Data</caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -6724,7 +6770,7 @@ If no appenders are specified, those specified in the root logger will be used.<
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 40. Request Parameters</caption>
+<caption class="title">Table 41. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7004,7 +7050,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 41. Request Parameters</caption>
+<caption class="title">Table 42. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7037,7 +7083,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 42. Request Parameters</caption>
+<caption class="title">Table 43. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7089,7 +7135,7 @@ The principal need not exist in the realm in use.</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 43. Request Parameters</caption>
+<caption class="title">Table 44. Request Parameters</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -7569,7 +7615,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-24 11:53:17 UTC
+Last updated 2023-10-31 13:56:38 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
