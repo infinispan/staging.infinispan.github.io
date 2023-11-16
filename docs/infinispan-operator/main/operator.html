@@ -521,25 +521,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#allocating-cpu-and-memory_services">7.4. Allocating CPU and memory</a></li>
 <li><a href="#setting-jvm-options_services">7.5. Setting JVM options</a></li>
-<li><a href="#configuring-logging_services">7.6. Adjusting log levels</a>
+<li><a href="#configuring-pod-priority_services">7.6. Configuring pod priority</a></li>
+<li><a href="#configuring-logging_services">7.7. Adjusting log levels</a>
 <ul class="sectlevel3">
-<li><a href="#logging-levels_services">7.6.1. Logging reference</a></li>
+<li><a href="#logging-levels_services">7.7.1. Logging reference</a></li>
 </ul>
 </li>
-<li><a href="#specifying-server-image_services">7.7. Specifying Infinispan Server images</a></li>
-<li><a href="#creating-cache-service_services">7.8. Creating Cache Service pods</a>
+<li><a href="#specifying-server-image_services">7.8. Specifying Infinispan Server images</a></li>
+<li><a href="#creating-cache-service_services">7.9. Creating Cache Service pods</a>
 <ul class="sectlevel3">
-<li><a href="#cache-service-resources_services">7.8.1. Cache Service CR</a></li>
+<li><a href="#cache-service-resources_services">7.9.1. Cache Service CR</a></li>
 </ul>
 </li>
-<li><a href="#automatic-scaling_services">7.9. Automatic scaling</a>
+<li><a href="#automatic-scaling_services">7.10. Automatic scaling</a>
 <ul class="sectlevel3">
-<li><a href="#configuring-autoscaling_services">7.9.1. Configuring automatic scaling</a></li>
+<li><a href="#configuring-autoscaling_services">7.10.1. Configuring automatic scaling</a></li>
 </ul>
 </li>
-<li><a href="#adding-custom-labels_services">7.10. Adding labels and annotations to Infinispan resources</a></li>
-<li><a href="#adding-labels-annotations-env_services">7.11. Adding labels and annotations with environment variables</a></li>
-<li><a href="#defining-environment-variables_services">7.12. Defining environment variables in the Infinispan Operator subscription</a></li>
+<li><a href="#adding-custom-labels_services">7.11. Adding labels and annotations to Infinispan resources</a></li>
+<li><a href="#adding-labels-annotations-env_services">7.12. Adding labels and annotations with environment variables</a></li>
+<li><a href="#defining-environment-variables_services">7.13. Defining environment variables in the Infinispan Operator subscription</a></li>
 </ul>
 </li>
 <li><a href="#configuring-authentication">8. Configuring authentication</a>
@@ -2559,12 +2560,82 @@ Specifying a single value sets both the limit and request.</p>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect2">
+<h3 id="configuring-pod-priority_services"><a class="anchor" href="#configuring-pod-priority_services"></a>7.6. Configuring pod priority</h3>
+<div class="paragraph _abstract">
+<p>Create one or more priority classes to indicate the importance of a pod relative to other pods.
+Pods with higher priority are scheduled ahead of pods with lower priority, ensuring prioritization of pods running critical workloads, especially when resources become constrained.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Have <code>cluster-admin</code> access to Kubernetes.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Define a <code>PriorityClass</code> object by specifying its name and value.</p>
+<div class="listingblock">
+<div class="title">high-priority.yaml</div>
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+description: "Use this priority class for high priority service pods only."</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the priority class.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>kubectl create -f high-priority.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Reference the priority class name in the pod configuration.</p>
+<div class="listingblock">
+<div class="title">Infinispan CR</div>
+<div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">kind: Infinispan
+...
+spec:
+  scheduling:
+    affinity:
+      ...
+    priorityClassName: "high-priority"
+    ...</code></pre>
+</div>
+</div>
 <div class="paragraph">
-<p>Unresolved directive in ../stories/assembly_creating_services.adoc - include::../topics/proc_setting_priority.adoc[leveloffset=+1]</p>
+<p>You must reference an existing priority class name, otherwise the pod is rejected.</p>
+</div>
+</li>
+<li>
+<p>Apply the changes.</p>
+</li>
+</ol>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/">Kubernetes: Pod Priority and Preemption</a></p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configuring-logging_services"><a class="anchor" href="#configuring-logging_services"></a>7.6. Adjusting log levels</h3>
+<h3 id="configuring-logging_services"><a class="anchor" href="#configuring-logging_services"></a>7.7. Adjusting log levels</h3>
 <div class="paragraph _abstract">
 <p>Change levels for different Infinispan logging categories when you need to debug issues.
 You can also adjust log levels to reduce the number of messages for certain categories to minimize the use of container resources.</p>
@@ -2598,7 +2669,7 @@ You can also adjust log levels to reduce the number of messages for certain cate
 </ol>
 </div>
 <div class="sect3">
-<h4 id="logging-levels_services"><a class="anchor" href="#logging-levels_services"></a>7.6.1. Logging reference</h4>
+<h4 id="logging-levels_services"><a class="anchor" href="#logging-levels_services"></a>7.7.1. Logging reference</h4>
 <div class="paragraph _abstract">
 <p>Find information about log categories and levels.</p>
 </div>
@@ -2677,7 +2748,7 @@ You can direct GC messages to <code>stdout</code> with the following JVM options
 </div>
 </div>
 <div class="sect2">
-<h3 id="specifying-server-image_services"><a class="anchor" href="#specifying-server-image_services"></a>7.7. Specifying Infinispan Server images</h3>
+<h3 id="specifying-server-image_services"><a class="anchor" href="#specifying-server-image_services"></a>7.8. Specifying Infinispan Server images</h3>
 <div class="paragraph _abstract">
 <p>Specify which Infinispan Server image Infinispan Operator should use to create pods with the <code>spec.image</code> field.</p>
 </div>
@@ -2689,7 +2760,7 @@ You can direct GC messages to <code>stdout</code> with the following JVM options
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-cache-service_services"><a class="anchor" href="#creating-cache-service_services"></a>7.8. Creating Cache Service pods</h3>
+<h3 id="creating-cache-service_services"><a class="anchor" href="#creating-cache-service_services"></a>7.9. Creating Cache Service pods</h3>
 <div class="paragraph _abstract">
 <p>Create Infinispan clusters with Cache Service pods for a volatile, low-latency data store with minimal configuration.</p>
 </div>
@@ -2732,7 +2803,7 @@ spec:
 </ol>
 </div>
 <div class="sect3">
-<h4 id="cache-service-resources_services"><a class="anchor" href="#cache-service-resources_services"></a>7.8.1. Cache Service CR</h4>
+<h4 id="cache-service-resources_services"><a class="anchor" href="#cache-service-resources_services"></a>7.9.1. Cache Service CR</h4>
 <div class="paragraph _abstract">
 <p>This topic describes the <code>Infinispan</code> CR for Cache Service pods.</p>
 </div>
@@ -2858,7 +2929,7 @@ spec:
 </div>
 </div>
 <div class="sect2">
-<h3 id="automatic-scaling_services"><a class="anchor" href="#automatic-scaling_services"></a>7.9. Automatic scaling</h3>
+<h3 id="automatic-scaling_services"><a class="anchor" href="#automatic-scaling_services"></a>7.10. Automatic scaling</h3>
 <div class="paragraph _abstract">
 <p>Infinispan Operator can monitor the default cache on Cache Service pods to automatically scale clusters up or down, by creating or deleting pods based on memory usage.</p>
 </div>
@@ -2899,7 +2970,7 @@ If you plan to add other caches to your cluster, you should not include the <cod
 In this case you should use eviction to control the size of the data container on each node.</p>
 </div>
 <div class="sect3">
-<h4 id="configuring-autoscaling_services"><a class="anchor" href="#configuring-autoscaling_services"></a>7.9.1. Configuring automatic scaling</h4>
+<h4 id="configuring-autoscaling_services"><a class="anchor" href="#configuring-autoscaling_services"></a>7.10.1. Configuring automatic scaling</h4>
 <div class="paragraph _abstract">
 <p>If you create clusters with Cache Service pods, you can configure Infinispan Operator to automatically scale clusters.</p>
 </div>
@@ -2980,7 +3051,7 @@ In this case you should use eviction to control the size of the data container o
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-custom-labels_services"><a class="anchor" href="#adding-custom-labels_services"></a>7.10. Adding labels and annotations to Infinispan resources</h3>
+<h3 id="adding-custom-labels_services"><a class="anchor" href="#adding-custom-labels_services"></a>7.11. Adding labels and annotations to Infinispan resources</h3>
 <div class="paragraph _abstract">
 <p>Attach key/value labels and annotations to pods and services that Infinispan Operator creates and manages.
 Labels help you identify relationships between objects to better organize and monitor Infinispan resources.
@@ -3050,7 +3121,7 @@ metadata:
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-labels-annotations-env_services"><a class="anchor" href="#adding-labels-annotations-env_services"></a>7.11. Adding labels and annotations with environment variables</h3>
+<h3 id="adding-labels-annotations-env_services"><a class="anchor" href="#adding-labels-annotations-env_services"></a>7.12. Adding labels and annotations with environment variables</h3>
 <div class="paragraph _abstract">
 <p>Set environment variables for Infinispan Operator to add labels and annotations that automatically propagate to all Infinispan pods and services.</p>
 </div>
@@ -3109,7 +3180,7 @@ metadata:
 </div>
 </div>
 <div class="sect2">
-<h3 id="defining-environment-variables_services"><a class="anchor" href="#defining-environment-variables_services"></a>7.12. Defining environment variables in the Infinispan Operator subscription</h3>
+<h3 id="defining-environment-variables_services"><a class="anchor" href="#defining-environment-variables_services"></a>7.13. Defining environment variables in the Infinispan Operator subscription</h3>
 <div class="paragraph _abstract">
 <p>You can define environment variables in your Infinispan Operator subscription either when you create or edit the subscription.</p>
 </div>
@@ -8527,7 +8598,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-11-16 13:35:09 UTC
+Last updated 2023-11-16 14:11:50 UTC
 </div>
 </div>
 <script>
