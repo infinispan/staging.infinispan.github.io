@@ -957,6 +957,12 @@ If you do not specify a port, the platform selects an available one.</p></td>
 If you set the value to <code>true</code>, Infinispan creates an initContainer that runs <code>chmod -R</code> on the <code>/opt/infinispan/server/data</code> directory to change permissions.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.securityContext</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configures the securityContext used by the StatefulSet pods.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>{}</code>
+This can be used to change the group of mounted file systems. Set <code>securityContext.fsGroup</code> to <code>185</code> if you need to explicitly match the group owner for <code>/opt/infinispan/server/data</code> to the default Infinispan&#8217;s group</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.monitoring.enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Enable or disable monitoring using <code>ServiceMonitor</code>.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code> Users must have <code>monitoring-edit</code> role assigned by the admin to deploy the Helm chart with <code>ServiceMonitor</code> enabled.</p></td>
@@ -2025,7 +2031,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-10 16:43:47 +0200
+Last updated 2023-11-21 12:33:28 -0500
 </div>
 </div>
 <script>

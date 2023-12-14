@@ -463,6 +463,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_minikube_and_infinispan_operator">2.6.2. Minikube and Infinispan Operator</a></li>
 </ul>
 </li>
+<li><a href="#secured_with_token_keycloak_remote-cache-tutorials">2.7. Token based Security Realm with Keycloak</a>
+<ul class="sectlevel3">
+<li><a href="#_docker_compose_2">2.7.1. Docker compose</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#spring-tutorials">3. Spring and Spring Boot</a>
@@ -1112,6 +1117,53 @@ example, the cache in LON is distributed while the cache in NYC is replicated.</
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="secured_with_token_keycloak_remote-cache-tutorials"><a class="anchor" href="#secured_with_token_keycloak_remote-cache-tutorials"></a>2.7. Token based Security Realm with Keycloak</h3>
+<div class="paragraph">
+<p>Learn how to handle security authentication in Infinispan with Keycloak.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/infinispan/infinispan-simple-tutorials/tree/main/infinispan-remote/infinispan-secured-keycloak">Token based security tutorial with Keycloak</a></p>
+</div>
+<div class="paragraph">
+<p>In this tutorial, you start one Infinispan cluster and Keycloak.
+This tutorial demonstrates Infinispan security capabilities locally using <code>docker-compose</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_docker_compose_2"><a class="anchor" href="#_docker_compose_2"></a>2.7.1. Docker compose</h4>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Make sure you have <code>docker</code> and <code>docker-compose</code> installed locally.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p>Run <code>docker-compose up</code>. Keycloak and Infinispan will start with all the necessary configuration.</p>
+</li>
+<li>
+<p>Access the console at <code><a href="http://localhost:11222/console" class="bare">http://localhost:11222/console</a></code>. You should be redirected to Keycloak login.</p>
+</li>
+<li>
+<p>Enter 'admin/adminPassword' credentials in the login page.</p>
+</li>
+<li>
+<p>You are now back in the console, logged in.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1310,7 +1362,7 @@ $ mvn wildfly:deploy</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-13 11:32:41 +0200
+Last updated 2023-12-07 11:37:11 -0500
 </div>
 </div>
 </body>
