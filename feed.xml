@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-12-14T04:45:18-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan kNN Vector Search</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-vector-search" rel="alternate" type="text/html" title="Infinispan kNN Vector Search" /><published>2023-12-13T14:37:00-05:00</published><updated>2023-12-13T14:37:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-vector-search</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-vector-search">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-12-14T08:43:21-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan kNN Vector Search</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-vector-search" rel="alternate" type="text/html" title="Infinispan kNN Vector Search" /><published>2023-12-13T14:37:00-05:00</published><updated>2023-12-13T14:37:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-vector-search</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-vector-search">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;With Infinispan 15.0.0.Dev06, we have started to expose vector search capabilities using Infinispan&amp;#8217;s indexed queries.
@@ -35,48 +35,48 @@ Other options that can be specified during mapping are:&lt;/p&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;We support &lt;code&gt;byte[]&lt;/code&gt; embeddings. Here is an example of mapping:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;&lt;code&gt;` [source, java]
-@Vector(dimension = 3)
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;@Vector(dimension = 3)
 @ProtoField(2)
 public byte[] getByteVector() {
    return byteVector;
-}
-&lt;/code&gt;`&lt;/code&gt;&lt;/p&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;That corresponds to the Proto schema:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;&lt;code&gt;` [source, protobuf]
-/**
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-proto hljs&quot; data-lang=&quot;proto&quot;&gt;/**
  * @Vector(dimension=3)
  */
-optional bytes byteVector = 2;
-&lt;/code&gt;`&lt;/code&gt;&lt;/p&gt;
+optional bytes byteVector = 2;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We also support float[] embeddings. Here is an example of mapping:&lt;/p&gt;
+&lt;p&gt;We also support &lt;code&gt;float[]&lt;/code&gt; embeddings. Here is an example of mapping:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;&lt;code&gt;` [source, java]
-@Vector(dimension = 3)
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;@Vector(dimension = 3)
 @ProtoField(3)
 public float[] getFloatVector() {
    return floatVector;
-}
-&lt;/code&gt;`&lt;/code&gt;&lt;/p&gt;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;That corresponds to the Proto schema:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;&lt;code&gt;` [source, protobuf]
-/**
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-proto hljs&quot; data-lang=&quot;proto&quot;&gt;/**
  * @Vector(dimension=3)
  */
-repeated float floatVector = 3;
-&lt;/code&gt;`&lt;/code&gt;&lt;/p&gt;
+repeated float floatVector = 3;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -86,35 +86,35 @@ repeated float floatVector = 3;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;The following query shows how to perform a kNN search using a supplied vector and a specific distance&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;&lt;code&gt;` [source, sql]
-from Item i where i.byteVector &amp;lt;&amp;#8594; [7,7,7]~3
-&lt;/code&gt;`&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-sql hljs&quot; data-lang=&quot;sql&quot;&gt;from Item i where i.byteVector &amp;lt;-&amp;gt; [7,7,7]~3&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;The query can be parameterized in several ways:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;&lt;code&gt;` [source, java]
-query = cache.query(&quot;from org.infinispan.query.model.Item i where i.byteVector &amp;lt;&amp;#8594; [:a,:b,:c]~3&quot;);
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;query = cache.query(&quot;from org.infinispan.query.model.Item i where i.byteVector &amp;lt;-&amp;gt; [:a,:b,:c]~3&quot;);
 query.setParameter(&quot;a&quot;, 0);
 query.setParameter(&quot;b&quot;, 2);
 query.setParameter(&quot;c&quot;, 3);
 hits = query.list();
-assertThat(hits).extracting(&quot;code&quot;).containsExactly(&quot;c2&quot;, &quot;c1&quot;, &quot;c3&quot;); // the order matters
-&lt;/code&gt;`&lt;/code&gt;&lt;/p&gt;
+assertThat(hits).extracting(&quot;code&quot;).containsExactly(&quot;c2&quot;, &quot;c1&quot;, &quot;c3&quot;); // the order matters&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Or you can pass the entire vector as a single parameter:&lt;/p&gt;
 &lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;code&gt;&lt;code&gt;` [source, java]
-query = cache.query(&quot;from org.infinispan.query.model.Item i where i.floatVector &amp;lt;&amp;#8594; [:a]~:b&quot;);
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;query = cache.query(&quot;from org.infinispan.query.model.Item i where i.floatVector &amp;lt;-&amp;gt; [:a]~:b&quot;);
 query.setParameter(&quot;a&quot;, new float[]{7.1f, 7.0f, 3.1f});
 query.setParameter(&quot;b&quot;, 3);
 hits = query.list();
-assertThat(hits).extracting(&quot;code&quot;).containsExactly(&quot;c5&quot;, &quot;c6&quot;, &quot;c4&quot;);
-&lt;/code&gt;`&lt;/code&gt;&lt;/p&gt;
+assertThat(hits).extracting(&quot;code&quot;).containsExactly(&quot;c5&quot;, &quot;c6&quot;, &quot;c4&quot;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;If the cache is distributed, the query will be a broadcast query, and it will aggregate all the results from all the nodes that contain shards of the indexes that are related to the search.

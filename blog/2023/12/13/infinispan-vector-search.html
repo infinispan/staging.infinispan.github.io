@@ -142,48 +142,48 @@ Other options that can be specified during mapping are:</p>
 <div class="paragraph">
 <p>We support <code>byte[]</code> embeddings. Here is an example of mapping:</p>
 </div>
-<div class="paragraph">
-<p><code><code>` [source, java]
-@Vector(dimension = 3)
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Vector(dimension = 3)
 @ProtoField(2)
 public byte[] getByteVector() {
    return byteVector;
-}
-</code>`</code></p>
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>That corresponds to the Proto schema:</p>
 </div>
-<div class="paragraph">
-<p><code><code>` [source, protobuf]
-/**
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">/**
  * @Vector(dimension=3)
  */
-optional bytes byteVector = 2;
-</code>`</code></p>
+optional bytes byteVector = 2;</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>We also support float[] embeddings. Here is an example of mapping:</p>
+<p>We also support <code>float[]</code> embeddings. Here is an example of mapping:</p>
 </div>
-<div class="paragraph">
-<p><code><code>` [source, java]
-@Vector(dimension = 3)
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Vector(dimension = 3)
 @ProtoField(3)
 public float[] getFloatVector() {
    return floatVector;
-}
-</code>`</code></p>
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>That corresponds to the Proto schema:</p>
 </div>
-<div class="paragraph">
-<p><code><code>` [source, protobuf]
-/**
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">/**
  * @Vector(dimension=3)
  */
-repeated float floatVector = 3;
-</code>`</code></p>
+repeated float floatVector = 3;</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -193,35 +193,35 @@ repeated float floatVector = 3;
 <div class="paragraph">
 <p>The following query shows how to perform a kNN search using a supplied vector and a specific distance</p>
 </div>
-<div class="paragraph">
-<p><code><code>` [source, sql]
-from Item i where i.byteVector &lt;&#8594; [7,7,7]~3
-</code>`</code></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">from Item i where i.byteVector &lt;-&gt; [7,7,7]~3</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>The query can be parameterized in several ways:</p>
 </div>
-<div class="paragraph">
-<p><code><code>` [source, java]
-query = cache.query("from org.infinispan.query.model.Item i where i.byteVector &lt;&#8594; [:a,:b,:c]~3");
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">query = cache.query("from org.infinispan.query.model.Item i where i.byteVector &lt;-&gt; [:a,:b,:c]~3");
 query.setParameter("a", 0);
 query.setParameter("b", 2);
 query.setParameter("c", 3);
 hits = query.list();
-assertThat(hits).extracting("code").containsExactly("c2", "c1", "c3"); // the order matters
-</code>`</code></p>
+assertThat(hits).extracting("code").containsExactly("c2", "c1", "c3"); // the order matters</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Or you can pass the entire vector as a single parameter:</p>
 </div>
-<div class="paragraph">
-<p><code><code>` [source, java]
-query = cache.query("from org.infinispan.query.model.Item i where i.floatVector &lt;&#8594; [:a]~:b");
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">query = cache.query("from org.infinispan.query.model.Item i where i.floatVector &lt;-&gt; [:a]~:b");
 query.setParameter("a", new float[]{7.1f, 7.0f, 3.1f});
 query.setParameter("b", 3);
 hits = query.list();
-assertThat(hits).extracting("code").containsExactly("c5", "c6", "c4");
-</code>`</code></p>
+assertThat(hits).extracting("code").containsExactly("c5", "c6", "c4");</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>If the cache is distributed, the query will be a broadcast query, and it will aggregate all the results from all the nodes that contain shards of the indexes that are related to the search.
