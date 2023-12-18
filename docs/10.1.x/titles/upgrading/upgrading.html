@@ -663,7 +663,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
-<li><a href="#rolling_server_upgrades">2. Upgrading Infinispan Servers</a>
+<li><a href="#rolling_server_upgrades">2. Performing Rolling Upgrades for Infinispan Servers</a>
 <ul class="sectlevel2">
 <li><a href="#upgrade_target">2.1. Setting Up Target Clusters</a>
 <ul class="sectlevel3">
@@ -673,16 +673,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#sync_data">2.2. Synchronizing Data to Target Clusters</a></li>
 </ul>
 </li>
-<li><a href="#offline_data_migration">3. Migrating Data Between Cache Stores</a>
+<li><a href="#patching">3. Patching Infinispan Server Installations</a>
 <ul class="sectlevel2">
-<li><a href="#store_migrator-upgrade">3.1. Cache Store Migrator</a></li>
-<li><a href="#get_store_migrator-upgrade">3.2. Getting the Store Migrator</a></li>
-<li><a href="#configure_store_migrator-upgrade">3.3. Configuring the Store Migrator</a>
-<ul class="sectlevel3">
-<li><a href="#store_migrator_properties-upgrade">3.3.1. Store Migrator Properties</a></li>
+<li><a href="#patches-server">3.1. Infinispan Server Patches</a></li>
+<li><a href="#patching_create-server">3.2. Creating Server Patches</a></li>
+<li><a href="#patching_install-server">3.3. Installing Server Patches</a></li>
+<li><a href="#patching_rollback-server">3.4. Rolling Back Server Patches</a></li>
 </ul>
 </li>
-<li><a href="#migrating_stores-upgrade">3.4. Migrating Cache Stores</a></li>
+<li><a href="#offline_data_migration">4. Migrating Data Between Cache Stores</a>
+<ul class="sectlevel2">
+<li><a href="#store_migrator-upgrade">4.1. Cache Store Migrator</a></li>
+<li><a href="#get_store_migrator-upgrade">4.2. Getting the Store Migrator</a></li>
+<li><a href="#configure_store_migrator-upgrade">4.3. Configuring the Store Migrator</a>
+<ul class="sectlevel3">
+<li><a href="#store_migrator_properties-upgrade">4.3.1. Store Migrator Properties</a></li>
+</ul>
+</li>
+<li><a href="#migrating_stores-upgrade">4.4. Migrating Cache Stores</a></li>
 </ul>
 </li>
 </ul>
@@ -2155,7 +2163,7 @@ RemoteCache cache = cacheContainer.getCache();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="rolling_server_upgrades"><a class="anchor" href="#rolling_server_upgrades"></a>2. Upgrading Infinispan Servers</h2>
+<h2 id="rolling_server_upgrades"><a class="anchor" href="#rolling_server_upgrades"></a>2. Performing Rolling Upgrades for Infinispan Servers</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Perform rolling upgrades of your Infinispan clusters to change between
@@ -2348,7 +2356,366 @@ process is complete. You can now decommission the source cluster.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="offline_data_migration"><a class="anchor" href="#offline_data_migration"></a>3. Migrating Data Between Cache Stores</h2>
+<h2 id="patching"><a class="anchor" href="#patching"></a>3. Patching Infinispan Server Installations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Install and manage patches for Infinispan server installations.</p>
+</div>
+<div class="paragraph">
+<p>You can apply patches to multiple Infinispan servers with different versions
+to upgrade to a desired target version. However, patches do not take effect if
+Infinispan servers are running. For this reason you install patches while
+servers are offline. If you want to upgrade Infinispan clusters without
+downtime, create a new cluster with the target version and perform a rolling
+upgrade to that version instead of patching.</p>
+</div>
+<div class="sect2">
+<h3 id="patches-server"><a class="anchor" href="#patches-server"></a>3.1. Infinispan Server Patches</h3>
+<div class="paragraph">
+<p>Infinispan server patches are <code>.zip</code> archives that contain artifacts that you
+can apply to your <code>$ISPN_HOME</code> directory to fix issues and add new features.</p>
+</div>
+<div class="paragraph">
+<p>Patches also provide a set of rules for Infinispan to modify your server
+installation. When you apply patches, Infinispan overwrites some files and
+removes others, depending on if they are required for the target version.</p>
+</div>
+<div class="paragraph">
+<p>However, Infinispan does not make any changes to configuration files that you
+have created or modified when applying a patch. Server patches do not modify or
+replace any custom configuration or data.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="patching_create-server"><a class="anchor" href="#patching_create-server"></a>3.2. Creating Server Patches</h3>
+<div class="paragraph">
+<p>You can create patches for Infinispan servers from an existing server
+installation.</p>
+</div>
+<div class="paragraph">
+<p>You can create patches for Infinispan servers starting from 10.1.7. You can
+patch any 10.1 or later server installation. However you cannot patch 9.4.x or
+earlier servers with 10.1.7 or later.</p>
+</div>
+<div class="paragraph">
+<p>You can also create patches that either upgrade or downgrade the Infinispan
+server version. For example, you can create a patch from version 10.1.7 and use
+it to upgrade version 10.1.5 or downgrade version 11.0.0.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Navigate to <code>$ISPN_HOME</code> for a Infinispan server installation that has
+the target version for the patch you want to create.</p>
+</li>
+<li>
+<p>Start the CLI.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
+[disconnected]&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Use the <code>patch create</code> command to generate a patch archive and include the <code>-q</code> option with a meaningful qualifier to describe the patch.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
+path/to/target/server/home path/to/source/server/home</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The preceding command generates a <code>.zip</code> archive in the specified directory.
+Paths are relative to <code>$ISPN_HOME</code> for the target server.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Create single patches for multiple different Infinispan versions, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch create -q &quot;this is my test patch&quot; path/to/mypatch.zip \
+path/to/target/server/home \
+path/to/source/server1/home path/to/source/server2/home</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <code>server1</code> and <code>server2</code> are different Infinispan versions where you can
+install "mypatch.zip".</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Describe the generated patch archive.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch describe path/to/mypatch.zip
+
+Infinispan patch target=$target_version(my test patch)  source=$source_version created=$timestamp</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>$target_version</code> is the Infinispan server version from which the patch was created.</p>
+</li>
+<li>
+<p><code>$source_version</code> is one or more Infinispan server versions to which you can apply the patch.</p>
+<div class="paragraph">
+<p>You can apply patches to Infinispan servers that match the <code>$source_version</code>
+only. Attempting to apply patches to other versions results in the following
+exception:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>java.lang.IllegalStateException: The supplied patch cannot be applied to `$source_version`</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="patching_install-server"><a class="anchor" href="#patching_install-server"></a>3.3. Installing Server Patches</h3>
+<div class="paragraph">
+<p>Apply patches to Infinispan servers to upgrade or downgrade an existing
+version.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>Create a server patch for the target version.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Navigate to <code>$ISPN_HOME</code> for the Infinispan server you want to patch.</p>
+</li>
+<li>
+<p>Stop the server if it is running.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you patch a server while it is running, the version changes take effect
+after restart. If you do not want to stop the server, create a new cluster with
+the target version and perform a rolling upgrade to that version instead of
+patching.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Start the CLI.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
+[disconnected]&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the patch.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch install path/to/patch.zip
+
+Infinispan patch target=$target_version source=$source_version \
+created=$timestamp installed=$timestamp</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>$target_version</code> displays the Infinispan version that the patch installed.</p>
+</li>
+<li>
+<p><code>$source_version</code> displays the Infinispan version before you installed the patch.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Start the server to verify the patch is installed.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh
+...
+ISPN080001: Infinispan Server $version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the patch is installed successfully <code>$version</code> matches <code>$target_version</code>.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use the <code>--server</code> option to install patches in a different <code>$ISPN_HOME</code>
+directory, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch install path/to/patch.zip --server=path/to/server/home</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="patching_rollback-server"><a class="anchor" href="#patching_rollback-server"></a>3.4. Rolling Back Server Patches</h3>
+<div class="paragraph">
+<p>Remove patches from Infinispan servers by rolling them back and restoring the
+previous Infinispan version.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If a server has multiple patches installed, you can roll back the last
+installed patch only.</p>
+</div>
+<div class="paragraph">
+<p>Rolling back patches does not revert configuration changes you make to
+Infinispan server. Before you roll back patches, you should ensure that your
+configuration is compatible with the version to which you are rolling back.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Navigate to <code>$ISPN_HOME</code> for the Infinispan server installation you want to roll back.</p>
+</li>
+<li>
+<p>Stop the server if it is running.</p>
+</li>
+<li>
+<p>Start the CLI.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ bin/cli.sh
+[disconnected]&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>List the installed patches.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch ls
+
+Infinispan patch target=$target_version source=$source_version
+created=$timestamp installed=$timestamp</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>$target_version</code> is the Infinispan server version after the patch was applied.</p>
+</li>
+<li>
+<p><code>$source_version</code> is the version for Infinispan server before the patch was applied. Rolling back the patch restores the server to this version.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Roll back the last installed patch.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch rollback</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Quit the CLI.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; quit</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Start the server to verify the patch is rolled back to the previous version.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>$ bin/server.sh
+...
+ISPN080001: Infinispan Server $version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the patch is rolled back successfully <code>$version</code> matches <code>$source_version</code>.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use the <code>--server</code> option to rollback patches in a different <code>$ISPN_HOME</code>
+directory, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[disconnected]&gt; patch rollback --server=path/to/server/home</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="offline_data_migration"><a class="anchor" href="#offline_data_migration"></a>4. Migrating Data Between Cache Stores</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Infinispan provides a Java utility for migrating persisted data between cache
@@ -2376,7 +2743,7 @@ implementations, such as JDBC Mixed and Binary stores. You can use
 implementations.</p>
 </div>
 <div class="sect2">
-<h3 id="store_migrator-upgrade"><a class="anchor" href="#store_migrator-upgrade"></a>3.1. Cache Store Migrator</h3>
+<h3 id="store_migrator-upgrade"><a class="anchor" href="#store_migrator-upgrade"></a>4.1. Cache Store Migrator</h3>
 <div class="paragraph">
 <p>Infinispan provides the <code>StoreMigrator.java</code> utility that recreates data for
 the latest Infinispan cache store implementations.</p>
@@ -2422,7 +2789,7 @@ Single File cache store.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="get_store_migrator-upgrade"><a class="anchor" href="#get_store_migrator-upgrade"></a>3.2. Getting the Store Migrator</h3>
+<h3 id="get_store_migrator-upgrade"><a class="anchor" href="#get_store_migrator-upgrade"></a>4.2. Getting the Store Migrator</h3>
 <div class="paragraph">
 <p><code>StoreMigrator</code> is available as part of the Infinispan tools library,
 <code>infinispan-tools</code>, and is included in the Maven repository.</p>
@@ -2482,7 +2849,7 @@ Single File cache store.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="configure_store_migrator-upgrade"><a class="anchor" href="#configure_store_migrator-upgrade"></a>3.3. Configuring the Store Migrator</h3>
+<h3 id="configure_store_migrator-upgrade"><a class="anchor" href="#configure_store_migrator-upgrade"></a>4.3. Configuring the Store Migrator</h3>
 <div class="paragraph">
 <p>Set properties for source and target cache stores in a <code>migrator.properties</code>
 file.</p>
@@ -2530,7 +2897,7 @@ target.location=/path/to/target/sfs.dat</pre>
 </ol>
 </div>
 <div class="sect3">
-<h4 id="store_migrator_properties-upgrade"><a class="anchor" href="#store_migrator_properties-upgrade"></a>3.3.1. Store Migrator Properties</h4>
+<h4 id="store_migrator_properties-upgrade"><a class="anchor" href="#store_migrator_properties-upgrade"></a>4.3.1. Store Migrator Properties</h4>
 <div class="paragraph">
 <p>Configure source and target cache stores in a <code>StoreMigrator</code> properties.</p>
 </div>
@@ -2861,7 +3228,7 @@ target.location=path/to/sifs/index</pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="migrating_stores-upgrade"><a class="anchor" href="#migrating_stores-upgrade"></a>3.4. Migrating Cache Stores</h3>
+<h3 id="migrating_stores-upgrade"><a class="anchor" href="#migrating_stores-upgrade"></a>4.4. Migrating Cache Stores</h3>
 <div class="paragraph">
 <p>Run <code>StoreMigrator</code> to migrate data from one cache store to another.</p>
 </div>
@@ -2909,7 +3276,7 @@ repository, run the following command:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-03 12:31:45 -0400
+Last updated 2023-12-12 19:00:43 +0100
 </div>
 </div>
 <style>

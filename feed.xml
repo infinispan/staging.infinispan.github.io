@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-12-14T08:43:21-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan kNN Vector Search</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-vector-search" rel="alternate" type="text/html" title="Infinispan kNN Vector Search" /><published>2023-12-13T14:37:00-05:00</published><updated>2023-12-13T14:37:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-vector-search</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-vector-search">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-12-18T07:10:01-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15.0.0.Dev06</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-15dev06" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev06" /><published>2023-12-13T19:00:00-05:00</published><updated>2023-12-13T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-15.0.0.Dev06</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-15dev06">&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;redis-endpoint&quot;&gt;Redis endpoint&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The Redis endpoint now implements most of the core Redis commands and data structures (strings, sets, lists, hashes and sorted sets), as well as implementing
+clustering and CRC16 slots.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;knn-vector-search&quot;&gt;kNN Vector search&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan can now perform indexed kNN vector searches. See our recent &lt;a href=&quot;https://infinispan.org/blog/2023/12/13/infinispan-vector-search&quot;&gt;blog post&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;infinispan-web-console&quot;&gt;Infinispan Web Console&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The console has gained an access management section that lets you create, update, and delete roles, as well as assign access to principal mappers.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;graalvm-feature&quot;&gt;GraalVM feature&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A GraalVM native-image &lt;a href=&quot;https://www.graalvm.org/sdk/javadoc/org/graalvm/nativeimage/hosted/Feature.html&quot;&gt;Feature&lt;/a&gt; is now available via the dedicated
+modules &lt;code&gt;infinispan-hotrod-graalvm&lt;/code&gt; and &lt;code&gt;infinispan-embedded-graalvm&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;hibernate-orm-6-3-2lc&quot;&gt;Hibernate ORM 6.3 2LC&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Our second-level cache provider now supports Hibernate ORM 6.3.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;jcache-is-back&quot;&gt;JCache is back!&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;While working on the Jakarta migration, we temporarily removed the JCache provider because of its optional dependency on CDI conflicting with the migration to Jakarta EE.
+As of 15.0.0.Dev06, the JCache component is back, albeit without the CDI integration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;when-is-the-final-release-coming&quot;&gt;When is the Final release coming?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We hope to have the final release of Infinispan 15 ready for consumption by the end of the year and we will be making regular development releases.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.]&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Redis endpoint</summary></entry><entry><title type="html">Infinispan kNN Vector Search</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-vector-search" rel="alternate" type="text/html" title="Infinispan kNN Vector Search" /><published>2023-12-13T14:37:00-05:00</published><updated>2023-12-13T14:37:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-vector-search</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-vector-search">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;With Infinispan 15.0.0.Dev06, we have started to expose vector search capabilities using Infinispan&amp;#8217;s indexed queries.
@@ -1452,187 +1513,4 @@ Creating a cache will now be effortless and user-centric with a wizard based int
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry><entry><title type="html">Infinispan 14 OpenTelemetry tracing integration</title><link href="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing" rel="alternate" type="text/html" title="Infinispan 14 OpenTelemetry tracing integration" /><published>2022-07-18T15:37:00-04:00</published><updated>2022-07-18T15:37:00-04:00</updated><id>https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing</id><content type="html" xml:base="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing">&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispan community,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With the Infinispan 14 development release 04, we started to support tracing with OpenTelemetry.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If configured, Infinispan Server produces cache events tracing spans and sends them to a remote tracing collector server, such as Jaeger or Zipkin.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Moreover, if a Java client application with the HotRot or the Rest client produces some tracing spans,
-these spans can be correlated as parent spans of the corresponding spans events produced by the Infinispan Server.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;set-up-tracing-on-infinispan-server&quot;&gt;Set up tracing on Infinispan Server&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The new version of Infinispan Server comes with a gRPC OpenTelemetry Protocol (OTLP) Exporter,
-which is now supported by the majority of tracing servers.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For instance, with the newer Jaeger server versions, you can enable data collection through the OTLP protocol with the following option:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-shell script hljs&quot; data-lang=&quot;shell script&quot;&gt;./jaeger-all-in-one --collector.otlp.enabled&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The server opens a port to import gRPC OTLP tracing data at port 4317.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Configure tracing on the Infinispan Server by setting system properties or environment variables:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-properties hljs&quot; data-lang=&quot;properties&quot;&gt;infinispan.tracing.enabled=true
-otel.service.name=infinispan-server-service
-otel.exporter.otlp.endpoint=http://localhost:4317
-otel.metrics.exporter=none&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The first property is Infinispan specific and enables the tracing capability of the Infinispan Server.
-The further properties belong to the &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md&quot;&gt;OpenTelemetry SDK Autoconfigure project&lt;/a&gt;
-that Infinispan uses to configure the tracing exporter.
-In this case, OTLP gRPC Exporter protocol is used and the server runs on the same machine as the Infinispan Server.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Starting the server with these parameters:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-shell script hljs&quot; data-lang=&quot;shell script&quot;&gt;export JAVA_OPTS=&quot;-Dinfinispan.tracing.enabled=true -Dotel.service.name=infinispan-server-service -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.metrics.exporter=none&quot;
-./server.sh&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The following log is produced when the server starts:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-bash hljs&quot; data-lang=&quot;bash&quot;&gt;(ForkJoinPool.commonPool-worker-2) [org.infinispan.server.core.telemetry.TelemetryServiceFactory] ISPN000952: OpenTelemetry instance loaded: OpenTelemetrySdk{...&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This indicates that the OpenTelemetrySdk is correctly configured.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;tracing-from-a-hotrod-client-application&quot;&gt;Tracing from a HotRod client application&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Any OpenTelemetry tracing context present on HotRot client applications will be automatically propagated by the new Hot Rod v4 client to the server tracing context.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For instance, for a client that defines some tracing spans containing cache operations, such as the following:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;public class MyRestClient {
-
-    public void putSomeValues(RemoteCache cache) {
-        Span span = tracer.spanBuilder(&quot;sub-bulk-1&quot;).setSpanKind(SpanKind.CLIENT).startSpan();
-        // put the span into the current Context
-        try (Scope scope = span.makeCurrent()) {
-            cache.put(1, &quot;A&quot;);
-            cache.put(2, &quot;B&quot;);
-            cache.put(3, &quot;C&quot;);
-        } catch (Throwable throwable) {
-            span.setStatus(StatusCode.ERROR, &quot;Something bad happened!&quot;);
-            span.recordException(throwable);
-            throw throwable;
-        } finally {
-            span.end(); // Cannot set a span after this call
-        }
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The client span &lt;code&gt;sub-bulk-1&lt;/code&gt; will be correlated to any related server spans, in this case the three put operations.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Opening the Jaeger console, we can see that client and server spans are correctly aggregated:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/tracing-hotrod-client.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/tracing-hotrod-client.png&quot; alt=&quot;Tracing output&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can find a complete application example here: &lt;a href=&quot;https://github.com/fax4ever/infinispan-play/tree/main/tracing-hotrod-client&quot; class=&quot;bare&quot;&gt;https://github.com/fax4ever/infinispan-play/tree/main/tracing-hotrod-client&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;tracing-from-a-rest-client-application&quot;&gt;Tracing from a REST client application&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can achieve the same with a REST client by putting manually in the HTTP headers the requests to provide information about the current tracing context using a standard OpenTelemetry instance of &lt;code&gt;W3CTraceContextPropagator&lt;/code&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;public class MyRestClient {
-
-    public void putSomeValues(RestCacheClient cache) {
-        Span span = tracer.spanBuilder(&quot;sub-bulk-1&quot;).setSpanKind(SpanKind.CLIENT).startSpan();
-        // put the span into the current Context
-        try (Scope scope = span.makeCurrent()) {
-            putSomeEntries(cache);
-        } catch (Throwable throwable) {
-            span.setStatus(StatusCode.ERROR, &quot;Something bad happened!&quot;);
-            span.recordException(throwable);
-            throw throwable;
-        } finally {
-            span.end(); // Cannot set a span after this call
-        }
-    }
-
-    private void putSomeEntries(RestCacheClient cache) {
-        Map&amp;lt;String, String&amp;gt; contextMap = getContextMap();
-
-        CompletableFuture[] futures = new CompletableFuture[3];
-
-        futures[0] = cache.put(&quot;1&quot;, MediaType.TEXT_PLAIN.toString(),
-            RestEntity.create(MediaType.TEXT_PLAIN, &quot;A&quot;), contextMap).toCompletableFuture();
-        futures[1] = cache.put(&quot;2&quot;, MediaType.TEXT_PLAIN.toString(),
-            RestEntity.create(MediaType.TEXT_PLAIN, &quot;B&quot;), contextMap).toCompletableFuture();
-        futures[2] = cache.put(&quot;3&quot;, MediaType.TEXT_PLAIN.toString(),
-            RestEntity.create(MediaType.TEXT_PLAIN, &quot;C&quot;), contextMap).toCompletableFuture();
-
-        CompletableFuture.allOf(futures).join();
-    }
-
-    public static Map&amp;lt;String, String&amp;gt; getContextMap() {
-        HashMap&amp;lt;String, String&amp;gt; result = new HashMap&amp;lt;&amp;gt;();
-
-        // Inject the request with the *current* Context, which contains our current Span.
-        W3CTraceContextPropagator.getInstance().inject(Context.current(), result,
-          (carrier, key, value) -&amp;gt; carrier.put(key, value));
-        return result;
-    }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Opening the Jaeger console, you can see that client and server spans are correctly aggregated:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/tracing-rest-client.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/tracing-rest-client.png&quot; alt=&quot;Tracing output&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can find a complete application example here: &lt;a href=&quot;https://github.com/fax4ever/infinispan-play/tree/main/tracing-rest-client&quot; class=&quot;bare&quot;&gt;https://github.com/fax4ever/infinispan-play/tree/main/tracing-rest-client&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Fabio Massimo Ercoli</name></author><category term="opentelemetry" /><category term="tracing" /><summary type="html">Dear Infinispan community,</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry></feed>

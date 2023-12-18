@@ -963,7 +963,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-15.0.0.Dev04.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-15.0.0.Dev06.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4490,6 +4490,21 @@ credential
 </tr>
 </table>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Enabling <code>connection-pooling</code> significantly improves the performance of authentication to LDAP servers.
+The connection pooling mechanism is provided by the JDK. For more information see <a href="https://docs.oracle.com/javase/jndi/tutorial/ldap/connect/config.html">Connection Pooling Configuration</a> and <a href="https://docs.oracle.com/javase/tutorial/jndi/ldap/pool.html">Java Tutorials: Pooling</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect3">
 <h4 id="ldap_realm_user_authentication_methods"><a class="anchor" href="#ldap_realm_user_authentication_methods"></a>5.4.2. LDAP realm user authentication methods</h4>
@@ -7833,7 +7848,7 @@ If the user does not have permission for an operation, Infinispan denies the req
   &lt;cache-container name="custom-authorization"&gt;
     &lt;security&gt;
       &lt;authorization&gt;
-        &lt;role name="temprole" permissions="ALL_WRITE,LISTEN" /&gt;
+        &lt;role name="temprole" description="temprole description" permissions="ALL_WRITE,LISTEN" /&gt;
         &lt;role name="myrole" permissions="READ,WRITE"/&gt;
       &lt;/authorization&gt;
     &lt;/security&gt;
@@ -9022,7 +9037,7 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh -Dinfinispan.tracing.enabled=true -Dotel.traces.exporter=otlp -Dotel.service.name=my-infinispan-server -Dotel.exporter.otlp.endpoint=http://otlp-collector-host:4317</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -Dinfinispan.tracing.enabled=true -Dotel.traces.exporter=otlp -Dotel.service.name=my-infinispan-server -Dotel.exporter.otlp.endpoint=http://otlp-collector-host:4318</code></pre>
 </div>
 </div>
 </li>
@@ -9039,10 +9054,7 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 <div class="listingblock">
 <div class="title">tracing.properties</div>
 <div class="content">
-<pre class="highlight nowrap"><code>infinispan.tracing.enabled = true <i class="conum" data-value="1"></i><b>(1)</b>
-otel.traces.exporter = otlp <i class="conum" data-value="2"></i><b>(2)</b>
-otel.service.name = &lt;my-infinispan-server&gt; <i class="conum" data-value="3"></i><b>(3)</b>
-otel.exporter.otlp.endpoint = http://otlp-collector-host:4317 <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+<pre class="highlight nowrap"><code>Unresolved directive in ../../topics/proc_configuring_tracing.adoc - include::properties/tracing.properties[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -9061,7 +9073,7 @@ otel.exporter.otlp.endpoint = http://otlp-collector-host:4317 <i class="conum" d
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Specifies the endpoint URL of the OpenTelemetry collector where the tracing data is sent.</td>
+<td>Specifies the endpoint URL of the OpenTelemetry collector where the tracing data is sent. <code>4318</code> is typically the <code>http/protobuf</code> OTLP standard port.</td>
 </tr>
 </table>
 </div>
@@ -9072,6 +9084,19 @@ otel.exporter.otlp.endpoint = http://otlp-collector-host:4317 <i class="conum" d
 <p><a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md">OpenTelemetry SDK Autoconfigure</a></p>
 </li>
 </ul>
+</div>
+<h4 id="tracing_data_format" class="discrete">Tracing data format</h4>
+<div class="paragraph">
+<p>The Infinispan Server, by default, exports tracing data using the OTLP <code>http/protobuf</code> protocol.</p>
+</div>
+<div class="listingblock">
+<div class="title">tracing.properties</div>
+<div class="content">
+<pre class="highlight nowrap"><code>otel.exporter.otlp.protocol = http/protobuf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To use a different protocol, you must copy  JAR files or dependencies to the <code>$ISPN_HOME/server/lib</code> directory of your Infinispan Server installation.</p>
 </div>
 </div>
 </div>
@@ -9481,7 +9506,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>12.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.0.Dev04.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.0.Dev06.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -12263,7 +12288,7 @@ Depending on your environment you can also use different network interfaces and 
 <p>REST API: Invoke a POST request that includes the remote store configuration in the payload with the <code>rolling-upgrade/source-connection</code> method.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
 </div>
 </div>
 </li>
@@ -12333,7 +12358,7 @@ You must perform the synchronization for each cache that you want to migrate to 
 <p>REST API: Use the <code>?action=sync-data</code> parameter with a POST request.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>POST /v2/caches/myCache?action=sync-data</code></pre>
+<pre class="highlight nowrap"><code>POST /rest/v2/caches/myCache?action=sync-data</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -12360,7 +12385,7 @@ entries copied to the target cluster.</p>
 <p>REST API: Invoke a DELETE request.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>DELETE /v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
+<pre class="highlight nowrap"><code>DELETE /rest/v2/caches/myCache/rolling-upgrade/source-connection</code></pre>
 </div>
 </div>
 </li>
@@ -13079,7 +13104,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-11 12:40:42 -0400
+Last updated 2023-12-12 11:41:37 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">

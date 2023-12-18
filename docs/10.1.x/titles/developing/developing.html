@@ -825,7 +825,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#query_remote">14.3. Remote Querying</a>
 <ul class="sectlevel3">
 <li><a href="#storing_protobuf">14.3.1. Storing Protobuf encoded entities</a></li>
-<li><a href="#enable_indexing">14.3.2. Indexing of Protobuf encoded entries</a></li>
+<li><a href="#enable_indexing">14.3.2. Indexing Protobuf-encoded entries</a>
+<ul class="sectlevel4">
+<li><a href="#registering_protobuf_schemas_on_infinispan_servers">Registering Protobuf Schemas on Infinispan Servers</a></li>
+</ul>
+</li>
 <li><a href="#a_remote_query_example">14.3.3. A remote query example</a></li>
 <li><a href="#analysis">14.3.4. Analysis</a>
 <ul class="sectlevel4">
@@ -887,20 +891,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#jcache_jsr_107">17. JCache (JSR-107) API</a>
 <ul class="sectlevel2">
-<li><a href="#dependencies">17.1. Dependencies</a></li>
-<li><a href="#creating_embedded_caches">17.2. Creating embedded caches</a>
+<li><a href="#creating_embedded_caches">17.1. Creating embedded caches</a>
 <ul class="sectlevel3">
-<li><a href="#configuring_embedded_caches">17.2.1. Configuring embedded caches</a></li>
+<li><a href="#configuring_embedded_caches">17.1.1. Configuring embedded caches</a></li>
 </ul>
 </li>
-<li><a href="#creating_remote_caches">17.3. Creating remote caches</a>
+<li><a href="#creating_remote_caches">17.2. Creating remote caches</a>
 <ul class="sectlevel3">
-<li><a href="#configuring_remote_caches">17.3.1. Configuring remote caches</a></li>
+<li><a href="#configuring_remote_caches">17.2.1. Configuring remote caches</a></li>
 </ul>
 </li>
-<li><a href="#store_and_retrieve_data">17.4. Store and retrieve data</a></li>
-<li><a href="#comparing_java_util_concurrent_concurrentmap_and_javax_cache_cache_apis">17.5. Comparing java.util.concurrent.ConcurrentMap and javax.cache.Cache APIs</a></li>
-<li><a href="#clustering_jcache_instances">17.6. Clustering JCache instances</a></li>
+<li><a href="#store_and_retrieve_data">17.3. Store and retrieve data</a></li>
+<li><a href="#comparing_java_util_concurrent_concurrentmap_and_javax_cache_cache_apis">17.4. Comparing java.util.concurrent.ConcurrentMap and javax.cache.Cache APIs</a></li>
+<li><a href="#clustering_jcache_instances">17.5. Clustering JCache instances</a></li>
 </ul>
 </li>
 <li><a href="#multimap_cache">18. Multimap Cache</a>
@@ -9211,24 +9214,12 @@ gaining the benefit of platform independence and not enable indexing if you do n
 </div>
 </div>
 <div class="sect3">
-<h4 id="enable_indexing"><a class="anchor" href="#enable_indexing"></a>14.3.2. Indexing of Protobuf encoded entries</h4>
+<h4 id="enable_indexing"><a class="anchor" href="#enable_indexing"></a>14.3.2. Indexing Protobuf-encoded entries</h4>
 <div class="paragraph">
-<p>After configuring the client as described in the previous section you can start configuring indexing for your caches on
-the server side. Activating indexing and the various indexing specific configurations is identical to embedded mode and
-is detailed in the <a href="#query_configuration_api">Querying Infinispan</a> chapter.</p>
-</div>
-<div class="paragraph">
-<p>There is however an extra configuration step involved. While in embedded mode the indexing metadata is obtained via Java
-reflection by analyzing the presence of various Hibernate Search annotations on the entry&#8217;s class, this is obviously not
-possible if the entry is protobuf encoded.
-The server needs to obtain the relevant metadata from the same descriptor (.proto file) as the client.
-The descriptors are stored in a dedicated cache on the server named <em>'___protobuf_metadata'</em>. Both keys and values in
-this cache are plain strings. Registering a new schema is therefore as simple as performing a <em>put</em> operation on this
-cache using the schema&#8217;s name as key and the schema file itself as the value.
-Alternatively you can use the CLI (via the cache-container=*:register-proto-schemas() operation), the Management Console
-or the <em>ProtobufMetadataManager</em> MBean via JMX.
-Be aware that, when security is enabled, access to the schema cache via the remote protocols requires
-that the user belongs to the '___schema_manager' role.</p>
+<p>After configuring the client as described in the previous section you can start
+configuring indexing for your caches on the server side. Activating indexing
+and the various indexing specific configurations is identical to embedded mode
+and is explained in <a href="#query_configuration_api">Querying Infinispan</a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -9237,12 +9228,80 @@ that the user belongs to the '___schema_manager' role.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Even if indexing is enabled for a cache no fields of Protobuf encoded entries will be indexed unless you use
-the <em>@Indexed</em> and <em>@Field</em> protobuf schema documentation annotations in order to specify what fields need to get
-indexed.
+<div class="paragraph">
+<p>Infinispan does not index fields in Protobuf-encoded entries unless you use
+the <em>@Indexed</em> and <em>@Field</em> annotations to specify which fields are indexed.</p>
+</div>
 </td>
 </tr>
 </table>
+</div>
+<div class="sect4">
+<h5 id="registering_protobuf_schemas_on_infinispan_servers"><a class="anchor" href="#registering_protobuf_schemas_on_infinispan_servers"></a>Registering Protobuf Schemas on Infinispan Servers</h5>
+<div class="paragraph">
+<p>Infinispan servers need to access indexing metadata from the same descriptor,
+<code>.proto</code> file, as clients. For this reason, Infinispan servers store <code>.proto</code>
+files in a dedicated cache, <code>___protobuf_metadata</code>, that stores both keys and
+values as plain strings.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>If you use cache authorization to control access, assign users the
+'___schema_manager' role so they can write to the <code>___protobuf_metadata</code>
+cache.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Procedure</div>
+<p>To register a schema with Infinispan server, use the Infinispan CLI:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start the Infinispan CLI and connect to your Infinispan cluster.</p>
+</li>
+<li>
+<p>Register schemas with the <strong>schema</strong> command.</p>
+<div class="paragraph">
+<p>For example, to register a file named <code>person.proto</code>, do the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; schema --upload=person.proto person.proto</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Use the <strong>get</strong> command to verify schemas.</p>
+<div class="paragraph">
+<p>For example, verify <code>person.proto</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code>[//containers/default]&gt; cd caches/___protobuf_metadata
+[//containers/default/caches/___protobuf_metadata]&gt; ls
+person.proto
+[//containers/default/caches/___protobuf_metadata]&gt; get person.proto</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Alternatively, if you enable JMX, you can invoke the <code>registerProtofile()</code>
+operation on the <em>ProtobufMetadataManager</em> MBean.</p>
+</div>
+<div class="ulist">
+<div class="title">Reference</div>
+<ul>
+<li>
+<p><a href="../cli/cli.html#protobuf_query">Infinispan CLI: Querying Caches with Protobuf Metadata</a></p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -10535,14 +10594,15 @@ specifies how to use JCache with the Infinispan implementation of the
 specification, and explains key aspects of the API.</p>
 </div>
 <div class="sect2">
-<h3 id="dependencies"><a class="anchor" href="#dependencies"></a>17.1. Dependencies</h3>
+<h3 id="creating_embedded_caches"><a class="anchor" href="#creating_embedded_caches"></a>17.1. Creating embedded caches</h3>
 <div class="olist arabic">
+<div class="title">Prerequisites</div>
 <ol class="arabic">
 <li>
 <p>Ensure that <code>cache-api</code> is on your classpath.</p>
 </li>
 <li>
-<p>Add the following dependencies to your <code>pom.xml</code>:</p>
+<p>Add the following dependency to your <code>pom.xml</code>:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
@@ -10554,10 +10614,8 @@ specification, and explains key aspects of the API.</p>
 </li>
 </ol>
 </div>
-</div>
-<div class="sect2">
-<h3 id="creating_embedded_caches"><a class="anchor" href="#creating_embedded_caches"></a>17.2. Creating embedded caches</h3>
 <div class="ulist">
+<div class="title">Procedure</div>
 <ul>
 <li>
 <p>Create embedded caches that use the default JCache API configuration as follows:</p>
@@ -10577,7 +10635,7 @@ Cache&lt;<span class="predefined-type">String</span>, <span class="predefined-ty
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring_embedded_caches"><a class="anchor" href="#configuring_embedded_caches"></a>17.2.1. Configuring embedded caches</h4>
+<h4 id="configuring_embedded_caches"><a class="anchor" href="#configuring_embedded_caches"></a>17.1.1. Configuring embedded caches</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -10630,19 +10688,33 @@ JCache configuration with Infinispan, data stored must be marshallable.
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating_remote_caches"><a class="anchor" href="#creating_remote_caches"></a>17.3. Creating remote caches</h3>
-<div class="paragraph">
-<p>To create caches on remote Infinispan server</p>
-</div>
+<h3 id="creating_remote_caches"><a class="anchor" href="#creating_remote_caches"></a>17.2. Creating remote caches</h3>
 <div class="olist arabic">
+<div class="title">Prerequisites</div>
 <ol class="arabic">
 <li>
-<p>Add <code>infinispan-jcache-remote-&lt;version&gt;.jar</code> and all transitive dependencies to your classpath.</p>
+<p>Ensure that <code>cache-api</code> is on your classpath.</p>
 </li>
+<li>
+<p>Add the following dependency to your <code>pom.xml</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+  <span class="tag">&lt;groupId&gt;</span>org.infinispan<span class="tag">&lt;/groupId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>infinispan-jcache-remote<span class="tag">&lt;/artifactId&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Procedure</div>
+<ul>
 <li>
 <p>Create caches on remote Infinispan servers and use the default JCache API configuration as follows:</p>
 </li>
-</ol>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10657,7 +10729,7 @@ Cache&lt;<span class="predefined-type">String</span>, <span class="predefined-ty
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring_remote_caches"><a class="anchor" href="#configuring_remote_caches"></a>17.3.1. Configuring remote caches</h4>
+<h4 id="configuring_remote_caches"><a class="anchor" href="#configuring_remote_caches"></a>17.2.1. Configuring remote caches</h4>
 <div class="paragraph">
 <p>Hot Rod configuration files include <code>infinispan.client.hotrod.cache.*</code>
 properties that you can use to customize remote caches.</p>
@@ -10687,7 +10759,7 @@ CacheManager cacheManager = Caching.getCachingProvider(<span class="string"><spa
 </div>
 </div>
 <div class="sect2">
-<h3 id="store_and_retrieve_data"><a class="anchor" href="#store_and_retrieve_data"></a>17.4. Store and retrieve data</h3>
+<h3 id="store_and_retrieve_data"><a class="anchor" href="#store_and_retrieve_data"></a>17.3. Store and retrieve data</h3>
 <div class="paragraph">
 <p>Even though JCache API does not extend neither
 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">java.util.Map</a>
@@ -10740,7 +10812,7 @@ previous value.
 </div>
 </div>
 <div class="sect2">
-<h3 id="comparing_java_util_concurrent_concurrentmap_and_javax_cache_cache_apis"><a class="anchor" href="#comparing_java_util_concurrent_concurrentmap_and_javax_cache_cache_apis"></a>17.5. Comparing java.util.concurrent.ConcurrentMap and javax.cache.Cache APIs</h3>
+<h3 id="comparing_java_util_concurrent_concurrentmap_and_javax_cache_cache_apis"><a class="anchor" href="#comparing_java_util_concurrent_concurrentmap_and_javax_cache_cache_apis"></a>17.4. Comparing java.util.concurrent.ConcurrentMap and javax.cache.Cache APIs</h3>
 <div class="paragraph">
 <p>Here&#8217;s a brief comparison of the data manipulation APIs provided by
 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html">java.util.concurrent.ConcurrentMap</a>
@@ -10865,7 +10937,7 @@ The only exception is iterating over the contents of the cache:</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="clustering_jcache_instances"><a class="anchor" href="#clustering_jcache_instances"></a>17.6. Clustering JCache instances</h3>
+<h3 id="clustering_jcache_instances"><a class="anchor" href="#clustering_jcache_instances"></a>17.5. Clustering JCache instances</h3>
 <div class="paragraph">
 <p>Infinispan JCache implementation goes beyond the specification in order to
 provide the possibility to cluster caches using the standard API. Given a
@@ -11277,7 +11349,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-03 12:31:45 -0400
+Last updated 2023-12-12 19:00:43 +0100
 </div>
 </div>
 <style>
