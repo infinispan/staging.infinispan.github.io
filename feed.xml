@@ -1,4 +1,266 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-12-18T07:10:01-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15.0.0.Dev06</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-15dev06" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev06" /><published>2023-12-13T19:00:00-05:00</published><updated>2023-12-13T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-15.0.0.Dev06</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-15dev06">&lt;div class=&quot;sect1&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2023-12-21T03:09:33-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan Insights: Security basics and secured caches</title><link href="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches" rel="alternate" type="text/html" title="Infinispan Insights: Security basics and secured caches" /><published>2023-12-19T19:00:00-05:00</published><updated>2023-12-19T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/19/infinispan-secured-caches</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article shows you how to secure your Infinispan cluster, protecting both cluster management and data
+access in various Infinispan caches&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Key Points:&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Learn how default authentication works in Infinispan&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Explore how authorization works in Infinispan.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Understand the basics of creating secure caches in a straightforward way with Infinispan.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;security-in-a-nutshell&quot;&gt;Security in a nutshell&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When we talk about security, there are two main things to consider: proving who you are (authentication) and deciding
+what you&amp;#8217;re allowed to do (authorization). These tasks are managed by one or more security realms.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;authentication&quot;&gt;Authentication&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Authentication is the process of verifying the identity of an entity, such as a user, system, or device, to ensure
+that it is who or what it claims to be. It can be done through different methods such as password based authentication,
+token based authentication, certificate based… and more.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;authorization&quot;&gt;Authorization&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Authorization is the process of granting or denying access permissions to authenticated users or entities.
+It defines what actions or resources users are allowed to access based on their verified identity.
+Authorization works alongside authentication to ensure that only authorized users can perform specific actions within a
+system. Infinispan uses Role-Based Access Control (RBAC) for authorization.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;security-realms&quot;&gt;Security Realms&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A security realm is a set of policies and authentication methods governing access to a system or resource.
+It establishes rules for user authentication and authorization, such as using usernames/passwords or advanced methods
+like OAuth. Security realms integrate Infinispan Server deployments with the network protocols and infrastructure
+in your environment that control access and verify user identities.
+Infinispan integrates with Kerberos, LDAP, Trust stores… and token based authentication such as &lt;a href=&quot;https://openid.net/&quot;&gt;OpenID Connect&lt;/a&gt;
+providers such as &lt;a href=&quot;https://www.keycloak.org/&quot;&gt;Keycloak&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;infinispan-server-security&quot;&gt;Infinispan Server Security&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To truly grasp the basics, the best method is hands-on experience.
+Infinispan 15.0 simplifies understanding authentication and authorization through a visual interface.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;running-the-infinispan-server-with-a-single-user&quot;&gt;Running the Infinispan Server with a single user&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Start by running the Infinispan Server with a Docker or Podman container.
+Make sure you have the latest version of the Infinispan Server 15.0 image by pulling it locally.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-bash hljs&quot; data-lang=&quot;bash&quot;&gt;# Podman
+podman run -it -p 11222:11222 -e USER=&quot;admin&quot; -e PASS=&quot;password&quot; --net=host quay.io/infinispan/server:15.0
+
+# Docker
+docker run -it -p 11222:11222 -e USER=&quot;admin&quot; -e PASS=&quot;password&quot; quay.io/infinispan/server:15.0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;infinispan-defaults&quot;&gt;Infinispan defaults&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In Infinispan, the default security realm relies on properties.
+Users are established in a local properties file on the active server.
+By running the container and providing &quot;USER&quot; and &quot;PASS&quot; environment variables, the
+server generates a user capable of authenticating to Infinispan and is automatically granted
+the &quot;admin&quot; implicit role.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/browser-DIGEST.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/browser-DIGEST.png&quot; alt=&quot;Browser authentication&quot; width=&quot;800&quot; height=&quot;547&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan doesn&amp;#8217;t maintain user authentication through a session management system in the server for
+its REST API. The REST API operates in a stateless manner, and authentication, as well as role-based
+access control (RBAC), is facilitated through the AUTHENTICATION header when interacting
+with the REST API. The console is built using the REST API. DIGEST mechanism is part
+of the supported mechanism, so the browser will ask for user/password using the native browser
+authentication mechanism. For security reasons, BASIC authentication is not enabled by default
+unless TLS is also configured.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;implicit-rbac&quot;&gt;Implicit RBAC&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan safeguards operations by specifying various permissions to operations such as creating caches,
+resetting statistics, uploading data schemas, and more. A role is a set of 1 or more permissions.
+Implicit authorization is enabled by default, providing predefined roles to which users can be assigned,
+granting them the ability to execute specific actions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Starting from Infinispan 15, a new feature in the console allows users to view these roles, their
+corresponding permissions, and descriptions. It is now also possible to create custom roles with
+specific permissions directly from the web console (previously, this capability was limited to the
+Command Line Tool). However, for the purpose of this article, we will focus on utilizing the pre-existing
+implicit roles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/implicit-ROLES.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/implicit-ROLES.png&quot; alt=&quot;Implicit roles&quot; width=&quot;800&quot; height=&quot;394&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;running-the-server-with-multiple-users&quot;&gt;Running the server with multiple users&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To start Infinispan locally with multiple users and distinct roles, we can employ a
+identities batch that is passed to the container during startup.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;1) Create a file called &lt;strong&gt;identities.batch&lt;/strong&gt; with the following content.
+To simplify matters, we have established a straightforward one-to-one mapping between user
+names and roles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;identities.batch&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;user create &quot;admin&quot; -p &quot;password&quot; -g admin
+user create &quot;observer&quot; -p &quot;password&quot; -g observer
+user create &quot;monitor&quot; -p &quot;password&quot; -g monitor
+user create &quot;deployer&quot; -p &quot;password&quot; -g deployer
+user create &quot;application&quot; -p &quot;password&quot; -g application&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;2) Provide the file on run, by creating the user-config volume and passing the IDENTITIES_BATCH env variable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-bash hljs&quot; data-lang=&quot;bash&quot;&gt;# Podman
+podman run -it -p 11222:11222 -v $(pwd):/user-config -e IDENTITIES_BATCH=&quot;/user-config/identities.batch&quot; --net=host quay.io/infinispan/server:15.0
+
+# Docker
+docker run -it -p 11222:11222 -v $(pwd):/user-config -e IDENTITIES_BATCH=&quot;/user-config/identities.batch&quot; quay.io/infinispan/server:15.0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Those users are now available and listed in the Infinispan Web Console.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/users-BATCH.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/users-BATCH.png&quot; alt=&quot;Implicit roles&quot; width=&quot;724&quot; height=&quot;453&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When connecting with the &quot;observer&quot; user, which possesses the &quot;observer&quot; role,
+it becomes apparent that this user is unable to access certain actions in the console that
+necessitate &quot;admin&quot; role’s permissions. Examples include creating a cache, viewing connected clients,
+or accessing the access management functionalities.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/connect-OBSERVER.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/connect-OBSERVER.png&quot; alt=&quot;connect observer&quot; width=&quot;800&quot; height=&quot;271&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;secured-caches-in-infinispan&quot;&gt;Secured Caches in Infinispan&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In Infinispan, it&amp;#8217;s possible to create caches with data manipulation permissions restricted
+to specific roles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;creating-a-secured-cache&quot;&gt;Creating a secured cache&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For testing purposes, connect using the credentials admin/password and click on the
+“Create a cache” button in the Data Container page. In the cache creation wizard, after opting
+for all the default settings, select the &quot;Authorization&quot; capability, and the &quot;admin&quot; and &quot;monitor&quot;
+roles.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/create-CACHE.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/create-CACHE.png&quot; alt=&quot;Create Secured Cache&quot; width=&quot;800&quot; height=&quot;408&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The final cache configuration will look like this:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;config.yaml&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;distributedCache:
+  owners: &quot;2&quot;
+  mode: &quot;SYNC&quot;
+  statistics: &quot;true&quot;
+  encoding:
+    mediaType: &quot;application/x-protostream&quot;
+  security:
+    authorization:
+      enabled: &quot;true&quot;
+      roles:
+        - &quot;admin&quot;
+        - &quot;monitor&quot;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;accessing-the-secured-cache&quot;&gt;Accessing the Secured  Cache&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When using the &quot;admin&quot; user, the cache will have unrestricted access because the admin role has all the permissions. On the other hand, connecting with the &quot;monitor&quot; user, which is assigned the monitor role, the cache is visible. However, as the monitor role is designed solely for monitoring and not data creation, only data associated with the cache metrics will be accessible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For users lacking the admin or monitor role, accessing the cache from the console is not possible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/secured-cache-MONITOR.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/secured-cache-MONITOR.png&quot; alt=&quot;Console: monitor connects&quot; width=&quot;800&quot; height=&quot;310&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;going-further&quot;&gt;Going further&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this article, you&amp;#8217;ve explored the interplay of permissions, roles, Infinispan Security,
+and the fundamentals of secured caches. Beyond these, Infinispan Security management offers a
+range of additional capabilities. These include features like
+&lt;a href=&quot;https://infinispan.org/docs/stable/titles/security/security.html#configuring-encryption&quot;&gt;data encryption&lt;/a&gt;
+and advanced security, such as providing access to an entire group of users managed by systems like LDAP.
+This is achieved through a Principal Role Mapper, which establishes a connection between all these
+users and a specific role.
+Infinispan supports many authentication mechanisms, such as token based authentication,
+which can be handled with Keycloak. Run the
+&lt;a href=&quot;https://infinispan.org/tutorials/simple/simple_tutorials.html#secured_with_token_keycloak_remote-cache-tutorials&quot;&gt;simple tutorial&lt;/a&gt;
+to test it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><summary type="html">This article shows you how to secure your Infinispan cluster, protecting both cluster management and data access in various Infinispan caches</summary></entry><entry><title type="html">Infinispan 15.0.0.Dev06</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-15dev06" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev06" /><published>2023-12-13T19:00:00-05:00</published><updated>2023-12-13T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-15.0.0.Dev06</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-15dev06">&lt;div class=&quot;sect1&quot;&gt;
 &lt;h2 id=&quot;redis-endpoint&quot;&gt;Redis endpoint&lt;/h2&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -1461,56 +1723,4 @@ Creating a cache will now be effortless and user-centric with a wizard based int
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Dipanshu Gupta</name></author><category term="console" /><summary type="html">Dear Infinispan Community,</summary></entry><entry><title type="html">Infinispan 14.0.0.CR1</title><link href="https://infinispan.org/blog/2022/08/09/infinispan-14" rel="alternate" type="text/html" title="Infinispan 14.0.0.CR1" /><published>2022-08-09T08:00:00-04:00</published><updated>2022-08-09T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/08/09/infinispan-14.0.0.CR1</id><content type="html" xml:base="https://infinispan.org/blog/2022/08/09/infinispan-14">&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispan community,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Infinispan 14 candidate release 1 is here! Here is your chance to verify your application against our latest and greatest and tell us if things are working as expected or if there are any showstoppers we should address before tagging the final release.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;aarch64-images&quot;&gt;AArch64 images&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We are now building images for AArch64 (aka ARM64) by default, which allow you to run Infinispan on Apple Silicon, Amazon Graviton and other ARM CPU platforms without resorting to emulation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;protobuf-oneof-support&quot;&gt;Protobuf oneof support&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Protostream has been updated to support ProtoBuf 3&amp;#8217;s &lt;code&gt;oneof&lt;/code&gt; keyword.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;console&quot;&gt;Console&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When creating a new cache, it&amp;#8217;s now possible to choose the key/value types from the list of available protobuf schemas.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;cli&quot;&gt;CLI&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The CLI can now connect to a server secured with client certificate authentication. The &lt;code&gt;config&lt;/code&gt; command now supports the &lt;code&gt;keystore&lt;/code&gt; and &lt;code&gt;keystore-password&lt;/code&gt; to persist the client certificate configuration. Additionally, the new &lt;code&gt;config reset&lt;/code&gt; command offers a quick way to reset all configuration properties to their default values.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can look at the &lt;a href=&quot;https://issues.redhat.com/secure/ReleaseNote.jspa?projectId=12310799&amp;amp;version=12391864&quot;&gt;release notes&lt;/a&gt; to see what has changed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Dear Infinispan community,</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Dipanshu Gupta</name></author><category term="console" /><summary type="html">Dear Infinispan Community,</summary></entry></feed>
