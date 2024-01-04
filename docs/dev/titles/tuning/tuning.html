@@ -583,9 +583,10 @@ $(addBlockSwitches);
 <ul class="sectlevel2">
 <li><a href="#java_virtual_machine_settings">3.1. Java Virtual Machine settings</a></li>
 <li><a href="#network_configuration">3.2. Network configuration</a></li>
-<li><a href="#ssl_provider">3.3. SSL provider</a></li>
-<li><a href="#cache_store_performance">3.4. Cache store performance</a></li>
-<li><a href="#hints_for_program_developers">3.5. Hints for program developers</a></li>
+<li><a href="#number_of_threads_for_hot_rod_connectors">3.3. Number of threads for Hot Rod connectors</a></li>
+<li><a href="#ssl_provider">3.4. SSL provider</a></li>
+<li><a href="#cache_store_performance">3.5. Cache store performance</a></li>
+<li><a href="#hints_for_program_developers">3.6. Hints for program developers</a></li>
 </ul>
 </li>
 </ul>
@@ -2251,7 +2252,29 @@ The recommended values are:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ssl_provider"><a class="anchor" href="#ssl_provider"></a>3.3. SSL provider</h3>
+<h3 id="number_of_threads_for_hot_rod_connectors"><a class="anchor" href="#number_of_threads_for_hot_rod_connectors"></a>3.3. Number of threads for Hot Rod connectors</h3>
+<div class="paragraph">
+<p>The Hot Rod connector for Infinispan server uses worker threads that are
+activated by clients requests. It is important to match the number of worker
+threads to the number of concurrent client requests:</p>
+</div>
+<div class="listingblock">
+<div class="title">Hot Rod Server worker thread pool size</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
+  &lt;endpoints&gt;
+    &lt;endpoint socket-binding="default"
+              security-realm="default"&gt;
+      &lt;hotrod-connector worker-threads="200" /&gt;
+      &lt;rest-connector/&gt;
+    &lt;/endpoint&gt;
+  &lt;/endpoints&gt;
+&lt;/server&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ssl_provider"><a class="anchor" href="#ssl_provider"></a>3.4. SSL provider</h3>
 <div class="paragraph">
 <p>Infinispan server will automatically use the native implementation of the OpenSSL libraries on supported platforms to
 achieve much higher performance than what is possible with the JDK implementation of SSL.
@@ -2261,7 +2284,7 @@ Because the library is loaded dynamically, it should be possible to use differen
 </div>
 </div>
 <div class="sect2">
-<h3 id="cache_store_performance"><a class="anchor" href="#cache_store_performance"></a>3.4. Cache store performance</h3>
+<h3 id="cache_store_performance"><a class="anchor" href="#cache_store_performance"></a>3.5. Cache store performance</h3>
 <div class="paragraph">
 <p>In order to achieve the best performance, please follow the recommendations below when using cache stores:</p>
 </div>
@@ -2293,7 +2316,7 @@ Because the library is loaded dynamically, it should be possible to use differen
 </div>
 </div>
 <div class="sect2">
-<h3 id="hints_for_program_developers"><a class="anchor" href="#hints_for_program_developers"></a>3.5. Hints for program developers</h3>
+<h3 id="hints_for_program_developers"><a class="anchor" href="#hints_for_program_developers"></a>3.6. Hints for program developers</h3>
 <div class="paragraph">
 <p>There are also several hints for developers which can be easily applied to the client application and will boost up the performance.</p>
 </div>
@@ -2379,7 +2402,7 @@ cb.unsafe().unreliableReturnValues(true);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-22 13:36:05 UTC
+Last updated 2023-12-12 11:41:37 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
