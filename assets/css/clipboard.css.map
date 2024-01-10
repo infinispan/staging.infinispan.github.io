@@ -5,7 +5,7 @@
 		"clipboard.scss",
 		"_sass/core/colors.scss",
 		"_sass/project-colors.scss",
-		"_sass/includes/clipboard.css"
+		"_sass/includes/clipboard.scss"
 	],
 	"sourcesContent": [
 		"$baseurl: \"\";\n\n@import \"core/colors\";\n@import \"project-colors\";\n@import \"includes/clipboard\";\n",

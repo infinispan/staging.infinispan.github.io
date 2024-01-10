@@ -1,4 +1,462 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-01-04T07:12:44-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan Insights: Security basics and secured caches</title><link href="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches" rel="alternate" type="text/html" title="Infinispan Insights: Security basics and secured caches" /><published>2023-12-19T19:00:00-05:00</published><updated>2023-12-19T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/19/infinispan-secured-caches</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-01-10T05:52:39-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan Insights: : Securing Infinispan with Keycloak</title><link href="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak" rel="alternate" type="text/html" title="Infinispan Insights: : Securing Infinispan with Keycloak" /><published>2024-01-08T19:00:00-05:00</published><updated>2024-01-08T19:00:00-05:00</updated><id>https://infinispan.org/blog/2024/01/08/infinispan-security-keycloak</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This tutorial shows you how to secure your Infinispan cluster using Keycloak.
+To understand the basics of Infinispan Security, check
+&lt;a href=&quot;https://infinispan.org/blog/2023/12/19/infinispan-secured-caches&quot;&gt;this blog post&lt;/a&gt; before.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Key Points:&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Learn how to create a security realm in Keycloak.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Override the default security realm in Infinispan.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Authentication and authorization in Infinispan with Keycloak.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;infinispan-and-keycloak-in-a-nutshell&quot;&gt;Infinispan and Keycloak in a nutshell&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;about-infinispan&quot;&gt;About Infinispan&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan is an open-source, in-memory distributed key/value data store. It is designed to provide fast
+and scalable access to frequently accessed data by storing it in memory. In addition to caching,
+Infinispan offers features for data distribution, replication, and partitioning, making it suitable
+for use in distributed and clustered environments.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan is often used in scenarios where low-latency access to data is critical, such as caching
+frequently accessed database queries, session data in web applications, or other
+use cases where quick access to data can improve overall system performance&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;about-keycloak&quot;&gt;About Keycloak&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.keycloak.org/&quot;&gt;Keycloak&lt;/a&gt; is an open-source identity and access management solution developed by Red Hat.
+It provides functionalities for identity and access management, including features like single sign-on (SSO),
+user authentication, authorization, and user federation. Keycloak is designed to simplify the implementation
+of security protocols and standards such as OAuth 2.0, OpenID Connect, and SAML.
+Some key features include Single Sign-On (SSO), Identity Brokering, User Authentication,
+User Federation, RBAC and more.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;infinispan-and-keycloak&quot;&gt;Infinispan and Keycloak&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Keycloak uses Infinispan as its underlying data store for caching and storage purposes.
+Infinispan provides  scalable and efficient caching of authentication and authorization-related data.
+This helps improve performance and responsiveness, especially in scenarios where quick access to user
+session information and other identity-related data is crucial.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some ways &lt;strong&gt;Keycloak leverages Infinispan&lt;/strong&gt; include Caching User Sessions, storing Authorization policies,
+providing distributed caching, improving performance, &lt;a href=&quot;https://www.keycloak.org/2023/12/recover-site-failures&quot;&gt;failover recovering&lt;/a&gt;
+and more.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;what-about-infinispan-leveraging-keycloak&quot;&gt;What about Infinispan leveraging Keycloak ?&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan provides several ways to handle authentication and user management.
+By default, the security realm is properties based. However, token based authentication is supported
+and Keycloak can be used for that purpose.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;creating-a-security-realm-in-keycloak&quot;&gt;Creating a Security Realm in Keycloak&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;run-keycloak-in-dev-mode&quot;&gt;Run Keycloak in dev mode&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The easiest way to use Keycloak on your laptop is in a container using the development mode.
+Because we&amp;#8217;re going to run Keycloak in one container and Infinispan in another, let&amp;#8217;s set up
+a network to connect them.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For Linux users, there&amp;#8217;s an option called &lt;strong&gt;network_mode: host&lt;/strong&gt; that might be available
+to you instead of using a network bridge. However, since this option doesn&amp;#8217;t work for
+Mac or Windows currently, we&amp;#8217;ll focus on the method that suits all operating systems.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-bash hljs&quot; data-lang=&quot;bash&quot;&gt;docker network create -d bridge mynetwork
+docker run -p 8080:8080 --network=mynetwork --name=keycloak -e KEYCLOAK_ADMIN=keycloak -e KEYCLOAK_ADMIN_PASSWORD=keycloak quay.io/keycloak/keycloak:latest start-dev&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Keycloak Image will create an administrator user by defining the KEYCLOAK_ADMIN and KEYCLOAK_ADMIN_PASSWORD
+environment variables.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After getting the container up and running, go to &lt;a href=&quot;http://localhost:8080&quot;&gt;http://localhost:8080&lt;/a&gt;
+Click on the Administration Console link, and log in using the credentials &lt;strong&gt;&quot;keycloak/keycloak&quot;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminKeycloak.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminKeycloak.png&quot; alt=&quot;Admin Keycloak&quot; width=&quot;800&quot; height=&quot;316&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;create-a-realm&quot;&gt;Create a realm&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Keycloak realms are a fundamental concept in Keycloak. Realms in Keycloak serve as a way to
+isolate and manage different sets of users, applications, and their associated configurations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Using the web administration tool, create a new realm called &lt;strong&gt;&quot;Infinispan&quot;&lt;/strong&gt;.
+This realm is what the Infinispan Server will use in the later steps of this tutorial.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/createRealmKeycloak.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/createRealmKeycloak.png&quot; alt=&quot;Keycloak create realm&quot; width=&quot;200&quot; height=&quot;192&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Name your realm &lt;strong&gt;“infinispan”&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispanRealmKeycloak.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispanRealmKeycloak.png&quot; alt=&quot;Keycloak: realm name is infinispan&quot; width=&quot;800&quot; height=&quot;569&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;create-the-infinispan-clients&quot;&gt;Create the Infinispan clients&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Clients are entities that can request authentication of a user. Clients come in two forms.
+The first type of client is an application that wants to participate in single-sign-on.
+These clients just want Keycloak to provide security for them. The other type of client is one that
+is requesting an access token so that it can invoke other services on behalf of the authenticated user.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For the Infinispan Server and testing the Console security, we&amp;#8217;ll require two clients set up
+in Keycloak: one named &lt;strong&gt;&quot;infinispan-console&quot;&lt;/strong&gt; and the other &lt;strong&gt;&quot;infinispan-server&quot;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;infinispan-console-client&quot;&gt;Infinispan Console Client&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Create a Keycloak client named &lt;strong&gt;“infinispan-console”&lt;/strong&gt;. The Infinispan Web Console uses this client
+to authenticate console users with Keycloak in order to obtain an authentication token. This token is
+then used to authenticate all requests by the console to the Infinispan server.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispan-client-stepOne.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispan-client-stepOne.png&quot; alt=&quot;Keycloak: infinispan-console client step 1&quot; width=&quot;800&quot; height=&quot;377&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Configure the valid redirect URIs with Infinispan’s console URI: &lt;strong&gt;&lt;a href=&quot;http://localhost:11222&quot; class=&quot;bare&quot;&gt;http://localhost:11222&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispan-client-stepTwo.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispan-client-stepTwo.png&quot; alt=&quot;Keycloak: infinispan-console client step 2&quot; width=&quot;800&quot; height=&quot;503&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This step is completed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;infinispan-server-client&quot;&gt;Infinispan Server Client&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Create a second client called &lt;strong&gt;&quot;infinispan-server&quot;&lt;/strong&gt;. Set &lt;strong&gt;&quot;client authentication&quot;&lt;/strong&gt; to &lt;strong&gt;&quot;ON&quot;&lt;/strong&gt;.
+This defines the type of the OIDC client. When it&amp;#8217;s ON, the OIDC type is set to confidential
+access type. When it&amp;#8217;s OFF, it is set to public access type (&quot;infinispan-console&quot; client type).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispan-server-client-stepTwo.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/infinispan-server-client-stepTwo.png&quot; alt=&quot;Keycloak: infinispan-server client step 2&quot; width=&quot;800&quot; height=&quot;368&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This step is completed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;create-a-user&quot;&gt;Create a user&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once we have the two clients created, we need to create an admin user for Infinispan.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Click on the &lt;strong&gt;&quot;users&quot;&lt;/strong&gt; menu, and create a user named &lt;strong&gt;&quot;admin&quot;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/createAdminUser.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/createAdminUser.png&quot; alt=&quot;Keycloak: create admin&quot; width=&quot;800&quot; height=&quot;448&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once the user admin is created, navigate to the user detail page.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminDetailKeycloak.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminDetailKeycloak.png&quot; alt=&quot;Keycloak: admin detail&quot; width=&quot;800&quot; height=&quot;575&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the credentials tab, create a password for the user, for example, &lt;strong&gt;&quot;adminPassword&quot;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminSetAPasswordKeycloak.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminSetAPasswordKeycloak.png&quot; alt=&quot;Keycloak: admin set password&quot; width=&quot;500&quot; height=&quot;273&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We are now ready to run Infinispan.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;running-infinispan-secured-with-a-keycloak-realm&quot;&gt;Running Infinispan secured with a Keycloak realm&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;create-the-infinispan-security-realm-configuration&quot;&gt;Create the Infinispan security realm configuration&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can configure this in XML, JSON, or YAML. In the example provided below, the configuration
+is in YAML format.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Create a file named &lt;strong&gt;infinispan-token-realm.yaml&lt;/strong&gt; with the following content.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;infinispan-token-realm.yaml&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;server:
+ security:
+   securityRealms:
+     - name: default
+       tokenRealm:
+         name: infinispan
+         authServerUrl: &apos;http://keycloak:8080&apos;
+         client-id: infinispan-console
+         oauth2Introspection:
+           clientId: infinispan-server
+           clientSecret: &apos;COPY AND PASTE THE SECRET FROM KEYCLOAK&apos;
+           introspectionUrl: &apos;http://keycloak:8080/realms/infinispan/protocol/openid-connect/token/introspect&apos;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We are not done yet!!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Read the following sections to understand and &lt;strong&gt;change the placeholders&lt;/strong&gt; in the file.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;default-security-realm-name&quot;&gt;Default Security Realm name&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The security realm is named &lt;strong&gt;&quot;default&quot;&lt;/strong&gt;. This file is designed to replace the default security realm
+in Infinispan, which is originally based on properties, with the configuration for this
+token-based realm.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;client-secret&quot;&gt;Client Secret&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Retrieve the secret for the &lt;strong&gt;&quot;infinispan-server&quot;&lt;/strong&gt; client from the Keycloak Administration,
+and then paste the secret value into the file replacing &lt;strong&gt;&apos;COPY AND PASTE THE SECRET FROM KEYCLOAK&apos;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/grabSecretFromInfinispanServerClient.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/grabSecretFromInfinispanServerClient.png&quot; alt=&quot;Keycloak: grab secret&quot; width=&quot;800&quot; height=&quot;465&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;authentication-server-url-authserverurl&quot;&gt;Authentication Server URL - &lt;strong&gt;authServerUrl&lt;/strong&gt;&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The authentication server is Keycloak, and it&amp;#8217;s running at &lt;strong&gt;localhost:8080&lt;/strong&gt;. However, in the YAML
+configuration above, we used &lt;strong&gt;&quot;keycloak&quot;&lt;/strong&gt; instead of &quot;localhost&quot; (the container name).
+This adjustment is needed when running containers in a Docker network. The Infinispan Server
+will be reaching out to the Keycloak Server inside the Docker environment. As mentioned earlier,
+Linux users can use &quot;localhost&quot; with the &lt;strong&gt;network_mode: host&lt;/strong&gt; configuration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;run-the-infinispan-server-overriding-the-default-security-realm&quot;&gt;Run the Infinispan Server overriding the default security realm&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lets run Infinispan in a container providing the created security realm configuration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-bash hljs&quot; data-lang=&quot;bash&quot;&gt;docker run -it -p 11222:11222 -v $(pwd):/user-config
+--network=mynetwork
+--name=infinispan quay.io/infinispan/server:15.0
+-c infinispan.xml
+-c /user-config/infinispan-token-realm.yaml&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The command:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Creates a volume &quot;user-config&quot;&lt;/strong&gt; in the current directory where we created the file &lt;code&gt;infinispan-token-realm.yaml&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Attaches the container to the network &quot;mynetwork&quot;&lt;/strong&gt; so Infinispan and Keycloak can connect&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Uses &lt;code&gt;-c&lt;/code&gt;&lt;/strong&gt;, which means the container is using the default configuration file, &lt;code&gt;infinispan.xml&lt;/code&gt;.
+Yet, specifying another &lt;code&gt;-c&lt;/code&gt; file, it adds the content of &lt;code&gt;infinispan-token-realm.yaml&lt;/code&gt; to &lt;code&gt;infinispan.xml&lt;/code&gt;.
+Since this file configures the default security realm, the original Infinispan default properties realm
+will be replaced with the token-based realm.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;verify-the-changes&quot;&gt;Verify the changes&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Accessing the following URL provides the information used by the Infinispan Web console
+to handle authentication.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;a href=&quot;http://localhost:11222/rest/v2/login?action=config&quot; class=&quot;bare&quot;&gt;http://localhost:11222/rest/v2/login?action=config&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-json hljs&quot; data-lang=&quot;json&quot;&gt;{
+   &quot;mode&quot;: &quot;OIDC&quot;,
+   &quot;clientId&quot;: &quot;infinispan-console&quot;,
+   &quot;ready&quot;: &quot;true&quot;,
+   &quot;realm&quot;: &quot;infinispan&quot;,
+   &quot;url&quot;: &quot;http://keycloak:8080&quot;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The Infinispan Console will use the information above, and making use of the
+&lt;a href=&quot;https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter&quot;&gt;Keycloak Javascript Adapter&lt;/a&gt;,
+the interface  will redirect to Keycloak for user authentication.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;connect-to-the-console-with-the-admin-user&quot;&gt;Connect to the console with the admin user&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Go the console web URL: &lt;a href=&quot;http://localhost:11222&quot; class=&quot;bare&quot;&gt;http://localhost:11222&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;this-site-cant-be-reached&quot;&gt;This site can’t be reached&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The console needs to access Keycloak from outside the container.
+However, the realm configuration uses &lt;code&gt;keycloak&lt;/code&gt; host.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/siteNotReached.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/siteNotReached.png&quot; alt=&quot;Site not reached&quot; width=&quot;400&quot; height=&quot;263&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To avoid this issue, the workaround is simple: add to the following line to the &lt;code&gt;/etc/hosts&lt;/code&gt; file:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt; 127.0.0.1      keycloak&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As mentioned before, If you are using linux you can avoid this by using localhost and running
+both containers with network_mode: host.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;authenticate-using-keycloak&quot;&gt;Authenticate using Keycloak&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When opening the Infinispan Console, Infinispan will attempt to make a call to a REST API
+that requires authentication. You&amp;#8217;ll be redirected to the Keycloak authentication, where you
+should use the credentials &lt;strong&gt;admin/adminPassword&lt;/strong&gt;. When you initially connect as admin,
+you&amp;#8217;ll be prompted to change the password. For this example, you can stick with &quot;adminPassword&quot;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/authenticateUsingKeycloak.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/authenticateUsingKeycloak.png&quot; alt=&quot;Infinispan: authenticate with Keycloak&quot; width=&quot;400&quot; height=&quot;258&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After Keycloak redirects back to the Infinispan Console, you can verify that admin is authenticated.
+However, you will encounter Unauthorized errors in the console interface, since the connected
+user’s roles are not known by Infinispan.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminIsNotAnAdmin.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminIsNotAnAdmin.png&quot; alt=&quot;Admin has not admin role&quot; width=&quot;800&quot; height=&quot;264&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;create-and-assign-infinispan-admin-role&quot;&gt;Create and assign Infinispan ADMIN role&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To grant complete access to the admin user, it&amp;#8217;s necessary to create a role named &lt;strong&gt;&quot;admin&quot;&lt;/strong&gt;
+and assign that role to the user in Keycloak.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;create-the-admin-role-in-keycloak&quot;&gt;Create the ADMIN role in Keycloak&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Open the Keycloak administration interface, click on &quot;Roles&quot;, and then create a role with the name
+&quot;admin&quot;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/createRoleAdminKeycloak.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/createRoleAdminKeycloak.png&quot; alt=&quot;Keycloak: create admin role&quot; width=&quot;800&quot; height=&quot;285&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect3&quot;&gt;
+&lt;h4 id=&quot;assign-the-admin-role-in-keycloak&quot;&gt;Assign the ADMIN role in Keycloak&lt;/h4&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the admin user detail page, go to the Role Mapping tab and assign the previously created
+&quot;admin&quot; role there.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/asignAdminRoleToAdminUser.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/asignAdminRoleToAdminUser.png&quot; alt=&quot;Keycloak: assign admin role to admin user&quot; width=&quot;800&quot; height=&quot;361&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Return to the Infinispan Console, and you&amp;#8217;ll notice that the admin user is now granted the
+admin role in Infinispan as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminIsGranted.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2024-01-09-infinispan-secured-keycloak/adminIsGranted.png&quot; alt=&quot;Infinispan: admin is granted&quot; width=&quot;800&quot; height=&quot;440&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;to-go-further&quot;&gt;To go further&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the &lt;a href=&quot;https://infinispan.org/tutorials/simple/simple_tutorials.html#secured_with_token_keycloak_remote-cache-tutorials&quot;&gt;Infinispan Simple tutorials&lt;/a&gt;
+repository you will find an example with docker-compose, for Linux and non linux users.
+There are many other advanced features in Keycloak, this is just the most simple use case.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Learn more about it in the Keycloak and Infinispan documentation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><category term="keycloak" /><summary type="html">This tutorial shows you how to secure your Infinispan cluster using Keycloak. To understand the basics of Infinispan Security, check this blog post before.</summary></entry><entry><title type="html">Infinispan Insights: Security basics and secured caches</title><link href="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches" rel="alternate" type="text/html" title="Infinispan Insights: Security basics and secured caches" /><published>2023-12-19T19:00:00-05:00</published><updated>2023-12-19T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/19/infinispan-secured-caches</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This article shows you how to secure your Infinispan cluster, protecting both cluster management and data
@@ -93,7 +551,7 @@ the &quot;admin&quot; implicit role.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;imageblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/browser-DIGEST.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/browser-DIGEST.png&quot; alt=&quot;Browser authentication&quot; width=&quot;800&quot; height=&quot;547&quot;&gt;&lt;/a&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2023-12-19-secured-caches/browser-DIGEST.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2023-12-19-secured-caches/browser-DIGEST.png&quot; alt=&quot;Browser authentication&quot; width=&quot;800&quot; height=&quot;547&quot;&gt;&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -123,7 +581,7 @@ implicit roles.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;imageblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/implicit-ROLES.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/implicit-ROLES.png&quot; alt=&quot;Implicit roles&quot; width=&quot;800&quot; height=&quot;394&quot;&gt;&lt;/a&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2023-12-19-secured-caches/implicit-ROLES.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2023-12-19-secured-caches/implicit-ROLES.png&quot; alt=&quot;Implicit roles&quot; width=&quot;800&quot; height=&quot;394&quot;&gt;&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -167,7 +625,7 @@ docker run -it -p 11222:11222 -v $(pwd):/user-config -e IDENTITIES_BATCH=&quot;/
 &lt;/div&gt;
 &lt;div class=&quot;imageblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/users-BATCH.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/users-BATCH.png&quot; alt=&quot;Implicit roles&quot; width=&quot;724&quot; height=&quot;453&quot;&gt;&lt;/a&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2023-12-19-secured-caches/users-BATCH.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2023-12-19-secured-caches/users-BATCH.png&quot; alt=&quot;Implicit roles&quot; width=&quot;724&quot; height=&quot;453&quot;&gt;&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -178,7 +636,7 @@ or accessing the access management functionalities.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;imageblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/connect-OBSERVER.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/connect-OBSERVER.png&quot; alt=&quot;connect observer&quot; width=&quot;800&quot; height=&quot;271&quot;&gt;&lt;/a&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2023-12-19-secured-caches/connect-OBSERVER.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2023-12-19-secured-caches/connect-OBSERVER.png&quot; alt=&quot;connect observer&quot; width=&quot;800&quot; height=&quot;271&quot;&gt;&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -201,7 +659,7 @@ roles.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;imageblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/create-CACHE.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/create-CACHE.png&quot; alt=&quot;Create Secured Cache&quot; width=&quot;800&quot; height=&quot;408&quot;&gt;&lt;/a&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2023-12-19-secured-caches/create-CACHE.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2023-12-19-secured-caches/create-CACHE.png&quot; alt=&quot;Create Secured Cache&quot; width=&quot;800&quot; height=&quot;408&quot;&gt;&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -237,7 +695,7 @@ roles.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;imageblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2013-12-19-secured-caches/secured-cache-MONITOR.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2013-12-19-secured-caches/secured-cache-MONITOR.png&quot; alt=&quot;Console: monitor connects&quot; width=&quot;800&quot; height=&quot;310&quot;&gt;&lt;/a&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/2023-12-19-secured-caches/secured-cache-MONITOR.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/2023-12-19-secured-caches/secured-cache-MONITOR.png&quot; alt=&quot;Console: monitor connects&quot; width=&quot;800&quot; height=&quot;310&quot;&gt;&lt;/a&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1542,185 +2000,4 @@ You must set the data-format as &lt;code&gt;application/x-protostream&lt;/code&g
 &lt;p&gt;Jira tracker for this client is available &lt;a href=&quot;https://issues.redhat.com/projects/HRJS&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Neeraj Gartia</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><category term="Protobuf" /><category term="query" /><summary type="html">Node.js Client 0.10.0</summary></entry><entry><title type="html">Creating cache with wizard - Infinispan 14</title><link href="https://infinispan.org/blog/2022/09/12/infinispan-14-console-wizard" rel="alternate" type="text/html" title="Creating cache with wizard - Infinispan 14" /><published>2022-09-12T20:00:00-04:00</published><updated>2022-09-12T20:00:00-04:00</updated><id>https://infinispan.org/blog/2022/09/12/infinispan-14-console-wizard</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/12/infinispan-14-console-wizard">&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispan Community,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;An effective and concise way to create a cache with Infinispan Console is here.
-Creating a cache will now be effortless and user-centric with a wizard based intuitive approach.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With the series of prompts, now user can create a cache just by selecting configuration.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;choose-your-method&quot;&gt;Choose your method&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Enter a unique name for the cache and choose your desired way to create it.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;olist arabic&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Two options to create a cache are:&lt;/div&gt;
-&lt;ol class=&quot;arabic&quot;&gt;
-&lt;li&gt;
-&lt;p&gt;Manually Adding JSON/YAML/XML configuration&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Wizard based selection of configuration&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard1.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard1.png&quot; alt=&quot;Getting started&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If the user already has a JSON/YAML/XML file then it is preferable to go with the first option and directly edit the file.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard2.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard2.png&quot; alt=&quot;Add configuration&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;But in case you are looking to create a cache from scratch then Wizard based cache creation is the best way to go ahead. This blog talks in detail about the Wizard based method.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;build-configuration&quot;&gt;Build configuration&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;sect3&quot;&gt;
-&lt;h4 id=&quot;basic-options&quot;&gt;Basic options&lt;/h4&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Selecting “Build cache configuration” will land on the below page containing a series of prompts or options to create your cache.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard3.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard3.png&quot; alt=&quot;Basic options&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Every option has a default value selected beforehand with tooltips providing brief information about each option.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard11.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard11.png&quot; alt=&quot;Tooltip&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect3&quot;&gt;
-&lt;h4 id=&quot;infinispan-capabilities&quot;&gt;Infinispan capabilities&lt;/h4&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In this step, we select features and configure basic options for the cache.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The following features can be selected:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;olist arabic&quot;&gt;
-&lt;ol class=&quot;arabic&quot;&gt;
-&lt;li&gt;
-&lt;p&gt;Bounded&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Indexed&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Authorization&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Persistence&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Transactional&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Backups&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard4.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard4.png&quot; alt=&quot;Features&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Selecting a feature will provide basic options for that feature. Some fields are marked mandatory in order to move to the next step.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If the required details are not filled in, a warning will be displayed at the top.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard5.1.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard5.1.png&quot; alt=&quot;Feature Bounded warning&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;After providing the required details, you can move to the next step.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard5.2.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard5.2.png&quot; alt=&quot;Feature Bounded&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;More than one feature can be selected and each feature&amp;#8217;s availability is checked. If the feature is disabled, a warning is displayed and the user can not go ahead. In such a scenario, the user can either remove that feature completely or make changes to the server.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard6.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard6.png&quot; alt=&quot;Invalid Feature&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect3&quot;&gt;
-&lt;h4 id=&quot;cache-tuning&quot;&gt;Cache tuning&lt;/h4&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Last step in configuring the cache allows the user to tweak advanced options.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard7.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard7.png&quot; alt=&quot;Cache tuning&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;On selecting a certain feature, its advanced configurations can be added.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard8.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard8.png&quot; alt=&quot;Feature advance option&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;review-configuration&quot;&gt;Review configuration&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The configurations selected earlier are reviewed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard9.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard9.png&quot; alt=&quot;Review Config&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The JSON configuration is presented inside a code editor, which can be modified by the user.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Cache will be created on clicking the &quot;Create&quot; button and user will land on the Data distribution page.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The user can also download this configuration in JSON, YAML, or XML format.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;imageblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/cache-wizard/wizard10.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/cache-wizard/wizard10.png&quot; alt=&quot;Download cache config&quot;&gt;&lt;/a&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Dipanshu Gupta</name></author><category term="console" /><summary type="html">Dear Infinispan Community,</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Neeraj Gartia</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><category term="Protobuf" /><category term="query" /><summary type="html">Node.js Client 0.10.0</summary></entry></feed>
