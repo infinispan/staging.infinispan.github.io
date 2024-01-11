@@ -595,9 +595,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#managed-cross-site-connections_cross-site">13.2. Managed cross-site replication</a>
 <ul class="sectlevel3">
 <li><a href="#creating-sa-tokens-openshift_cross-site">13.2.1. Creating service account tokens for managed cross-site connections</a></li>
-<li><a href="#exchanging-sa-tokens_cross-site">13.2.2. Exchanging service account tokens</a></li>
-<li><a href="#applying-cluster-roles-xsite_cross-site">13.2.3. Setting up Kubernetes for managed cross-site connections</a></li>
-<li><a href="#configuring-sites-automatically_cross-site">13.2.4. Configuring managed cross-site connections</a></li>
+<li><a href="#exchanging-service-account-tokens-cross-site">13.2.2. Exchanging service account tokens</a></li>
+<li><a href="#exchanging-bound-service-account-tokens-cross-site">13.2.3. Exchanging bound service account tokens</a></li>
+<li><a href="#applying-cluster-roles-xsite_cross-site">13.2.4. Setting up Kubernetes for managed cross-site connections</a></li>
+<li><a href="#configuring-sites-automatically_cross-site">13.2.5. Configuring managed cross-site connections</a></li>
 </ul>
 </li>
 <li><a href="#configuring-sites-manually_cross-site">13.3. Manually configuring cross-site connections</a></li>
@@ -4635,7 +4636,7 @@ Infinispan Operator uses this API to manage cross-site connections.</p>
 <td class="content">
 <div class="paragraph">
 <p>Infinispan Operator does not modify remote Infinispan clusters.
-The service account tokens provide read only access through the Kubernetes API.</p>
+The service account tokens provide read-only access through the Kubernetes API.</p>
 </div>
 </td>
 </tr>
@@ -4657,8 +4658,7 @@ The service account tokens provide read only access through the Kubernetes API.<
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>oc create sa lon
-serviceaccount/lon created</code></pre>
+<pre class="highlight nowrap"><code>oc create sa -n &lt;namespace&gt; lon</code></pre>
 </div>
 </div>
 </li>
@@ -4666,7 +4666,7 @@ serviceaccount/lon created</code></pre>
 <p>Add the view role to the service account with the following command:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>oc policy add-role-to-user view system:serviceaccount:&lt;namespace&gt;:lon</code></pre>
+<pre class="highlight nowrap"><code>oc policy add-role-to-user view -n &lt;namespace&gt; -z lon</code></pre>
 </div>
 </div>
 </li>
@@ -4674,7 +4674,7 @@ serviceaccount/lon created</code></pre>
 <p>If you use a <code>NodePort</code> service to expose Infinispan clusters on the network, you must also add the <code>cluster-reader</code> role to the service account:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>oc adm policy add-cluster-role-to-user cluster-reader -z &lt;service-account-name&gt; -n &lt;namespace&gt;</code></pre>
+<pre class="highlight nowrap"><code>oc adm policy add-cluster-role-to-user cluster-reader -z lon -n &lt;namespace&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -4686,38 +4686,19 @@ serviceaccount/lon created</code></pre>
 </li>
 </ol>
 </div>
-<div class="ulist _additional-resources">
-<div class="title">Additional resources</div>
-<ul>
-<li>
-<p><a href="https://docs.openshift.com/container-platform/4.9/authentication/using-service-accounts-in-applications.html">Using service accounts in applications</a></p>
-</li>
-</ul>
-</div>
 </div>
 <div class="sect3">
-<h4 id="exchanging-sa-tokens_cross-site"><a class="anchor" href="#exchanging-sa-tokens_cross-site"></a>13.2.2. Exchanging service account tokens</h4>
+<h4 id="exchanging-service-account-tokens-cross-site"><a class="anchor" href="#exchanging-service-account-tokens-cross-site"></a>13.2.2. Exchanging service account tokens</h4>
 <div class="paragraph _abstract">
-<p>After you create service account tokens on your OpenShift clusters, you
-add them to secrets on each backup location.
-For example, at <strong>LON</strong> you add the service account token for <strong>NYC</strong>.
-At <strong>NYC</strong> you add the service account token for <strong>LON</strong>.</p>
+<p>Generate service account tokens on your OpenShift clusters and add them into secrets at each backup location.
+The tokens that you generate in this procedure do not expire.
+For bound service account tokens, see <a href="#exchanging-bound-service-account-tokens-cross-site">Exchanging bound service account tokens</a>.</p>
 </div>
 <div class="ulist">
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>Get tokens from each service account.</p>
-<div class="paragraph">
-<p>Use the following command or get the token from the Kubernetes Dashboard:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>oc sa get-token lon
-
-eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9...</code></pre>
-</div>
-</div>
+<p>You have created a service account.</p>
 </li>
 </ul>
 </div>
@@ -4725,32 +4706,192 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9...</code></pre>
 <div class="title">Procedure</div>
 <ol class="arabic">
 <li>
-<p>Log in to an OpenShift cluster.</p>
+<p>Log in to your OpenShift cluster.</p>
 </li>
 <li>
-<p>Add the service account token for a backup location with the following command:</p>
+<p>Create a service account token secret file as follows:</p>
+<div class="listingblock">
+<div class="title">sa-token.yaml</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: ispn-xsite-sa-token <i class="conum" data-value="1"></i><b>(1)</b>
+  annotations:
+    kubernetes.io/service-account.name: "&lt;service-account&gt;" <i class="conum" data-value="2"></i><b>(2)</b>
+type: kubernetes.io/service-account-token</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specifies the name of the secret.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Specifies the service account name.</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Create the secret in your OpenShift cluster:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>oc create secret generic &lt;token-name&gt; --from-literal=token=&lt;token&gt;</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">oc -n &lt;namespace&gt; create -f sa-token.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Retrieve the service account token:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">oc -n &lt;namespace&gt; get secrets ispn-xsite-sa-token -o jsonpath="{.data.token}" | base64 -d</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>For example, log in to the OpenShift cluster at <strong>NYC</strong> and create a <code>lon-token</code> secret as follows:</p>
+<p>The command prints the token in the terminal.</p>
 </div>
+</li>
+<li>
+<p>Copy the token for deployment in the backup OpenShift cluster.</p>
+</li>
+<li>
+<p>Log in to the backup OpenShift cluster.</p>
+</li>
+<li>
+<p>Add the service account token for a backup location:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>oc create secret generic lon-token --from-literal=token=eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9...</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">oc -n &lt;namespace&gt; create secret generic &lt;token-secret&gt; --from-literal=token=&lt;token&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>&lt;token-secret&gt;</code> is the name of the secret configured in the <code>Infinispan</code> CR.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="ulist">
+<div class="title">Next steps</div>
+<ul>
+<li>
+<p>Repeat the preceding steps on your other OpenShift clusters.</p>
+</li>
+</ul>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.14/nodes/pods/nodes-pods-secrets.html#nodes-pods-secrets-creating-sa_nodes-pods-secrets">Creating a service account token secret</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="exchanging-bound-service-account-tokens-cross-site"><a class="anchor" href="#exchanging-bound-service-account-tokens-cross-site"></a>13.2.3. Exchanging bound service account tokens</h4>
+<div class="paragraph _abstract">
+<p>Create service account tokens with a limited lifespan and add them into secrets at each backup location.
+You must refresh the token periodically to prevent Infinispan Operator from losing access to the remote OpenShift cluster.
+For non-expiring tokens, see <a href="#exchanging-service-account-tokens-cross-site">Exchanging service account tokens</a>.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>You have created a service account.</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Log in to your OpenShift cluster.</p>
+</li>
+<li>
+<p>Create a bound token for the service account:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">oc -n &lt;namespace&gt; create token &lt;service-account&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>By default, service account tokens are valid for one hour.
+Use the command option <code>--duration</code> to specify the lifespan in seconds..</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The command prints the token in the terminal.</p>
+</div>
+</li>
+<li>
+<p>Copy the token for deployment in the backup OpenShift cluster(s).</p>
+</li>
+<li>
+<p>Log in to the backup OpenShift cluster.</p>
+</li>
+<li>
+<p>Add the service account token for a backup location:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">oc -n &lt;namespace&gt; create secret generic &lt;token-secret&gt; --from-literal=token=&lt;token&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>&lt;token-secret&gt;</code> is the name of the secret configured in the <code>Infinispan</code> CR.</p>
+</div>
+</li>
+<li>
+<p>Repeat the steps on other OpenShift clusters.</p>
+</li>
+</ol>
+</div>
+<h5 id="_deleting_expired_tokens" class="discrete">Deleting expired tokens</h5>
+<div class="paragraph">
+<p>When a token expires, delete the expired token secret, and then repeat the procedure to generate and exchange a new one.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log in to the backup OpenShift cluster.</p>
+</li>
+<li>
+<p>Delete the expired secret <code>&lt;token-secret&gt;</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">oc -n &lt;namespace&gt; delete secrets &lt;token-secret&gt;</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Repeat the preceding steps on your other OpenShift clusters.</p>
+<p>Repeat the procedure to create a new token and generate a new <code>&lt;token-secret&gt;</code>.</p>
 </li>
 </ol>
 </div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.14/authentication/bound-service-account-tokens.html#bound-sa-tokens-configuring-externally_bound-service-account-tokens">Creating bound service account tokens</a></p>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect3">
-<h4 id="applying-cluster-roles-xsite_cross-site"><a class="anchor" href="#applying-cluster-roles-xsite_cross-site"></a>13.2.3. Setting up Kubernetes for managed cross-site connections</h4>
+<h4 id="applying-cluster-roles-xsite_cross-site"><a class="anchor" href="#applying-cluster-roles-xsite_cross-site"></a>13.2.4. Setting up Kubernetes for managed cross-site connections</h4>
 <div class="paragraph _abstract">
 <p>Apply cluster roles and create site access secrets on Kubernetes to use cross-site replication capabilities.</p>
 </div>
@@ -4810,7 +4951,7 @@ kubectl create secret generic site-a-secret -n ns-site-a --from-literal=token=$T
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-sites-automatically_cross-site"><a class="anchor" href="#configuring-sites-automatically_cross-site"></a>13.2.4. Configuring managed cross-site connections</h4>
+<h4 id="configuring-sites-automatically_cross-site"><a class="anchor" href="#configuring-sites-automatically_cross-site"></a>13.2.5. Configuring managed cross-site connections</h4>
 <div class="paragraph _abstract">
 <p>Configure Infinispan Operator to establish cross-site views with Infinispan clusters.</p>
 </div>
@@ -8640,7 +8781,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-11 11:41:29 UTC
+Last updated 2024-01-11 11:46:56 UTC
 </div>
 </div>
 <script>
