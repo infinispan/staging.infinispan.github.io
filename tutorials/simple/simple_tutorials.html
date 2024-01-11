@@ -1162,6 +1162,20 @@ This tutorial demonstrates Infinispan security capabilities locally using <code>
 </li>
 </ol>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you are using Docker of Mac or Docker Desktop, <code>network_mode: host</code> might still not be supported.
+In that case, run <code>docker-compose -f docker-compose-no-linux.yaml up</code> and add <code>127.0.0.1  keycloak</code>
+to <code>/etc/hosts</code>.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -1362,7 +1376,7 @@ $ mvn wildfly:deploy</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-07 11:37:11 -0500
+Last updated 2024-01-10 06:22:26 -0500
 </div>
 </div>
 </body>
