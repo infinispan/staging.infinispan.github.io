@@ -554,7 +554,11 @@ $(addBlockSwitches);
 <li><a href="#security">1.1.10. Security</a></li>
 <li><a href="#scattered_cache_removal">1.1.11. Scattered cache removal</a></li>
 <li><a href="#global_state">1.1.12. Global State</a></li>
-<li><a href="#persistence">1.1.13. Persistence</a></li>
+<li><a href="#persistence">1.1.13. Persistence</a>
+<ul class="sectlevel4">
+<li><a href="#softindexfilestore">SoftIndexFileStore</a></li>
+</ul>
+</li>
 <li><a href="#resp_endpoint_2">1.1.14. RESP endpoint</a></li>
 <li><a href="#client_listeners_remove_events">1.1.15. Client listeners remove events</a></li>
 <li><a href="#nearcache_spi">1.1.16. NearCache SPI</a></li>
@@ -1247,6 +1251,12 @@ an unclean shutdown. The behavior can be changed by configuring the global state
 <h4 id="persistence"><a class="anchor" href="#persistence"></a>1.1.13. Persistence</h4>
 <div class="paragraph">
 <p>The default <code>availability-interval</code> has been increased to 30 seconds. The previous default was 1 second.</p>
+</div>
+<div class="sect4">
+<h5 id="softindexfilestore"><a class="anchor" href="#softindexfilestore"></a>SoftIndexFileStore</h5>
+<div class="paragraph">
+<p>The index segment configuration is no longer used and instead the number of segments is determined solely by the number of cache segments.</p>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -5022,7 +5032,7 @@ cache stores.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-12 08:26:30 UTC
+Last updated 2024-01-12 17:19:36 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -6055,7 +6055,7 @@ By default, cache stores are local (<code>shared="false"</code>).</p>
 <li>
 <p>Local cache stores are unique to each node; for example, a file-based cache store that persists data to the host filesystem.</p>
 <div class="paragraph">
-<p>Local cache stores can use "purge on startup" to avoid loading stale entries from persistent storage.</p>
+<p>Local cache stores should use "purge on startup" to avoid loading stale entries from persistent storage.</p>
 </div>
 </li>
 <li>
@@ -6388,6 +6388,20 @@ For clustered caches, file-based cache stores are unique to each Infinispan node
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>SoftIndexFileStore should use purge on startup to ensure stale entries are not resurrected.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <div class="title">B+ trees</div>
 <p>To improve performance, append-only files in a <code>SoftIndexFileStore</code> are indexed using a <strong>B+ Tree</strong> that can be stored both on disk and in memory.
@@ -6398,10 +6412,9 @@ The in-memory index uses Java soft references to ensure it can be rebuilt if rem
 GC removes indexes before they consume too much memory while still falling back to disk.</p>
 </div>
 <div class="paragraph">
-<p>You can configure any number of B+ trees with the <code>segments</code> attribute on the <code>index</code> element declaratively or with the <code>indexSegments()</code> method programmatically.
-By default Infinispan creates up to 16 B+ trees, which means there can be up to 16 indexes.
-Having multiple indexes prevents bottlenecks from concurrent writes to an index and reduces the number of entries that Infinispan needs to keep in memory.
-As it iterates over a soft-index file store, Infinispan reads all entries in an index at the same time.</p>
+<p><code>SoftIndexFileStore</code> creates a B+ tree per configured cache segment.
+This provides an additional "index" as it only has so many elements and provides additional parallelism for index updates.
+Currently we allow for a parallel amount based on one sixteenth of the number of cache segments.</p>
 </div>
 <div class="paragraph">
 <p>Each entry in the B+ tree is a node.
@@ -6409,22 +6422,23 @@ By default, the size of each node is limited to 4096 bytes.
 <code>SoftIndexFileStore</code> throws an exception if keys are longer after serialization occurs.</p>
 </div>
 <div class="paragraph">
-<div class="title">Segmentation</div>
-<p>Soft-index file stores are always segmented.</p>
+<div class="title">File limits</div>
+<p><code>SoftIndexFileStore</code> will use two plus the configured openFilesLimit amount of files at a given time.
+The two additional file pointers are reserved for the log appender for newly updated data and another
+for the compactor which writes compacted entries into a new file.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p>The <code>AdvancedStore.purgeExpired()</code> method is not implemented in <code>SoftIndexFileStore</code>.</p>
+<p>The amount of open allocated files allocated for indexing is one tenth of the total number of the configured openFilesLimit.
+This number has a minimum of 1 or the number of cache segments.
+Any number remaning from configured limit is allocated for open data files themselves.</p>
 </div>
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<div class="title">Segmentation</div>
+<p>Soft-index file stores are always segmented. The append log(s) are not directly segmented and segmentation is handled directly by the index.</p>
+</div>
+<div class="paragraph">
+<div class="title">Expiration</div>
+<p>The SoftIndexFileStore has full support for expired entries and their requirements.</p>
 </div>
 <h4 id="single_file_cache_stores" class="discrete">Single File Cache Stores</h4>
 <div class="admonitionblock note">
@@ -13037,7 +13051,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-12 08:26:30 UTC
+Last updated 2024-01-12 17:19:36 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
