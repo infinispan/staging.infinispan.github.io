@@ -1961,12 +1961,32 @@ If you are configuring Infinispan programmatically:</p>
 <div class="sect2">
 <h3 id="invalidation-caches_clustered-caches"><a class="anchor" href="#invalidation-caches_clustered-caches"></a>2.3. Invalidation caches</h3>
 <div class="paragraph">
-<p>You can use Infinispan in invalidation mode to optimize systems that perform high volumes of read operations.
-A good example is to use invalidation to prevent lots of database writes when state changes occur.</p>
+<p>Invalidation cache mode in Infinispan is designed to optimize systems that perform high volumes of read operations to a shared permanent data store.
+You can use invalidation mode to reduce the number of database writes when state changes occur.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Invalidation cache mode is deprecated for Infinispan remote deployments.
+Use invalidation cache mode with embedded caches that are stored in shared cache stores only.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>This cache mode only makes sense if you have another, permanent store for your data such as a database and are only using Infinispan as an optimization in a read-heavy system, to prevent hitting the database for every read.
-If a cache is configured for invalidation, every time data is changed in a cache, other caches in the cluster receive a message informing them that their data is now stale and should be removed from memory and from any local store.</p>
+<p>Invalidation cache mode is effective only when you have a permanent data store, such as a database, and are only using Infinispan as an optimization in a read-heavy system to prevent hitting the database for every read.</p>
+</div>
+<div class="paragraph">
+<p>When a cache is configured for invalidation, each data change in a cache triggers a message to other caches in the cluster, informing them that their data is now stale and should be removed from memory.
+Invalidation messages remove stale values from other nodes' memory.
+The messages are very small compared to replicating the entire value, and also other caches in the cluster look up modified data in a lazy manner, only when needed.
+The update to the shared store is typically handled by user application code or Hibernate.</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
@@ -1978,11 +1998,6 @@ If a cache is configured for invalidation, every time data is changed in a cache
 <p>Sometimes the application reads a value from the external store and wants to write it to the local cache, without removing it from the other nodes.
 To do this, it must call <code>Cache.putForExternalRead(key, value)</code> instead of <code>Cache.put(key, value)</code>.</p>
 </div>
-<div class="paragraph">
-<p>Invalidation mode can be used with a shared cache store.
-A write operation will both update the shared store, and it would remove the stale values from the other nodes' memory.
-The benefit of this is twofold: network traffic is minimized as invalidation messages are very small compared to replicating the entire value, and also other caches in the cluster look up modified data in a lazy manner, only when needed.</p>
-</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1990,6 +2005,10 @@ The benefit of this is twofold: network traffic is minimized as invalidation mes
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
+<div class="paragraph">
+<p>Invalidation mode is suitable only for shared stores where all nodes can access the same data.
+Using invalidation mode without a persistent store is impractical, as updated values need to be read from a shared store for consistency across nodes.</p>
+</div>
 <div class="paragraph">
 <p>Never use invalidation mode with a local, non-shared, cache store.
 The invalidation message will not remove entries in the local store, and some nodes will keep seeing the stale value.</p>
@@ -2001,11 +2020,11 @@ The invalidation message will not remove entries in the local store, and some no
 <div class="paragraph">
 <p>An invalidation cache can also be configured with a special cache loader, <code>ClusterLoader</code>.
 When <code>ClusterLoader</code> is enabled, read operations that do not find the key on the local node will request it from all the other nodes first, and store it in memory locally.
-In certain situation it will store stale values, so only use it if you have a high tolerance for stale values.</p>
+This can lead to storing stale values, so only use it if you have a high tolerance for stale values.</p>
 </div>
 <div class="paragraph">
 <div class="title">Synchronous or asynchronous replication</div>
-<p>When synchronous, a write blocks until all nodes in the cluster have evicted the stale value.
+<p>When synchronous, a write operation blocks until all nodes in the cluster have evicted the stale value.
 When asynchronous, the originator broadcasts invalidation messages but does not wait for responses.
 That means other nodes still see the stale value for a while after the write completed on the originator.</p>
 </div>
@@ -6036,7 +6055,7 @@ By default, cache stores are local (<code>shared="false"</code>).</p>
 <li>
 <p>Local cache stores are unique to each node; for example, a file-based cache store that persists data to the host filesystem.</p>
 <div class="paragraph">
-<p>Local cache stores can use "purge on startup" to avoid loading stale entries from persistent storage.</p>
+<p>Local cache stores should use "purge on startup" to avoid loading stale entries from persistent storage.</p>
 </div>
 </li>
 <li>
@@ -6369,6 +6388,20 @@ For clustered caches, file-based cache stores are unique to each Infinispan node
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>SoftIndexFileStore should use purge on startup to ensure stale entries are not resurrected.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <div class="title">B+ trees</div>
 <p>To improve performance, append-only files in a <code>SoftIndexFileStore</code> are indexed using a <strong>B+ Tree</strong> that can be stored both on disk and in memory.
@@ -6379,10 +6412,9 @@ The in-memory index uses Java soft references to ensure it can be rebuilt if rem
 GC removes indexes before they consume too much memory while still falling back to disk.</p>
 </div>
 <div class="paragraph">
-<p>You can configure any number of B+ trees with the <code>segments</code> attribute on the <code>index</code> element declaratively or with the <code>indexSegments()</code> method programmatically.
-By default Infinispan creates up to 16 B+ trees, which means there can be up to 16 indexes.
-Having multiple indexes prevents bottlenecks from concurrent writes to an index and reduces the number of entries that Infinispan needs to keep in memory.
-As it iterates over a soft-index file store, Infinispan reads all entries in an index at the same time.</p>
+<p><code>SoftIndexFileStore</code> creates a B+ tree per configured cache segment.
+This provides an additional "index" as it only has so many elements and provides additional parallelism for index updates.
+Currently we allow for a parallel amount based on one sixteenth of the number of cache segments.</p>
 </div>
 <div class="paragraph">
 <p>Each entry in the B+ tree is a node.
@@ -6390,22 +6422,23 @@ By default, the size of each node is limited to 4096 bytes.
 <code>SoftIndexFileStore</code> throws an exception if keys are longer after serialization occurs.</p>
 </div>
 <div class="paragraph">
-<div class="title">Segmentation</div>
-<p>Soft-index file stores are always segmented.</p>
+<div class="title">File limits</div>
+<p><code>SoftIndexFileStore</code> will use two plus the configured openFilesLimit amount of files at a given time.
+The two additional file pointers are reserved for the log appender for newly updated data and another
+for the compactor which writes compacted entries into a new file.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p>The <code>AdvancedStore.purgeExpired()</code> method is not implemented in <code>SoftIndexFileStore</code>.</p>
+<p>The amount of open allocated files allocated for indexing is one tenth of the total number of the configured openFilesLimit.
+This number has a minimum of 1 or the number of cache segments.
+Any number remaning from configured limit is allocated for open data files themselves.</p>
 </div>
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<div class="title">Segmentation</div>
+<p>Soft-index file stores are always segmented. The append log(s) are not directly segmented and segmentation is handled directly by the index.</p>
+</div>
+<div class="paragraph">
+<div class="title">Expiration</div>
+<p>The SoftIndexFileStore has full support for expired entries and their requirements.</p>
 </div>
 <h4 id="single_file_cache_stores" class="discrete">Single File Cache Stores</h4>
 <div class="admonitionblock note">
@@ -13018,7 +13051,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-12 11:41:37 -0500
+Last updated 2024-01-19 08:12:57 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">

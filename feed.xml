@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-01-11T10:55:07-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan Insights: Securing Infinispan with Keycloak</title><link href="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak" rel="alternate" type="text/html" title="Infinispan Insights: Securing Infinispan with Keycloak" /><published>2024-01-08T19:00:00-05:00</published><updated>2024-01-08T19:00:00-05:00</updated><id>https://infinispan.org/blog/2024/01/08/infinispan-security-keycloak</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak">&lt;div id=&quot;preamble&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-01-24T02:37:57-05:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan RESP in action: Resque use case</title><link href="https://infinispan.org/blog/2024/01/18/infinispan-resp-resque-use-case" rel="alternate" type="text/html" title="Infinispan RESP in action: Resque use case" /><published>2024-01-18T19:00:00-05:00</published><updated>2024-01-18T19:00:00-05:00</updated><id>https://infinispan.org/blog/2024/01/18/infinispan-resp-resque-use-case</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/18/infinispan-resp-resque-use-case">&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As you may know Infinispan 15 extended its RESP compatibility implementing most of the command related to the principal data types (set, list, hashes, sorted set&amp;#8230;&amp;#8203;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this post we want to present a demo case of integration between a real application (&lt;a href=&quot;https://github.com/resque/resque&quot;&gt;Resque&lt;/a&gt;) and Infinispan used as a Redis-compatible cache backend.&lt;br&gt;
+Aim of this is to show how it&amp;#8217;s easy to switch between Redis and Infinispan making available to your application all the advanced features of our clustered cache server.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Resque is a job scheduler that creates jobs and send them to execution queues, it uses Redis as default backend and provides a testsuite and a demo application.&lt;br&gt;
+Try yourself how Infinispan can seamlessly replace the default backend: just clone
+&lt;a href=&quot;https://github.com/rigazilla/resque/tree/ispn-testsuite&quot;&gt;this Resque fork&lt;/a&gt; and follow the &lt;a href=&quot;https://github.com/rigazilla/resque/blob/ispn-testsuite/README.ispn.md&quot;&gt;Infinispan README&lt;/a&gt; to run both the test suite and the demo application.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Everything worked as a charm? Nice! Now check the diff with the original project, we only added code to turn on/off Infinispan instead of Redis. Nothing more than that! (*)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Hope you ejoyed this post!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cheers,&lt;br&gt;
+The Infinispan Team&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;(*) What? You also noticed we changed the expected result for a test. Surely you can easily guess why&amp;#8230;&amp;#8203; if not just ask us on &lt;a href=&quot;https://infinispan.zulipchat.com/#&quot;&gt;Zulip&lt;/a&gt;!&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Vittorio Rigamonti</name></author><category term="demo" /><category term="use case" /><category term="resp" /><category term="redis" /><summary type="html">As you may know Infinispan 15 extended its RESP compatibility implementing most of the command related to the principal data types (set, list, hashes, sorted set&amp;#8230;&amp;#8203;).</summary></entry><entry><title type="html">Infinispan Insights: Securing Infinispan with Keycloak</title><link href="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak" rel="alternate" type="text/html" title="Infinispan Insights: Securing Infinispan with Keycloak" /><published>2024-01-08T19:00:00-05:00</published><updated>2024-01-08T19:00:00-05:00</updated><id>https://infinispan.org/blog/2024/01/08/infinispan-security-keycloak</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak">&lt;div id=&quot;preamble&quot;&gt;
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This tutorial shows you how to secure your Infinispan cluster using Keycloak.
@@ -1953,51 +1977,4 @@ Oh, and the fact that it’s also the &lt;a href=&quot;https://untappd.com/b/kin
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Flying saucers are probably the most common type of UFO. They are sleek and shiny and, most importantly, they come in peace bringing lots of goodies from outer space! Just like Infinispan 14! Oh, and the fact that it’s also the name of a beer is no sheer coincidence.</summary></entry><entry><title type="html">Infinispan Node.js client supports query</title><link href="https://infinispan.org/blog/2022/09/25/infinispan-js-client" rel="alternate" type="text/html" title="Infinispan Node.js client supports query" /><published>2022-09-25T08:00:00-04:00</published><updated>2022-09-25T08:00:00-04:00</updated><id>https://infinispan.org/blog/2022/09/25/nodejs-010-query</id><content type="html" xml:base="https://infinispan.org/blog/2022/09/25/infinispan-js-client">&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;node-js-client-0-10-0&quot;&gt;Node.js Client 0.10.0&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Infinispan Node.js client version 0.10.0 was released last week with added support of query with &lt;code&gt;application/x-protostream&lt;/code&gt; data format.
-Up until now, our Node.js client only supported &lt;code&gt;text/plain&lt;/code&gt; and &lt;code&gt;application/json&lt;/code&gt; data formats.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect3&quot;&gt;
-&lt;h4 id=&quot;applicationx-protostream-data-format&quot;&gt;&lt;code&gt;application/x-protostream&lt;/code&gt; data format&lt;/h4&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can now use the &lt;code&gt;application/x-protostream&lt;/code&gt; data format for all the Hot Rod operations supported in js-client. To make the Node.js client backwards compatible, the client still treats key/value pairs as String by default.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect3&quot;&gt;
-&lt;h4 id=&quot;query&quot;&gt;query&lt;/h4&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The Hot Rod js-client now also supports query method to perform queries on caches. For more information about querying infinispan caches, refer to &lt;a href=&quot;https://infinispan.org/docs/stable/titles/query/query.html&quot;&gt;the query documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;admonitionblock important&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;div class=&quot;title&quot;&gt;Important&lt;/div&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-You must set the data-format as &lt;code&gt;application/x-protostream&lt;/code&gt; to perform queries on your cache.
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For the working code example of the query feature, please refer to &lt;a href=&quot;https://infinispan.org/docs/hotrod-clients/js/latest/js_client.html#_working_with_queries&quot;&gt;this&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;to-go-further&quot;&gt;To go further&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Full client documentation is now available in the
-&lt;a href=&quot;https://infinispan.org/docs/hotrod-clients/js/latest/js_client.html&quot;&gt;Hot Rod JS Client Guide&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Jira tracker for this client is available &lt;a href=&quot;https://issues.redhat.com/projects/HRJS&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Neeraj Gartia</name></author><category term="hotrod" /><category term="Node.js" /><category term="client" /><category term="javascript" /><category term="release" /><category term="Protobuf" /><category term="query" /><summary type="html">Node.js Client 0.10.0</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">Flying saucers are probably the most common type of UFO. They are sleek and shiny and, most importantly, they come in peace bringing lots of goodies from outer space! Just like Infinispan 14! Oh, and the fact that it’s also the name of a beer is no sheer coincidence.</summary></entry></feed>
