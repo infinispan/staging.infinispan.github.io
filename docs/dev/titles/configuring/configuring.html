@@ -5649,10 +5649,8 @@ frequently used data in-memory and writes older entries to persistent storage.</
 <h3 id="passivation_persistence"><a class="anchor" href="#passivation_persistence"></a>6.1. Passivation</h3>
 <div class="paragraph">
 <p>Passivation configures Infinispan to write entries to cache stores when it
-evicts those entries from memory. In this way, passivation ensures that only a
-single copy of an entry is maintained, either in-memory or in a cache store,
-which prevents unnecessary and potentially expensive writes to persistent
-storage.</p>
+evicts those entries from memory. In this way, passivation prevents unnecessary
+and potentially expensive writes to persistent storage.</p>
 </div>
 <div class="paragraph">
 <p>Activation is the process of restoring entries to memory from the cache store
@@ -5666,7 +5664,7 @@ from persistent storage.</p>
 that the entry is passivated then stores the entry in the cache store. When
 Infinispan gets an access request for an evicted entry, it lazily loads the
 entry from the cache store into memory and then notifies cache listeners that
-the entry is activated.</p>
+the entry is activated while keeping the value still in the store.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -5716,7 +5714,8 @@ Infinispan throws an exception.</p>
 <div class="paragraph">
 <p>If Infinispan evicts data from memory, then data in persistent storage
 includes entries that are evicted from memory. In this way persistent storage
-is a superset of the in-memory cache.</p>
+is a superset of the in-memory cache.
+This is recommended when you require highest consistency as the store will be able to be read again after a crash.</p>
 </div>
 <div class="paragraph">
 <p>If you do not configure eviction, then data in persistent storage provides a
@@ -5725,13 +5724,13 @@ copy of data in memory.</p>
 <div class="paragraph">
 <div class="title">Passivation enabled</div>
 <p>Infinispan adds data to persistent storage only when it evicts data from
-memory.</p>
+memory, an entry is removed or upon shutting down the node.</p>
 </div>
 <div class="paragraph">
-<p>When Infinispan activates entries, it restores data in memory and deletes data
-from persistent storage. In this way, data in memory and data in persistent
-storage form separate subsets of the entire data set, with no intersection
-between the two.</p>
+<p>When Infinispan activates entries, it restores data in memory but keeps the data in the store still.
+This allows for writes to be just as fast as without a store, and still maintains consistency.
+When an entry is created or updated only the in memory will be updated and thus
+the store will be outdated for the time being.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -5741,14 +5740,16 @@ between the two.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Entries in persistent storage can become stale when using shared cache stores. This occurs because Infinispan does not delete passivated entries from shared cache stores when they are activated.</p>
-</div>
-<div class="paragraph">
-<p>Values are updated in memory but previously passivated entries remain in persistent storage with out of date values.</p>
+<p>Passivation is not supported when a store is also configured as shared.
+This is due to entries can become out of sync between nodes depending on when a write is evicted versus read.</p>
 </div>
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>To gurantee data consistency any store that is not shared should always have <code>purgeOnStartup</code> enabled.
+This is true for both passivation enabled or disabled since a store could hold an outdated entry while down and resurrect it at a later point.</p>
 </div>
 <div class="paragraph">
 <p>The following table shows data in memory and in persistent storage after a
@@ -5756,17 +5757,15 @@ series of operations:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Operation</th>
 <th class="tableblock halign-left valign-top">Passivation disabled</th>
 <th class="tableblock halign-left valign-top">Passivation enabled</th>
-<th class="tableblock halign-left valign-top">Passivation enabled with shared cache store</th>
 </tr>
 </thead>
 <tbody>
@@ -5776,15 +5775,11 @@ series of operations:</p>
 <strong>Disk:</strong> k1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> -</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
-<strong>Disk:</strong> -</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Insert k2.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> k1, k2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
-<strong>Disk:</strong> -</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> -</p></td>
 </tr>
@@ -5794,15 +5789,11 @@ series of operations:</p>
 <strong>Disk:</strong> k1, k2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k2<br>
 <strong>Disk:</strong> k1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k2<br>
-<strong>Disk:</strong> k1</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Read k1.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> k1, k2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
-<strong>Disk:</strong> -</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> k1</p></td>
 </tr>
@@ -5811,16 +5802,12 @@ series of operations:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1, k2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
-<strong>Disk:</strong> k2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1, k2</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Remove k2.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
-<strong>Disk:</strong> -</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1</p></td>
 </tr>
@@ -13051,7 +13038,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-29 09:29:58 UTC
+Last updated 2024-01-29 17:35:15 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
