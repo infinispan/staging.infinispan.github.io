@@ -482,24 +482,29 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#disabling-authorization_configuring-authentication">3.4. Disabling security authorization</a></li>
 </ul>
 </li>
-<li><a href="#network-access">4. Configuring network access</a>
+<li><a href="#encryption">4. Configuring encryption</a>
 <ul class="sectlevel2">
-<li><a href="#exposing-clusters-network_network-access">4.1. Exposing Infinispan clusters on the network</a></li>
-<li><a href="#retrieving-network-services_network-access">4.2. Retrieving network service details</a></li>
-<li><a href="#network-services_network-access">4.3. Network services</a></li>
+<li><a href="#enabling-encryption_network-access">4.1. Enabling TLS encryption</a></li>
 </ul>
 </li>
-<li><a href="#connecting-clusters">5. Connecting to Infinispan clusters</a>
+<li><a href="#network-access">5. Configuring network access</a>
 <ul class="sectlevel2">
-<li><a href="#connecting-console_connecting-clusters">5.1. Accessing Infinispan Console</a></li>
-<li><a href="#connecting-cli_connecting-clusters">5.2. Connecting with the command line interface (CLI)</a></li>
-<li><a href="#connecting-clients-internal_connecting-clusters">5.3. Connecting Hot Rod clients running on Kubernetes</a>
+<li><a href="#exposing-clusters-network_network-access">5.1. Exposing Infinispan clusters on the network</a></li>
+<li><a href="#retrieving-network-services_network-access">5.2. Retrieving network service details</a></li>
+<li><a href="#network-services_network-access">5.3. Network services</a></li>
+</ul>
+</li>
+<li><a href="#connecting-clusters">6. Connecting to Infinispan clusters</a>
+<ul class="sectlevel2">
+<li><a href="#connecting-console_connecting-clusters">6.1. Accessing Infinispan Console</a></li>
+<li><a href="#connecting-cli_connecting-clusters">6.2. Connecting with the command line interface (CLI)</a></li>
+<li><a href="#connecting-clients-internal_connecting-clusters">6.3. Connecting Hot Rod clients running on Kubernetes</a>
 <ul class="sectlevel3">
-<li><a href="#obtaining_IP_addresses_connecting-clusters">5.3.1. Obtaining IP addresses for all Infinispan pods</a></li>
+<li><a href="#obtaining_IP_addresses_connecting-clusters">6.3.1. Obtaining IP addresses for all Infinispan pods</a></li>
 </ul>
 </li>
-<li><a href="#connecting-clients-external_connecting-clusters">5.4. Connecting Hot Rod clients running outside Kubernetes</a></li>
-<li><a href="#connecting-rest_connecting-clusters">5.5. Accessing the REST API</a></li>
+<li><a href="#connecting-clients-external_connecting-clusters">6.4. Connecting Hot Rod clients running outside Kubernetes</a></li>
+<li><a href="#connecting-rest_connecting-clusters">6.5. Accessing the REST API</a></li>
 </ul>
 </li>
 </ul>
@@ -645,6 +650,8 @@ deploy:
     batch: "user create admin -p changeme"
   #Create a cluster with two pods.
   replicas: 2
+  #Specify the internal Kubernetes cluster domain.
+  clusterDomain: cluster.local
 EOF</code></pre>
 </div>
 </div>
@@ -845,6 +852,11 @@ Refer to the OpenShift documentation for specific instructions.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.clusterDomain</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the internal Kubernetes cluster domain.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cluster.local</code></p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>deploy.replicas</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the number of nodes in your Infinispan cluster, with a pod created for each node.</p></td>
@@ -1048,20 +1060,6 @@ For more information about configuring server instances, see <a href="#server-co
 </li>
 <li>
 <p>Configure Infinispan Server security mechanisms with the <code>deploy.infinispan.server.security</code> fields.</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The Infinispan chart does not currently support TLS/SSL security realms and encrypted client connections.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 </li>
 </ul>
 </div>
@@ -1514,13 +1512,129 @@ You should disable authentication for development environments only.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="network-access"><a class="anchor" href="#network-access"></a>4. Configuring network access</h2>
+<h2 id="encryption"><a class="anchor" href="#encryption"></a>4. Configuring encryption</h2>
+<div class="sectionbody">
+<div class="paragraph _abstract">
+<p>Configure encryption for your Infinispan.</p>
+</div>
+<div class="sect2">
+<h3 id="enabling-encryption_network-access"><a class="anchor" href="#enabling-encryption_network-access"></a>4.1. Enabling TLS encryption</h3>
+<div class="paragraph _abstract">
+<p>Encryption can be independently enabled for endpoint and cluster transport.</p>
+</div>
+<div class="ulist">
+<div class="title">Prerequisites</div>
+<ul>
+<li>
+<p>A secret containing a certificate or a keystore. Endpoint and cluster should use
+different secrets.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Set the secret name in the deploy configuration</div>
+<p>Provide the name of the secret containing the keystore.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
+  ssl:
+    endpointSecretName: "tls-secret"
+    transportSecretName: "tls-transport-secret"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Enable cluster transport TLS</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
+  infinispan:
+    cacheContainer:
+      transport:
+         urn:infinispan:server:14.0:securityRealm: &gt;
+          "cluster-transport" <i class="conum" data-value="1"></i><b>(1)</b>
+    server:
+      security:
+        securityRealms:
+          - name: cluster-transport
+            serverIdentities:
+              ssl:
+                keystore: <i class="conum" data-value="2"></i><b>(2)</b>
+                  alias: "server"
+                  path: "/etc/encrypt/endpoint/cert.p12"
+                  password: "password"
+                truststore: <i class="conum" data-value="3"></i><b>(3)</b>
+                  alias: "server" <i class="conum" data-value="4"></i><b>(4)</b>
+                  path: "/etc/encrypt/endpoint/cert.p12" <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configures the transport stack to use the specified security-realm to provide cluster encryption.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Configure the keystore path in the transport realm; secret is mounted at <code>/etc/encrypt/transport</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configures the truststore with the same keystore, this allow the nodes to authenticate each other.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Alias and password must be provided in case the secret contains a keystore.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Enable endpoint TLS</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
+  infinispan:
+    server:
+      security:
+        securityRealms:
+          - name: default
+            serverIdentities:
+              ssl:
+                keystore:
+                  path: "/etc/encrypt/endpoint/keystore.p12" <i class="conum" data-value="1"></i><b>(1)</b>
+                  alias: "server" <i class="conum" data-value="2"></i><b>(2)</b>
+                  password: "password" <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Configure the keystore path in the endpoint realm; secret is mounted at <code>/etc/encrypt/endpoint</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Alias and password must be provided in case the secret contains a keystore.</td>
+</tr>
+</table>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="https://infinispan.org/docs/stable/titles/security/security.html">Infinispan Security Guide</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="network-access"><a class="anchor" href="#network-access"></a>5. Configuring network access</h2>
 <div class="sectionbody">
 <div class="paragraph _abstract">
 <p>Configure network access for your Infinispan deployment and find out about internal network services.</p>
 </div>
 <div class="sect2">
-<h3 id="exposing-clusters-network_network-access"><a class="anchor" href="#exposing-clusters-network_network-access"></a>4.1. Exposing Infinispan clusters on the network</h3>
+<h3 id="exposing-clusters-network_network-access"><a class="anchor" href="#exposing-clusters-network_network-access"></a>5.1. Exposing Infinispan clusters on the network</h3>
 <div class="paragraph _abstract">
 <p>Make Infinispan clusters available on the network so you can access Infinispan Console as well as REST and Hot Rod endpoints.
 By default, the Infinispan chart exposes deployments through a Route but you can configure it to expose clusters via Load Balancer or Node Port.
@@ -1575,7 +1689,7 @@ You can also configure the Infinispan chart so that deployments are not exposed 
 </div>
 </div>
 <div class="sect2">
-<h3 id="retrieving-network-services_network-access"><a class="anchor" href="#retrieving-network-services_network-access"></a>4.2. Retrieving network service details</h3>
+<h3 id="retrieving-network-services_network-access"><a class="anchor" href="#retrieving-network-services_network-access"></a>5.2. Retrieving network service details</h3>
 <div class="paragraph _abstract">
 <p>Get network service details so you can connect to Infinispan clusters.</p>
 </div>
@@ -1616,7 +1730,7 @@ You can also configure the Infinispan chart so that deployments are not exposed 
 </div>
 </div>
 <div class="sect2">
-<h3 id="network-services_network-access"><a class="anchor" href="#network-services_network-access"></a>4.3. Network services</h3>
+<h3 id="network-services_network-access"><a class="anchor" href="#network-services_network-access"></a>5.3. Network services</h3>
 <div class="paragraph _abstract">
 <p>The Infinispan chart creates default network services for internal access.</p>
 </div>
@@ -1672,13 +1786,13 @@ infinispan-ping   ClusterIP   None             &lt;none&gt;        8888/TCP</cod
 </div>
 </div>
 <div class="sect1">
-<h2 id="connecting-clusters"><a class="anchor" href="#connecting-clusters"></a>5. Connecting to Infinispan clusters</h2>
+<h2 id="connecting-clusters"><a class="anchor" href="#connecting-clusters"></a>6. Connecting to Infinispan clusters</h2>
 <div class="sectionbody">
 <div class="paragraph _abstract">
 <p>After you configure and deploy Infinispan clusters you can establish remote connections through the Infinispan Console, command line interface (CLI), Hot Rod client, or REST API.</p>
 </div>
 <div class="sect2">
-<h3 id="connecting-console_connecting-clusters"><a class="anchor" href="#connecting-console_connecting-clusters"></a>5.1. Accessing Infinispan Console</h3>
+<h3 id="connecting-console_connecting-clusters"><a class="anchor" href="#connecting-console_connecting-clusters"></a>6.1. Accessing Infinispan Console</h3>
 <div class="paragraph _abstract">
 <p>Access the console to create caches, perform adminstrative operations, and monitor your Infinispan clusters.</p>
 </div>
@@ -1706,7 +1820,7 @@ infinispan-ping   ClusterIP   None             &lt;none&gt;        8888/TCP</cod
 </div>
 </div>
 <div class="sect2">
-<h3 id="connecting-cli_connecting-clusters"><a class="anchor" href="#connecting-cli_connecting-clusters"></a>5.2. Connecting with the command line interface (CLI)</h3>
+<h3 id="connecting-cli_connecting-clusters"><a class="anchor" href="#connecting-cli_connecting-clusters"></a>6.2. Connecting with the command line interface (CLI)</h3>
 <div class="paragraph _abstract">
 <p>Use the Infinispan CLI to connect to clusters and create caches, manipulate data, and perform administrative operations.</p>
 </div>
@@ -1773,7 +1887,7 @@ infinispan-ping   ClusterIP   None             &lt;none&gt;        8888/TCP</cod
 </div>
 </div>
 <div class="sect2">
-<h3 id="connecting-clients-internal_connecting-clusters"><a class="anchor" href="#connecting-clients-internal_connecting-clusters"></a>5.3. Connecting Hot Rod clients running on Kubernetes</h3>
+<h3 id="connecting-clients-internal_connecting-clusters"><a class="anchor" href="#connecting-clients-internal_connecting-clusters"></a>6.3. Connecting Hot Rod clients running on Kubernetes</h3>
 <div class="paragraph _abstract">
 <p>Access remote caches with Hot Rod clients running on the same Kubernetes cluster as your Infinispan cluster.</p>
 </div>
@@ -1850,7 +1964,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="obtaining_IP_addresses_connecting-clusters"><a class="anchor" href="#obtaining_IP_addresses_connecting-clusters"></a>5.3.1. Obtaining IP addresses for all Infinispan pods</h4>
+<h4 id="obtaining_IP_addresses_connecting-clusters"><a class="anchor" href="#obtaining_IP_addresses_connecting-clusters"></a>6.3.1. Obtaining IP addresses for all Infinispan pods</h4>
 <div class="paragraph _abstract">
 <p>You can retrieve a list of all IP addresses for running Infinispan pods.</p>
 </div>
@@ -1910,7 +2024,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="connecting-clients-external_connecting-clusters"><a class="anchor" href="#connecting-clients-external_connecting-clusters"></a>5.4. Connecting Hot Rod clients running outside Kubernetes</h3>
+<h3 id="connecting-clients-external_connecting-clusters"><a class="anchor" href="#connecting-clients-external_connecting-clusters"></a>6.4. Connecting Hot Rod clients running outside Kubernetes</h3>
 <div class="paragraph _abstract">
 <p>Access remote caches with Hot Rod clients running externally to the Kubernetes cluster where you deploy your Infinispan cluster.</p>
 </div>
@@ -1991,7 +2105,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="connecting-rest_connecting-clusters"><a class="anchor" href="#connecting-rest_connecting-clusters"></a>5.5. Accessing the REST API</h3>
+<h3 id="connecting-rest_connecting-clusters"><a class="anchor" href="#connecting-rest_connecting-clusters"></a>6.5. Accessing the REST API</h3>
 <div class="paragraph _abstract">
 <p>Infinispan provides a RESTful interface that you can interact with using HTTP clients.</p>
 </div>
@@ -2031,7 +2145,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-11-21 12:33:28 -0500
+Last updated 2024-02-01 11:20:57 +0100
 </div>
 </div>
 <script>
