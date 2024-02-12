@@ -719,7 +719,12 @@ $(addBlockSwitches);
 </li>
 <li><a href="#opentelemetry-tracing">10. Enabling and configuring Infinispan OpenTelemetry tracing</a>
 <ul class="sectlevel2">
-<li><a href="#configuring-metrics_opentelemetry-tracing">10.1. Enabling Infinispan tracing</a></li>
+<li><a href="#configuring-tracing_opentelemetry-tracing">10.1. Configuring Infinispan tracing</a>
+<ul class="sectlevel3">
+<li><a href="#further_tracing_options">10.1.1. Further Tracing Options</a></li>
+</ul>
+</li>
+<li><a href="#tracing_cache">10.2. Configure tracing at cache level</a></li>
 </ul>
 </li>
 <li><a href="#managed-datasources">11. Adding managed datasources to Infinispan Server</a>
@@ -9019,9 +9024,100 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 <p>Infinispan generates tracing spans compatible with the OpenTelemetry standard, allowing you to export, visualize, and analyze tracing data related to the most important cache operations.</p>
 </div>
 <div class="sect2">
-<h3 id="configuring-metrics_opentelemetry-tracing"><a class="anchor" href="#configuring-metrics_opentelemetry-tracing"></a>10.1. Enabling Infinispan tracing</h3>
+<h3 id="configuring-tracing_opentelemetry-tracing"><a class="anchor" href="#configuring-tracing_opentelemetry-tracing"></a>10.1. Configuring Infinispan tracing</h3>
 <div class="paragraph">
 <p>Configure OpenTelemetry tracing, to enable monitoring and tracing of cache operations.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Add the <code>tracing</code> element or object to the cache container.</p>
+</li>
+<li>
+<p>Define the endpoint URL of the OpenTelemetry collector with the <code>collector_endpoint</code> attribute or field. It is mandatory to enable tracing. <code>4318</code> is typically the <code>http/protobuf</code> OTLP standard port.</p>
+</li>
+<li>
+<p>Enable or disable tracing globally with the <code>enable</code> attribute or field.</p>
+</li>
+<li>
+<p>Enable or disable security event tracing with the <code>security</code> attribute or field.</p>
+</li>
+<li>
+<p>Optionally change the tracing exporter protocol changing the <code>exporter_protocol</code> attribute or field. By default, it is <code>otlp</code> (OpenTelemetry protocol).</p>
+</li>
+<li>
+<p>Optionally change the tracing service name associated with the generated tracing span changing the <code>service_name</code> attribute or field. By default, it is <code>infinispan-server</code>.</p>
+</li>
+<li>
+<p>Save and close your client configuration.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Next steps</div>
+<p>To apply any global tracing configuration changes, stop the server and repeat the procedure.</p>
+</div>
+<h4 id="tracing_configuration" class="discrete">Tracing configuration</h4>
+<div class="paragraph">
+<p>Infinispan applies the tracing configuration globally to all caches.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
+  &lt;cache-container statistics="true"&gt;
+    &lt;tracing collector-endpoint="http://localhost:4318"
+             enabled="true"
+             exporter-protocol="otlp"
+             service-name="infinispan-server"
+             security="false" /&gt;
+  &lt;/cache-container&gt;
+&lt;/infinispan&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "infinispan" : {
+    "cache-container" : {
+      "statistics" : true,
+      "tracing" : {
+        "collector-endpoint" : "http://localhost:4318",
+        "enabled" : true,
+        "exporter-protocol" : "otlp",
+        "service-name" : "infinispan-server",
+        "security" : false
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  cacheContainer:
+    statistics: true
+    tracing:
+      collector-endpoint: "http://localhost:4318"
+      enabled: true
+      exporter-protocol : "otlp"
+      service-name : "infinispan-server"
+      security: false</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="further_tracing_options"><a class="anchor" href="#further_tracing_options"></a>10.1.1. Further Tracing Options</h4>
+<div class="paragraph">
+<p>To configure further tracing options it is possible to pass system properties or to set environment variables to the Infinispan server at startup
+to configure directly the <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md">OpenTelemetry SDK Autoconfigure</a>
+that is used by the Infinispan server to configure the OpenTelemetry tracing.</p>
 </div>
 <div class="ulist">
 <div class="title">Procedure</div>
@@ -9033,45 +9129,11 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh -Dinfinispan.tracing.enabled=true -Dotel.traces.exporter=otlp -Dotel.service.name=my-infinispan-server -Dotel.exporter.otlp.endpoint=http://otlp-collector-host:4318</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -Dotel.exporter.otlp.timeout=10000</code></pre>
 </div>
 </div>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<div class="title">Next steps</div>
-<p>To apply any configuration changes, stop the server and repeat the procedure.</p>
-</div>
-<h4 id="tracing_configuration" class="discrete">Tracing configuration</h4>
-<div class="paragraph">
-<p>Infinispan applies the tracing configuration globally to all caches.</p>
-</div>
-<div class="listingblock">
-<div class="title">tracing.properties</div>
-<div class="content">
-<pre class="highlight nowrap"><code>Unresolved directive in ../../topics/proc_configuring_tracing.adoc - include::properties/tracing.properties[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Enables tracing for all cache operations.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Sets the exporter format. The OTLP (OpenTelemetry protocol) exporter is the recommended format to export tracing data.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Specifies the service name associated with the generated tracing spans. The default name is <code>Infinispan Server</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Specifies the endpoint URL of the OpenTelemetry collector where the tracing data is sent. <code>4318</code> is typically the <code>http/protobuf</code> OTLP standard port.</td>
-</tr>
-</table>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -9093,6 +9155,107 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 </div>
 <div class="paragraph">
 <p>To use a different protocol, you must copy  JAR files or dependencies to the <code>$ISPN_HOME/server/lib</code> directory of your Infinispan Server installation.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tracing_cache"><a class="anchor" href="#tracing_cache"></a>10.2. Configure tracing at cache level</h3>
+<div class="paragraph">
+<p>Once the tracing is <a href="#configuring-tracing_opentelemetry-tracing">configured at server level</a>,
+it will be automatically enabled by default for all caches.
+A cache configuration level of tracing allows on the other hand to enable or disable it at cache level and at runtime.</p>
+</div>
+<h4 id="tracing_categories" class="discrete">Tracing categories</h4>
+<div class="paragraph">
+<p>Several categories are potentially traced:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Container. That are all the main cache operations, such as replace, put, clear, getForReplace, remove operations and size. With the exception of all the getting operation.</p>
+</li>
+<li>
+<p>Cluster. Operations that are replicated to another node in the same cluster.</p>
+</li>
+<li>
+<p>X-Site. Operations that are replicated to another external site.</p>
+</li>
+<li>
+<p>Persistence. All the operations involving persistence via a cache store and/or cache loader.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each of category can be enabled/disabled at start time or runtime listing them in the <code>categories</code> list attribute.
+By default only the container category is enabled.</p>
+</div>
+<div class="paragraph">
+<p>There is also the <code>Security</code> category, to trace security audit events.
+This category is configured globally, not only at cache level, since their events can have different scopes (cache, container or server),
+not only cache scope.</p>
+</div>
+<h4 id="enabledisable_tracing_for_a_given_cache" class="discrete">Enable/disable tracing for a given cache</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;replicated-cache&gt;
+    &lt;tracing enabled="true" categories="container, cluster" /&gt;
+&lt;/replicated-cache&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "distributed-cache": {
+    "tracing": {
+      "enabled" : true,
+      "categories" : "container, cluster"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributedCache:
+  tracing:
+    enabled: true
+    categories:
+      - container
+      - cluster</code></pre>
+</div>
+</div>
+<h4 id="enabledisable_tracing_at_runtime" class="discrete">Enable/disable tracing at runtime</h4>
+<div class="paragraph">
+<p>The cache-level tracing attribute <code>enable</code> is a mutable attribute,
+it means it can be changed at runtime without the need to restart the Infinispan cluster.</p>
+</div>
+<div class="paragraph">
+<p>To change a mutable attribute both HotRod and REST APIs can be used.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">HotRod</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">remoteCacheManager.administration()
+   .updateConfigurationAttribute(CACHE_A, "tracing.enabled", "false");</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">REST</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">restClient.cache(CACHE_A)
+   .updateConfigurationAttribute("tracing.enabled", "false");</code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../rest/rest.html#rest_v2_cache_mutable_attribute_set">Updating cache configuration attributes</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -13100,7 +13263,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-12 10:08:16 UTC
+Last updated 2024-02-12 17:20:56 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
