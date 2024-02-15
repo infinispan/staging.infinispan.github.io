@@ -840,6 +840,10 @@ OK
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/getset">GETSET</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. Use the <code>SET</code> command with the appropriate flags.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/hdel">HDEL</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -993,6 +997,10 @@ for concurrent operations or failures unless the resp cache is configured to use
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/msetnx">MSETNX</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/multi">MULTI</a> <a id="multi_command"></a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The current implementation has a relaxed isolation level. Redis offers serializable transactions, but {Infinispan}
 provides a read-uncommitted isolation.</p></td>
@@ -1006,12 +1014,12 @@ provides a read-uncommitted isolation.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/msetnx">MSETNX</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/ping">PING</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/ping">PING</a></p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/psetex">PSETEX</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. Utilize <code>SET</code> with the appropriate flags.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/psubscribe">PSUBSCRIBE</a></p></td>
@@ -1098,6 +1106,14 @@ provides a read-uncommitted isolation.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/setex">SETEX</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. Use the <code>SET</code> command with the appropriate flags.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/setnx">SETNX</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. Use the <code>SET</code> command with the appropriate flags.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/set">SETRANGE</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1148,6 +1164,10 @@ provides a read-uncommitted isolation.</p></td>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/strlen">STRLEN</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/substr">SUBSTR</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deprecated. Use the <code>GETRANGE</code> command.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/subscribe">SUBSCRIBE</a></p></td>
@@ -1311,7 +1331,7 @@ provides a read-uncommitted isolation.</p></td>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-12 22:01:55 UTC
+Last updated 2024-02-15 08:56:32 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
