@@ -1562,25 +1562,8 @@ Additionally, Infinispan disables cluster rebalancing and prevents local cache s
 </div>
 <div class="paragraph">
 <p>During the cluster recovery process, the coordinator node logs messages for each new node joining, indicating which nodes are available and which are still missing.
-Other nodes in the Infinispan cluster have the view from the time they join. You can monitor availability of caches using the Infinispan Console or REST API.</p>
-</div>
-<div class="paragraph">
-<p>However, in cases where waiting for all nodes is not necessary nor desired, it is possible to set a cache available with the current topology.
-This approach is possible through the CLI, see below, or the REST API.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Manually installing a topology can lead to data loss, only perform this operation if the initial topology cannot be recreated.</p>
-</div>
-</td>
-</tr>
-</table>
+Other nodes in the Infinispan cluster have the view from the time they join.<br>
+You can monitor availability of caches using the Infinispan Console or REST API.</p>
 </div>
 <h5 id="server_shutdown" class="discrete">Server shutdown</h5>
 <div class="paragraph">
@@ -8660,7 +8643,7 @@ You can then specify the JDNI name of the managed datasources in your caches, wh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.4.3</code></pre>
+<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
 </div>
 </div>
 </td>
@@ -11843,21 +11826,6 @@ Depending on your environment you can also use different network interfaces and 
 </li>
 </ol>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>If you need to migrate Indexed caches you must first migrate the internal <code>___protobuf_metadata</code> cache so that the .proto
-schemas defined on the source cluster will also be present on the target cluster.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -12651,7 +12619,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-16 06:59:00 UTC
+Last updated 2024-01-30 11:30:50 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">

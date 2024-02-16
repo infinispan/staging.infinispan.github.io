@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <title>Guide to Infinispan Server</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -84,10 +84,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -193,7 +193,8 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
 details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
 details{margin-left:1.25rem}
-details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;-webkit-tap-highlight-color:transparent}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
 details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
 details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
 details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
@@ -207,13 +208,10 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
@@ -235,9 +233,8 @@ pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
 table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
 table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
 table.linenotable td.code{padding-left:.75em}
-table.linenotable td.linenos{border-right:1px solid;opacity:.35;padding-right:.5em}
-pre.pygments .lineno{border-right:1px solid;opacity:.35;display:inline-block;margin-right:.75em}
-pre.pygments .lineno::before{content:"";margin-right:-.125em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
 .quoteblock{margin:0 1em 1.25em 1.5em;display:table}
 .quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
 .quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
@@ -274,7 +271,7 @@ table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-c
 table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
 table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
 table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
-table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
 th.halign-center,td.halign-center{text-align:center}
@@ -290,10 +287,11 @@ ol{margin-left:1.75em}
 ul li ol{margin-left:1.5em}
 dl dd{margin-left:1.125em}
 dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
-ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
 ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
 ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
 ul.checklist>li>p:first-child{margin-left:-1em}
 ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
 ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
@@ -336,8 +334,6 @@ sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
 #footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
 #footnotes .footnote:last-of-type{margin-bottom:0}
 #content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
-.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
-.gist .file-data>table td.line-data{width:99%}
 div.unbreakable{page-break-inside:avoid}
 .big{font-size:larger}
 .small{font-size:smaller}
@@ -394,7 +390,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -723,7 +719,12 @@ $(addBlockSwitches);
 </li>
 <li><a href="#opentelemetry-tracing">10. Enabling and configuring Infinispan OpenTelemetry tracing</a>
 <ul class="sectlevel2">
-<li><a href="#configuring-metrics_opentelemetry-tracing">10.1. Enabling Infinispan tracing</a></li>
+<li><a href="#configuring-tracing_opentelemetry-tracing">10.1. Configuring Infinispan tracing</a>
+<ul class="sectlevel3">
+<li><a href="#further_tracing_options">10.1.1. Further Tracing Options</a></li>
+</ul>
+</li>
+<li><a href="#tracing_cache">10.2. Configure tracing at cache level</a></li>
 </ul>
 </li>
 <li><a href="#managed-datasources">11. Adding managed datasources to Infinispan Server</a>
@@ -963,7 +964,7 @@ Hot Rod Java clients.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>unzip infinispan-server-15.0.0.Dev07.zip</code></pre>
+<pre class="highlight nowrap"><code>unzip infinispan-server-15.0.0.Dev09.zip</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -9023,9 +9024,100 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 <p>Infinispan generates tracing spans compatible with the OpenTelemetry standard, allowing you to export, visualize, and analyze tracing data related to the most important cache operations.</p>
 </div>
 <div class="sect2">
-<h3 id="configuring-metrics_opentelemetry-tracing"><a class="anchor" href="#configuring-metrics_opentelemetry-tracing"></a>10.1. Enabling Infinispan tracing</h3>
+<h3 id="configuring-tracing_opentelemetry-tracing"><a class="anchor" href="#configuring-tracing_opentelemetry-tracing"></a>10.1. Configuring Infinispan tracing</h3>
 <div class="paragraph">
 <p>Configure OpenTelemetry tracing, to enable monitoring and tracing of cache operations.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Open your Infinispan configuration for editing.</p>
+</li>
+<li>
+<p>Add the <code>tracing</code> element or object to the cache container.</p>
+</li>
+<li>
+<p>Define the endpoint URL of the OpenTelemetry collector with the <code>collector_endpoint</code> attribute or field. It is mandatory to enable tracing. <code>4318</code> is typically the <code>http/protobuf</code> OTLP standard port.</p>
+</li>
+<li>
+<p>Enable or disable tracing globally with the <code>enable</code> attribute or field.</p>
+</li>
+<li>
+<p>Enable or disable security event tracing with the <code>security</code> attribute or field.</p>
+</li>
+<li>
+<p>Optionally change the tracing exporter protocol changing the <code>exporter_protocol</code> attribute or field. By default, it is <code>otlp</code> (OpenTelemetry protocol).</p>
+</li>
+<li>
+<p>Optionally change the tracing service name associated with the generated tracing span changing the <code>service_name</code> attribute or field. By default, it is <code>infinispan-server</code>.</p>
+</li>
+<li>
+<p>Save and close your client configuration.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Next steps</div>
+<p>To apply any global tracing configuration changes, stop the server and repeat the procedure.</p>
+</div>
+<h4 id="tracing_configuration" class="discrete">Tracing configuration</h4>
+<div class="paragraph">
+<p>Infinispan applies the tracing configuration globally to all caches.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
+  &lt;cache-container statistics="true"&gt;
+    &lt;tracing collector-endpoint="http://localhost:4318"
+             enabled="true"
+             exporter-protocol="otlp"
+             service-name="infinispan-server"
+             security="false" /&gt;
+  &lt;/cache-container&gt;
+&lt;/infinispan&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "infinispan" : {
+    "cache-container" : {
+      "statistics" : true,
+      "tracing" : {
+        "collector-endpoint" : "http://localhost:4318",
+        "enabled" : true,
+        "exporter-protocol" : "otlp",
+        "service-name" : "infinispan-server",
+        "security" : false
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">infinispan:
+  cacheContainer:
+    statistics: true
+    tracing:
+      collector-endpoint: "http://localhost:4318"
+      enabled: true
+      exporter-protocol : "otlp"
+      service-name : "infinispan-server"
+      security: false</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="further_tracing_options"><a class="anchor" href="#further_tracing_options"></a>10.1.1. Further Tracing Options</h4>
+<div class="paragraph">
+<p>To configure further tracing options it is possible to pass system properties or to set environment variables to the Infinispan server at startup
+to configure directly the <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md">OpenTelemetry SDK Autoconfigure</a>
+that is used by the Infinispan server to configure the OpenTelemetry tracing.</p>
 </div>
 <div class="ulist">
 <div class="title">Procedure</div>
@@ -9037,45 +9129,11 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>bin/server.sh -Dinfinispan.tracing.enabled=true -Dotel.traces.exporter=otlp -Dotel.service.name=my-infinispan-server -Dotel.exporter.otlp.endpoint=http://otlp-collector-host:4318</code></pre>
+<pre class="highlight nowrap"><code>bin/server.sh -Dotel.exporter.otlp.timeout=10000</code></pre>
 </div>
 </div>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<div class="title">Next steps</div>
-<p>To apply any configuration changes, stop the server and repeat the procedure.</p>
-</div>
-<h4 id="tracing_configuration" class="discrete">Tracing configuration</h4>
-<div class="paragraph">
-<p>Infinispan applies the tracing configuration globally to all caches.</p>
-</div>
-<div class="listingblock">
-<div class="title">tracing.properties</div>
-<div class="content">
-<pre class="highlight nowrap"><code>Unresolved directive in ../../topics/proc_configuring_tracing.adoc - include::properties/tracing.properties[]</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Enables tracing for all cache operations.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Sets the exporter format. The OTLP (OpenTelemetry protocol) exporter is the recommended format to export tracing data.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Specifies the service name associated with the generated tracing spans. The default name is <code>Infinispan Server</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Specifies the endpoint URL of the OpenTelemetry collector where the tracing data is sent. <code>4318</code> is typically the <code>http/protobuf</code> OTLP standard port.</td>
-</tr>
-</table>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -9097,6 +9155,107 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
 </div>
 <div class="paragraph">
 <p>To use a different protocol, you must copy  JAR files or dependencies to the <code>$ISPN_HOME/server/lib</code> directory of your Infinispan Server installation.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tracing_cache"><a class="anchor" href="#tracing_cache"></a>10.2. Configure tracing at cache level</h3>
+<div class="paragraph">
+<p>Once the tracing is <a href="#configuring-tracing_opentelemetry-tracing">configured at server level</a>,
+it will be automatically enabled by default for all caches.
+A cache configuration level of tracing allows on the other hand to enable or disable it at cache level and at runtime.</p>
+</div>
+<h4 id="tracing_categories" class="discrete">Tracing categories</h4>
+<div class="paragraph">
+<p>Several categories are potentially traced:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Container. That are all the main cache operations, such as replace, put, clear, getForReplace, remove operations and size. With the exception of all the getting operation.</p>
+</li>
+<li>
+<p>Cluster. Operations that are replicated to another node in the same cluster.</p>
+</li>
+<li>
+<p>X-Site. Operations that are replicated to another external site.</p>
+</li>
+<li>
+<p>Persistence. All the operations involving persistence via a cache store and/or cache loader.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each of category can be enabled/disabled at start time or runtime listing them in the <code>categories</code> list attribute.
+By default only the container category is enabled.</p>
+</div>
+<div class="paragraph">
+<p>There is also the <code>Security</code> category, to trace security audit events.
+This category is configured globally, not only at cache level, since their events can have different scopes (cache, container or server),
+not only cache scope.</p>
+</div>
+<h4 id="enabledisable_tracing_for_a_given_cache" class="discrete">Enable/disable tracing for a given cache</h4>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;replicated-cache&gt;
+    &lt;tracing enabled="true" categories="container, cluster" /&gt;
+&lt;/replicated-cache&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "distributed-cache": {
+    "tracing": {
+      "enabled" : true,
+      "categories" : "container, cluster"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributedCache:
+  tracing:
+    enabled: true
+    categories:
+      - container
+      - cluster</code></pre>
+</div>
+</div>
+<h4 id="enabledisable_tracing_at_runtime" class="discrete">Enable/disable tracing at runtime</h4>
+<div class="paragraph">
+<p>The cache-level tracing attribute <code>enable</code> is a mutable attribute,
+it means it can be changed at runtime without the need to restart the Infinispan cluster.</p>
+</div>
+<div class="paragraph">
+<p>To change a mutable attribute both HotRod and REST APIs can be used.</p>
+</div>
+<div class="listingblock primary">
+<div class="title">HotRod</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">remoteCacheManager.administration()
+   .updateConfigurationAttribute(CACHE_A, "tracing.enabled", "false");</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">REST</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-java" data-lang="java">restClient.cache(CACHE_A)
+   .updateConfigurationAttribute("tracing.enabled", "false");</code></pre>
+</div>
+</div>
+<div class="ulist _additional-resources">
+<div class="title">Additional resources</div>
+<ul>
+<li>
+<p><a href="../rest/rest.html#rest_v2_cache_mutable_attribute_set">Updating cache configuration attributes</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -9130,7 +9289,7 @@ You can then specify the JDNI name of the managed datasources in your caches, wh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.7.1</code></pre>
 </div>
 </div>
 </td>
@@ -9506,7 +9665,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>12.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.0.Dev07.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.0.Dev09.jar</code> file.</p>
 </div>
 <div class="paragraph">
 <p>You can find this JAR file in the <code>$ISPN_HOME/lib</code> directory.</p>
@@ -12313,6 +12472,21 @@ Depending on your environment you can also use different network interfaces and 
 </li>
 </ol>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you need to migrate Indexed caches you must first migrate the internal <code>___protobuf_metadata</code> cache so that the .proto
+schemas defined on the source cluster will also be present on the target cluster.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -13104,7 +13278,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-19 08:12:57 -0500
+Last updated 2024-01-30 11:30:50 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
