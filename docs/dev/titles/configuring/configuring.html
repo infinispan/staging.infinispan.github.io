@@ -8119,10 +8119,24 @@ The data types described in the example are only valid for PostgreSQL database.<
 <div class="paragraph">
 <p>Protobuf schema for the "person" and "address" tables are as follows:</p>
 </div>
+<div class="listingblock secondary">
+<div class="title">Protobuf schema for the "address" table</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example;
+
+message Address {
+   optional string street = 1;
+   optional string city = 2 [default = "San Jose"];
+   optional int32 zip = 3 [default = 0];
+}</code></pre>
+</div>
+</div>
 <div class="listingblock primary">
 <div class="title">Protobuf schema for the "person" table</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example;
+
+import com.example.Address;
 
 enum Sex {
    FEMALE = 1;
@@ -8136,18 +8150,6 @@ message Person {
    optional Sex sex = 4;
    optional fixed64 birthDate = 5 [default = 0];
    optional bool accepted_tos = 6 [default = false];
-}</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Protobuf schema for the "address" table</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example
-
-message Address {
-   optional string street = 1;
-   optional string city = 2 [default = "San Jose"];
-   optional int32 zip = 3 [default = 0];
 }</code></pre>
 </div>
 </div>
@@ -8167,7 +8169,7 @@ message Address {
                             connection-url="jdbc:postgresql://localhost:5432/postgres"
                             username="postgres"
                             password="changeme"/&gt;
-      &lt;queries select-single="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name"
+      &lt;queries select-single="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name"
         select-all="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name"
         delete-single="DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name"
         delete-all="DELETE FROM Person; DELETE FROM Address"
@@ -8193,7 +8195,7 @@ message Address {
         "shared": "true",
         "key-columns": "name",
         "queries": {
-          "select-single": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name",
+          "select-single": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name",
           "select-all": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name",
           "delete-single": "DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name",
           "delete-all": "DELETE FROM Person; DELETE FROM Address",
@@ -8221,7 +8223,7 @@ message Address {
       shared: "true"
       keyColumns: "name"
       queries:
-        selectSingle: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name"
+        selectSingle: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name"
         selectAll: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name"
         deleteSingle: "DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name"
         deleteAll: "DELETE FROM Person; DELETE FROM Address"
@@ -8242,7 +8244,7 @@ builder.persistence().addStore(QueriesJdbcStoreConfigurationBuilder.class)
       .shared("true")
       .keyColumns("name")
       .queriesJdbcConfigurationBuilder()
-         .select("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name")
+         .select("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name")
          .selectAll("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name")
          .delete("DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name")
          .deleteAll("DELETE FROM Person; DELETE FROM Address")
@@ -13034,7 +13036,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-20 09:49:03 UTC
+Last updated 2024-02-20 18:00:41 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
