@@ -2718,6 +2718,14 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>azure</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Uses TCP for transport and <code>AZURE_PING</code> for discovery. Suitable for Microsoft Azure nodes where UDP multicast is not available. Requires additional dependencies.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default-jgroups-tunnel.xml</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tunnel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses <code>TUNNEL</code> for transport.
+Suitable for environments where the Infinispan is behind a firewall and direct connection between Infinispan nodes is impossible.
+It requires an external and accessible service (<a href="http://jgroups.org/manual5/index.html#TUNNEL_Advanced">Gossip Router</a>) to redirect the traffic.
+It requires <code>jgroups.tunnel.hosts</code> property to be set in the format <code>host1[port],host2[port],&#8230;&#8203;</code> with the Gossip Router(s) hosts and ports.</p></td>
+</tr>
 </tbody>
 </table>
 <div class="ulist _additional-resources">
@@ -3611,7 +3619,7 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;config xmlns="urn:org:jgroups"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-5.2.xsd"&gt;
+        xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-5.3.xsd"&gt;
     &lt;UDP bind_addr="${jgroups.bind_addr:127.0.0.1}"
          mcast_addr="${jgroups.udp.mcast_addr:239.0.2.0}"
          mcast_port="${jgroups.udp.mcast_port:46655}"
@@ -3857,7 +3865,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 <p><a href="http://www.jgroups.org/manual4/index.html">JGroups 4 Manual</a></p>
 </li>
 <li>
-<p><a href="http://www.jgroups.org/schema/jgroups-5.2.xsd">JGroups 4.2 Schema</a></p>
+<p><a href="http://www.jgroups.org/schema/jgroups-5.3.xsd">JGroups 4.2 Schema</a></p>
 </li>
 </ul>
 </div>
@@ -3935,7 +3943,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 <p><a href="http://www.jgroups.org/manual4/index.html">JGroups 4 Manual</a></p>
 </li>
 <li>
-<p><a href="http://www.jgroups.org/schema/jgroups-5.2.xsd">JGroups 4.2 Schema</a></p>
+<p><a href="http://www.jgroups.org/schema/jgroups-5.3.xsd">JGroups 4.2 Schema</a></p>
 </li>
 </ul>
 </div>
@@ -7133,7 +7141,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-27 17:06:59 UTC
+Last updated 2024-02-28 14:01:20 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">

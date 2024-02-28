@@ -9715,6 +9715,14 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>azure</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Uses TCP for transport and <code>AZURE_PING</code> for discovery. Suitable for Microsoft Azure nodes where UDP multicast is not available. Requires additional dependencies.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default-jgroups-tunnel.xml</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tunnel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Uses <code>TUNNEL</code> for transport.
+Suitable for environments where the Infinispan is behind a firewall and direct connection between Infinispan nodes is impossible.
+It requires an external and accessible service (<a href="http://jgroups.org/manual5/index.html#TUNNEL_Advanced">Gossip Router</a>) to redirect the traffic.
+It requires <code>jgroups.tunnel.hosts</code> property to be set in the format <code>host1[port],host2[port],&#8230;&#8203;</code> with the Gossip Router(s) hosts and ports.</p></td>
+</tr>
 </tbody>
 </table>
 <div class="ulist _additional-resources">
@@ -10851,7 +10859,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 <p><a href="http://www.jgroups.org/manual4/index.html">JGroups 4 Manual</a></p>
 </li>
 <li>
-<p><a href="http://www.jgroups.org/schema/jgroups-5.2.xsd">JGroups 4.2 Schema</a></p>
+<p><a href="http://www.jgroups.org/schema/jgroups-5.3.xsd">JGroups 4.2 Schema</a></p>
 </li>
 </ul>
 </div>
@@ -10929,7 +10937,7 @@ Otherwise the following message is written to Infinispan logs:</p>
 <p><a href="http://www.jgroups.org/manual4/index.html">JGroups 4 Manual</a></p>
 </li>
 <li>
-<p><a href="http://www.jgroups.org/schema/jgroups-5.2.xsd">JGroups 4.2 Schema</a></p>
+<p><a href="http://www.jgroups.org/schema/jgroups-5.3.xsd">JGroups 4.2 Schema</a></p>
 </li>
 </ul>
 </div>
@@ -13250,7 +13258,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-27 17:06:59 UTC
+Last updated 2024-02-28 14:01:20 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
