@@ -5711,10 +5711,7 @@ You can also use the same keystore for each Infinispan cluster or a unique keyst
 </div>
 </li>
 <li>
-<p>Optionally have a trust store that contains part of the certificate chain or root CA certificate that verifies public certificates for Infinispan relay pods and router pods.</p>
-<div class="paragraph">
-<p>By default, Infinispan uses the Java trust store to verify public certificates.</p>
-</div>
+<p>Have a PKCS12 trust store that contains part of the certificate chain or root CA certificate that verifies public certificates for Infinispan relay pods and router pods.</p>
 </li>
 </ul>
 </div>
@@ -5729,7 +5726,7 @@ You can also use the same keystore for each Infinispan cluster or a unique keyst
 <p>Create keystore secrets.</p>
 </li>
 <li>
-<p>Create trust store secrets if you do not want to use the default Java trust store.</p>
+<p>Create trust store secrets.</p>
 </li>
 </ol>
 </div>
@@ -5808,7 +5805,7 @@ spec:
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>service.type.sites.local.encryption.trustStore</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Configures an optional trust store secret for relay pods and router pods.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configures a trust store secret for relay pods and router pods.</p></td>
 </tr>
 </tbody>
 </table>
@@ -5887,8 +5884,8 @@ The default value is <code>keystore.p12</code>.</p></td>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>secretName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Optionally specifies the secret that contains a trust store to verify public certificates for relay pods and router pods.
-The default value is <code>&lt;cluster-name&gt;-truststore-site-tls-secret</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies the secret that contains a trust store to verify public certificates for relay pods and router pods.
+This field is required.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>filename</code></p></td>
@@ -5901,7 +5898,7 @@ The default value is <code>truststore.p12</code>.</p></td>
 <div class="sect3">
 <h4 id="cross-site-encryption-secrets_cross-site"><a class="anchor" href="#cross-site-encryption-secrets_cross-site"></a>13.7.2. Cross-site encryption secrets</h4>
 <div class="paragraph _abstract">
-<p>Cross-site replication encryption secrets add keystores and optional trust stores for securing cross-site connections.</p>
+<p>Cross-site replication encryption secrets add keystores and trust store for securing cross-site connections.</p>
 </div>
 <div class="listingblock">
 <div class="title">Cross-site encryption secrets</div>
@@ -8783,7 +8780,7 @@ For example, configure a <code>LoadBalancer</code> service or create a <code>Rou
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-29 10:19:13 UTC
+Last updated 2024-02-29 15:56:52 UTC
 </div>
 </div>
 <script>
