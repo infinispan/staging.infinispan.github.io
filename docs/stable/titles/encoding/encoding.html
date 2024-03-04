@@ -1570,43 +1570,27 @@ You should ignore any code examples or documentation that show how to use <code>
 <div class="title">Procedure</div>
 <ul>
 <li>
-<p>Add the <code>protostream-processor</code> dependency to your <code>pom.xml</code> with the <code>provided</code> scope.</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>This dependency is required at compile-time only so you should use the <code>provided</code> scope or mark it as optional.
-You should also ensure the <code>protostream-processor</code> is not propagated as a transitive dependency.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
+<p>Add the <code>protostream-processor</code> to the annotation processors configuration of <code>maven-compiler-plugin</code> to your <code>pom.xml</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
-  &lt;dependencies&gt;
-    &lt;dependency&gt;
-      &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-      &lt;artifactId&gt;infinispan-bom&lt;/artifactId&gt;
-      &lt;version&gt;${version.infinispan}&lt;/version&gt;
-      &lt;type&gt;pom&lt;/type&gt;
-      &lt;scope&gt;import&lt;/scope&gt;
-    &lt;/dependency&gt;
-  &lt;/dependencies&gt;
-&lt;/dependencyManagement&gt;
-
-&lt;dependencies&gt;
-  &lt;dependency&gt;
-    &lt;groupId&gt;org.infinispan.protostream&lt;/groupId&gt;
-    &lt;artifactId&gt;protostream-processor&lt;/artifactId&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
-  &lt;/dependency&gt;
-&lt;/dependencies&gt;</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;build&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+      &lt;version&gt;...&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;annotationProcessorPaths&gt;
+          &lt;annotationProcessorPath&gt;
+            &lt;groupId&gt;org.infinispan.protostream&lt;/groupId&gt;
+            &lt;artifactId&gt;protostream-processor&lt;/artifactId&gt;
+            &lt;version&gt;...&lt;/version&gt;
+          &lt;/annotationProcessorPath&gt;
+        &lt;/annotationProcessorPaths&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -2517,7 +2501,7 @@ byte[] json = jsonValuesCache.get(1);</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-22 18:22:48 UTC
+Last updated 2024-03-04 16:59:02 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
