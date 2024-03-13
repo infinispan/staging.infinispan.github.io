@@ -1,4 +1,600 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-02-16T09:18:08+01:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Using Infinispan Server for your Redis clients</title><link href="https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients" rel="alternate" type="text/html" title="Using Infinispan Server for your Redis clients" /><published>2024-02-02T01:00:00+01:00</published><updated>2024-02-02T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients</id><content type="html" xml:base="https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients">&lt;div class=&quot;paragraph&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-03-13T09:56:09+01:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15.0.0.Final</title><link href="https://infinispan.org/blog/2024/03/13/infinispan-15" rel="alternate" type="text/html" title="Infinispan 15.0.0.Final" /><published>2024-03-13T01:00:00+01:00</published><updated>2024-03-13T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/03/13/infinispan-15.0.0.Final</id><content type="html" xml:base="https://infinispan.org/blog/2024/03/13/infinispan-15">&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Don&amp;#8217;t you know I&amp;#8217;m still standin&apos; better than I ever did?
+Lookin&apos; like a true survivor, feelin&apos; like a little kid&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Those lyrics certainly apply to our newest, and best, release: Infinispan 15, which continues to improve on its mature foundation, and yet packs fun new features, just like a little kid.
+And in our grand tradition of codenames based on beers, this one &lt;a href=&quot;https://untappd.com/b/delphic-brewing-company-i-m-still-standing/3572608&quot;&gt;is no exception&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/assets/images/blog/im-still-standing.jpg&quot; alt=&quot;I&amp;#8217;m Still Standing&quot; width=&quot;1000&quot; height=&quot;891&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;jdk-requirements&quot;&gt;JDK requirements&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You will need at least JDK 17 in order to use Infinispan 15. Infinispan also supports JDK 21 and the soon-to-be-released JDK 22.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;jakarta-ee&quot;&gt;Jakarta EE&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Since we&amp;#8217;ve completely embraced JDK 17, we now only ship &lt;a href=&quot;https://jakarta.ee&quot;&gt;Jakarta EE&lt;/a&gt;-compatible modules. If you want to keep on using Java EE, you will have to stay
+on Infinispan 14, which is still supported.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;redis-protocol&quot;&gt;Redis protocol&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan Server now comes with a Redis protocol (RESP) connector. We implement over 90 commands from Redis OSS, including most data types (strings, sets, sorted sets, lists, hashes, pubsub). Why would you want to use Infinispan instead of Redis ? Just some things:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;multi-threaded: take advantage of multiple cores without resorting to clustering&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;P2P clustering: all members of a cluster are of the same kind. You don’t need to worry about writing to masters, reading from replicas: it’s all the same! Elastically add/remove nodes at runtime to increase/decrease capacity as required by your workload: Infinispan will rebalance the data to ensure that your redundancy settings are respected.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;multiple caches with dedicated configuration: divide your data in different namespaces, possibly with different expiration, eviction, persistence rules. And it also works in a cluster, unlike Redis Cluster.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;cross-site replication: work with 2 or more sites&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;multiple persistence options: store your data on disk, in a database or in another external store. You can even write your own to implement true inline caching instead of side-caching to reduce your overall latency.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;integration with external identity providers: authenticate/authorize with OAuth2, LDAP, Kerberos, client certificates.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;full pipeline inbound process handling allows for even greater batched throughput&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;a mature, open-source Kubernetes Operator which supports provisioning, scaling, persistence, and integration with enterprise security.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;lots more!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;and everything is available under the ASL 2.0, so you don’t have to worry about features being locked behind restrictive licenses.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The Redis connector is exposed via our single-port: we automatically detect RESP clients on connection!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We even made a &lt;a href=&quot;https://www.youtube.com/watch?v=Xi9gTA0jfD0&quot;&gt;video&lt;/a&gt; highlighting some cool things!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;vector-indexes&quot;&gt;Vector indexes&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan now supports distributed vector indexes and KNN queries.
+They are expressed in Ickle (SQL-like) syntax using the special operator &lt;code&gt;&amp;lt;&amp;#8594;&lt;/code&gt;. For instance:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;Query&amp;lt;Item&amp;gt; query = cache.query(&quot;from Item i where i.byteVector &amp;lt;-&amp;gt; [7,6,7]~3&quot;);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Vector parameters can be passed in different ways.
+As an entire entity:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;query = cache.query(&quot;from model.Item i where i.byteVector &amp;lt;-&amp;gt; [:a]~:b&quot;);
+query.setParameter(&quot;a&quot;, new byte[]{7, 6, 7});
+query.setParameter(&quot;b&quot;, 3);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Or using a placeholder for each cell:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;query = cache.query(&quot;from model.Item i where i.floatVector &amp;lt;-&amp;gt; [:a,:b,:c]~:d&quot;);
+query.setParameter(&quot;a&quot;, 1);
+query.setParameter(&quot;b&quot;, 4.3);
+query.setParameter(&quot;c&quot;, 3.3);
+query.setParameter(&quot;d&quot;, 4);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Both float vectors and byte vectors are supported.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan can be easily integrated into a Python Langchain application as a vector store for semantic search or even in a chain: the picture below shows a QA chain in action.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/assets/images/blog/vector-search-relnotes.gif&quot; alt=&quot;Infinispan VectorStore&quot; width=&quot;640&quot; height=&quot;480&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;See &lt;a href=&quot;https://python.langchain.com/docs/integrations/vectorstores/infinispanvs&quot;&gt;Infinispan VectorStore&lt;/a&gt; and &lt;a href=&quot;https://github.com/infinispan-demos/infinispan-langchain-demo&quot;&gt;Infinispan Langchain demo&lt;/a&gt; for more examples.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan is also part of &lt;a href=&quot;https://github.com/langchain4j/langchain4j&quot;&gt;Langchain4j&lt;/a&gt;, thus the &lt;a href=&quot;https://docs.quarkiverse.io/quarkus-langchain4j/dev/infinispan-store.html&quot;&gt;Quarkus Langchain4j&lt;/a&gt; quarkiverse extension.
+It can be used as an &lt;a href=&quot;https://docs.langchain4j.dev/integrations/embedding-stores/infinispan&quot;&gt;embedding store&lt;/a&gt; thanks to the support added to vector search.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;query&quot;&gt;Query&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We finally made it easy to execute queries directly from the cache API, instead of having to go through the Search/QueryFactory combination:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;Query&amp;lt;Image&amp;gt; query = cache.query(&quot;from play.image where moment between :from and :to order by moment desc&quot;);
+query.setParameter(&quot;from&quot;, fromDate);
+query.setParameter(&quot;to&quot;, toDate);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The query result object evolved to provide accurate information about the hit count.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;QueryResult&amp;lt;Game&amp;gt; result = query.execute();
+HitCount hitCount = result.count();
+hitCount.value() // returns the value
+hitCount.isExact() // returns the accuracy&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Moreover, hit count accuracy can be configured both globally and for each query execution to improve the performance of the queries.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;the efficiency of the #list query method has been improved.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;High-performance indexed count aggregation queries are now supported.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;More projections kinds have been added:&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Score&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Version&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Star/Identity&lt;/p&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;and they are now available also using the REST query APIs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;BigDecimal and BigInteger types are now supported on the ickle queries.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;index sharding is now configurable.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;indexing can be now configured in manual mode.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;index statistics now also contain the faults.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;the index engine is now called in a non-blocking fashion.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;tracing&quot;&gt;Tracing&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The tracing subsystem configuration was greatly improved. Tracing can be configured both globally:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-xml hljs&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;cache-container name=&quot;default&quot;&amp;gt;
+      &amp;lt;tracing collector-endpoint=&quot;${infinispan.tracing.collector-endpoint}&quot; security=”true” /&amp;gt;
+&amp;lt;/cache-container&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;and per-cache:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-yaml hljs&quot; data-lang=&quot;yaml&quot;&gt;tracing:
+    enabled: true
+    categories:
+      - &quot;container&quot;
+      - &quot;cluster&quot;
+      - &quot;persistence&quot;
+      - “x-site”&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Moreover, many more things can be traced:
+* cluster calls
+* cross-site calls
+* persistence operations
+* security audit operations&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All of the aboive, with the only exception of the security tracing, can be enabled / disabled at runtime.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The following is a trace going from client application to the server via Hot Rod, involving a call to a persistent store;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/tracing15-1.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/thumb-tracing15-1.png&quot; alt=&quot;Tracing #1&quot; width=&quot;550&quot; height=&quot;107&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/tracing15-2.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/thumb-tracing15-2.png&quot; alt=&quot;Tracing #2&quot; width=&quot;550&quot; height=&quot;101&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;console&quot;&gt;Console&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;List  the connected clients from the console.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/console15-1.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/thumb-console15-1.png&quot; alt=&quot;Console #1&quot; width=&quot;550&quot; height=&quot;291&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Manage roles, users and access control for Principal Role Mappers from the console.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/console15-2.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/thumb-console15-2.png&quot; alt=&quot;Console #1&quot; width=&quot;550&quot; height=&quot;302&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Infinispan Server web console can be switched to dark mode.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;a class=&quot;image&quot; href=&quot;/assets/images/blog/console15-3.png&quot;&gt;&lt;img src=&quot;/assets/images/blog/thumb-console15-3.png&quot; alt=&quot;Console #3&quot; width=&quot;550&quot; height=&quot;286&quot;&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;core&quot;&gt;Core&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Many of the core optimizations have been around optimizing intra-cluster communications, especially around previous values that were identified being returned when they are not needed. This ensures Infinispan only sends the cache value around only in the case of put operations, reducing those payloads substantially.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;remove-operations-behavior-change&quot;&gt;Remove Operations behavior change&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Remove operations on a non tx cache will no longer generate intra-cluster traffic if no value is present. Cross sit removes are still always replicated due to not knowing if the other site has the key or not. Stores may load the key to see if it is present to invoke a remove or not, depending on the cache configuration.
+This also may prevent some listeners from receiving remove notifications, since the operation is not replicated.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;writes-on-backup-nodes-do-not-retrieve-previous-value&quot;&gt;Writes on Backup Nodes do not retrieve previous value&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Internally write operations would be performed on backup nodes returning the previous value to the primary owner. There is no need for this and as such we have optimized intra cluster communication to no longer return this value.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;converter-listener-can-ignore-old-value&quot;&gt;Converter Listener can ignore old value&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Listener converters can override a new method includeOldValue. This allows for a converter to not send an old value along in a change event, reducing payload size of such events. This is useful for events where they only utilize the new value. Link to the source.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An example of a converter that just appends the new value and lifespan as the value for the listener.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;   @ProtoName(&quot;StringAppender&quot;)
+   public static class StringAppender implements CacheEventConverter&amp;lt;Object, String, String&amp;gt; {
+      @Override
+      public String convert(Object key, String oldValue, Metadata oldMetadata, String newValue, Metadata newMetadata, EventType eventType) {
+         return oldValue + (oldMetadata != null ? oldMetadata.lifespan() : &quot;null&quot;) + newValue + (newMetadata != null ? newMetadata.lifespan() : &quot;null&quot;);
+      }
+
+      /**
+       * Whether the old value should be returned in the event with the converted value.
+        */
+      @Override
+      public boolean includeOldValue() {
+         return false;
+      }
+   }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;marshalling&quot;&gt;Marshalling&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Our ProtoStream library, which handles annotation-based generation of Protocol Buffers marshallers, has been updated to finally support the proto3 syntax, including the &lt;code&gt;map&lt;/code&gt; type. ProtoStream can now generate marshallers for Java &lt;code&gt;records&lt;/code&gt;, as well as introducing a new annotation &lt;code&gt;@Proto&lt;/code&gt; which makes life much simpler:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;@Proto
+@Indexed
+public record Book(
+    @Text String title,
+    @Keyword(projectable = true, sortable = true, normalizer = &quot;lowercase&quot;, indexNullAs = &quot;unnamed&quot;, norms = false) String description,
+    int publicationYear,
+    Set&amp;lt;Author&amp;gt; authors,
+    Type bookType,
+    BigDecimal price
+) { }&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;ProtoStream’s programmatic API has also received some love: you can now generate schemas from your code, and you can easily implement hand-written marshallers in case the annotation-based magic doesn’t work for you.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;Schema schema = new Schema.Builder(&quot;magazine.proto&quot;)
+    .packageName(&quot;magazine_sample&quot;)
+    .addMessage(&quot;Magazine&quot;)
+        .addField(Type.Scalar.STRING, &quot;name&quot;, 1)
+        .addField(Type.Scalar.INT32, &quot;publicationYear&quot;, 2)
+        .addField(Type.Scalar.INT32, &quot;publicationMonth&quot;, 3)
+        .addRepeatedField(Type.Scalar.STRING, &quot;stories&quot;, 4)
+    .build();
+
+FileDescriptorSource file = FileDescriptorSource.fromString(&quot;magazine.proto&quot;, schema.toString());&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;By popular demand, we have also undeprecated the use of JBoss Marshalling, although we still highly recommend ProtoBuf for interoperability and performance.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;memcached-protocol&quot;&gt;Memcached protocol&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We upgraded our memcached connector to support the binary protocol as well as supporting authentication and encryption for both the text and binary variants. Because of this, the connector is also exposed via our single-port, with protocol auto-detection! While we do not yet support the Memcached meta commands, text-based authentication can be performed by sending a fake &lt;code&gt;set`&lt;/code&gt; command with any key:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-none hljs&quot;&gt;set &amp;lt;key&amp;gt; &amp;lt;flags&amp;gt; &amp;lt;exptime&amp;gt; &amp;lt;bytes&amp;gt;\r\n
+username password\r\n&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;server&quot;&gt;Server&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Server security has been expanded with the new &lt;code&gt;aggregate-realm&lt;/code&gt; type, which allows you to combine different realm types for authentication and authorization. For example, you could use client certificates for authentication and an LDAP server to perform authorization:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-xml hljs&quot; data-lang=&quot;xml&quot;&gt;&amp;lt;server xmlns=&quot;urn:infinispan:server:15.0&quot;&amp;gt;
+   &amp;lt;security&amp;gt;
+       &amp;lt;security-realms&amp;gt;
+           &amp;lt;security-realm name=&quot;default&quot; default-realm=&quot;aggregate&quot;&amp;gt;
+               &amp;lt;server-identities&amp;gt;
+                   &amp;lt;ssl&amp;gt;
+                       &amp;lt;keystore path=&quot;server.pfx&quot; password=&quot;secret&quot; alias=&quot;server&quot;/&amp;gt;
+                       &amp;lt;truststore path=&quot;trust.pfx&quot; password=&quot;secret&quot;/&amp;gt;
+                   &amp;lt;/ssl&amp;gt;
+               &amp;lt;/server-identities&amp;gt;
+               &amp;lt;properties-realm groups-attribute=&quot;Roles&quot;&amp;gt;
+                   &amp;lt;user-properties path=&quot;users.properties&quot; relative-to=&quot;infinispan.server.config.path&quot;/&amp;gt;
+                   &amp;lt;group-properties path=&quot;groups.properties&quot; relative-to=&quot;infinispan.server.config.path&quot;/&amp;gt;
+               &amp;lt;/properties-realm&amp;gt;
+               &amp;lt;truststore-realm/&amp;gt;
+               &amp;lt;aggregate-realm authentication-realm=&quot;trust&quot; authorization-realms=&quot;properties&quot;&amp;gt;
+                   &amp;lt;name-rewriter&amp;gt;
+                       &amp;lt;common-name-principal-transformer/&amp;gt;
+                   &amp;lt;/name-rewriter&amp;gt;
+               &amp;lt;/aggregate-realm&amp;gt;
+           &amp;lt;/security-realm&amp;gt;
+       &amp;lt;/security-realms&amp;gt;
+   &amp;lt;/security&amp;gt;
+&amp;lt;/server&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;persistence&quot;&gt;Persistence&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Along with the sub changes below we also have optimized persistent entries that do not have expiration or other custom metadata, reducing marshalled byte size by approximately 40 bytes per entry.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;soft-index-file-store&quot;&gt;Soft-Index File Store&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The underlying index for the Soft Index File Store has been completely revamped to no longer utilize a different set of “segments” for its index. Instead it splits its index into a number equal to the caches configured segments (ie. cache &amp;#8594; clustering &amp;#8594; hash &amp;#8594; number of segments). The “index segments” configuration is now deprecated and ignored.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This change allows for more efficient segment based operations.
+Iteration within a subset of segments now only needs to read a single file instead of multiple.
+Cache rebalance with DIST is now orders of magnitude faster as it just drops a single index
+Key lookup is also now slightly faster (on average 4 less hash comparisons)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Index files now also utilize a portion of the open files limit to prevent possibility of file descriptor exhaustion. By default the index will use up to 10% of the file limit to keep files open, closing as needed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;passivation&quot;&gt;Passivation&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Passivation has been changed to be less chatty. Originally passivation required contents to only be in memory or in the store. This has been found to generate too many write operations to the underlying store. Instead now it is permitted that a value be stale in the store when it is present in memory. This prevents many remove operations from being generated. Upon shutdown or if the entry is evicted from memory only then will the store be updated with the proper value.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With a clean shutdown there will be no data inconsistency with a restart. It should be noted that if the node crashes without proper shutdown the cache may have a stale value (new behavior) instead of no value (previous behavior) for values that were in memory.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;operator&quot;&gt;Operator&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Configure Readiness, Liveness and Startup probe values&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Expose JMX endpoint&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Configuration of StatefulSet PriorityClass&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Allow users to define credential-store entries&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ConfigListener configure CPU and Memory resources&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Make cross-site failure detection configurable&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Use TLSv1.3 as default for Xsite&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Xsite GossipRouter improvements&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Allow setting the CPU and Memory resources&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Added and enabled heartbeats by default&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Disabled suspect events by default&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;TLS client authentication by default&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Increase the probe timeout&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;helm-charts&quot;&gt;Helm charts&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Add ability to define custom environment variables&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add ability to set tolerations&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add support for node affinity and node selectors&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Allow the user to specify container securityContext&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Allow TLS configuration on endpoints&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Allow TLS configuration on JGroups transport&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;graalvm&quot;&gt;GraalVM&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In addition to our various Quarkus integrations, Infinispan now provides the &lt;code&gt;infinispan-client-hotrod-graalvm&lt;/code&gt; and &lt;code&gt;infinispan-core-graalvm&lt;/code&gt; modules. These modules enable you to build native Hot Rod clients and Embedded Infinispan applications natively with GraalVM, allowing integration with other frameworks such as Spring Broot.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;security-manager&quot;&gt;Security Manager&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We have completely removed support for the Java Security Manager, since it has been deprecated for removal in the JDK. It was designed mostly for sandboxing Java applets, but it was somehow (wrongly) co-opted as a way to implement similar functionality for normal Java applications. It was slow and cumbersome, and we’re glad to see it go. The removal of SecurityManager support from Infinispan does not affect its authentication and authorization capabilities.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;integrations&quot;&gt;Integrations&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Our second-level cache component now supports Hibernate ORM 6.4&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;We have dropped CDI support from our JCache provider since the specification has not been updated for Jakarta EE&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;removals&quot;&gt;Removals&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Sadly, a couple of items have been removed, as we did not see much use in the wild: scattered caches and the cloud-events integration module. May they rest in peace.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;documentation&quot;&gt;Documentation&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Many improvements, updates and fixes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can look at the &lt;a href=&quot;https://issues.redhat.com/secure/ReleaseNote.jspa?projectId=12310799&amp;amp;version=12377084&quot;&gt;release notes&lt;/a&gt; to see what has changed since our latest CR.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="final" /><summary type="html">Don&amp;#8217;t you know I&amp;#8217;m still standin&apos; better than I ever did? Lookin&apos; like a true survivor, feelin&apos; like a little kid</summary></entry><entry><title type="html">Using Infinispan Server for your Redis clients</title><link href="https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients" rel="alternate" type="text/html" title="Using Infinispan Server for your Redis clients" /><published>2024-02-02T01:00:00+01:00</published><updated>2024-02-02T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients</id><content type="html" xml:base="https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients">&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Dear Infinispan community,&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -1586,68 +2182,4 @@ if you use it for your persistent caches you should really upgrade !&lt;/p&gt;
 &lt;p&gt;Get them from our &lt;a href=&quot;https://infinispan.org/download/&quot;&gt;download page&lt;/a&gt;.]&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">We rarely do announcements for micro-releases, but 14.0.7.Final is a bit special, because it finally adds support for Spring 6 and Spring Boot 3.</summary></entry><entry><title type="html">Infinispan 14 supporting duplicates on multimap</title><link href="https://infinispan.org/blog/2022/10/02/infinispan-14-supporting-duplicates-on-multimap" rel="alternate" type="text/html" title="Infinispan 14 supporting duplicates on multimap" /><published>2022-10-02T02:00:00+02:00</published><updated>2022-10-02T02:00:00+02:00</updated><id>https://infinispan.org/blog/2022/10/02/infinispan-14-supporting-duplicates-on-multimap</id><content type="html" xml:base="https://infinispan.org/blog/2022/10/02/infinispan-14-supporting-duplicates-on-multimap">&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Dear Infinispan community,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With the Infinispan 14 development release 04 multimap cache supports duplicates.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;By default &lt;code&gt;supportsDuplicates&lt;/code&gt; is set to false and can be configured during initialization.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The following is an example on how you can set multimap to support duplicate key-value pairs:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-java hljs&quot; data-lang=&quot;java&quot;&gt;public class MyEmbeddedMultimapCacheExmaple {
-
-public static void main(String[] args) {
-      DefaultCacheManager cacheManager = new DefaultCacheManager();
-
-      MultimapCacheManager multimapCacheManager = EmbeddedMultimapCacheManagerFactory.from(cacheManager);
-
-      multimapCacheManager.defineConfiguration(&quot;multimap&quot;, new ConfigurationBuilder().build());
-
-      // Get the MultimapCache with duplicates support
-      MultimapCache&amp;lt;String, String&amp;gt; multimap = multimapCacheManager.get(&quot;multimap&quot;, true);
-
-      // Store duplicate values in a key
-      CompletableFuture.allOf(
-            multimap.put(&quot;key&quot;, &quot;value1&quot;),
-            multimap.put(&quot;key&quot;, &quot;value1&quot;),
-            multimap.put(&quot;key&quot;, &quot;value3&quot;))
-            .whenComplete((nil, ex) -&amp;gt; {
-               // Retrieve the values
-               multimap.get(&quot;key&quot;).whenComplete((values, ex2) -&amp;gt; {
-                  // Print them out
-                  System.out.println(values);
-
-                  System.out.println(&quot;Multimap size:&quot; + values.size());
-                  // Stop the cache manager and release all resources
-                  cacheManager.stop();
-               });
-            });
-   }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;highlightjs highlight&quot;&gt;&lt;code class=&quot;language-none hljs&quot;&gt;[value1, value1, value3]
-Multimap size: 3&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;further-reading&quot;&gt;Further reading&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Check out for available documentation
-&lt;a href=&quot;https://infinispan.org/docs/14.0.x/titles/embedding/embedding.html#multimap-cache&quot;&gt;Infinispan MultimapCache Guide&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name>Yusuf Karadag</name></author><category term="multimap" /><summary type="html">Dear Infinispan community,</summary></entry></feed>
+&lt;/div&gt;</content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html">We rarely do announcements for micro-releases, but 14.0.7.Final is a bit special, because it finally adds support for Spring 6 and Spring Boot 3.</summary></entry></feed>

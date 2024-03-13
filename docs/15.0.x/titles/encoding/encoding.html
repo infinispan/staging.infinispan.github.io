@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>Encoding Infinispan caches and marshalling data</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -657,7 +658,7 @@ Additionally, it is possible that a <code>ConcurrentModificationException</code>
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01">Infinispan ProtoStream API</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final">Infinispan ProtoStream API</a></p>
 </li>
 </ul>
 </div>
@@ -741,7 +742,7 @@ If you want to store custom types in your caches, use ProtoStream marshalling to
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01">Infinispan ProtoStream API</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final">Infinispan ProtoStream API</a></p>
 </li>
 <li>
 <p><a href="https://developers.google.com/protocol-buffers/">developers.google.com/protocol-buffers</a></p>
@@ -1193,10 +1194,10 @@ For custom or user types, you need to provide some information so that Infinispa
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/SerializationContext.html">org.infinispan.protostream.SerializationContext</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/SerializationContext.html">org.infinispan.protostream.SerializationContext</a></p>
 </li>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/SerializationContextInitializer.html">org.infinispan.protostream.SerializationContextInitializer</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/SerializationContextInitializer.html">org.infinispan.protostream.SerializationContextInitializer</a></p>
 </li>
 </ul>
 </div>
@@ -1305,7 +1306,7 @@ public interface LibraryInitalizer extends SerializationContextInitializer {
 <p><a href="https://developers.google.com/protocol-buffers">Protocol Buffers</a></p>
 </li>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01">Infinispan ProtoStream API</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final">Infinispan ProtoStream API</a></p>
 </li>
 <li>
 <p><a href="https://github.com/infinispan/protostream">Infinispan ProtoStream library</a></p>
@@ -1320,7 +1321,7 @@ public interface LibraryInitalizer extends SerializationContextInitializer {
 </div>
 <div class="paragraph">
 <p>This topic provides additional details about ProtoStream annotations.
-You should refer to the documentation in the <a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a> package for complete information.</p>
+You should refer to the documentation in the <a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a> package for complete information.</p>
 </div>
 <h5 id="protofield" class="discrete">ProtoField</h5>
 <div class="paragraph">
@@ -1506,7 +1507,7 @@ This includes indexing annotations such as <code>@Indexed</code> and <code>@Basi
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/annotations/package-summary.html">org.infinispan.protostream.annotations</a></p>
 </li>
 <li>
 <p><a href="https://developers.google.com/protocol-buffers/docs/proto#reserved">Protocol Buffers Language Guide - Reserved Fields</a></p>
@@ -1570,43 +1571,27 @@ You should ignore any code examples or documentation that show how to use <code>
 <div class="title">Procedure</div>
 <ul>
 <li>
-<p>Add the <code>protostream-processor</code> dependency to your <code>pom.xml</code> with the <code>provided</code> scope.</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>This dependency is required at compile-time only so you should use the <code>provided</code> scope or mark it as optional.
-You should also ensure the <code>protostream-processor</code> is not propagated as a transitive dependency.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
+<p>Add the <code>protostream-processor</code> to the annotation processors configuration of <code>maven-compiler-plugin</code> to your <code>pom.xml</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
-  &lt;dependencies&gt;
-    &lt;dependency&gt;
-      &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-      &lt;artifactId&gt;infinispan-bom&lt;/artifactId&gt;
-      &lt;version&gt;${version.infinispan}&lt;/version&gt;
-      &lt;type&gt;pom&lt;/type&gt;
-      &lt;scope&gt;import&lt;/scope&gt;
-    &lt;/dependency&gt;
-  &lt;/dependencies&gt;
-&lt;/dependencyManagement&gt;
-
-&lt;dependencies&gt;
-  &lt;dependency&gt;
-    &lt;groupId&gt;org.infinispan.protostream&lt;/groupId&gt;
-    &lt;artifactId&gt;protostream-processor&lt;/artifactId&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
-  &lt;/dependency&gt;
-&lt;/dependencies&gt;</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;build&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+      &lt;version&gt;...&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;annotationProcessorPaths&gt;
+          &lt;annotationProcessorPath&gt;
+            &lt;groupId&gt;org.infinispan.protostream&lt;/groupId&gt;
+            &lt;artifactId&gt;protostream-processor&lt;/artifactId&gt;
+            &lt;version&gt;...&lt;/version&gt;
+          &lt;/annotationProcessorPath&gt;
+        &lt;/annotationProcessorPaths&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;</code></pre>
 </div>
 </div>
 </li>
@@ -1745,10 +1730,10 @@ public enum Language {
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/annotations/ProtoField.html">org.infinispan.protostream.annotations.ProtoField</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/annotations/ProtoField.html">org.infinispan.protostream.annotations.ProtoField</a></p>
 </li>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/annotations/ProtoFactory.html">org.infinispan.protostream.annotations.ProtoFactory</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/annotations/ProtoFactory.html">org.infinispan.protostream.annotations.ProtoFactory</a></p>
 </li>
 </ul>
 </div>
@@ -1797,7 +1782,7 @@ public class UUIDAdapter {
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/annotations/ProtoAdapter.html">org.infinispan.protostream.annotations.ProtoAdapter</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/annotations/ProtoAdapter.html">org.infinispan.protostream.annotations.ProtoAdapter</a></p>
 </li>
 </ul>
 </div>
@@ -1888,7 +1873,7 @@ interface LibraryInitializer extends GeneratedSchema {
 <div class="title">Additional resources</div>
 <ul>
 <li>
-<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.0.Dev01/org/infinispan/protostream/annotations/AutoProtoSchemaBuilder.html">org.infinispan.protostream.annotations.AutoProtoSchemaBuilder</a></p>
+<p><a href="https://www.javadoc.io/doc/org.infinispan.protostream/protostream/5.0.1.Final/org/infinispan/protostream/annotations/AutoProtoSchemaBuilder.html">org.infinispan.protostream.annotations.AutoProtoSchemaBuilder</a></p>
 </li>
 </ul>
 </div>

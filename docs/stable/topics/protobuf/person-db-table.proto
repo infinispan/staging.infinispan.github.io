@@ -1,7 +1,5 @@
 package com.example;
 
-import com.example.Address;
-
 enum Sex {
    FEMALE = 1;
    MALE = 2;

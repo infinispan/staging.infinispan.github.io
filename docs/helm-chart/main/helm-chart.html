@@ -472,10 +472,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#retrieving-credentials_configuring-authentication">3.1.1. Retrieving credentials</a></li>
 </ul>
 </li>
-<li><a href="#adding-credentials_configuring-authentication">3.2. Adding custom user credentials</a>
+<li><a href="#adding-credentials_configuring-authentication">3.2. Adding custom user credentials or credentials store</a>
 <ul class="sectlevel3">
 <li><a href="#user-roles-permissions_configuring-authentication">3.2.1. User roles and permissions</a></li>
-<li><a href="#adding-multiple-credentials_configuring-authentication">3.2.2. Adding multiple credentials with authentication secrets</a></li>
+<li><a href="#adding-credentials_store_configuring-authentication">3.2.2. Adding credentials store</a></li>
+<li><a href="#adding-multiple-credentials_configuring-authentication">3.2.3. Adding multiple credentials with authentication secrets</a></li>
 </ul>
 </li>
 <li><a href="#disabling-authentication_configuring-authentication">3.3. Disabling authentication</a></li>
@@ -1294,15 +1295,15 @@ For more information about configuring server instances, see <a href="#server-co
 </div>
 </div>
 <div class="sect2">
-<h3 id="adding-credentials_configuring-authentication"><a class="anchor" href="#adding-credentials_configuring-authentication"></a>3.2. Adding custom user credentials</h3>
+<h3 id="adding-credentials_configuring-authentication"><a class="anchor" href="#adding-credentials_configuring-authentication"></a>3.2. Adding custom user credentials or credentials store</h3>
 <div class="paragraph _abstract">
 <p>Create Infinispan user credentials and assign roles that grant security authorization for cluster access.</p>
 </div>
-<div class="olist arabic">
+<div class="ulist">
 <div class="title">Procedure</div>
-<ol class="arabic">
+<ul>
 <li>
-<p>Create credentials by specifying a <code>user create</code> command in the <code>deploy.security.batch</code> field.</p>
+<p>Create credentials by specifying the <code>user create</code> command in the <code>deploy.security.batch</code> field.</p>
 <div class="listingblock">
 <div class="title">User with implicit authorization</div>
 <div class="content">
@@ -1320,10 +1321,7 @@ For more information about configuring server instances, see <a href="#server-co
 </div>
 </div>
 </li>
-<li>
-<p>Install or upgrade your Infinispan Helm release.</p>
-</li>
-</ol>
+</ul>
 </div>
 <div class="sect3">
 <h4 id="user-roles-permissions_configuring-authentication"><a class="anchor" href="#user-roles-permissions_configuring-authentication"></a>3.2.1. User roles and permissions</h4>
@@ -1382,7 +1380,46 @@ For additional security, you should grant Infinispan users with appropriate role
 </div>
 </div>
 <div class="sect3">
-<h4 id="adding-multiple-credentials_configuring-authentication"><a class="anchor" href="#adding-multiple-credentials_configuring-authentication"></a>3.2.2. Adding multiple credentials with authentication secrets</h4>
+<h4 id="adding-credentials_store_configuring-authentication"><a class="anchor" href="#adding-credentials_store_configuring-authentication"></a>3.2.2. Adding credentials store</h4>
+<div class="paragraph _abstract">
+<p>Create Infinispan credentials store to avoid exposing passwords in clear text in the server configuration ConfigMap. See <a href="#enabling-encryption_network-access">Enabling TLS encryption</a> for a use case.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Create credentials store by specifying a <code>credentials add</code> command in the <code>deploy.security.batch</code> field.</p>
+<div class="listingblock">
+<div class="title">Add a password to a store</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
+  security:
+    batch: 'credentials add keystore -c password -p secret --path="internal-credentials.pfx"'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Credentials store needs then to be added to the server configuration.</p>
+<div class="listingblock">
+<div class="title">Configure a credential store</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
+  infinispan:
+    server:
+      security:
+        credentialStores:
+          - name: credentials
+            path: internal-credentials.pfx
+            clearTextCredential:
+              clearText: "secret"</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="adding-multiple-credentials_configuring-authentication"><a class="anchor" href="#adding-multiple-credentials_configuring-authentication"></a>3.2.3. Adding multiple credentials with authentication secrets</h4>
 <div class="paragraph _abstract">
 <p>Add multiple credentials to Infinispan clusters with authentication secrets.</p>
 </div>
@@ -1416,7 +1453,8 @@ stringData:
   identities-batch: |-
     user create user1 -p changeme -g admin
     user create user2 -p changeme -g deployer
-    user create monitor -p password --users-file metrics-users.properties --groups-file metrics-groups.properties</code></pre>
+    user create monitor -p password --users-file metrics-users.properties --groups-file metrics-groups.properties
+    credentials add keystore -c password -p secret --path="internal-credentials.pfx"</code></pre>
 </div>
 </div>
 </li>
@@ -1526,14 +1564,20 @@ You should disable authentication for development environments only.</p>
 <div class="title">Prerequisites</div>
 <ul>
 <li>
-<p>A secret containing a certificate or a keystore. Endpoint and cluster should use
-different secrets.</p>
+<p>A secret containing a certificate or a keystore. Endpoint and cluster should use different secrets.</p>
+</li>
+<li>
+<p>A credentials keystore containing any password needed to access the keystore. See <a href="#adding-credentials_store_configuring-authentication">Adding credentials keystore</a>.</p>
 </li>
 </ul>
 </div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Set the secret name in the deploy configuration.</p>
 <div class="paragraph">
-<div class="title">Set the secret name in the deploy configuration</div>
-<p>Provide the name of the secret containing the keystore.</p>
+<p>Provide the name of the secret containing the keystore:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1543,8 +1587,10 @@ different secrets.</p>
     transportSecretName: "tls-transport-secret"</code></pre>
 </div>
 </div>
+</li>
+<li>
+<p>Enable cluster transport TLS.</p>
 <div class="listingblock">
-<div class="title">Enable cluster transport TLS</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
   infinispan:
@@ -1561,10 +1607,14 @@ different secrets.</p>
                 keystore: <i class="conum" data-value="2"></i><b>(2)</b>
                   alias: "server"
                   path: "/etc/encrypt/endpoint/cert.p12"
-                  password: "password"
-                truststore: <i class="conum" data-value="3"></i><b>(3)</b>
-                  alias: "server" <i class="conum" data-value="4"></i><b>(4)</b>
-                  path: "/etc/encrypt/endpoint/cert.p12" <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+                  credentialReference: <i class="conum" data-value="3"></i><b>(3)</b>
+                    store: credentials
+                    alias: keystore
+                truststore: <i class="conum" data-value="4"></i><b>(4)</b>
+                  path: "/etc/encrypt/endpoint/cert.p12"
+                  credentialReference: <i class="conum" data-value="3"></i><b>(3)</b>
+                    store: credentials
+                    alias: truststore</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1575,11 +1625,11 @@ different secrets.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Configure the keystore path in the transport realm; secret is mounted at <code>/etc/encrypt/transport</code>.</td>
+<td>Configure the keystore path in the transport realm. The secret is mounted at <code>/etc/encrypt/transport</code>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configures the truststore with the same keystore, this allow the nodes to authenticate each other.</td>
+<td>Configures the truststore with the same keystore allowing the nodes to authenticate each other.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -1587,8 +1637,10 @@ different secrets.</p>
 </tr>
 </table>
 </div>
+</li>
+<li>
+<p>Enable endpoint TLS.</p>
 <div class="listingblock">
-<div class="title">Enable endpoint TLS</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
   infinispan:
@@ -1601,7 +1653,9 @@ different secrets.</p>
                 keystore:
                   path: "/etc/encrypt/endpoint/keystore.p12" <i class="conum" data-value="1"></i><b>(1)</b>
                   alias: "server" <i class="conum" data-value="2"></i><b>(2)</b>
-                  password: "password" <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+                  credentialReference:
+                    store: credentials <i class="conum" data-value="3"></i><b>(3)</b>
+                    alias: keystore <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1612,9 +1666,16 @@ different secrets.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Alias and password must be provided in case the secret contains a keystore.</td>
+<td>Alias must be provided in case the secret contains a keystore.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Any password must be provided with via credentials keystore.</td>
 </tr>
 </table>
+</div>
+</li>
+</ol>
 </div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
@@ -2145,7 +2206,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-15 10:58:18 +0100
+Last updated 2024-02-28 10:41:07 +0100
 </div>
 </div>
 <script>

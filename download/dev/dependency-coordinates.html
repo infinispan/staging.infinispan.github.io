@@ -11,11 +11,11 @@
   <link rel="stylesheet" href="/assets/css/main.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <link rel="stylesheet"
-        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github-dark.min.css">
+        href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.css">
   <link rel="alternate" type="application/rss+xml"
         title="Infinispan's RSS Feed"
         href="/feed.xml" />
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
           
   <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -98,7 +98,7 @@
         &lt;dependency&gt;
           &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
           &lt;infinispan-core&gt;#{artifactId}&lt;/artifactId&gt;
-          &lt;version&gt;15.0.0.Dev09&lt;/version&gt;
+          &lt;version&gt;&lt;/version&gt;
         &lt;/dependency&gt;
     </pre>
 
@@ -107,7 +107,7 @@
     <pre>
         dependencies {
           ...
-          implementation 'org.infinispan:infinispan-core:15.0.0.Dev09'
+          implementation 'org.infinispan:infinispan-core:'
           ...
         }
     </pre>
@@ -116,7 +116,7 @@
     <pre>
         &lt;dependencies&gt;
           ...
-          &lt;dependency org="org.infinispan" name="infinispan-core" version="15.0.0.Dev09"/&gt;
+          &lt;dependency org="org.infinispan" name="infinispan-core" version=""/&gt;
           ...
         &lt;/dependencies&gt;
     </pre>

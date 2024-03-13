@@ -448,6 +448,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#embedded-tutorials">1. Embedded caches</a>
 <ul class="sectlevel2">
 <li><a href="#embedded-tutorials_embedded-cache-tutorials">1.1. Embedded cache tutorials</a></li>
+<li><a href="#embedded-kubernetes_tutorial_embedded-cache-tutorials">1.2. Kubernetes and Openshift tutorial</a></li>
 </ul>
 </li>
 <li><a href="#remote-tutorials">2. Remote caches</a>
@@ -641,6 +642,83 @@ However, the recommended way to use Kubernetes and Infinispan is the Infinispan 
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="embedded-kubernetes_tutorial_embedded-cache-tutorials"><a class="anchor" href="#embedded-kubernetes_tutorial_embedded-cache-tutorials"></a>1.2. Kubernetes and Openshift tutorial</h3>
+<div class="paragraph">
+<p>This tutorial contains instructions on how to run Infinispan library mode (as a microservice) in Kubernetes/OpenShift.</p>
+</div>
+<div class="paragraph">
+<p>Prerequisites: Maven and Docker daemon running in the background.</p>
+</div>
+<h4 id="_prerequisites" class="discrete">Prerequisites</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>A running Openshift or Kubernetes cluster</p>
+</li>
+</ul>
+</div>
+<h4 id="_building_the_tutorial" class="discrete">Building the tutorial</h4>
+<div class="paragraph">
+<p>This tutorial is built using the maven command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mvn package</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that <code>target/</code> directory contains additional directories like <code>docker</code> (with generated Dockerfile) and <code>classes/META-INF/jkube</code> with Kubernetes and OpenShift deployment templates.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If the Docker Daemon is down, the build will omit processing Dockerfiles. Use <code>docker</code> profile to turn it on manually.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="_deploying_the_tutorial_to_kubernetes" class="discrete">Deploying the tutorial to Kubernetes</h4>
+<div class="paragraph">
+<p>This is handle by the JKube maven plugin, just invoke:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">mvn k8s:build k8s:push k8s:resource k8s:apply -Doptions.image=&lt;IMAGE_NAME&gt; <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>IMAGE_NAME</code> must be replaced with the FQN of the container to deploy to Kubernetes. This container must be created
+in a repository that you have permissions to push to and is accessible from within your Kubernetes cluster.</td>
+</tr>
+</table>
+</div>
+<h4 id="_viewing_and_scaling_up" class="discrete">Viewing and scaling up</h4>
+<div class="paragraph">
+<p>Everything should be up and running at this point. Now login into the OpenShift or Kubernetes cluster and scale the application</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">kubectl scale --replicas=3  deployment/$(kubectl get rs --namespace=myproject | grep infinispan | awk '{print $1}') --namespace=myproject</code></pre>
+</div>
+</div>
+<h4 id="_undeploying_the_tutorial" class="discrete">Undeploying the tutorial</h4>
+<div class="paragraph">
+<p>This is handled by the JKube maven plugin, just invoke:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>mvn k8s:undeploy</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -819,7 +897,7 @@ Creating a user named <code>admin</code> gives you administrative access to Infi
 </div>
 <div class="sect2">
 <h3 id="hotrod-js-tutorials_remote-cache-tutorials"><a class="anchor" href="#hotrod-js-tutorials_remote-cache-tutorials"></a>2.3. Hot Rod Node.JS client tutorials</h3>
-<h4 id="_prerequisites" class="discrete">Prerequisites</h4>
+<h4 id="_prerequisites_2" class="discrete">Prerequisites</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -861,7 +939,7 @@ Creating a user named <code>admin</code> gives you administrative access to Infi
 </div>
 <div class="sect2">
 <h3 id="hotrod-dotnet-tutorials_remote-cache-tutorials"><a class="anchor" href="#hotrod-dotnet-tutorials_remote-cache-tutorials"></a>2.4. Hot Rod .NET/C# client tutorials</h3>
-<h4 id="_prerequisites_2" class="discrete">Prerequisites</h4>
+<h4 id="_prerequisites_3" class="discrete">Prerequisites</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -935,7 +1013,7 @@ must be either in the PATH or in the application working directory.</p>
 </div>
 <div class="sect2">
 <h3 id="hotrod-cpp-tutorials_remote-cache-tutorials"><a class="anchor" href="#hotrod-cpp-tutorials_remote-cache-tutorials"></a>2.5. Hot Rod C++ client tutorials</h3>
-<h4 id="_prerequisites_3" class="discrete">Prerequisites</h4>
+<h4 id="_prerequisites_4" class="discrete">Prerequisites</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1376,7 +1454,7 @@ $ mvn wildfly:deploy</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-02 16:07:59 +0100
+Last updated 2024-02-20 11:13:03 +0100
 </div>
 </div>
 </body>
