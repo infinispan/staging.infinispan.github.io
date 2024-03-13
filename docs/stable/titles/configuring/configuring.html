@@ -5705,10 +5705,8 @@ frequently used data in-memory and writes older entries to persistent storage.</
 <h3 id="passivation_persistence"><a class="anchor" href="#passivation_persistence"></a>6.1. Passivation</h3>
 <div class="paragraph">
 <p>Passivation configures Infinispan to write entries to cache stores when it
-evicts those entries from memory. In this way, passivation ensures that only a
-single copy of an entry is maintained, either in-memory or in a cache store,
-which prevents unnecessary and potentially expensive writes to persistent
-storage.</p>
+evicts those entries from memory. In this way, passivation prevents unnecessary
+and potentially expensive writes to persistent storage.</p>
 </div>
 <div class="paragraph">
 <p>Activation is the process of restoring entries to memory from the cache store
@@ -5722,7 +5720,7 @@ from persistent storage.</p>
 that the entry is passivated then stores the entry in the cache store. When
 Infinispan gets an access request for an evicted entry, it lazily loads the
 entry from the cache store into memory and then notifies cache listeners that
-the entry is activated.</p>
+the entry is activated while keeping the value still in the store.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -5772,7 +5770,8 @@ Infinispan throws an exception.</p>
 <div class="paragraph">
 <p>If Infinispan evicts data from memory, then data in persistent storage
 includes entries that are evicted from memory. In this way persistent storage
-is a superset of the in-memory cache.</p>
+is a superset of the in-memory cache.
+This is recommended when you require highest consistency as the store will be able to be read again after a crash.</p>
 </div>
 <div class="paragraph">
 <p>If you do not configure eviction, then data in persistent storage provides a
@@ -5781,13 +5780,13 @@ copy of data in memory.</p>
 <div class="paragraph">
 <div class="title">Passivation enabled</div>
 <p>Infinispan adds data to persistent storage only when it evicts data from
-memory.</p>
+memory, an entry is removed or upon shutting down the node.</p>
 </div>
 <div class="paragraph">
-<p>When Infinispan activates entries, it restores data in memory and deletes data
-from persistent storage. In this way, data in memory and data in persistent
-storage form separate subsets of the entire data set, with no intersection
-between the two.</p>
+<p>When Infinispan activates entries, it restores data in memory but keeps the data in the store still.
+This allows for writes to be just as fast as without a store, and still maintains consistency.
+When an entry is created or updated only the in memory will be updated and thus
+the store will be outdated for the time being.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -5797,14 +5796,16 @@ between the two.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Entries in persistent storage can become stale when using shared cache stores. This occurs because Infinispan does not delete passivated entries from shared cache stores when they are activated.</p>
-</div>
-<div class="paragraph">
-<p>Values are updated in memory but previously passivated entries remain in persistent storage with out of date values.</p>
+<p>Passivation is not supported when a store is also configured as shared.
+This is due to entries can become out of sync between nodes depending on when a write is evicted versus read.</p>
 </div>
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>To gurantee data consistency any store that is not shared should always have <code>purgeOnStartup</code> enabled.
+This is true for both passivation enabled or disabled since a store could hold an outdated entry while down and resurrect it at a later point.</p>
 </div>
 <div class="paragraph">
 <p>The following table shows data in memory and in persistent storage after a
@@ -5812,17 +5813,15 @@ series of operations:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">Operation</th>
 <th class="tableblock halign-left valign-top">Passivation disabled</th>
 <th class="tableblock halign-left valign-top">Passivation enabled</th>
-<th class="tableblock halign-left valign-top">Passivation enabled with shared cache store</th>
 </tr>
 </thead>
 <tbody>
@@ -5832,15 +5831,11 @@ series of operations:</p>
 <strong>Disk:</strong> k1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> -</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
-<strong>Disk:</strong> -</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Insert k2.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> k1, k2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
-<strong>Disk:</strong> -</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> -</p></td>
 </tr>
@@ -5850,15 +5845,11 @@ series of operations:</p>
 <strong>Disk:</strong> k1, k2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k2<br>
 <strong>Disk:</strong> k1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k2<br>
-<strong>Disk:</strong> k1</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Read k1.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> k1, k2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
-<strong>Disk:</strong> -</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1, k2<br>
 <strong>Disk:</strong> k1</p></td>
 </tr>
@@ -5867,16 +5858,12 @@ series of operations:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1, k2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
-<strong>Disk:</strong> k2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1, k2</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Remove k2.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
-<strong>Disk:</strong> -</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Memory:</strong> k1<br>
 <strong>Disk:</strong> k1</p></td>
 </tr>
@@ -6111,7 +6098,7 @@ By default, cache stores are local (<code>shared="false"</code>).</p>
 <li>
 <p>Local cache stores are unique to each node; for example, a file-based cache store that persists data to the host filesystem.</p>
 <div class="paragraph">
-<p>Local cache stores can use "purge on startup" to avoid loading stale entries from persistent storage.</p>
+<p>Local cache stores should use "purge on startup" to avoid loading stale entries from persistent storage.</p>
 </div>
 </li>
 <li>
@@ -6418,6 +6405,20 @@ For clustered caches, file-based cache stores are unique to each Infinispan node
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>SoftIndexFileStore should use purge on startup to ensure stale entries are not resurrected.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <div class="title">B+ trees</div>
 <p>To improve performance, append-only files in a <code>SoftIndexFileStore</code> are indexed using a <strong>B+ Tree</strong> that can be stored both on disk and in memory.
@@ -6428,10 +6429,9 @@ The in-memory index uses Java soft references to ensure it can be rebuilt if rem
 GC removes indexes before they consume too much memory while still falling back to disk.</p>
 </div>
 <div class="paragraph">
-<p>You can configure any number of B+ trees with the <code>segments</code> attribute on the <code>index</code> element declaratively or with the <code>indexSegments()</code> method programmatically.
-By default Infinispan creates up to 16 B+ trees, which means there can be up to 16 indexes.
-Having multiple indexes prevents bottlenecks from concurrent writes to an index and reduces the number of entries that Infinispan needs to keep in memory.
-As it iterates over a soft-index file store, Infinispan reads all entries in an index at the same time.</p>
+<p><code>SoftIndexFileStore</code> creates a B+ tree per configured cache segment.
+This provides an additional "index" as it only has so many elements and provides additional parallelism for index updates.
+Currently we allow for a parallel amount based on one sixteenth of the number of cache segments.</p>
 </div>
 <div class="paragraph">
 <p>Each entry in the B+ tree is a node.
@@ -6439,22 +6439,23 @@ By default, the size of each node is limited to 4096 bytes.
 <code>SoftIndexFileStore</code> throws an exception if keys are longer after serialization occurs.</p>
 </div>
 <div class="paragraph">
-<div class="title">Segmentation</div>
-<p>Soft-index file stores are always segmented.</p>
+<div class="title">File limits</div>
+<p><code>SoftIndexFileStore</code> will use two plus the configured openFilesLimit amount of files at a given time.
+The two additional file pointers are reserved for the log appender for newly updated data and another
+for the compactor which writes compacted entries into a new file.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p>The <code>AdvancedStore.purgeExpired()</code> method is not implemented in <code>SoftIndexFileStore</code>.</p>
+<p>The amount of open allocated files allocated for indexing is one tenth of the total number of the configured openFilesLimit.
+This number has a minimum of 1 or the number of cache segments.
+Any number remaning from configured limit is allocated for open data files themselves.</p>
 </div>
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<div class="title">Segmentation</div>
+<p>Soft-index file stores are always segmented. The append log(s) are not directly segmented and segmentation is handled directly by the index.</p>
+</div>
+<div class="paragraph">
+<div class="title">Expiration</div>
+<p>The SoftIndexFileStore has full support for expired entries and their requirements.</p>
 </div>
 <h4 id="single_file_cache_stores" class="discrete">Single File Cache Stores</h4>
 <div class="admonitionblock note">
@@ -6904,7 +6905,7 @@ You can then specify the JDNI name of the managed datasources in your caches, wh
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.4.4</code></pre>
 </div>
 </div>
 </td>
@@ -7717,7 +7718,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.4.4</code></pre>
 </div>
 </div>
 </td>
@@ -7942,7 +7943,7 @@ For remote caches, you can register your schemas by adding them through the Infi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.1.3</code></pre>
+<pre class="highlight nowrap"><code>install org.postgresql:postgresql:42.4.4</code></pre>
 </div>
 </div>
 </td>
@@ -8152,10 +8153,24 @@ The data types described in the example are only valid for PostgreSQL database.<
 <div class="paragraph">
 <p>Protobuf schema for the "person" and "address" tables are as follows:</p>
 </div>
+<div class="listingblock secondary">
+<div class="title">Protobuf schema for the "address" table</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example;
+
+message Address {
+   optional string street = 1;
+   optional string city = 2 [default = "San Jose"];
+   optional int32 zip = 3 [default = 0];
+}</code></pre>
+</div>
+</div>
 <div class="listingblock primary">
 <div class="title">Protobuf schema for the "person" table</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example;
+
+import com.example.Address;
 
 enum Sex {
    FEMALE = 1;
@@ -8169,18 +8184,6 @@ message Person {
    optional Sex sex = 4;
    optional fixed64 birthDate = 5 [default = 0];
    optional bool accepted_tos = 6 [default = false];
-}</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Protobuf schema for the "address" table</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example
-
-message Address {
-   optional string street = 1;
-   optional string city = 2 [default = "San Jose"];
-   optional int32 zip = 3 [default = 0];
 }</code></pre>
 </div>
 </div>
@@ -8200,7 +8203,7 @@ message Address {
                             connection-url="jdbc:postgresql://localhost:5432/postgres"
                             username="postgres"
                             password="changeme"/&gt;
-      &lt;queries select-single="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name"
+      &lt;queries select-single="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name"
         select-all="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name"
         delete-single="DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name"
         delete-all="DELETE FROM Person; DELETE FROM Address"
@@ -8226,7 +8229,7 @@ message Address {
         "shared": "true",
         "key-columns": "name",
         "queries": {
-          "select-single": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name",
+          "select-single": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name",
           "select-all": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name",
           "delete-single": "DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name",
           "delete-all": "DELETE FROM Person; DELETE FROM Address",
@@ -8254,7 +8257,7 @@ message Address {
       shared: "true"
       keyColumns: "name"
       queries:
-        selectSingle: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name"
+        selectSingle: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name"
         selectAll: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name"
         deleteSingle: "DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name"
         deleteAll: "DELETE FROM Person; DELETE FROM Address"
@@ -8275,7 +8278,7 @@ builder.persistence().addStore(QueriesJdbcStoreConfigurationBuilder.class)
       .shared("true")
       .keyColumns("name")
       .queriesJdbcConfigurationBuilder()
-         .select("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name WHERE t1.name = :name")
+         .select("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name")
          .selectAll("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name")
          .delete("DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name")
          .deleteAll("DELETE FROM Person; DELETE FROM Address")
@@ -12748,7 +12751,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-30 11:30:50 -0500
+Last updated 2024-03-13 12:05:42 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
