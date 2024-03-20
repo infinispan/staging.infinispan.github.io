@@ -8170,7 +8170,7 @@ message Address {
 <div class="content">
 <pre class="highlight nowrap"><code class="language-proto" data-lang="proto">package com.example;
 
-import com.example.Address;
+import "/path/to/address.proto";
 
 enum Sex {
    FEMALE = 1;
@@ -8203,7 +8203,7 @@ message Person {
                             connection-url="jdbc:postgresql://localhost:5432/postgres"
                             username="postgres"
                             password="changeme"/&gt;
-      &lt;queries select-single="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name"
+      &lt;queries select-single="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = :name AND t2.name = :name"
         select-all="SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name"
         delete-single="DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name"
         delete-all="DELETE FROM Person; DELETE FROM Address"
@@ -8228,8 +8228,14 @@ message Person {
         "dialect": "POSTGRES",
         "shared": "true",
         "key-columns": "name",
+        "connection-pool": {
+          "username": "postgres",
+          "password": "changeme",
+          "driver": "org.postgresql.Driver",
+          "connection-url": "jdbc:postgresql://localhost:5432/postgres"
+        },
         "queries": {
-          "select-single": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name",
+          "select-single": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = :name AND t2.name = :name",
           "select-all": "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name",
           "delete-single": "DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name",
           "delete-all": "DELETE FROM Person; DELETE FROM Address",
@@ -8256,8 +8262,13 @@ message Person {
       dialect: "POSTGRES"
       shared: "true"
       keyColumns: "name"
+      connectionPool: 
+        username: "postgres"
+        password: "changeme"
+        driver: "org.postgresql.Driver"
+        connectionUrl: "jdbc:postgresql://localhost:5432/postgres"      
       queries:
-        selectSingle: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name"
+        selectSingle: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = :name AND t2.name = :name"
         selectAll: "SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name"
         deleteSingle: "DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name"
         deleteAll: "DELETE FROM Person; DELETE FROM Address"
@@ -8278,7 +8289,7 @@ builder.persistence().addStore(QueriesJdbcStoreConfigurationBuilder.class)
       .shared("true")
       .keyColumns("name")
       .queriesJdbcConfigurationBuilder()
-         .select("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 WHERE t1.name = :name AND t2.name = :name")
+         .select("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = :name AND t2.name = :name")
          .selectAll("SELECT t1.name, t1.picture, t1.sex, t1.birthdate, t1.accepted_tos, t2.street, t2.city, t2.zip FROM Person t1 JOIN Address t2 ON t1.name = t2.name")
          .delete("DELETE FROM Person t1 WHERE t1.name = :name; DELETE FROM Address t2 where t2.name = :name")
          .deleteAll("DELETE FROM Person; DELETE FROM Address")
@@ -12751,7 +12762,7 @@ public class MyNonBlockingListener {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-18 16:03:51 UTC
+Last updated 2024-03-20 16:59:36 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
