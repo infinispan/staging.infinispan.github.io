@@ -730,7 +730,10 @@ in a repository that you have permissions to push to and is accessible from with
 <div class="sect2">
 <h3 id="remote-tutorials_remote-cache-tutorials"><a class="anchor" href="#remote-tutorials_remote-cache-tutorials"></a>2.1. Remote cache tutorials</h3>
 <div class="paragraph">
-<p>To run these tutorials you need at least one locally running instance of Infinispan Server.</p>
+<p>To run these tutorials you need at least one locally running instance of Infinispan Server.
+Each tutorial will try to connect to a running server in <code>localhost:11222</code> with
+<code>admin/password</code> credentials. However, if a Docker instance is found, and the server is not running,
+tutorials will spin up a local server with <code>Testcontainers</code>.</p>
 </div>
 <div class="paragraph">
 <p>To run the Server as a container image, visit the "Get Started" page
@@ -1454,7 +1457,7 @@ $ mvn wildfly:deploy</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-20 11:13:03 +0100
+Last updated 2024-03-21 10:20:57 -0400
 </div>
 </div>
 </body>

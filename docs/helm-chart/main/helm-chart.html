@@ -1394,7 +1394,7 @@ For additional security, you should grant Infinispan users with appropriate role
 <div class="content">
 <pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">deploy:
   security:
-    batch: 'credentials add keystore -c password -p secret --path="internal-credentials.pfx"'</code></pre>
+    batch: 'credentials add keystore -c password -p secret --path="credentials.pfx"'</code></pre>
 </div>
 </div>
 </li>
@@ -1409,7 +1409,7 @@ For additional security, you should grant Infinispan users with appropriate role
       security:
         credentialStores:
           - name: credentials
-            path: internal-credentials.pfx
+            path: credentials.pfx
             clearTextCredential:
               clearText: "secret"</code></pre>
 </div>
@@ -1454,7 +1454,7 @@ stringData:
     user create user1 -p changeme -g admin
     user create user2 -p changeme -g deployer
     user create monitor -p password --users-file metrics-users.properties --groups-file metrics-groups.properties
-    credentials add keystore -c password -p secret --path="internal-credentials.pfx"</code></pre>
+    credentials add keystore -c password -p secret --path="credentials.pfx"</code></pre>
 </div>
 </div>
 </li>
@@ -1606,12 +1606,12 @@ You should disable authentication for development environments only.</p>
               ssl:
                 keystore: <i class="conum" data-value="2"></i><b>(2)</b>
                   alias: "server"
-                  path: "/etc/encrypt/endpoint/cert.p12"
+                  path: "/etc/encrypt/transport/cert.p12"
                   credentialReference: <i class="conum" data-value="3"></i><b>(3)</b>
                     store: credentials
                     alias: keystore
                 truststore: <i class="conum" data-value="4"></i><b>(4)</b>
-                  path: "/etc/encrypt/endpoint/cert.p12"
+                  path: "/etc/encrypt/transport/cert.p12"
                   credentialReference: <i class="conum" data-value="3"></i><b>(3)</b>
                     store: credentials
                     alias: truststore</code></pre>
@@ -2206,7 +2206,7 @@ infinispan.client.hotrod.sasl_mechanism=SCRAM-SHA-512</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-02-28 10:41:07 +0100
+Last updated 2024-03-18 04:25:57 -0400
 </div>
 </div>
 <script>
