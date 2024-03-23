@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>Hot Rod protocol reference</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -7327,7 +7328,8 @@ max_results: the maximum number of results to return.</pre>
 <div class="literalblock">
 <div class="content">
 <pre>{
-  "total_results":801,
+  "hit_count":801,
+  "hit_count_exact":true,
   "hits":[
      {
         "hit":{
@@ -7350,7 +7352,8 @@ max_results: the maximum number of results to return.</pre>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>total_results: the total number of results of the query.
+<pre>hit_count: the total number of results from the query.
+hit_count_exact: is true when the hit_count is exact. Is false when the hit count value is a lower bound.
 hits: an ARRAY of OBJECT representing the results.
 hit: each OBJECT above contain another OBJECT in the "hit" field, containing the result of the query, in JSON format.</pre>
 </div>
@@ -8102,6 +8105,90 @@ to not send a notification on many false positives.</p></td>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<div class="title">Counter get-and-set operation</div>
+<p>Sets a value to the counter and returns the previous value.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 30. Request (0x7F)</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 13.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-center valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request header</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The counter&#8217;s name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The counter’s value to set.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 31. Response (0x80)</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 13.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field Name</th>
+<th class="tableblock halign-center valign-top">Size</th>
+<th class="tableblock halign-left valign-top">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Header</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Response header</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) the counter&#8217;s previous value.
+Only present if <code>Status==0x00</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Response Header <code>Status</code> possible values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>0x00</code>: Operation successful.</p>
+</li>
+<li>
+<p><code>0x02</code>: The counter isn&#8217;t defined.</p>
+</li>
+<li>
+<p><code>0x04</code>: The counter reached its boundary.
+Only possible for <code>STRONG</code> counters.</p>
+</li>
+<li>
+<p>See the <a href="#hot_rod_response_header">Response Header</a> for error codes.</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>

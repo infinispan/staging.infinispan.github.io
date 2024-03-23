@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.22">
 <title>Infinispan Spring Boot Starter</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -525,38 +526,32 @@ $(addBlockSwitches);
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#setting-up-project">1. Setting up the Spring Boot Starter</a>
+<li><a href="#starter-embedded-caches">1. Using Embedded Caches</a>
 <ul class="sectlevel2">
-<li><a href="#enforcing-versions_starter">1.1. Enforcing Infinispan Versions</a></li>
-<li><a href="#adding-sb-dependencies_starter">1.2. Adding Dependencies for Usage Modes</a></li>
+<li><a href="#adding-embeddedcm-bean_embedded">1.1. Adding the EmbeddedCacheManager Bean</a></li>
+<li><a href="#embedded-custom-beans_embedded">1.2. Cache Manager Configuration Beans</a></li>
+<li><a href="#enabling-spring-cache_embedded">1.3. Enabling Spring Cache Support</a></li>
 </ul>
 </li>
-<li><a href="#starter-embedded-caches">2. Using Embedded Caches</a>
+<li><a href="#starter-remote-caches">2. Using Remote Caches</a>
 <ul class="sectlevel2">
-<li><a href="#adding-embeddedcm-bean_embedded">2.1. Adding the EmbeddedCacheManager Bean</a></li>
-<li><a href="#embedded-custom-beans_embedded">2.2. Cache Manager Configuration Beans</a></li>
-<li><a href="#enabling-spring-cache_embedded">2.3. Enabling Spring Cache Support</a></li>
-</ul>
-</li>
-<li><a href="#starter-remote-caches">3. Using Remote Caches</a>
-<ul class="sectlevel2">
-<li><a href="#configuring-remotecm-bean_remote">3.1. Setting Up the RemoteCacheManager</a>
+<li><a href="#configuring-remotecm-bean_remote">2.1. Setting Up the RemoteCacheManager</a>
 <ul class="sectlevel3">
-<li><a href="#spring-boot-properties_remote">3.1.1. Properties Files</a></li>
+<li><a href="#spring-boot-properties_remote">2.1.1. Properties Files</a></li>
 </ul>
 </li>
-<li><a href="#spring-boot-serialization_remote">3.2. Configuring Marshalling</a></li>
-<li><a href="#remote-custom-beans_remote">3.3. Cache Manager Configuration Beans</a></li>
-<li><a href="#enabling-spring-cache_remote">3.4. Enabling Spring Cache Support</a></li>
-<li><a href="#exposing-statistics-actuator_remote">3.5. Exposing Infinispan Statistics</a></li>
+<li><a href="#spring-boot-serialization_remote">2.2. Configuring Marshalling</a></li>
+<li><a href="#remote-custom-beans_remote">2.3. Cache Manager Configuration Beans</a></li>
+<li><a href="#enabling-spring-cache_remote">2.4. Enabling Spring Cache Support</a></li>
+<li><a href="#exposing-statistics-actuator_remote">2.5. Exposing Infinispan Statistics</a></li>
 </ul>
 </li>
-<li><a href="#using-spring-session">4. Using Spring Session</a>
+<li><a href="#using-spring-session">3. Using Spring Session</a>
 <ul class="sectlevel2">
-<li><a href="#enabling-spring-session_session">4.1. Enabling Spring Session Support</a></li>
+<li><a href="#enabling-spring-session_session">3.1. Enabling Spring Session Support</a></li>
 </ul>
 </li>
-<li><a href="#spring-application-properties">5. Application Properties</a></li>
+<li><a href="#spring-application-properties">4. Application Properties</a></li>
 </ul>
 </div>
 </div>
@@ -571,127 +566,13 @@ You can also simply add Infinispan dependencies to your Spring Boot project.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="setting-up-project"><a class="anchor" href="#setting-up-project"></a>1. Setting up the Spring Boot Starter</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Add dependencies for the Infinispan Spring Boot Starter to your project.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Infinispan supports Spring Boot version 2.x and version 3.
-Be aware that Spring Boot version 3 requires Java 17.</p>
-</div>
-<div class="paragraph">
-<p>The examples in this document include artifacts for the latest version of Spring Boot.
-If you want to use Spring Boot 2.x use:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>infinispan-spring-boot-starter-embedded</code></p>
-</li>
-<li>
-<p><code>infinispan-spring-boot-starter-remote</code></p>
-</li>
-</ul>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="enforcing-versions_starter"><a class="anchor" href="#enforcing-versions_starter"></a>1.1. Enforcing Infinispan Versions</h3>
-<div class="paragraph">
-<p>This starter uses a high-level API to ensure compatibility between major versions of Infinispan.
-However you can enforce a specific version of Infinispan with the <code>infinispan-bom</code> module.</p>
-</div>
-<div class="ulist">
-<div class="title">Procedure</div>
-<ul>
-<li>
-<p>Add <code>infinispan-bom</code> to your <code>pom.xml</code> file before the starter dependencies.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;14.0.27.Final&lt;/version.infinispan&gt;
-&lt;/properties&gt;
-
-&lt;dependencyManagement&gt;
-    &lt;dependencies&gt;
-       &lt;dependency&gt;
-           &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-           &lt;artifactId&gt;infinispan-bom&lt;/artifactId&gt;
-           &lt;version&gt;${version.infinispan}&lt;/version&gt;
-           &lt;type&gt;pom&lt;/type&gt;
-           &lt;scope&gt;import&lt;/scope&gt;
-       &lt;/dependency&gt;
-       &lt;dependency&gt;
-           &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-           &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
-           &lt;version&gt;${version.spring.boot}&lt;/version&gt;
-           &lt;type&gt;pom&lt;/type&gt;
-           &lt;scope&gt;import&lt;/scope&gt;
-       &lt;/dependency&gt;
-       &lt;dependency&gt;
-           &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-           &lt;artifactId&gt;infinispan-spring-boot3-starter&lt;/artifactId&gt;
-       &lt;/dependency&gt;
-    &lt;/dependencies&gt;
- &lt;/dependencyManagement&gt;</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="adding-sb-dependencies_starter"><a class="anchor" href="#adding-sb-dependencies_starter"></a>1.2. Adding Dependencies for Usage Modes</h3>
-<div class="paragraph">
-<p>Infinispan provides different dependencies for embedded caches and remote caches.</p>
-</div>
-<div class="ulist">
-<div class="title">Procedure</div>
-<ul>
-<li>
-<p>Add one of the following to your <code>pom.xml</code> file:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="title">Embedded caches</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
-  &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-  &lt;artifactId&gt;infinispan-spring-boot3-starter-embedded&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">Remote caches</div>
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
-  &lt;groupId&gt;org.infinispan&lt;/groupId&gt;
-  &lt;artifactId&gt;infinispan-spring-boot3-starter-remote&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="starter-embedded-caches"><a class="anchor" href="#starter-embedded-caches"></a>2. Using Embedded Caches</h2>
+<h2 id="starter-embedded-caches"><a class="anchor" href="#starter-embedded-caches"></a>1. Using Embedded Caches</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Embed Infinispan caches directly in your project for in-memory data storage.</p>
 </div>
 <div class="sect2">
-<h3 id="adding-embeddedcm-bean_embedded"><a class="anchor" href="#adding-embeddedcm-bean_embedded"></a>2.1. Adding the EmbeddedCacheManager Bean</h3>
+<h3 id="adding-embeddedcm-bean_embedded"><a class="anchor" href="#adding-embeddedcm-bean_embedded"></a>1.1. Adding the EmbeddedCacheManager Bean</h3>
 <div class="paragraph">
 <p>Configure your application to use embedded caches.</p>
 </div>
@@ -727,7 +608,7 @@ System.out.println("Received value from cache: " + cacheManager.getCache("testCa
 </div>
 </div>
 <div class="sect2">
-<h3 id="embedded-custom-beans_embedded"><a class="anchor" href="#embedded-custom-beans_embedded"></a>2.2. Cache Manager Configuration Beans</h3>
+<h3 id="embedded-custom-beans_embedded"><a class="anchor" href="#embedded-custom-beans_embedded"></a>1.2. Cache Manager Configuration Beans</h3>
 <div class="paragraph">
 <p>You can customize the Cache Manager with the following configuration beans:</p>
 </div>
@@ -821,7 +702,7 @@ public InfinispanConfigurationCustomizer configurationCustomizer() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="enabling-spring-cache_embedded"><a class="anchor" href="#enabling-spring-cache_embedded"></a>2.3. Enabling Spring Cache Support</h3>
+<h3 id="enabling-spring-cache_embedded"><a class="anchor" href="#enabling-spring-cache_embedded"></a>1.3. Enabling Spring Cache Support</h3>
 <div class="paragraph">
 <p>With both embedded and remote caches, Infinispan provides an implementation of Spring Cache that you can enable.</p>
 </div>
@@ -854,13 +735,13 @@ public InfinispanConfigurationCustomizer configurationCustomizer() {
 </div>
 </div>
 <div class="sect1">
-<h2 id="starter-remote-caches"><a class="anchor" href="#starter-remote-caches"></a>3. Using Remote Caches</h2>
+<h2 id="starter-remote-caches"><a class="anchor" href="#starter-remote-caches"></a>2. Using Remote Caches</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Store and retrieve data from remote Infinispan clusters using Hot Rod, a custom TCP binary wire protocol.</p>
 </div>
 <div class="sect2">
-<h3 id="configuring-remotecm-bean_remote"><a class="anchor" href="#configuring-remotecm-bean_remote"></a>3.1. Setting Up the RemoteCacheManager</h3>
+<h3 id="configuring-remotecm-bean_remote"><a class="anchor" href="#configuring-remotecm-bean_remote"></a>2.1. Setting Up the RemoteCacheManager</h3>
 <div class="paragraph">
 <p>Configure your application to use remote caches on Infinispan clusters.</p>
 </div>
@@ -885,7 +766,7 @@ public YourClassName(RemoteCacheManager cacheManager) {
 </ol>
 </div>
 <div class="sect3">
-<h4 id="spring-boot-properties_remote"><a class="anchor" href="#spring-boot-properties_remote"></a>3.1.1. Properties Files</h4>
+<h4 id="spring-boot-properties_remote"><a class="anchor" href="#spring-boot-properties_remote"></a>2.1.1. Properties Files</h4>
 <div class="paragraph">
 <p>You can specify properties in either <code>hotrod-client.properties</code> or <code>application.properties</code>.</p>
 </div>
@@ -905,7 +786,7 @@ infinispan.client.hotrod.server_list=127.0.0.1:11222</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://docs.jboss.org/infinispan/14.0/apidocs/org/infinispan/client/hotrod/configuration/package-summary.html">Hot Rod client configuration API</a></p>
+<p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/client/hotrod/configuration/package-summary.html">Hot Rod client configuration API</a></p>
 </li>
 </ul>
 </div>
@@ -930,7 +811,7 @@ infinispan.remote.server-list=127.0.0.1:11222</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="spring-boot-serialization_remote"><a class="anchor" href="#spring-boot-serialization_remote"></a>3.2. Configuring Marshalling</h3>
+<h3 id="spring-boot-serialization_remote"><a class="anchor" href="#spring-boot-serialization_remote"></a>2.2. Configuring Marshalling</h3>
 <div class="paragraph">
 <p>Configure Infinispan to marshall Java objects into binary format so they can be transferred over the wire or stored to disk.</p>
 </div>
@@ -993,7 +874,7 @@ You can specify a comma-separated list of fully qualified class names or a regul
 </div>
 </div>
 <div class="sect2">
-<h3 id="remote-custom-beans_remote"><a class="anchor" href="#remote-custom-beans_remote"></a>3.3. Cache Manager Configuration Beans</h3>
+<h3 id="remote-custom-beans_remote"><a class="anchor" href="#remote-custom-beans_remote"></a>2.3. Cache Manager Configuration Beans</h3>
 <div class="paragraph">
 <p>Customize the Cache Manager with the following configuration beans:</p>
 </div>
@@ -1075,7 +956,7 @@ public InfinispanRemoteCacheCustomizer customizer() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="enabling-spring-cache_remote"><a class="anchor" href="#enabling-spring-cache_remote"></a>3.4. Enabling Spring Cache Support</h3>
+<h3 id="enabling-spring-cache_remote"><a class="anchor" href="#enabling-spring-cache_remote"></a>2.4. Enabling Spring Cache Support</h3>
 <div class="paragraph">
 <p>With both embedded and remote caches, Infinispan provides an implementation of Spring Cache that you can enable.</p>
 </div>
@@ -1106,7 +987,7 @@ public InfinispanRemoteCacheCustomizer customizer() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="exposing-statistics-actuator_remote"><a class="anchor" href="#exposing-statistics-actuator_remote"></a>3.5. Exposing Infinispan Statistics</h3>
+<h3 id="exposing-statistics-actuator_remote"><a class="anchor" href="#exposing-statistics-actuator_remote"></a>2.5. Exposing Infinispan Statistics</h3>
 <div class="paragraph">
 <p>Infinispan supports the Spring Boot Actuator to expose cache statistics as metrics.</p>
 </div>
@@ -1180,10 +1061,10 @@ cacheMetricsRegistrar.bindCacheToRegistry(cacheManager.getCache("my-cache"));</c
 </div>
 </div>
 <div class="sect1">
-<h2 id="using-spring-session"><a class="anchor" href="#using-spring-session"></a>4. Using Spring Session</h2>
+<h2 id="using-spring-session"><a class="anchor" href="#using-spring-session"></a>3. Using Spring Session</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="enabling-spring-session_session"><a class="anchor" href="#enabling-spring-session_session"></a>4.1. Enabling Spring Session Support</h3>
+<h3 id="enabling-spring-session_session"><a class="anchor" href="#enabling-spring-session_session"></a>3.1. Enabling Spring Session Support</h3>
 <div class="paragraph">
 <p>Infinispan Spring Session support is built on <code>SpringRemoteCacheManager</code> and
 <code>SpringEmbeddedCacheManager</code>.
@@ -1235,7 +1116,7 @@ To use Spring Session, you must first create a Infinispan cache.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="spring-application-properties"><a class="anchor" href="#spring-application-properties"></a>5. Application Properties</h2>
+<h2 id="spring-application-properties"><a class="anchor" href="#spring-application-properties"></a>4. Application Properties</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Configure your project with <code>application.properties</code> or <code>application.yaml</code>.</p>
