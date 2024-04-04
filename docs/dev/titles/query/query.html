@@ -1425,10 +1425,10 @@ However you can query caches that are non-indexed.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">// Remote Query using protobuf
-Query&lt;Transaction&gt; q = remoteCache.create("from sample_bank_account.Transaction where amount &gt; 20");
+Query&lt;Transaction&gt; q = remoteCache.query("from sample_bank_account.Transaction where amount &gt; 20");
 
 // Embedded Query using Java Objects
-Query&lt;Transaction&gt; q = cache.create("from org.infinispan.sample.Book where price &gt; 20");
+Query&lt;Transaction&gt; q = cache.query("from org.infinispan.sample.Book where price &gt; 20");
 
 // Execute the query
 QueryResult&lt;Book&gt; queryResult = q.execute();</code></pre>
@@ -3313,7 +3313,7 @@ ContinuousQuery&lt;Integer, Person&gt; continuousQuery = Search.getContinuousQue
 
 // Define a query.
 // In this example, we search for Person instances under 21 years of age.
-Query query = cache.create("FROM Person p WHERE p.age &lt; 21");
+Query query = cache.query("FROM Person p WHERE p.age &lt; 21");
 
 final Map&lt;Integer, Person&gt; matches = new ConcurrentHashMap&lt;Integer, Person&gt;();
 
@@ -3429,7 +3429,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-04 07:38:14 UTC
+Last updated 2024-04-04 10:40:08 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
