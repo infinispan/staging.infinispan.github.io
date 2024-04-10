@@ -585,7 +585,8 @@ $(addBlockSwitches);
 <ul class="sectlevel3">
 <li><a href="#vector_search_parameters">2.4.1. Vector search parameters</a></li>
 <li><a href="#score_projection_with_vector_search">2.4.2. Score projection with vector search</a></li>
-<li><a href="#vector_field_attributes">2.4.3. Vector field attributes</a>
+<li><a href="#filtering_entities">2.4.3. Filtering entities</a></li>
+<li><a href="#vector_field_attributes">2.4.4. Vector field attributes</a>
 <ul class="sectlevel4">
 <li><a href="#similarity">Similarity</a></li>
 <li><a href="#beanwidth">Beanwidth</a></li>
@@ -2209,7 +2210,35 @@ and the second element will contain the score of the matching.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="vector_field_attributes"><a class="anchor" href="#vector_field_attributes"></a>2.4.3. Vector field attributes</h4>
+<h4 id="filtering_entities"><a class="anchor" href="#filtering_entities"></a>2.4.3. Filtering entities</h4>
+<div class="paragraph">
+<p>Instead of applying the kNN search to the entire population of entities of a given type,
+you can limiting the searching set applying classic predicates (match, full-text-search, range, &#8230;&#8203;) to the kNN queries,
+defining what we call a filtering clause.</p>
+</div>
+<div class="paragraph">
+<p>A filtering clause can contain any kind of predicates with the only exception of kNN predicates that cannot be included.</p>
+</div>
+<div class="paragraph">
+<p>For instance the following query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Query&lt;Object[]&gt; query = remoteCache.query(
+   "select score(i), i from Item i where i.floatVector &lt;-&gt; [:a]~:k filtering (i.buggy : 'cat' or i.text : 'code')");
+query.setParameter("a", new float[]{7, 7, 7});
+query.setParameter("k", 3);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will return the nearest 3 items from the point <code>[7,7,7]</code> selecting only the items that have a text containing the term <code>cat</code> or <code>code</code>.</p>
+</div>
+<div class="paragraph">
+<p>The filtering queries is a way to apply the classic indexed search to the new vector search.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="vector_field_attributes"><a class="anchor" href="#vector_field_attributes"></a>2.4.4. Vector field attributes</h4>
 <div class="paragraph">
 <p>It is always required to specify the <strong>dimension</strong> of the vector field.</p>
 </div>
@@ -3429,7 +3458,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-04 10:40:08 UTC
+Last updated 2024-04-10 09:38:28 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
