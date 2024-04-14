@@ -563,6 +563,7 @@ $(addBlockSwitches);
 <ul class="sectlevel4">
 <li><a href="#project_cache_entry_version">Project cache entry version</a></li>
 <li><a href="#project_cache_entry_value">Project cache entry value</a></li>
+<li><a href="#score_projection">Project the score</a></li>
 </ul>
 </li>
 <li><a href="#grouping_and_aggregation">2.2.5. Grouping and aggregation</a></li>
@@ -578,6 +579,20 @@ $(addBlockSwitches);
 <li><a href="#wildcard_queries">2.3.5. Wildcard queries</a></li>
 <li><a href="#regular_expression_queries">2.3.6. Regular expression queries</a></li>
 <li><a href="#boosting_queries">2.3.7. Boosting queries</a></li>
+</ul>
+</li>
+<li><a href="#vector-search_ickle-query-language">2.4. Vector search queries</a>
+<ul class="sectlevel3">
+<li><a href="#vector_search_parameters">2.4.1. Vector search parameters</a></li>
+<li><a href="#score_projection_with_vector_search">2.4.2. Score projection with vector search</a></li>
+<li><a href="#filtering_entities">2.4.3. Filtering entities</a></li>
+<li><a href="#vector_field_attributes">2.4.4. Vector field attributes</a>
+<ul class="sectlevel4">
+<li><a href="#similarity">Similarity</a></li>
+<li><a href="#beanwidth">Beanwidth</a></li>
+<li><a href="#max_connections">Max Connections</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1163,6 +1178,10 @@ Keyword fields are not analyzed or tokenized during indexing.</p>
 <dd>
 <p>Use this annotation for fields that contain textual data and are intended for full-text search capabilities. You can use the analyzer to process the text and to generate individual tokens.</p>
 </dd>
+<dt class="hdlist1">@Vector</dt>
+<dd>
+<p>Use this annotation to mark vector fields representing embeddings, on which can be defined kNN-predicates.</p>
+</dd>
 <dt class="hdlist1">@Embedded</dt>
 <dd>
 <p>Use this annotation to mark a field as an embedded object within the parent entity.
@@ -1189,19 +1208,23 @@ The default structure used by <code>@Embedded</code> is <code>NESTED</code>.</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">@Basic</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, sortable, projectable, aggregable, indexNullAs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">searchable, sortable, projectable, aggregable, indexNullAs</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">@Decimal</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, sortable, projectable, aggregable, indexNullAs, decimalScale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">searchable, sortable, projectable, aggregable, indexNullAs, decimalScale</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">@Keyword</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, sortable, projectable, aggregable, indexNullAs, normalizer, norms</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">searchable, sortable, projectable, aggregable, indexNullAs, normalizer, norms</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">@Text</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Searchable, projectable, norms, analyzer, searchAnalyzer, termVector</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">searchable, projectable, norms, analyzer, searchAnalyzer, termVector</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@Vector</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">searchable, projectable, dimension, similarity, beamWidth, maxConnections</p></td>
 </tr>
 </tbody>
 </table>
@@ -1224,8 +1247,8 @@ You then upload your Protobuf schema to Infinispan Server.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-java" data-lang="java">/**
-   * @Text(projectable = true)
-   */
+  * @Text(projectable = true)
+  */
 required string street = 1;</code></pre>
 </div>
 </div>
@@ -1403,10 +1426,10 @@ However you can query caches that are non-indexed.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">// Remote Query using protobuf
-Query&lt;Transaction&gt; q = remoteCache.create("from sample_bank_account.Transaction where amount &gt; 20");
+Query&lt;Transaction&gt; q = remoteCache.query("from sample_bank_account.Transaction where amount &gt; 20");
 
 // Embedded Query using Java Objects
-Query&lt;Transaction&gt; q = cache.create("from org.infinispan.sample.Book where price &gt; 20");
+Query&lt;Transaction&gt; q = cache.query("from org.infinispan.sample.Book where price &gt; 20");
 
 // Execute the query
 QueryResult&lt;Book&gt; queryResult = q.execute();</code></pre>
@@ -1798,6 +1821,20 @@ in the same <code>Object[]</code> returned hit.</p>
 SELECT b, version(b) FROM org.infinispan.sample.Book b WHERE b.title like '%Data Grid%'</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="score_projection"><a class="anchor" href="#score_projection"></a>Project the score</h5>
+<div class="paragraph">
+<p>If the query is indexed, it is possible to project the score obtained by each matching together with other projections.
+It can be used for instance to project the cache entry value together with the score
+in the same <code>Object[]</code> returned hit.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql"># return the cache entry value and the the score of the matching
+SELECT b, score(b) FROM org.infinispan.sample.Book b WHERE b.title like '%Data Grid%'</code></pre>
+</div>
+</div>
 <h4 id="sorting" class="discrete">Sorting</h4>
 <div class="paragraph">
 <p>Ordering the results based on one or more attributes or attribute paths is done with the <code>ORDER BY</code> clause. If multiple sorting criteria
@@ -2085,6 +2122,195 @@ For instance, the following example will find the words canceling and fee provid
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-sql" data-lang="sql">FROM sample_library.Book WHERE title : beer^3 OR wine</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="vector-search_ickle-query-language"><a class="anchor" href="#vector-search_ickle-query-language"></a>2.4. Vector search queries</h3>
+<div class="paragraph">
+<p>You can perform vector kNN searches with the Ickle query language using the special operator <code>&lt;-&gt;</code> to define predicates.</p>
+</div>
+<div class="paragraph">
+<p>This is an example of kNN query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sql" data-lang="sql">from play.Item i where i.myVector &lt;-&gt; [7,7,7]~3</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This query will find the items that have the <code>myVector</code> fields that are within <code>3</code> nearest neighbourhood from the vector <code>[7,7,7]</code>.</p>
+</div>
+<div class="paragraph">
+<p>Notice that in order to use this kind of search the entity, in our example <code>play.Item</code>, has to be <code>@Indexed</code> and
+the field, in our example <code>myVector</code>, should be annotated with <code>@Vector</code>.</p>
+</div>
+<div class="paragraph">
+<p>We support two kinds of vector field types:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>byte</code> / <code>Byte</code> (to work with byte vectors)</p>
+</li>
+<li>
+<p><code>float</code> / <code>Float</code> (to work with float vectors)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can have different vector fields on the same entity, but in any case you can have only one vector predicate on your queries.</p>
+</div>
+<div class="sect3">
+<h4 id="vector_search_parameters"><a class="anchor" href="#vector_search_parameters"></a>2.4.1. Vector search parameters</h4>
+<div class="paragraph">
+<p>Both the k-value and the vector can be passed as query parameter.
+The k-value scalar can be expressed with the usual placeholder <code>:k</code> in the Ickle text.
+For the vector we can use either a placeholder for each term of the vector:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Query&lt;Item&gt; query = cache.query("from play.Item i where i.floatVector &lt;-&gt; [:a,:b,:c]~:k");
+query.setParameter("a", 1);
+query.setParameter("b", 4.3);
+query.setParameter("c", 3.3);
+query.setParameter("k", 4);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or a placeholder can be used for the entire vector:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Query&lt;Item&gt; query = cache.query("from play.Item i where i.floatVector &lt;-&gt; [:a]~:k");
+query.setParameter("a", new float[]{7.1f, 7.0f, 3.1f});
+query.setParameter("k", 3);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="score_projection_with_vector_search"><a class="anchor" href="#score_projection_with_vector_search"></a>2.4.2. Score projection with vector search</h4>
+<div class="paragraph">
+<p>Is very common also to return the score of the computation, using the <a href="../query/query.html#score_projection">score projection</a>.
+In the case of vector search the query will be like the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Query&lt;Object[]&gt; query = cache.query("select i, score(i) from play.Item i where i.floatVector &lt;-&gt; [:a]~:k");
+query.setParameter("a", new float[]{7.1f, 7.0f, 3.1f});
+query.setParameter("k", 3);
+
+List&lt;Object[]&gt; resultList = query.list();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the first element of each array will contain the entity,
+and the second element will contain the score of the matching.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="filtering_entities"><a class="anchor" href="#filtering_entities"></a>2.4.3. Filtering entities</h4>
+<div class="paragraph">
+<p>Instead of applying the kNN search to the entire population of entities of a given type,
+you can limiting the searching set applying classic predicates (match, full-text-search, range, &#8230;&#8203;) to the kNN queries,
+defining what we call a filtering clause.</p>
+</div>
+<div class="paragraph">
+<p>A filtering clause can contain any kind of predicates with the only exception of kNN predicates that cannot be included.</p>
+</div>
+<div class="paragraph">
+<p>For instance the following query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Query&lt;Object[]&gt; query = remoteCache.query(
+   "select score(i), i from Item i where i.floatVector &lt;-&gt; [:a]~:k filtering (i.buggy : 'cat' or i.text : 'code')");
+query.setParameter("a", new float[]{7, 7, 7});
+query.setParameter("k", 3);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will return the nearest 3 items from the point <code>[7,7,7]</code> selecting only the items that have a text containing the term <code>cat</code> or <code>code</code>.</p>
+</div>
+<div class="paragraph">
+<p>The filtering queries is a way to apply the classic indexed search to the new vector search.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="vector_field_attributes"><a class="anchor" href="#vector_field_attributes"></a>2.4.4. Vector field attributes</h4>
+<div class="paragraph">
+<p>It is always required to specify the <strong>dimension</strong> of the vector field.</p>
+</div>
+<div class="paragraph">
+<p>The other mapping attributes are optional, since Infinispan will have a default for each of them.
+You can configure them, for instance, to tune the desired accuracy / performance.</p>
+</div>
+<div class="sect4">
+<h5 id="similarity"><a class="anchor" href="#similarity"></a>Similarity</h5>
+<div class="paragraph">
+<p>Different <code>VectorSimilarity</code> algorithms are supported</p>
+</div>
+<table class="tableblock frame-all grid-all fit-content">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Distance</th>
+<th class="tableblock halign-left valign-top">Score</th>
+<th class="tableblock halign-left valign-top">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>L2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(d(x,y) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2 } \)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(s = \frac{1}{1+d^2}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is the Infinispan default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INNER_PRODUCT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(d(x,y) = \sum_{i=1}^{n} x_i \cdot y_i \)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(s = \frac{1}{1+d}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To use this similarity efficiently, both index and search vectors must be normalized</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MAX_INNER_PRODUCT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(d(x,y) = \sum_{i=1}^{n} x_i \cdot y_i \)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">s = \begin{cases}
+\frac{1}{1-d} &amp; \text{if d &lt; 0}\\
+d+1 &amp; \text{otherwise}
+\end{cases}</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This similarity does not require vector normalization</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>COSINE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(d(x,y) = \frac{1 - \sum_{i=1} ^{n} x_i \cdot y_i }{ \sqrt{ \sum_{i=1} ^{n} x_i^2 } \sqrt{ \sum_{i=1} ^{n} y_i^2 }} \)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(s = \frac{1}{1+d}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This similarity cannot be of <code>zero magnitude</code>, e.g. when a vector is all zeroes: <code>[0,0,0,&#8230;&#8203; 0,0]</code>, the cosine is not defined and will result in an error.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="beanwidth"><a class="anchor" href="#beanwidth"></a>Beanwidth</h5>
+<div class="paragraph">
+<p>Changing the <code>beamWidth</code> you can modify the the size of the dynamic list used during k-NN graph creation.
+It affects how vectors are stored. Higher values lead to a more accurate graph but slower indexing speed.
+The Infinispan default is 512.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="max_connections"><a class="anchor" href="#max_connections"></a>Max Connections</h5>
+<div class="paragraph">
+<p>The number of neighbors each node will be connected to in the HNSW graph.
+Modifying this value will have an impact on memory consumption. It is recommended to keep this value between 2 and 100.
+The Infinispan default is 16.</p>
 </div>
 </div>
 </div>
@@ -3116,7 +3342,7 @@ ContinuousQuery&lt;Integer, Person&gt; continuousQuery = Search.getContinuousQue
 
 // Define a query.
 // In this example, we search for Person instances under 21 years of age.
-Query query = cache.create("FROM Person p WHERE p.age &lt; 21");
+Query query = cache.query("FROM Person p WHERE p.age &lt; 21");
 
 final Map&lt;Integer, Person&gt; matches = new ConcurrentHashMap&lt;Integer, Person&gt;();
 
@@ -3232,7 +3458,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-30 11:30:50 -0500
+Last updated 2024-04-12 03:36:18 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

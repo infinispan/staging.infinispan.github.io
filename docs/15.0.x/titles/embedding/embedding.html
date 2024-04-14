@@ -852,7 +852,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;15.0.0.Final&lt;/version.infinispan&gt;
+  &lt;version.infinispan&gt;15.0.1.Final&lt;/version.infinispan&gt;
 &lt;/properties&gt;
 
 &lt;dependencyManagement&gt;
@@ -2672,7 +2672,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>5.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.0.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.1.Final.jar</code> file.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -3506,6 +3506,12 @@ In this case both Infinispan and your WildFly application use the JGroups defaul
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sets the DNS record that returns cluster members.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">No default value.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Required</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jgroups.dns.record</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the DNS record type.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional</p></td>
 </tr>
 </tbody>
 </table>
@@ -7142,7 +7148,7 @@ for a detail example on how to implement this.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-01-30 11:30:50 -0500
+Last updated 2024-04-12 03:36:18 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
