@@ -2403,7 +2403,7 @@ public class Book {
 </div>
 </li>
 <li>
-<p>Implement the <code>SerializationContextInitializer</code> interface in a new class and then add the <code>@AutoProtoSchemaBuilder</code> annotation.</p>
+<p>Implement the <code>SerializationContextInitializer</code> interface in a new class and then add the <code>@ProtoSchema</code> annotation.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -2418,9 +2418,9 @@ public class Book {
 <div class="title">RemoteQueryInitializer.java</div>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">import org.infinispan.protostream.SerializationContextInitializer;
-import org.infinispan.protostream.annotations.AutoProtoSchemaBuilder;
+import org.infinispan.protostream.annotations.ProtoSchema;
 
-@AutoProtoSchemaBuilder(
+@ProtoSchema(
       includeClasses = {
             Book.class
       },
@@ -2576,7 +2576,7 @@ public class CalculusIndexed {
 <p>Set the <code>dependsOn</code> attribute to <code>CommonTypes.class</code> to indicate that the generated Protobuf schema can reference and use <code>CommonTypes</code> types such as <code>BigInteger</code> and <code>BigDecimal</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@AutoProtoSchemaBuilder(includeClasses = CalculusIndexed.class, dependsOn = CommonTypes.class,
+<pre class="highlight"><code class="language-java" data-lang="java">@ProtoSchema(includeClasses = CalculusIndexed.class, dependsOn = CommonTypes.class,
      schemaFilePath = "/protostream", schemaFileName = "calculus-indexed.proto",
      schemaPackageName = "lab.indexed")
 public interface CalculusIndexedSchema extends GeneratedSchema {
@@ -3458,7 +3458,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-23 12:26:20 UTC
+Last updated 2024-04-23 13:53:21 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
