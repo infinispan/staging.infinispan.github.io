@@ -1,4 +1,135 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-04-19T09:12:52+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15 tracing news</title><link href="https://infinispan.org/blog/2024/04/05/infinispan-15-tracing" rel="alternate" type="text/html" title="Infinispan 15 tracing news" /><published>2024-04-05T02:00:00+02:00</published><updated>2024-04-05T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/04/05/infinispan-15-tracing</id><content type="html" xml:base="https://infinispan.org/blog/2024/04/05/infinispan-15-tracing"><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-05-02T11:09:01+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan at Devoxx France 2024</title><link href="https://infinispan.org/blog/2024/04/29/infinispan-devoxx-france" rel="alternate" type="text/html" title="Infinispan at Devoxx France 2024" /><published>2024-04-29T02:00:00+02:00</published><updated>2024-04-29T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/04/29/back-from-devoxx</id><content type="html" xml:base="https://infinispan.org/blog/2024/04/29/infinispan-devoxx-france"><![CDATA[<div class="sect1">
+<h2 id="infinispan-15-in-devoxx-france">Infinispan 15 in Devoxx France</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This month we participated in one of the biggest developers conference in Europe: Devoxx France in Paris.</p>
+</div>
+<div class="paragraph">
+<p>Infinispan did not have a specific talk, however it was present indirectly in two talks:</p>
+</div>
+<div class="sect2">
+<h3 id="highly-available-identity-and-access-management-with-multi-site-keycloak-deployments-in-the-cloud">Highly available Identity and Access Management with multi-site Keycloak deployments in the cloud</h3>
+<div class="sect3">
+<h4 id="abstract">Abstract</h4>
+<div class="paragraph">
+<p>A single sign on solution for your customers and employees shouldn&#8217;t be a single-point-of-failure in
+your architecture. Keycloak, a popular Open Source Identity and Access Management
+solution that provides single sign on, amongst other capabilities, is no exception
+to this.
+A clustered Keycloak deployment in a single site or datacenter provides sufficient
+availability for many. An increasing number of organizations need to utilize multiple
+sites for improved resiliency or to meet legal requirements. In 2023, Keycloak
+overhauled its multi-site capabilities for public cloud infrastructures, tested them
+thoroughly and provided deployment blueprints to the community. They show how to set
+up an AWS infrastructure and deploy Keycloak across multiple sites.
+This talk presents, from an architects and developer perspective, how we approached
+the problem, which architecture we chose, the challenges we faced and which tools
+helped us along the way. Expect to dive into concepts like load shedding, cache stampedes, and automated failover. See tools like Gatling, Helm, OpenTelemetry, Kubernetes Operators and AWS infrastructure in action. We will also provide an outlook for the next steps in our journey.
+These insights will help you to improve your Keycloak deployments as well as design
+and test your own applications so they can withstand high load and site failures.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="/assets/images/blog/2024-devoxx-france/keycloak2.jpg"><img src="/assets/images/blog/2024-devoxx-france/keycloak2.jpg" alt="Keycloak"></a>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="infinispan">Infinispan</h4>
+<div class="paragraph">
+<p>During this presentation, Alexander Schwartz and Ryan Emerson delve into the latest
+version of Keycloak and the High Availability architecture that facilitates deploying
+two sites with Keycloak.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="/assets/images/blog/2024-devoxx-france/keycloak1.jpg"><img src="/assets/images/blog/2024-devoxx-france/keycloak1.jpg" alt="Keycloak"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>A key component enabling this architecture is the
+Infinispan Server, with its Cross-Site replication capabilities.</p>
+</div>
+<div class="paragraph">
+<p>This capability is used to provide Active-Passive replication, however the roadmap includes
+plans for Active-Active replication in the near future.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="/assets/images/blog/2024-devoxx-france/keycloak-infinispan.png"><img src="/assets/images/blog/2024-devoxx-france/keycloak-infinispan.png" alt="Keycloak HA Architecture"></a>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="hibernate-search-7-new-features-and-practical-cases-of-java-full-text-and-vector-search">Hibernate Search 7: New Features and Practical Cases of Java Full-Text and Vector Search</h3>
+<div class="sect3">
+<h4 id="abstract-2">Abstract</h4>
+<div class="paragraph">
+<p>Hibernate Search 7.0 was released in late 2023, and version 7.1 is already available.
+Discover all the new features of this latest version and practical use cases such as
+vectorial search (kNN), which enables the implementation of textual, audio, or
+image-based machine learning search. This conference will guide you through the
+underlying changes, demonstrate concrete use cases, and provide practical tips to make
+the most of the latest version of this essential library for data persistence and
+full-text search in the Java ecosystem.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="/assets/images/blog/2024-devoxx-france/hibernateSearch1.jpg"><img src="/assets/images/blog/2024-devoxx-france/hibernateSearch1.jpg" alt="Hibernate Search"></a>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="infinispan-2">Infinispan</h4>
+<div class="paragraph">
+<p>In the talk, Infinispan was mentioned to highlight that Hibernate Search can function as
+a standalone component in a Java Application, independent of Hibernate ORM.
+Infinispan utilizes the Hibernate Search library to implement Full-Text search over
+cache values. Moreover, since Infinispan 15.0, it can be used as an embedding store to
+execute vector search with Langchain and Langchain4j.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="/assets/images/blog/2024-devoxx-france/hibernateSearch2.jpg"><img src="/assets/images/blog/2024-devoxx-france/hibernateSearch2.jpg" alt="Hibernate Search"></a>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="les-cast-codeurs-podcast">Les Cast Codeurs Podcast</h3>
+<div class="paragraph">
+<p>Mentioning here that Infinispan is indirectly part of Devoxx France and the Les Cast Codeurs podcast too.
+(I am, Katia Aresti, part of the Red Coat team and Les Cast Codeurs Podcast with Emmanuel Bernard,
+Antonio Goncalves, Guillaume Laforge and Arnaud Heritier).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="/assets/images/blog/2024-devoxx-france/castcodeurs.jpg"><img src="/assets/images/blog/2024-devoxx-france/castcodeurs.jpg" alt="LCC"></a>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="/assets/images/blog/2024-devoxx-france/redcoats.jpg"><img src="/assets/images/blog/2024-devoxx-france/redcoats.jpg" alt="Red Coats"></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="whats-next">What&#8217;s next</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Quarkus and Infinispan integration has undergone significant updates.
+Stay tuned for the latest developments by following Quarkus and Infinispan updates.
+We&#8217;ll be participating soon in a Quarkus Insights recording, so keep an eye out for that.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, this summer, we&#8217;ll be attending <a href="https://rivieradev.fr/">RivieraDev</a>.
+Let&#8217;s connect and catch up over there!</p>
+</div>
+</div>
+</div>]]></content><author><name>Katia Aresti</name></author><category term="conferences" /><category term="java" /><category term="devoxx" /><category term="devoxxfr" /><summary type="html"><![CDATA[Infinispan 15 in Devoxx France]]></summary></entry><entry><title type="html">Infinispan 15 tracing news</title><link href="https://infinispan.org/blog/2024/04/05/infinispan-15-tracing" rel="alternate" type="text/html" title="Infinispan 15 tracing news" /><published>2024-04-05T02:00:00+02:00</published><updated>2024-04-05T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/04/05/infinispan-15-tracing</id><content type="html" xml:base="https://infinispan.org/blog/2024/04/05/infinispan-15-tracing"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>In the previous version of Infinispan <a href="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing">we introduced the OpenTelemetry Tracing capability</a>.
@@ -1771,82 +1902,4 @@ assertThat(hits).extracting("code").containsExactly("c5", "c6", "c4");</code></p
 When we get the result as usual we get all the metadata from the corresponding entities, so that the returning items can easily relate to the application domain.</p>
 </div>
 </div>
-</div>]]></content><author><name>Fabio Massimo Ercoli</name></author><category term="search" /><category term="vector" /><category term="knn" /><category term="indexing" /><category term="embeddings" /><summary type="html"><![CDATA[With Infinispan 15.0.0.Dev06, we have started to expose vector search capabilities using Infinispan&#8217;s indexed queries. Using the newly introduced kNN predicate, it is possible to find and order results by the k nearest neighbors of a given vector.]]></summary></entry><entry><title type="html">Reviving MongoDB cache store</title><link href="https://infinispan.org/blog/2023/05/04/reviving-mongodb-cachestore" rel="alternate" type="text/html" title="Reviving MongoDB cache store" /><published>2023-05-04T02:00:00+02:00</published><updated>2023-05-04T02:00:00+02:00</updated><id>https://infinispan.org/blog/2023/05/04/reviving-mongodb-cachestore</id><content type="html" xml:base="https://infinispan.org/blog/2023/05/04/reviving-mongodb-cachestore"><![CDATA[<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>After a long period of inactivity, the MongoDB store is now back to life.
-It has been upgraded to work with Infinispan 15.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="reactive-mongodb-driver">Reactive MongoDB driver</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Since the Infinispan cache store API is now fully reactive, the store has also been modified to use the reactive MongoDB driver.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="database-formats">Database formats</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The older MongoDB cache store worked by persisting keys and values as binary blobs.
-This should be the most efficient way, but it makes it harder to inspect the documents stored in Mongo.
-Therefore, the new implementation allows choosing between two formats:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>binary</code>: the binary format similar to that used with the previous MongoDB store:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
-  {
-    "_id": {"$binary": {"base64": "mAEBigERCg9KDTAtNjc5LTc3NTQzLTk=", "subType": "00"}},
-    "value": {"$binary": {"base64": "mAELigFLCkmCARBib29rX3NhbXBsZS5Cb29rigEzChpUaGUgV2luZC1VcCBCaXJkIENocm9uaWNsZRjNDyISCgZIYXJ1a2kSCE11cmFrYW1p", "subType": "00"}}
-    ...
-  }
-]</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p><code>structured</code>: a structured BSON representation of the objects:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">[
-  {
-    "_id": {
-      "_type": "string",
-      "_value": "0-679-77543-9"
-    },
-    "value": {
-      "_type": "book_sample.Book",
-      "title": "The Wind-Up Bird Chronicle",
-      "publicationYear": 1997,
-      "authors": [
-        {
-          "name": "Haruki",
-          "surname": "Murakami"
-        }
-      ]
-    },
-    ...
-  }
-]</code></pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="expiration">Expiration</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The MongoDB store supports expiration. However, in order to ensure correctness the expired entries are removed from the database one by one, instead of using a bulk operation. Therefore, make sure this does not have a negative impact on MongoDB instances.</p>
-</div>
-</div>
-</div>]]></content><author><name>Antonio Macrì</name></author><category term="cache store" /><category term="mongodb" /><category term="persistence" /><summary type="html"><![CDATA[After a long period of inactivity, the MongoDB store is now back to life. It has been upgraded to work with Infinispan 15.]]></summary></entry></feed>
+</div>]]></content><author><name>Fabio Massimo Ercoli</name></author><category term="search" /><category term="vector" /><category term="knn" /><category term="indexing" /><category term="embeddings" /><summary type="html"><![CDATA[With Infinispan 15.0.0.Dev06, we have started to expose vector search capabilities using Infinispan&#8217;s indexed queries. Using the newly introduced kNN predicate, it is possible to find and order results by the k nearest neighbors of a given vector.]]></summary></entry></feed>
