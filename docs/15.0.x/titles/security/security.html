@@ -4479,22 +4479,6 @@ You can configure your Infinispan Server to use encryption ciphers that adhere t
 </li>
 </ul>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The OpenSSL provider requires a private key, but you cannot retrieve a private key from the PKCS#11 store.
-FIPS blocks the export of unencrypted keys from a FIPS-compliant cryptographic module, so you cannot use the OpenSSL provider for TLS when in FIPS mode.
-You can disable the OpenSSL provider at startup with the <code>-Dorg.infinispan.openssl=false</code> argument.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 <div class="olist arabic">
 <div class="title">Procedure</div>
 <ol class="arabic">
@@ -5999,21 +5983,6 @@ Client applications can then send the <code>Upgrade: protocol</code> header fiel
 <div class="paragraph">
 <div class="title">Application-Layer Protocol Negotiation (ALPN)/Transport Layer Security (TLS)</div>
 <p>Client requests include Server Name Indication (SNI) mappings for Infinispan Server endpoints to negotiate protocols over a TLS connection.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>Applications must use a TLS library that supports the ALPN extension.
-Infinispan uses WildFly OpenSSL bindings for Java.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <div class="title">Automatic Hot Rod detection</div>

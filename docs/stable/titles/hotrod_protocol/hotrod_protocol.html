@@ -7661,7 +7661,7 @@ entries live.</p>
 <div class="paragraph">
 <p>In Infinispan 4.2 and earlier, the hash space was hardcoded to 10240, but
 since 5.0, the hash space is
-<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/lang/Integer.html#MAX_VALUE">Integer.MAX_INT</a> .
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/Integer.html#MAX_VALUE">Integer.MAX_INT</a> .
 Please note that since Hot Rod clients should not assume a particular hash
 space by default, every time a hash-topology change is detected, this value is
 sent back to the client via the Hot Rod protocol.</p>

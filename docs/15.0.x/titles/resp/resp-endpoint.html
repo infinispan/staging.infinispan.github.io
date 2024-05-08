@@ -529,7 +529,8 @@ $(addBlockSwitches);
 <li><a href="#resp-endpoint">1. Using the RESP endpoint</a>
 <ul class="sectlevel2">
 <li><a href="#enabling-resp-endpoint_resp-endpoint">1.1. Enabling the RESP endpoint</a></li>
-<li><a href="#redis-commands_resp-endpoint">1.2. Redis commands</a></li>
+<li><a href="#resp-logical-databases_resp-endpoint">1.2. Mapping caches to Redis logical databases</a></li>
+<li><a href="#redis-commands_resp-endpoint">1.3. Redis commands</a></li>
 </ul>
 </li>
 </ul>
@@ -547,7 +548,7 @@ $(addBlockSwitches);
 <h2 id="resp-endpoint"><a class="anchor" href="#resp-endpoint"></a>1. Using the RESP endpoint</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan Server includes an experimental module that implements the <a href="https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md">RESP3 protocol</a>.
+<p>Infinispan Server includes a module that implements the <a href="https://github.com/redis/redis-specifications/blob/master/protocol/RESP3.md">RESP3 protocol</a>.
 The RESP endpoint allows Redis clients to connect to one or several Infinispan-backed RESP servers and perform cache operations.</p>
 </div>
 <div class="sect2">
@@ -700,7 +701,29 @@ OK
 </div>
 </div>
 <div class="sect2">
-<h3 id="redis-commands_resp-endpoint"><a class="anchor" href="#redis-commands_resp-endpoint"></a>1.2. Redis commands</h3>
+<h3 id="resp-logical-databases_resp-endpoint"><a class="anchor" href="#resp-logical-databases_resp-endpoint"></a>1.2. Mapping caches to Redis logical databases</h3>
+<div class="paragraph">
+<p>Use the cache <code>aliases</code> configuration attributes to map caches to Redis logical databases.
+The default <code>respCache</code> is mapped to logical database <code>0</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Infinispan can use multiple logical databases even in clustered mode, as opposed to Redis which only supports database
+<code>0</code> when using Redis Cluster.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="redis-commands_resp-endpoint"><a class="anchor" href="#redis-commands_resp-endpoint"></a>1.3. Redis commands</h3>
 <div class="paragraph">
 <p>The Infinispan RESP endpoint implements the following Redis commands:</p>
 </div>
@@ -901,6 +924,10 @@ OK
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/hstrlen">HSTRLEN</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/hvals">HVALS</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1035,6 +1062,14 @@ provides a read-uncommitted isolation.</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/docs/latest/commands/pubsub-channels">PUBSUB CHANNELS</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/docs/latest/commands/pubsub-numpat">PUBSUB NUMPAT</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/pttl">PTTL</a></p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -1112,7 +1147,7 @@ provides a read-uncommitted isolation.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/select">SELECT</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Always returns <code>-ERR Select not supported in cluster mode</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://redis.io/commands/set">SET</a></p></td>

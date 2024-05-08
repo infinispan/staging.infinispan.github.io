@@ -471,14 +471,10 @@
                   <xs:documentation>Sets the maximum allowed content length.</xs:documentation>
                </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="compression-level" type="xs:int" use="optional" default="6">
+            <xs:attribute name="compression-level" type="xs:int" use="optional">
                <xs:annotation>
-                  <xs:documentation>Sets the level for compressed requests and responses.</xs:documentation>
-               </xs:annotation>
-            </xs:attribute>
-            <xs:attribute name="compression-threshold" type="xs:int" use="optional" default="0">
-               <xs:annotation>
-                  <xs:documentation>The response body is compressed when the size of the response body exceeds the threshold. The value should be a non-negative number. 0 will enable compression for all responses.</xs:documentation>
+                  <xs:documentation>Sets the level for compressed requests and responses.
+                  </xs:documentation>
                </xs:annotation>
             </xs:attribute>
             <xs:attribute name="security-realm" type="xs:string">
@@ -1218,7 +1214,8 @@
          <xs:annotation>
             <xs:documentation>
                The name of the provider to use to instantiate the KeyManagerFactory. If the provider is not
-               specified, the first provider found that can create an instance of the
+               specified, and OpenSSL is available and supported on the platform and architecture, the
+               'openssl' provider will be used. Otherwise the first provider found that can create an instance of the
                specified 'type' will be used.
             </xs:documentation>
          </xs:annotation>
@@ -1267,7 +1264,8 @@
          <xs:annotation>
             <xs:documentation>
                The name of the provider to use to instantiate the TrustManagerFactory. If the provider is not
-               specified, the first provider found that can create an instance of the
+               specified, and OpenSSL is available and supported on the platform and architecture, the
+               'openssl' provider will be used. Otherwise the first provider found that can create an instance of the
                specified 'type' will be used.
             </xs:documentation>
          </xs:annotation>
@@ -2005,15 +2003,6 @@
          <xs:documentation>
             Defines a security-realm which will be used to secure the resource.
             It may be used on the cache-container transport element.
-         </xs:documentation>
-      </xs:annotation>
-   </xs:attribute>
-
-   <xs:attribute name="data-source" type="xs:string">
-      <xs:annotation>
-         <xs:documentation>
-            Defines a data-source which will be used to provide database connections.
-            It may be used to on the cache-container transport element to configure JDBC_PING.
          </xs:documentation>
       </xs:annotation>
    </xs:attribute>
