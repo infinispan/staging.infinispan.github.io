@@ -1,208 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-05-08T12:05:06+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15.0.3.Final</title><link href="https://infinispan.org/blog/2024/05/08/infinispan-15" rel="alternate" type="text/html" title="Infinispan 15.0.3.Final" /><published>2024-05-08T02:00:00+02:00</published><updated>2024-05-08T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/05/08/infinispan-15.0.3.Final</id><content type="html" xml:base="https://infinispan.org/blog/2024/05/08/infinispan-15"><![CDATA[<div id="preamble">
-<div class="sectionbody">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-05-16T10:57:51-04:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">New video out! Highly available IAM with multi-site Keycloak deployments in the cloud</title><link href="https://infinispan.org/blog/2024/05/15/keycloak-infinispan-secret-sauce" rel="alternate" type="text/html" title="New video out! Highly available IAM with multi-site Keycloak deployments in the cloud" /><published>2024-05-15T20:00:00-04:00</published><updated>2024-05-15T20:00:00-04:00</updated><id>https://infinispan.org/blog/2024/05/15/keycloak-infinispan-video</id><content type="html" xml:base="https://infinispan.org/blog/2024/05/15/keycloak-infinispan-secret-sauce"><![CDATA[<div class="paragraph">
+<p>The Infinispan team is excited to announce that the video of the acclaimed and
+highly rated talk at Devoxx France about Keycloak and Infinispan has been published.</p>
+</div>
 <div class="paragraph">
-<p>Since our 15 release a couple of months ago, we&#8217;ve been busy fixing bugs and adding new functionality. This post highlights the most notable enhancements:</p>
+<p>In this 45 minutes talk, Ryan Emerson and Alexander Schwartz explain how Keycloak&#8217;s Highly Available
+architecture and highlight the essential role Infinispan plays in it.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="protocol-buffers-compatibility-checks">Protocol Buffers compatibility checks</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>When uploading new versions of existing schemas to Infinispan, these will be validated using a set of backwards-compatibility rules based upon <a href="https://protobuf.dev/programming-guides/dos-donts/">Proto Best Practices</a>.
-The types of checks can be configured via the <code>schema-compatibility</code> attribute of the global <code>serialization</code> configuration:</p>
-</div>
-<div class="listingblock">
+<div class="videoblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;infinispan&gt;
-   &lt;serialization schema-compatibility="UNRESTRICTED|LENIENT|STRICT"/&gt;
-&lt;/infinispan&gt;</code></pre>
+<iframe src="https://www.youtube.com/embed/y1yE7Rd3lGE?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
 </div>
 <div class="paragraph">
-<p>The available levels are:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>UNRESTRICTED</code>: no checks are performed</p>
-</li>
-<li>
-<p><code>LENIENT</code>: a subset of the rules are enforced</p>
-</li>
-<li>
-<p><code>STRICT</code>: all the rules are enforced (default)</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="http-compressiondecompression">HTTP compression/decompression</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The REST endpoint has supported compressing responses since Infinispan 10, but now it also supports receiving compressed requests using the standard HTTP <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding"><code>content-encoding</code> header</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="queryindex-by-key">Query/index by key</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Entry keys can now be indexed and referenced in Ickle queries:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">select s.key.column from model.Structure s where s.key.zone = 'z7'</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="filtering-in-vector-search">Filtering in Vector search</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>It&#8217;s now possible to limit vector searches by applying predicates to the kNN queries:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Query&lt;Object[]&gt; query = remoteCache.query(
-   "select score(i), i from Item i where i.floatVector &lt;-&gt; [:a]~:k filtering (i.buggy : 'cat' or i.text : 'code')");
-query.setParameter("a", new float[]{7, 7, 7});
-query.setParameter("k", 3);</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="more-detailed-metrics">More detailed metrics</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Metrics for reads/writes are now split into the following categories:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>primary owner</p>
-</li>
-<li>
-<p>backup owner</p>
-</li>
-<li>
-<p>non-owner</p>
-</li>
-</ul>
+<p>The conference highlights one of the most requested features in Infinispan: Cross-Site Replication.
+This feature allows for deploying two separate clusters and connecting them so that caches can
+replicate data and serve as backups for each other.</p>
 </div>
 <div class="paragraph">
-<p>Additionally, transaction operations (prepare, commit and rollback) now have their own metrics for counts and response times.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="cache-aliases">Cache aliases</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Caches can now have aliases associated with them, so a cache may be accessed either by its primary name or one of its aliases.
-The <code>aliases</code> attribute can be manipulated at runtime using the CLI or the REST API, so you can reassign aliases to different caches.
-With this functionality it is possible to implement cache snapshots. Given the following configuration:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;caches&gt;
-    &lt;distributed-cache name="snapshot1" aliases="data" /&gt;
-    &lt;distributed-cache name="snapshot2"/&gt;
-&lt;/caches&gt;</code></pre>
-</div>
+<p>If you&#8217;re not familiar with this feature and would like to try it out, a simple Docker Compose file
+is all you need. Grab a look to this <a href="https://infinispan.org/tutorials/simple/simple_tutorials.html#cross-site-replication_remote-cache-tutorials">simple tutorial</a>.</p>
 </div>
 <div class="paragraph">
-<p>Clients could be accessing an older snapshot through the <code>data</code> alias, while the other snapshot is being populated. Once the new snapshot cache is ready, reassign the <code>data</code> alias to it and clients will automatically <strong>see</strong> the new data.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="redis-protocol">Redis protocol</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Infinispan can now support multiple Redis <strong>databases</strong>, even in clustered mode (something that the original Redis cannot do). You can use the cache alias feature to
-assign logical database <strong>numbers</strong> to named caches.</p>
-</div>
-<div class="paragraph">
-<p>We&#8217;ve also implemented a few more Redis commands:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>BLMPOP</code></p>
-</li>
-<li>
-<p><code>DB</code></p>
-</li>
-<li>
-<p><code>HSTRLEN</code></p>
-</li>
-<li>
-<p><code>PUBSUB</code></p>
-</li>
-<li>
-<p><code>PUBSUB NUMPAT</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>as well as fixing a number of buglets in other commands.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="reactive-methods-for-spring-cache">Reactive methods for Spring Cache</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The Spring Cache (<code>retrieve</code>) methods have been implemented.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="jdbc_ping-and-datasources">JDBC_PING and datasources</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Infinispan server can now inject a managed datasource into the <code>JDBC_PING</code> protocol:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;cache-container&gt;
-    &lt;transport stack="jdbc" server:data-source="ds" /&gt;
-&lt;/cache-container&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="removal-of-openssl">Removal of OpenSSL</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Infinispan server no longer ships with the OpenSSL wrapper: the performance of the JDK&#8217;s SSLEngine has been vastly improved in Java 17 to the point where there is no noticeable difference (and in some cases it is slightly faster, since it no longer needs to jump over JNI).</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="documentation">Documentation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Many improvements, updates and fixes.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="release-notes">Release notes</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>You can look at the <a href="https://issues.redhat.com/secure/ReleaseNote.jspa?projectId=12310799&amp;version=12377084">release notes</a> to see what has changed since our latest CR.</p>
-</div>
-<div class="paragraph">
-<p>Get them from our <a href="https://infinispan.org/download/">download page</a>.</p>
-</div>
-</div>
-</div>]]></content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="final" /><summary type="html"><![CDATA[Since our 15 release a couple of months ago, we&#8217;ve been busy fixing bugs and adding new functionality. This post highlights the most notable enhancements:]]></summary></entry><entry><title type="html">Infinispan at Devoxx France 2024</title><link href="https://infinispan.org/blog/2024/04/29/infinispan-devoxx-france" rel="alternate" type="text/html" title="Infinispan at Devoxx France 2024" /><published>2024-04-29T02:00:00+02:00</published><updated>2024-04-29T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/04/29/back-from-devoxx</id><content type="html" xml:base="https://infinispan.org/blog/2024/04/29/infinispan-devoxx-france"><![CDATA[<div class="sect1">
+<p>Stay tuned for more and enjoy the video!</p>
+</div>]]></content><author><name>Katia Aresti</name></author><category term="conferences" /><category term="java" /><category term="devoxx" /><category term="devoxxfr" /><category term="keycloak" /><category term="infinispan" /><summary type="html"><![CDATA[The Infinispan team is excited to announce that the video of the acclaimed and highly rated talk at Devoxx France about Keycloak and Infinispan has been published.]]></summary></entry><entry><title type="html">Infinispan at Devoxx France 2024</title><link href="https://infinispan.org/blog/2024/04/28/infinispan-devoxx-france" rel="alternate" type="text/html" title="Infinispan at Devoxx France 2024" /><published>2024-04-28T20:00:00-04:00</published><updated>2024-04-28T20:00:00-04:00</updated><id>https://infinispan.org/blog/2024/04/28/back-from-devoxx</id><content type="html" xml:base="https://infinispan.org/blog/2024/04/28/infinispan-devoxx-france"><![CDATA[<div class="sect1">
 <h2 id="infinispan-15-in-devoxx-france">Infinispan 15 in Devoxx France</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -333,7 +153,7 @@ We&#8217;ll be participating soon in a Quarkus Insights recording, so keep an ey
 Let&#8217;s connect and catch up over there!</p>
 </div>
 </div>
-</div>]]></content><author><name>Katia Aresti</name></author><category term="conferences" /><category term="java" /><category term="devoxx" /><category term="devoxxfr" /><summary type="html"><![CDATA[Infinispan 15 in Devoxx France]]></summary></entry><entry><title type="html">Infinispan 15 tracing news</title><link href="https://infinispan.org/blog/2024/04/05/infinispan-15-tracing" rel="alternate" type="text/html" title="Infinispan 15 tracing news" /><published>2024-04-05T02:00:00+02:00</published><updated>2024-04-05T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/04/05/infinispan-15-tracing</id><content type="html" xml:base="https://infinispan.org/blog/2024/04/05/infinispan-15-tracing"><![CDATA[<div id="preamble">
+</div>]]></content><author><name>Katia Aresti</name></author><category term="conferences" /><category term="java" /><category term="devoxx" /><category term="devoxxfr" /><summary type="html"><![CDATA[Infinispan 15 in Devoxx France]]></summary></entry><entry><title type="html">Infinispan 15 tracing news</title><link href="https://infinispan.org/blog/2024/04/04/infinispan-15-tracing" rel="alternate" type="text/html" title="Infinispan 15 tracing news" /><published>2024-04-04T20:00:00-04:00</published><updated>2024-04-04T20:00:00-04:00</updated><id>https://infinispan.org/blog/2024/04/04/infinispan-15-tracing</id><content type="html" xml:base="https://infinispan.org/blog/2024/04/04/infinispan-15-tracing"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>In the previous version of Infinispan <a href="https://infinispan.org/blog/2022/07/18/infinispan-14-opentelemetry-tracing">we introduced the OpenTelemetry Tracing capability</a>.
@@ -495,7 +315,7 @@ it&#8217;s possible to observe the call that the Infinispan Server makes to sync
 <a href="https://infinispan.org/docs/stable/titles/server/server.html#opentelemetry-tracing">Enabling and configuring Infinispan OpenTelemetry tracing</a>.</p>
 </div>
 </div>
-</div>]]></content><author><name>Fabio Massimo Ercoli</name></author><category term="opentelemetry" /><category term="tracing" /><summary type="html"><![CDATA[In the previous version of Infinispan we introduced the OpenTelemetry Tracing capability. With the new version we evolved the integration in order to:]]></summary></entry><entry><title type="html">Infinispan Operator 2.4.0</title><link href="https://infinispan.org/blog/2024/03/20/infinispan-resp-resque-use-case" rel="alternate" type="text/html" title="Infinispan Operator 2.4.0" /><published>2024-03-20T01:00:00+01:00</published><updated>2024-03-20T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/03/20/infinispan-operator-2-4-0-release</id><content type="html" xml:base="https://infinispan.org/blog/2024/03/20/infinispan-resp-resque-use-case"><![CDATA[<div id="preamble">
+</div>]]></content><author><name>Fabio Massimo Ercoli</name></author><category term="opentelemetry" /><category term="tracing" /><summary type="html"><![CDATA[In the previous version of Infinispan we introduced the OpenTelemetry Tracing capability. With the new version we evolved the integration in order to:]]></summary></entry><entry><title type="html">Infinispan Operator 2.4.0</title><link href="https://infinispan.org/blog/2024/03/19/infinispan-resp-resque-use-case" rel="alternate" type="text/html" title="Infinispan Operator 2.4.0" /><published>2024-03-19T20:00:00-04:00</published><updated>2024-03-19T20:00:00-04:00</updated><id>https://infinispan.org/blog/2024/03/19/infinispan-operator-2-4-0-release</id><content type="html" xml:base="https://infinispan.org/blog/2024/03/19/infinispan-resp-resque-use-case"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>We&#8217;re pleased to announce
@@ -572,7 +392,7 @@ server streams in the Operator will provided additional flexibility those depend
 integration, e.g. Keycloak users.</p>
 </div>
 </div>
-</div>]]></content><author><name>Ryan Emerson</name></author><category term="release" /><category term="operator" /><category term="kubernetes" /><summary type="html"><![CDATA[We&#8217;re pleased to announce version 2.4.0 of the Infinispan Operator for Kubernetes and Red Hat OpenShift.]]></summary></entry><entry><title type="html">Infinispan 15.0.0.Final</title><link href="https://infinispan.org/blog/2024/03/13/infinispan-15" rel="alternate" type="text/html" title="Infinispan 15.0.0.Final" /><published>2024-03-13T01:00:00+01:00</published><updated>2024-03-13T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/03/13/infinispan-15.0.0.Final</id><content type="html" xml:base="https://infinispan.org/blog/2024/03/13/infinispan-15"><![CDATA[<div id="preamble">
+</div>]]></content><author><name>Ryan Emerson</name></author><category term="release" /><category term="operator" /><category term="kubernetes" /><summary type="html"><![CDATA[We&#8217;re pleased to announce version 2.4.0 of the Infinispan Operator for Kubernetes and Red Hat OpenShift.]]></summary></entry><entry><title type="html">Infinispan 15.0.0.Final</title><link href="https://infinispan.org/blog/2024/03/12/infinispan-15" rel="alternate" type="text/html" title="Infinispan 15.0.0.Final" /><published>2024-03-12T20:00:00-04:00</published><updated>2024-03-12T20:00:00-04:00</updated><id>https://infinispan.org/blog/2024/03/12/infinispan-15.0.0.Final</id><content type="html" xml:base="https://infinispan.org/blog/2024/03/12/infinispan-15"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>Don&#8217;t you know I&#8217;m still standin' better than I ever did?
@@ -1168,7 +988,7 @@ Key lookup is also now slightly faster (on average 4 less hash comparisons)</p>
 <p>Get them from our <a href="https://infinispan.org/download/">download page</a>.</p>
 </div>
 </div>
-</div>]]></content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="final" /><summary type="html"><![CDATA[Don&#8217;t you know I&#8217;m still standin' better than I ever did? Lookin' like a true survivor, feelin' like a little kid]]></summary></entry><entry><title type="html">Using Infinispan Server for your Redis clients</title><link href="https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients" rel="alternate" type="text/html" title="Using Infinispan Server for your Redis clients" /><published>2024-02-02T01:00:00+01:00</published><updated>2024-02-02T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients</id><content type="html" xml:base="https://infinispan.org/blog/2024/02/02/infinispan-server-redis-clients"><![CDATA[<div class="paragraph">
+</div>]]></content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="final" /><summary type="html"><![CDATA[Don&#8217;t you know I&#8217;m still standin' better than I ever did? Lookin' like a true survivor, feelin' like a little kid]]></summary></entry><entry><title type="html">Using Infinispan Server for your Redis clients</title><link href="https://infinispan.org/blog/2024/02/01/infinispan-server-redis-clients" rel="alternate" type="text/html" title="Using Infinispan Server for your Redis clients" /><published>2024-02-01T19:00:00-05:00</published><updated>2024-02-01T19:00:00-05:00</updated><id>https://infinispan.org/blog/2024/02/01/infinispan-server-redis-clients</id><content type="html" xml:base="https://infinispan.org/blog/2024/02/01/infinispan-server-redis-clients"><![CDATA[<div class="paragraph">
 <p>Dear Infinispan community,</p>
 </div>
 <div class="paragraph">
@@ -1178,7 +998,7 @@ Key lookup is also now slightly faster (on average 4 less hash comparisons)</p>
 <div class="content">
 <iframe width="640" height="380" src="https://www.youtube.com/embed/Xi9gTA0jfD0?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
-</div>]]></content><author><name>Tristan Tarrant</name></author><category term="video" /><category term="demo" /><category term="redis" /><summary type="html"><![CDATA[Dear Infinispan community,]]></summary></entry><entry><title type="html">Infinispan RESP in action: Resque use case</title><link href="https://infinispan.org/blog/2024/01/19/infinispan-resp-resque-use-case" rel="alternate" type="text/html" title="Infinispan RESP in action: Resque use case" /><published>2024-01-19T01:00:00+01:00</published><updated>2024-01-19T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/01/19/infinispan-resp-resque-use-case</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/19/infinispan-resp-resque-use-case"><![CDATA[<div class="paragraph">
+</div>]]></content><author><name>Tristan Tarrant</name></author><category term="video" /><category term="demo" /><category term="redis" /><summary type="html"><![CDATA[Dear Infinispan community,]]></summary></entry><entry><title type="html">Infinispan RESP in action: Resque use case</title><link href="https://infinispan.org/blog/2024/01/18/infinispan-resp-resque-use-case" rel="alternate" type="text/html" title="Infinispan RESP in action: Resque use case" /><published>2024-01-18T19:00:00-05:00</published><updated>2024-01-18T19:00:00-05:00</updated><id>https://infinispan.org/blog/2024/01/18/infinispan-resp-resque-use-case</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/18/infinispan-resp-resque-use-case"><![CDATA[<div class="paragraph">
 <p>As you may know Infinispan 15 extended its RESP compatibility implementing most of the command related to the principal data types (set, list, hashes, sorted set&#8230;&#8203;).</p>
 </div>
 <div class="paragraph">
@@ -1202,7 +1022,7 @@ The Infinispan Team</p>
 </div>
 <div class="paragraph">
 <p>(*) What? You also noticed we changed the expected result for a test. Surely you can easily guess why&#8230;&#8203; if not just ask us on <a href="https://infinispan.zulipchat.com/#">Zulip</a>!</p>
-</div>]]></content><author><name>Vittorio Rigamonti</name></author><category term="demo" /><category term="use case" /><category term="resp" /><category term="redis" /><summary type="html"><![CDATA[As you may know Infinispan 15 extended its RESP compatibility implementing most of the command related to the principal data types (set, list, hashes, sorted set&#8230;&#8203;).]]></summary></entry><entry><title type="html">Infinispan Insights: Securing Infinispan with Keycloak</title><link href="https://infinispan.org/blog/2024/01/09/securing-infinispan-with-keycloak" rel="alternate" type="text/html" title="Infinispan Insights: Securing Infinispan with Keycloak" /><published>2024-01-09T01:00:00+01:00</published><updated>2024-01-09T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/01/09/infinispan-security-keycloak</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/09/securing-infinispan-with-keycloak"><![CDATA[<div id="preamble">
+</div>]]></content><author><name>Vittorio Rigamonti</name></author><category term="demo" /><category term="use case" /><category term="resp" /><category term="redis" /><summary type="html"><![CDATA[As you may know Infinispan 15 extended its RESP compatibility implementing most of the command related to the principal data types (set, list, hashes, sorted set&#8230;&#8203;).]]></summary></entry><entry><title type="html">Infinispan Insights: Securing Infinispan with Keycloak</title><link href="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak" rel="alternate" type="text/html" title="Infinispan Insights: Securing Infinispan with Keycloak" /><published>2024-01-08T19:00:00-05:00</published><updated>2024-01-08T19:00:00-05:00</updated><id>https://infinispan.org/blog/2024/01/08/infinispan-security-keycloak</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/08/securing-infinispan-with-keycloak"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>This tutorial shows you how to secure your Infinispan cluster using Keycloak.
@@ -1660,7 +1480,7 @@ There are many other advanced features in Keycloak, this is just the most simple
 </div>
 </div>
 </div>
-</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><category term="keycloak" /><summary type="html"><![CDATA[This tutorial shows you how to secure your Infinispan cluster using Keycloak. To understand the basics of Infinispan Security, check this blog post before.]]></summary></entry><entry><title type="html">Infinispan Insights: Security basics and secured caches</title><link href="https://infinispan.org/blog/2023/12/20/infinispan-secured-caches" rel="alternate" type="text/html" title="Infinispan Insights: Security basics and secured caches" /><published>2023-12-20T01:00:00+01:00</published><updated>2023-12-20T01:00:00+01:00</updated><id>https://infinispan.org/blog/2023/12/20/infinispan-secured-caches</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/20/infinispan-secured-caches"><![CDATA[<div id="preamble">
+</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><category term="keycloak" /><summary type="html"><![CDATA[This tutorial shows you how to secure your Infinispan cluster using Keycloak. To understand the basics of Infinispan Security, check this blog post before.]]></summary></entry><entry><title type="html">Infinispan Insights: Security basics and secured caches</title><link href="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches" rel="alternate" type="text/html" title="Infinispan Insights: Security basics and secured caches" /><published>2023-12-19T19:00:00-05:00</published><updated>2023-12-19T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/19/infinispan-secured-caches</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/19/infinispan-secured-caches"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>This article shows you how to secure your Infinispan cluster, protecting both cluster management and data
@@ -1922,7 +1742,7 @@ which can be handled with Keycloak. Run the
 to test it.</p>
 </div>
 </div>
-</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><summary type="html"><![CDATA[This article shows you how to secure your Infinispan cluster, protecting both cluster management and data access in various Infinispan caches]]></summary></entry><entry><title type="html">Infinispan 15.0.0.Dev06</title><link href="https://infinispan.org/blog/2023/12/14/infinispan-15dev06" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev06" /><published>2023-12-14T01:00:00+01:00</published><updated>2023-12-14T01:00:00+01:00</updated><id>https://infinispan.org/blog/2023/12/14/infinispan-15.0.0.Dev06</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/14/infinispan-15dev06"><![CDATA[<div class="sect1">
+</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><summary type="html"><![CDATA[This article shows you how to secure your Infinispan cluster, protecting both cluster management and data access in various Infinispan caches]]></summary></entry><entry><title type="html">Infinispan 15.0.0.Dev06</title><link href="https://infinispan.org/blog/2023/12/13/infinispan-15dev06" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev06" /><published>2023-12-13T19:00:00-05:00</published><updated>2023-12-13T19:00:00-05:00</updated><id>https://infinispan.org/blog/2023/12/13/infinispan-15.0.0.Dev06</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/13/infinispan-15dev06"><![CDATA[<div class="sect1">
 <h2 id="redis-endpoint">Redis endpoint</h2>
 <div class="sectionbody">
 <div class="paragraph">

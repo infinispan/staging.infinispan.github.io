@@ -599,11 +599,7 @@ $(addBlockSwitches);
 <li><a href="#discovery-tcpping_cluster-transport">5.2.2. TCPPING</a></li>
 <li><a href="#discovery-mping_cluster-transport">5.2.3. MPING</a></li>
 <li><a href="#discovery-tcp-gossip_cluster-transport">5.2.4. TCPGOSSIP</a></li>
-<li><a href="#discovery-jdbcping_cluster-transport">5.2.5. JDBC_PING</a>
-<ul class="sectlevel4">
-<li><a href="#discovery-jdbcping-datasource_cluster-transport">Using a server datasource for JDBC_PING discovery</a></li>
-</ul>
-</li>
+<li><a href="#discovery-jdbcping_cluster-transport">5.2.5. JDBC_PING</a></li>
 <li><a href="#discovery-dns-ping_cluster-transport">5.2.6. DNS_PING</a></li>
 <li><a href="#jgroups-cloud-discovery-protocols_cluster-transport">5.2.7. Cloud discovery protocols</a></li>
 </ul>
@@ -856,7 +852,7 @@ artifact you add as a dependency to your project.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;properties&gt;
-  &lt;version.infinispan&gt;15.0.3.Final&lt;/version.infinispan&gt;
+  &lt;version.infinispan&gt;15.0.2.Final&lt;/version.infinispan&gt;
 &lt;/properties&gt;
 
 &lt;dependencyManagement&gt;
@@ -1075,7 +1071,7 @@ Specific methods on the <code>keySet</code>, <code>values</code> and <code>entry
 </div>
 <div class="paragraph">
 <div class="title">Mortal and Immortal Data</div>
-<p>Further to simply storing entries, Infinispan&#8217;s cache API allows you to attach mortality information to data.  For example, simply using <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#put-K-V-">put(key, value)</a> would create an <em>immortal</em> entry, i.e., an entry that lives in the cache forever, until it is removed (or evicted from memory to prevent running out of memory).  If, however, you put data in the cache using <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/BasicCache.html#put(K,V,long,java.util.concurrent.TimeUnit)">put(key, value, lifespan, timeunit)</a> , this creates a <em>mortal</em> entry, i.e., an entry that has a fixed lifespan and expires after that lifespan.</p>
+<p>Further to simply storing entries, Infinispan&#8217;s cache API allows you to attach mortality information to data.  For example, simply using <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">put(key, value)</a> would create an <em>immortal</em> entry, i.e., an entry that lives in the cache forever, until it is removed (or evicted from memory to prevent running out of memory).  If, however, you put data in the cache using <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/BasicCache.html#put(K,V,long,java.util.concurrent.TimeUnit)">put(key, value, lifespan, timeunit)</a> , this creates a <em>mortal</em> entry, i.e., an entry that has a fixed lifespan and expires after that lifespan.</p>
 </div>
 <div class="paragraph">
 <p>In addition to <em>lifespan</em> , Infinispan also supports <em>maxIdle</em> as an additional metric with which to determine expiration.  Any combination of lifespans or maxIdles can be used.</p>
@@ -1116,7 +1112,7 @@ if (cachedPerson == null) {
 </div>
 </div>
 <div class="paragraph">
-<p>Note that <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html#putForExternalRead(K,V)">putForExternalRead</a> should never be used as a mechanism to update the cache with a new Person instance originating from application execution (i.e. from a transaction that modifies a Person&#8217;s address). When updating cached values, please use the standard <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#put-K-V-">put</a> operation, otherwise the possibility of caching corrupt data is likely.</p>
+<p>Note that <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html#putForExternalRead(K,V)">putForExternalRead</a> should never be used as a mechanism to update the cache with a new Person instance originating from application execution (i.e. from a transaction that modifies a Person&#8217;s address). When updating cached values, please use the standard <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">put</a> operation, otherwise the possibility of caching corrupt data is likely.</p>
 </div>
 <div class="sect3">
 <h4 id="advancedcache_api"><a class="anchor" href="#advancedcache_api"></a>2.3.1. AdvancedCache API</h4>
@@ -1145,10 +1141,10 @@ if (cachedPerson == null) {
 <div class="sect3">
 <h4 id="cache_asynchronous_api"><a class="anchor" href="#cache_asynchronous_api"></a>2.3.2. Asynchronous API</h4>
 <div class="paragraph">
-<p>In addition to synchronous API methods like <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#put-K-V-">Cache.put()</a> , <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#remove-java.lang.Object-">Cache.remove()</a> , etc., Infinispan also has an asynchronous, non-blocking API where you can achieve the same results in a non-blocking fashion.</p>
+<p>In addition to synchronous API methods like <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">Cache.put()</a> , <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#remove-java.lang.Object-">Cache.remove()</a> , etc., Infinispan also has an asynchronous, non-blocking API where you can achieve the same results in a non-blocking fashion.</p>
 </div>
 <div class="paragraph">
-<p>These methods are named in a similar fashion to their blocking counterparts, with "Async" appended.  E.g., <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#putAsync(K,V)">Cache.putAsync()</a> , <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#removeAsync(java.lang.Object)">Cache.removeAsync()</a> , etc.  These asynchronous counterparts return a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> that contains the actual result of the operation.</p>
+<p>These methods are named in a similar fashion to their blocking counterparts, with "Async" appended.  E.g., <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#putAsync(K,V)">Cache.putAsync()</a> , <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#removeAsync(java.lang.Object)">Cache.removeAsync()</a> , etc.  These asynchronous counterparts return a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> that contains the actual result of the operation.</p>
 </div>
 <div class="paragraph">
 <p>For example, in a cache parameterized as <code>Cache&lt;String, String&gt;</code>, <code>Cache.put(String key, String value)</code> returns <code>String</code> while <code>Cache.putAsync(String key, String value)</code> returns <code>CompletableFuture&lt;String&gt;</code>.</p>
@@ -2676,7 +2672,7 @@ The transport layer also enables Infinispan nodes to replicate or distribute dat
 <div class="sect2">
 <h3 id="default-jgroups-stacks_cluster-transport"><a class="anchor" href="#default-jgroups-stacks_cluster-transport"></a>5.1. Default JGroups stacks</h3>
 <div class="paragraph">
-<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.3.Final.jar</code> file.</p>
+<p>Infinispan provides default JGroups stack files, <code>default-jgroups-*.xml</code>, in the <code>default-configs</code> directory inside the <code>infinispan-core-15.0.2.Final.jar</code> file.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -2932,81 +2928,6 @@ When nodes leave Infinispan clusters, they delete their IP addresses from the sh
 </tr>
 </table>
 </div>
-<div class="sect4">
-<h5 id="discovery-jdbcping-datasource_cluster-transport"><a class="anchor" href="#discovery-jdbcping-datasource_cluster-transport"></a>Using a server datasource for JDBC_PING discovery</h5>
-<div class="paragraph">
-<p>Add a managed datasource to a Infinispan Server and use it to provide database connections for the cluster transport JDBC_PING discovery protocol.</p>
-</div>
-<div class="ulist">
-<div class="title">Prerequisites</div>
-<ul>
-<li>
-<p>Install a Infinispan Server cluster.</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">Procedure</div>
-<ol class="arabic">
-<li>
-<p>Deploy a JDBC driver JAR to your Infinispan Server <code>server/lib</code> directory</p>
-</li>
-<li>
-<p>Create a datasource for your database.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;server xmlns="urn:infinispan:server:15.0"&gt;
-  &lt;data-sources&gt;
-     &lt;!-- Defines a unique name for the datasource and JNDI name that you
-          reference in JDBC cache store configuration.
-          Enables statistics for the datasource, if required. --&gt;
-     &lt;data-source name="ds"
-                  jndi-name="jdbc/postgres"
-                  statistics="true"&gt;
-        &lt;!-- Specifies the JDBC driver that creates connections. --&gt;
-        &lt;connection-factory driver="org.postgresql.Driver"
-                            url="jdbc:postgresql://localhost:5432/postgres"
-                            username="postgres"
-                            password="changeme"&gt;
-           &lt;!-- Sets optional JDBC driver-specific connection properties. --&gt;
-           &lt;connection-property name="name"&gt;value&lt;/connection-property&gt;
-        &lt;/connection-factory&gt;
-        &lt;!-- Defines connection pool tuning properties. --&gt;
-        &lt;connection-pool initial-size="1"
-                         max-size="10"
-                         min-size="3"
-                         background-validation="1000"
-                         idle-removal="1"
-                         blocking-timeout="1000"
-                         leak-detection="10000"/&gt;
-     &lt;/data-source&gt;
-  &lt;/data-sources&gt;
-&lt;/server&gt;</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Create a JGroups stack which uses the <code>JDBC_PING</code> protocol for discovery.</p>
-</li>
-<li>
-<p>Configure cluster transport to use the datasource by specifying the name of the datasource with the <code>server:data-source</code> attribute.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;infinispan&gt;
-    &lt;jgroups&gt;
-        &lt;stack name="jdbc" extends="tcp"&gt;
-            &lt;JDBC_PING stack.combine="REPLACE" stack.position="MPING" /&gt;
-        &lt;/stack&gt;
-    &lt;/jgroups&gt;
-    &lt;cache-container&gt;
-        &lt;transport stack="jdbc" server:data-source="ds" /&gt;
-    &lt;/cache-container&gt;
-&lt;/infinispan&gt;</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
 <div class="ulist _additional-resources">
 <div class="title">Additional resources</div>
 <ul>
@@ -3017,7 +2938,6 @@ When nodes leave Infinispan clusters, they delete their IP addresses from the sh
 <p><a href="http://community.jboss.org/wiki/JDBCPING">JDBC_PING Wiki</a></p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 <div class="sect3">
@@ -4374,7 +4294,7 @@ in the cluster.
 </table>
 </div>
 <div class="paragraph">
-<p>This manager was built specifically around Java&#8217;s streaming API, thus all methods take a functional
+<p>This manager was built specifically using Java 8 and such has functional APIs in mind, thus all methods take a functional
 interface as an argument. Also since these arguments will be sent to other nodes they need to be serializable.  We even
 used a nice trick to ensure our lambdas are immediately Serializable.  That is by having the arguments implement both
 Serializable and the real argument type (ie. Runnable or Function).  The JRE will pick the most specific class when
@@ -4562,7 +4482,7 @@ work in a cluster of 1 was well, but will be slower.</p>
 <p>You may want to process a subset or all data in the cache to produce a result.
 This may bring thoughts of Map Reduce. Infinispan allows the user to do something
 very similar but utilizes the standard JRE APIs to do so.
-Java 8 introduced the concept of a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html">Stream</a>
+Java 8 introduced the concept of a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html">Stream</a>
 which allows functional-style operations on collections rather than having to procedurally
 iterate over the data yourself. Stream operations can be implemented in a fashion very
 similar to MapReduce.  Streams, just like MapReduce allow you to perform processing
@@ -4589,8 +4509,8 @@ upon the entirety of your cache, possibly a very large data set, but in an effic
 <p>A stream is retrieved from the <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html#entrySet--">entrySet</a>,
 <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html#keySet--">keySet</a> or
 <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html#values--">values</a> collections returned from the
-Cache by invoking the <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html#stream--">stream</a> or
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html#parallelStream--">parallelStream</a> methods.</p>
+Cache by invoking the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Collection.html#stream--">stream</a> or
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Collection.html#parallelStream--">parallelStream</a> methods.</p>
 </div>
 <div class="sect2">
 <h3 id="common_stream_operations"><a class="anchor" href="#common_stream_operations"></a>9.1. Common stream operations</h3>
@@ -4606,7 +4526,7 @@ you are using.</p>
 by invoking the
 <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/CacheStream.html#filterKeys-java.util.Set-">filterKeys</a>
 method on the <code>CacheStream</code>.  This should always be used over a Predicate
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html?is-external=true#filter-java.util.function.Predicate-">filter</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html?is-external=true#filter-java.util.function.Predicate-">filter</a>
 and will be faster if the predicate was holding all keys.</p>
 </div>
 <div class="paragraph">
@@ -4727,14 +4647,14 @@ This relies on the spec to pick the most specific method as defined <a href="htt
 </div>
 <div class="paragraph">
 <p>In our previous example we used a <code>Collector</code> to collect all the results into a <code>Map</code>.
-Unfortunately the <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Collectors.html">Collectors</a>
+Unfortunately the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Collectors.html">Collectors</a>
 class doesn&#8217;t produce Serializable instances.  Thus if you need to use these, there are two ways to do so:</p>
 </div>
 <div class="paragraph">
 <p>One option would be to use the
 <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/stream/CacheCollectors.html">CacheCollectors</a>
 class which allows for a <code>Supplier&lt;Collector&gt;</code> to be provided.  This instance could then use the
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Collectors.html">Collectors</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Collectors.html">Collectors</a>
 to supply a <code>Collector</code> which is not serialized.</p>
 </div>
 <div class="listingblock">
@@ -4876,8 +4796,8 @@ actually they always have to control one of the options.  There are 2 ways these
 <div class="paragraph">
 <p><strong>Local to each node</strong>
 When a stream is created from the cache collection the end user can choose between invoking
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html#stream--">stream</a> or
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Collection.html#parallelStream--">parallelStream</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Collection.html#stream--">stream</a> or
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Collection.html#parallelStream--">parallelStream</a>
 method.  Depending on if the parallel stream was picked will enable multiple threading for
 each node locally.  Note that some operations like a rehash aware iterator and forEach operations
 will always use a sequential stream locally.  This could be enhanced at some point to allow for
@@ -4926,9 +4846,9 @@ javadoc.</p>
 <div class="sect2">
 <h3 id="injection"><a class="anchor" href="#injection"></a>9.9. Injection</h3>
 <div class="paragraph">
-<p>The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html">Stream</a>
+<p>The <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html">Stream</a>
 has a terminal operation called
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#forEach-java.util.function.Consumer-">forEach</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#forEach-java.util.function.Consumer-">forEach</a>
 which allows for running some sort of side effect operation on the data.  In this case it may be desirable to get a reference to
 the <code>Cache</code> that is backing this Stream.  If your <code>Consumer</code> implements the
 <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/stream/CacheAware.html">CacheAware</a>
@@ -4981,37 +4901,37 @@ be required to be serializable instead of the final result.</p>
 <dl>
 <dt class="hdlist1">allMatch noneMatch anyMatch</dt>
 <dd>
-<p>The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#allMatch-java.util.function.Predicate-">allMatch</a>
+<p>The <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#allMatch-java.util.function.Predicate-">allMatch</a>
 operation is ran on each node and then all the results are logically anded together locally
 to get the appropriate value.  The
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#noneMatch-java.util.function.Predicate-">noneMatch</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#noneMatch-java.util.function.Predicate-">noneMatch</a>
 and
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#anyMatch-java.util.function.Predicate-">anyMatch</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#anyMatch-java.util.function.Predicate-">anyMatch</a>
 operations use a logical or instead. These methods also have early termination support,
 stopping remote and local operations once the final result is known.</p>
 </dd>
 <dt class="hdlist1">collect</dt>
 <dd>
-<p>The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#collect-java.util.stream.Collector-">collect</a>
+<p>The <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#collect-java.util.stream.Collector-">collect</a>
 method is interesting in that it can do a few extra steps.  The remote node performs
 everything as normal except it doesn&#8217;t perform the final
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Collector.html#finisher--">finisher</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Collector.html#finisher--">finisher</a>
 upon the result and instead sends back the fully combined results.  The local thread
-then <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Collector.html#combiner--">combines</a>
+then <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Collector.html#combiner--">combines</a>
 the remote and local result into a value which is then finally finished.  The key
 here to remember is that the final value doesn&#8217;t have to be serializable but rather
-the values produced from the <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Collector.html#supplier--">supplier</a>
-and <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Collector.html#combiner--">combiner</a>
+the values produced from the <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Collector.html#supplier--">supplier</a>
+and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Collector.html#combiner--">combiner</a>
 methods.</p>
 </dd>
 <dt class="hdlist1">count</dt>
 <dd>
-<p>The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#count--">count</a>
+<p>The <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#count--">count</a>
 method just adds the numbers together from each node.</p>
 </dd>
 <dt class="hdlist1">findAny findFirst</dt>
 <dd>
-<p>The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#findAny--">findAny</a>
+<p>The <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#findAny--">findAny</a>
 operation returns just the first value they find, whether it was from a remote node
 or locally.  Note this supports early termination in that once a value is found it
 will not process others.  Note the findFirst method is special since it requires a sorted
@@ -5020,15 +4940,15 @@ intermediate operation, which is detailed in the
 </dd>
 <dt class="hdlist1">max min</dt>
 <dd>
-<p>The <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#max-java.util.Comparator-">max</a> and
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#min-java.util.Comparator-">min</a> methods find the respective min or max value on each node then a final
+<p>The <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#max-java.util.Comparator-">max</a> and
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#min-java.util.Comparator-">min</a> methods find the respective min or max value on each node then a final
 reduction is performed locally to ensure only the min or max across all nodes is returned.</p>
 </dd>
 <dt class="hdlist1">reduce</dt>
 <dd>
-<p>The various reduce methods <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#reduce-java.util.function.BinaryOperator-">1</a> ,
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#reduce-T-java.util.function.BinaryOperator-">2</a> ,
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#reduce-U-java.util.function.BiFunction-java.util.function.BinaryOperator-">3</a> will end up serializing
+<p>The various reduce methods <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#reduce-java.util.function.BinaryOperator-">1</a> ,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#reduce-T-java.util.function.BinaryOperator-">2</a> ,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#reduce-U-java.util.function.BiFunction-java.util.function.BinaryOperator-">3</a> will end up serializing
 the result as much as the accumulator can do.  Then it will accumulate the local and remote results together locally, before combining if you have provided that.  Note this means
 a value coming from the combiner doesn&#8217;t have to be Serializable.</p>
 </dd>
@@ -5084,11 +5004,11 @@ mileage may vary.</p>
 <h3 id="intermediate_operation_exceptions"><a class="anchor" href="#intermediate_operation_exceptions"></a>9.12. Intermediate operation exceptions</h3>
 <div class="paragraph">
 <p>There are some intermediate operations that have special exceptions, these are
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#skip-long-">skip</a>,
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#peek-java.util.function.Consumer-">peek</a>,
-sorted <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#sorted-java.util.Comparator-">1</a>
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#sorted--">2</a>.
-&amp; <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/stream/Stream.html#distinct--">distinct</a>.
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#skip-long-">skip</a>,
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#peek-java.util.function.Consumer-">peek</a>,
+sorted <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#sorted-java.util.Comparator-">1</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#sorted--">2</a>.
+&amp; <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/stream/Stream.html#distinct--">distinct</a>.
 All of these methods have some sort of artificial iterator implanted in the stream
 processing to guarantee correctness, they are documented as below.  Note this means
 these operations may cause possibly severe performance degradation.</p>
@@ -5977,7 +5897,7 @@ AdvancedCache advCache = aCache.getAdvancedCache();</code></pre>
 <h2 id="functional-map-api"><a class="anchor" href="#functional-map-api"></a>14. Functional Map API</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Infinispan provides an experimental API for interacting with your data which takes advantage of the functional programming additions and improved asynchronous programming capabilities available since Java 8.</p>
+<p>Infinispan provides an experimental API for interacting with your data which takes advantage of the functional programming additions and improved asynchronous programming capabilities available in Java 8.</p>
 </div>
 <div class="sect2">
 <h3 id="using-functional-map-api"><a class="anchor" href="#using-functional-map-api"></a>14.1. Using the Functional Map API</h3>
@@ -5992,7 +5912,7 @@ is a distilled map-like asynchronous API which uses functions to interact with d
 return a CompletableFuture which wraps the result, so you can use the
 resources of your system more efficiently by having the possibility to
 receive callbacks when the
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
 has completed, or you can chain or compose them with other CompletableFuture.</p>
 </div>
 <div class="paragraph">
@@ -6067,7 +5987,7 @@ is temporary.
 <p>Read-only operations have the advantage that no locks are acquired
 for the duration of the operation. Here&#8217;s an example on how to the
 equivalent operation for
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#get-java.lang.Object-">Map.get(K)</a>:</p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#get-java.lang.Object-">Map.get(K)</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6114,7 +6034,7 @@ method returns the key for which this function is being executed.</p>
 </li>
 <li>
 <p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/EntryView.ReadEntryView.html#find()"><code>find()</code></a>
-returns an <code>Optional</code> wrapping the value if present,
+returns a Java 8 <code>Optional</code> wrapping the value if present,
 otherwise it returns an empty optional. Unless the value is guaranteed to
 be associated with the key, it&#8217;s recommended to use <code>find()</code> to verify
 whether there&#8217;s a value associated with the key.</p>
@@ -6254,7 +6174,7 @@ this category CAS-like (Compare­And­Swap) operations can be found.
 This type of operations require previous value associated with the key
 to be read and for locks to be acquired before executing the function.
 The vast majority of operations within
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
 and
 <a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0/src/main/java/javax/cache/Cache.java"><code>JCache</code></a>
 APIs fall within this category, and they can easily be implemented using the
@@ -6287,7 +6207,7 @@ readWriteFuture.thenAccept(System.out::println);</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/ConcurrentMap.html#replace-K-V-V-"><code>ConcurrentMap.replace(K, V, V)</code></a>
+<p><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html#replace-K-V-V-"><code>ConcurrentMap.replace(K, V, V)</code></a>
 is a replace function that compares the
 value present in the map and if it&#8217;s equals to the value passed in as
 first parameter, the second value is stored, returning a boolean
@@ -6454,13 +6374,13 @@ method.</p>
 <div class="paragraph">
 <p><a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/Param.FutureMode.html"><code>Param.FutureMode</code></a>
 tweaks whether a method returning a
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
 will span a thread to invoke the method, or instead will use the caller
 thread. By default, whenever a call is made to a method returning a
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
 , a separate thread will be span to execute the method asynchronously.
 However, if the caller will immediately block waiting for the
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/CompletableFuture.html"><code>CompletableFuture</code></a>
 to complete, spanning a different thread is wasteful, and hence
 <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/Param.FutureMode.html#COMPLETED"><code>Param.FutureMode.COMPLETED</code></a>
 can be passed as per-invocation parameter to avoid creating that extra thread. Example:</p>
@@ -6564,7 +6484,7 @@ WriteListener implementation to
 <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/functional/Listeners.WriteListeners.html#add(org.infinispan.functional.Listeners.WriteListeners.WriteListener)"><code>add(WriteListener&lt;K, V&gt;)</code></a>
 method.
 Either way, all these methods return an
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/lang/AutoCloseable.html">AutoCloseable</a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/lang/AutoCloseable.html">AutoCloseable</a>
 instance that can be used to de-register the function listener:</p>
 </div>
 <div class="listingblock">
@@ -6729,7 +6649,7 @@ to the method and the functions are replicated to other nodes.</p>
 <p>There are multiple ways in which a function can be marshalled. The simplest
 way, which is also the most costly option in terms of payload size, is
 to mark the function as
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/io/Serializable.html"><code>Serializable</code></a>:</p>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/io/Serializable.html"><code>Serializable</code></a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6804,7 +6724,7 @@ functions.</p>
 </div>
 <div class="paragraph">
 <p>In fact, all the functions required to implement
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
 and
 <a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0/src/main/java/javax/cache/Cache.java"><code>JCache</code></a>
 using the functional map API have been defined in
@@ -6832,7 +6752,7 @@ future.thenAccept(stored -&gt; System.out.printf("Value was put? %s%n", stored))
 <div class="paragraph">
 <p>This new API is meant to complement existing Key/Value Infinispan API
 offerings, so you&#8217;ll still be able to use
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
 or
 <a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0/src/main/java/javax/cache/Cache.java"><code>JCache</code></a>
 standard APIs if that&#8217;s what suits your use case best.</p>
@@ -6852,7 +6772,7 @@ chain them with other subsequent operations.</p>
 </li>
 <li>
 <p>Users who want to go beyond the standard operations exposed by
-<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
+<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/ConcurrentMap.html"><code>ConcurrentMap</code></a>
 and
 <a href="https://github.com/jsr107/jsr107spec/blob/v1.0.0/src/main/java/javax/cache/Cache.java"><code>JCache</code></a>, for example, if you want to do a replace
 operation using metadata parameter equality instead of value equality, or
