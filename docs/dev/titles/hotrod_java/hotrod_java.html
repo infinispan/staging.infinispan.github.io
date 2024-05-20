@@ -1167,7 +1167,7 @@ clientBuilder.addServer()
                .port(11222)
              .connectionPool()
                .maxActive(10)
-               exhaustedAction(ExhaustedAction.valueOf("WAIT"))
+               .exhaustedAction(ExhaustedAction.valueOf("WAIT"))
                .maxWait(1)
                .minIdle(20)
                .minEvictableIdleTime(300000)
@@ -1187,6 +1187,17 @@ infinispan.client.hotrod.connection_pool.min_evictable_idle_time = 300000
 infinispan.client.hotrod.connection_pool.max_pending_requests = 20</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>These configuration options give fine-grained control over the pool.
+We recommend tuning the pool according to the application needs.
+Otherwise, you might experience an increase in latency for new connections opening or a decrease in throughput with few connections available.</p>
+</div>
+<div class="paragraph">
+<p>A large pool could lead to a "herd effect" of new connections, given an abrupt increase in load.
+However, it should help in throughput with more connections to attend requests.
+A smaller pool avoids this effect and consumes fewer resources.
+However, it can only handle so many requests before starting to degrade.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1201,6 +1212,19 @@ infinispan.client.hotrod.connection_pool.max_pending_requests = 20</code></pre>
 <p>Specify authentication mechanisms with the <code>saslMechanism()</code> method from the <code>AuthenticationConfigurationBuilder</code> class or with the <code>infinispan.client.hotrod.sasl_mechanism</code> property.</p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Authorization is an expensive operation performed on each new connection.
+We strongly recommend tuning the connection pool.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock primary">
 <div class="title">SCRAM</div>
@@ -3497,7 +3521,7 @@ container.start();</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-20 15:46:58 UTC
+Last updated 2024-05-20 17:43:31 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
