@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Upgrading Infinispan deployments</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -1178,6 +1178,11 @@ Additionally, setting the <code>sni_host_name</code> is now required when hostna
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>min_evictable_idle_time</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>180000 ms / 3 minutes</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1800000 ms / 30 minutes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sasl_mechanism</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SCRAM-SHA-512</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SCRAM-SHA-256</p></td>
 </tr>
 </tbody>
 </table>
@@ -3754,7 +3759,7 @@ Please use instead <code>GridFile.delete()</code>.</p>
 <div class="sect3">
 <h4 id="transaction"><a class="anchor" href="#transaction"></a>1.20.2. Transaction</h4>
 <div class="paragraph">
-<p>The default transaction enlistment model has changed ( <a href="https://issues.jboss.org/browse/ISPN-1284">ISPN-1284</a> ) from <a href="https://docs.oracle.com/en/java/javase/11/docs/api/javax/transaction/xa/XAResource.html"><code>XAResource</code></a> to <a href="https://docs.oracle.com/en/java/javase/11/docs/api/javax/transaction/Synchronization.html"><code>Synchronization</code></a>.
+<p>The default transaction enlistment model has changed ( <a href="https://issues.jboss.org/browse/ISPN-1284">ISPN-1284</a> ) from <a href="https://docs.oracle.com/en/java/javase/17/docs/api/javax/transaction/xa/XAResource.html"><code>XAResource</code></a> to <a href="https://docs.oracle.com/en/java/javase/17/docs/api/javax/transaction/Synchronization.html"><code>Synchronization</code></a>.
 Also now, if the <code>XAResource</code> enlistment is used, then recovery is enabled by default.</p>
 </div>
 <div class="paragraph">

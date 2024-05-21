@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Configuring Infinispan caches</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -584,20 +584,21 @@ $(addBlockSwitches);
 <li><a href="#cache-template-xinclude_cache-configuration">3.2.4. Cache templates from multiple XML files</a></li>
 </ul>
 </li>
-<li><a href="#creating-remote-caches">3.3. Creating remote caches</a>
+<li><a href="#cache-aliases_cache-configuration">3.3. Cache aliases</a></li>
+<li><a href="#creating-remote-caches">3.4. Creating remote caches</a>
 <ul class="sectlevel3">
-<li><a href="#default-cache-manager-creating-remote-caches">3.3.1. Default Cache Manager</a></li>
-<li><a href="#creating-caches-console_creating-remote-caches">3.3.2. Creating caches with Infinispan Console</a></li>
-<li><a href="#creating-caches-cli_creating-remote-caches">3.3.3. Creating remote caches with the Infinispan CLI</a></li>
-<li><a href="#creating-caches-hotrod_creating-remote-caches">3.3.4. Creating remote caches from Hot Rod clients</a></li>
-<li><a href="#creating-caches-rest_creating-remote-caches">3.3.5. Creating remote caches with the REST API</a></li>
+<li><a href="#default-cache-manager-creating-remote-caches">3.4.1. Default Cache Manager</a></li>
+<li><a href="#creating-caches-console_creating-remote-caches">3.4.2. Creating caches with Infinispan Console</a></li>
+<li><a href="#creating-caches-cli_creating-remote-caches">3.4.3. Creating remote caches with the Infinispan CLI</a></li>
+<li><a href="#creating-caches-hotrod_creating-remote-caches">3.4.4. Creating remote caches from Hot Rod clients</a></li>
+<li><a href="#creating-caches-rest_creating-remote-caches">3.4.5. Creating remote caches with the REST API</a></li>
 </ul>
 </li>
-<li><a href="#creating-embedded-caches">3.4. Creating embedded caches</a>
+<li><a href="#creating-embedded-caches">3.5. Creating embedded caches</a>
 <ul class="sectlevel3">
-<li><a href="#installing-embedded_creating-embedded-caches">3.4.1. Adding Infinispan to your project</a></li>
-<li><a href="#configuring-embedded-caches_creating-embedded-caches">3.4.2. Creating and using embedded caches</a></li>
-<li><a href="#cache-modes_creating-embedded-caches">3.4.3. Cache API</a>
+<li><a href="#installing-embedded_creating-embedded-caches">3.5.1. Adding Infinispan to your project</a></li>
+<li><a href="#configuring-embedded-caches_creating-embedded-caches">3.5.2. Creating and using embedded caches</a></li>
+<li><a href="#cache-modes_creating-embedded-caches">3.5.3. Cache API</a>
 <ul class="sectlevel4">
 <li><a href="#advancedcache_api">AdvancedCache API</a>
 <ul class="sectlevel5">
@@ -3028,7 +3029,52 @@ This means you cannot use the <code>xpointer</code> attribute, the <code>xi:fall
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-remote-caches"><a class="anchor" href="#creating-remote-caches"></a>3.3. Creating remote caches</h3>
+<h3 id="cache-aliases_cache-configuration"><a class="anchor" href="#cache-aliases_cache-configuration"></a>3.3. Cache aliases</h3>
+<div class="paragraph">
+<p>Add aliases to caches to access them using different names.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>aliases</code> attribute of a cache configuration is updatable at runtime. Reassign aliases to different caches to quickly switch cache contents.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock primary">
+<div class="title">XML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache name="acache" aliases="0 anothername"/&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">JSON</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "distributed-cache": {
+    "aliases": ["0", "anothername"]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">YAML</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-yaml" data-lang="yaml">distributedCache:
+  aliases:
+    - "0"
+    - "anothername"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="creating-remote-caches"><a class="anchor" href="#creating-remote-caches"></a>3.4. Creating remote caches</h3>
 <div class="paragraph">
 <p>When you create remote caches at runtime, Infinispan Server synchronizes your configuration across the cluster so that all nodes have a copy.
 For this reason you should always create remote caches dynamically with the following mechanisms:</p>
@@ -3047,7 +3093,7 @@ For this reason you should always create remote caches dynamically with the foll
 </ul>
 </div>
 <div class="sect3">
-<h4 id="default-cache-manager-creating-remote-caches"><a class="anchor" href="#default-cache-manager-creating-remote-caches"></a>3.3.1. Default Cache Manager</h4>
+<h4 id="default-cache-manager-creating-remote-caches"><a class="anchor" href="#default-cache-manager-creating-remote-caches"></a>3.4.1. Default Cache Manager</h4>
 <div class="paragraph">
 <p>Infinispan Server provides a default Cache Manager that controls the lifecycle of remote caches.
 Starting Infinispan Server automatically instantiates the Cache Manager so you can create and delete remote caches and other resources like Protobuf schema.</p>
@@ -3145,7 +3191,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating-caches-console_creating-remote-caches"><a class="anchor" href="#creating-caches-console_creating-remote-caches"></a>3.3.2. Creating caches with Infinispan Console</h4>
+<h4 id="creating-caches-console_creating-remote-caches"><a class="anchor" href="#creating-caches-console_creating-remote-caches"></a>3.4.2. Creating caches with Infinispan Console</h4>
 <div class="paragraph">
 <p>Use Infinispan Console to create remote caches in an intuitive visual interface from any web browser.</p>
 </div>
@@ -3176,7 +3222,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating-caches-cli_creating-remote-caches"><a class="anchor" href="#creating-caches-cli_creating-remote-caches"></a>3.3.3. Creating remote caches with the Infinispan CLI</h4>
+<h4 id="creating-caches-cli_creating-remote-caches"><a class="anchor" href="#creating-caches-cli_creating-remote-caches"></a>3.4.3. Creating remote caches with the Infinispan CLI</h4>
 <div class="paragraph">
 <p>Use the Infinispan Command Line Interface (CLI) to add remote caches on Infinispan Server.</p>
 </div>
@@ -3245,7 +3291,7 @@ mycache</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating-caches-hotrod_creating-remote-caches"><a class="anchor" href="#creating-caches-hotrod_creating-remote-caches"></a>3.3.4. Creating remote caches from Hot Rod clients</h4>
+<h4 id="creating-caches-hotrod_creating-remote-caches"><a class="anchor" href="#creating-caches-hotrod_creating-remote-caches"></a>3.4.4. Creating remote caches from Hot Rod clients</h4>
 <div class="paragraph">
 <p>Use the Infinispan Hot Rod API to create remote caches on Infinispan Server from Java, C++, .NET/C#, JS clients and more.</p>
 </div>
@@ -3323,7 +3369,7 @@ infinispan.client.hotrod.cache.[my.other.cache].configuration_uri=file:///path/t
 </div>
 </div>
 <div class="sect3">
-<h4 id="creating-caches-rest_creating-remote-caches"><a class="anchor" href="#creating-caches-rest_creating-remote-caches"></a>3.3.5. Creating remote caches with the REST API</h4>
+<h4 id="creating-caches-rest_creating-remote-caches"><a class="anchor" href="#creating-caches-rest_creating-remote-caches"></a>3.4.5. Creating remote caches with the REST API</h4>
 <div class="paragraph">
 <p>Use the Infinispan REST API to create remote caches on Infinispan Server from any suitable HTTP client.</p>
 </div>
@@ -3360,12 +3406,12 @@ infinispan.client.hotrod.cache.[my.other.cache].configuration_uri=file:///path/t
 </div>
 </div>
 <div class="sect2">
-<h3 id="creating-embedded-caches"><a class="anchor" href="#creating-embedded-caches"></a>3.4. Creating embedded caches</h3>
+<h3 id="creating-embedded-caches"><a class="anchor" href="#creating-embedded-caches"></a>3.5. Creating embedded caches</h3>
 <div class="paragraph">
 <p>Infinispan provides an <code>EmbeddedCacheManager</code> API that lets you control both the Cache Manager and embedded cache lifecycles programmatically.</p>
 </div>
 <div class="sect3">
-<h4 id="installing-embedded_creating-embedded-caches"><a class="anchor" href="#installing-embedded_creating-embedded-caches"></a>3.4.1. Adding Infinispan to your project</h4>
+<h4 id="installing-embedded_creating-embedded-caches"><a class="anchor" href="#installing-embedded_creating-embedded-caches"></a>3.5.1. Adding Infinispan to your project</h4>
 <div class="paragraph">
 <p>Add Infinispan to your project to create embedded caches in your applications.</p>
 </div>
@@ -3398,7 +3444,7 @@ follows:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="configuring-embedded-caches_creating-embedded-caches"><a class="anchor" href="#configuring-embedded-caches_creating-embedded-caches"></a>3.4.2. Creating and using embedded caches</h4>
+<h4 id="configuring-embedded-caches_creating-embedded-caches"><a class="anchor" href="#configuring-embedded-caches_creating-embedded-caches"></a>3.5.2. Creating and using embedded caches</h4>
 <div class="paragraph">
 <p>Infinispan provides a <code>GlobalConfigurationBuilder</code> API that controls the Cache Manager and a <code>ConfigurationBuilder</code> API that configures caches.</p>
 </div>
@@ -3530,7 +3576,7 @@ cacheManager.stop();</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="cache-modes_creating-embedded-caches"><a class="anchor" href="#cache-modes_creating-embedded-caches"></a>3.4.3. Cache API</h4>
+<h4 id="cache-modes_creating-embedded-caches"><a class="anchor" href="#cache-modes_creating-embedded-caches"></a>3.5.3. Cache API</h4>
 <div class="paragraph">
 <p>Infinispan provides a <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html">Cache</a> interface that exposes simple methods for adding, retrieving and removing entries, including atomic mechanisms exposed by the JDK&#8217;s ConcurrentMap interface.  Based on the cache mode used, invoking these methods will trigger a number of things to happen, potentially even including replicating an entry to a remote node or looking up an entry from a remote node, or potentially a cache store.</p>
 </div>
@@ -3554,7 +3600,7 @@ Specific methods on the <code>keySet</code>, <code>values</code> and <code>entry
 </div>
 <div class="paragraph">
 <div class="title">Mortal and Immortal Data</div>
-<p>Further to simply storing entries, Infinispan&#8217;s cache API allows you to attach mortality information to data.  For example, simply using <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">put(key, value)</a> would create an <em>immortal</em> entry, i.e., an entry that lives in the cache forever, until it is removed (or evicted from memory to prevent running out of memory).  If, however, you put data in the cache using <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/BasicCache.html#put(K,V,long,java.util.concurrent.TimeUnit)">put(key, value, lifespan, timeunit)</a> , this creates a <em>mortal</em> entry, i.e., an entry that has a fixed lifespan and expires after that lifespan.</p>
+<p>Further to simply storing entries, Infinispan&#8217;s cache API allows you to attach mortality information to data.  For example, simply using <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#put-K-V-">put(key, value)</a> would create an <em>immortal</em> entry, i.e., an entry that lives in the cache forever, until it is removed (or evicted from memory to prevent running out of memory).  If, however, you put data in the cache using <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/BasicCache.html#put(K,V,long,java.util.concurrent.TimeUnit)">put(key, value, lifespan, timeunit)</a> , this creates a <em>mortal</em> entry, i.e., an entry that has a fixed lifespan and expires after that lifespan.</p>
 </div>
 <div class="paragraph">
 <p>In addition to <em>lifespan</em> , Infinispan also supports <em>maxIdle</em> as an additional metric with which to determine expiration.  Any combination of lifespans or maxIdles can be used.</p>
@@ -3595,7 +3641,7 @@ if (cachedPerson == null) {
 </div>
 </div>
 <div class="paragraph">
-<p>Note that <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html#putForExternalRead(K,V)">putForExternalRead</a> should never be used as a mechanism to update the cache with a new Person instance originating from application execution (i.e. from a transaction that modifies a Person&#8217;s address). When updating cached values, please use the standard <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">put</a> operation, otherwise the possibility of caching corrupt data is likely.</p>
+<p>Note that <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/Cache.html#putForExternalRead(K,V)">putForExternalRead</a> should never be used as a mechanism to update the cache with a new Person instance originating from application execution (i.e. from a transaction that modifies a Person&#8217;s address). When updating cached values, please use the standard <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#put-K-V-">put</a> operation, otherwise the possibility of caching corrupt data is likely.</p>
 </div>
 <div class="sect4">
 <h5 id="advancedcache_api"><a class="anchor" href="#advancedcache_api"></a>AdvancedCache API</h5>
@@ -3624,10 +3670,10 @@ if (cachedPerson == null) {
 <div class="sect4">
 <h5 id="cache_asynchronous_api"><a class="anchor" href="#cache_asynchronous_api"></a>Asynchronous API</h5>
 <div class="paragraph">
-<p>In addition to synchronous API methods like <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#put-K-V-">Cache.put()</a> , <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/Map.html#remove-java.lang.Object-">Cache.remove()</a> , etc., Infinispan also has an asynchronous, non-blocking API where you can achieve the same results in a non-blocking fashion.</p>
+<p>In addition to synchronous API methods like <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#put-K-V-">Cache.put()</a> , <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/Map.html#remove-java.lang.Object-">Cache.remove()</a> , etc., Infinispan also has an asynchronous, non-blocking API where you can achieve the same results in a non-blocking fashion.</p>
 </div>
 <div class="paragraph">
-<p>These methods are named in a similar fashion to their blocking counterparts, with "Async" appended.  E.g., <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#putAsync(K,V)">Cache.putAsync()</a> , <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#removeAsync(java.lang.Object)">Cache.removeAsync()</a> , etc.  These asynchronous counterparts return a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> that contains the actual result of the operation.</p>
+<p>These methods are named in a similar fashion to their blocking counterparts, with "Async" appended.  E.g., <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#putAsync(K,V)">Cache.putAsync()</a> , <a href="https://docs.jboss.org/infinispan/15.0/apidocs/org/infinispan/commons/api/AsyncCache.html#removeAsync(java.lang.Object)">Cache.removeAsync()</a> , etc.  These asynchronous counterparts return a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> that contains the actual result of the operation.</p>
 </div>
 <div class="paragraph">
 <p>For example, in a cache parameterized as <code>Cache&lt;String, String&gt;</code>, <code>Cache.put(String key, String value)</code> returns <code>String</code> while <code>Cache.putAsync(String key, String value)</code> returns <code>CompletableFuture&lt;String&gt;</code>.</p>

@@ -525,7 +525,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Run the following command from the root directory:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn clean install -DskipTests=true</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw clean install -DskipTests=true</code></pre>
 </div>
 </div>
 </li>
@@ -546,7 +546,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn clean package exec:exec</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw clean package exec:exec</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -661,7 +661,7 @@ However, the recommended way to use Kubernetes and Infinispan is the Infinispan 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">mvn package</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw package</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -769,7 +769,7 @@ Creating a user named <code>admin</code> gives you administrative access to Infi
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn clean package exec:exec</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw clean package exec:exec</code></pre>
 </div>
 </div>
 </div>
@@ -1290,7 +1290,7 @@ to <code>/etc/hosts</code>.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn package exec:exec@spring-caching</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw package exec:exec@spring-caching</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -1302,7 +1302,7 @@ to <code>/etc/hosts</code>.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn package exec:exec@spring-annotations</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw package exec:exec@spring-annotations</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1310,7 +1310,7 @@ to <code>/etc/hosts</code>.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn spring-boot:run</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw spring-boot:run</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1351,6 +1351,10 @@ For example for the 'puts' stats in the basque-names cache:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/infinispan/infinispan-simple-tutorials/tree/main/integrations/spring-boot/cache-remote">Spring Boot and Spring Cache remote mode</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Demonstrates how to use Spring Caches with Spring Boot and the Infinispan Server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/infinispan/infinispan-simple-tutorials/tree/main/integrations/spring-boot/cache-remote-reactor">Spring Boot, Spring Cache, Reactor and Infinispan Server</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Demonstrates how to use Spring Caches with Spring Boot Reactor and the Infinispan Server.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/infinispan/infinispan-simple-tutorials/tree/main/integrations/spring-boot/session-remote">Spring Boot and Spring Session remote mode</a></p></td>
@@ -1397,8 +1401,8 @@ For example for the 'puts' stats in the basque-names cache:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn clean package
-$ mvn exec:exec</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw clean package
+$ ./mvnw exec:exec</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1406,8 +1410,8 @@ $ mvn exec:exec</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ mvn clean package
-$ mvn wildfly:deploy</code></pre>
+<pre class="highlight nowrap"><code class="language-bash" data-lang="bash">$ ./mvnw clean package
+$ ./mvnw wildfly:deploy</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -1456,7 +1460,7 @@ $ mvn wildfly:deploy</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-16 03:32:29 -0400
+Last updated 2024-05-17 10:18:08 +0200
 </div>
 </div>
 </body>

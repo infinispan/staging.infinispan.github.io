@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.22">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>Using the Infinispan REST API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -839,22 +839,6 @@ users, passwords, and authorization roles for accessing the REST endpoint.</p>
 <p>Negotiate the communication protocol using a <a href="https://http2.github.io/http2-spec/#versioning">TLS/ALPN extension</a>.</p>
 </li>
 </ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>TLS/ALPN with JDK8 requires additional client configuration. Refer to the
-appropriate documentation for your REST client. In most cases you need to use
-either the Jetty ALPN Agent or OpenSSL bindings.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 </div>
 <div class="sect2">
@@ -7545,7 +7529,7 @@ import java.net.http.HttpResponse;
 import java.util.Base64;
 
 /**
- * RestExample class shows you how to access your cache via HttpClient API with Java 11 or later.
+ * RestExample class shows you how to access your cache via the JDK HttpClient API available since Java 11
  *
  * @author Gustavo Lira (glira@redhat.com)
  */
