@@ -614,6 +614,7 @@ $(addBlockSwitches);
 <li><a href="#key_include_depth">3.5.2. Key include depth</a></li>
 </ul>
 </li>
+<li><a href="#queries_server_tasks_query-remote">3.6. Remote queries from server tasks</a></li>
 </ul>
 </li>
 <li><a href="#query-embedded">4. Querying embedded caches</a>
@@ -3105,6 +3106,125 @@ that will be indexed changing the attribute <code>keyIncludeDepth</code>.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="queries_server_tasks_query-remote"><a class="anchor" href="#queries_server_tasks_query-remote"></a>3.6. Remote queries from server tasks</h3>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The feature is marked as experimental.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Indexes for remote caches encoded with ProtoBuf can be used to run queries from server tasks,
+even if the server tasks are run embedded with the server JVM.</p>
+</div>
+<div class="paragraph">
+<p>Here is an example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Run remote queries from a server task</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package org.infinispan.server.functional.extensions;
+
+import java.util.Map;
+
+import org.infinispan.commons.api.query.Query;
+import org.infinispan.commons.api.query.QueryResult;
+import org.infinispan.protostream.sampledomain.User;
+import org.infinispan.tasks.ServerTask;
+import org.infinispan.tasks.TaskContext;
+import org.infinispan.tasks.query.RemoteQueryAccess;
+
+public class RemoteQueryAccessTask implements ServerTask&lt;Integer&gt; {
+
+   private static final ThreadLocal&lt;TaskContext&gt; taskContext = new ThreadLocal&lt;&gt;();
+   private static final String QUERY = "FROM pro.User WHERE name = :name order by id";
+   private static final String QUERY_PROJ = "select id, name, surname " + QUERY;
+
+   @Override
+   public void setTaskContext(TaskContext ctx) {
+      taskContext.set(ctx);
+   }
+
+   @Override
+   public Integer call() {
+      TaskContext ctx = taskContext.get();
+      String name = (String) ctx.getParameters().get().get("name");
+      RemoteQueryAccess remoteQueryAccess = ctx.getRemoteQueryAccess().get();
+
+      Map&lt;String, Object&gt; params = Map.of("name", name);
+      Query&lt;User&gt; query = remoteQueryAccess.query(QUERY);
+      query.setParameters(params);
+      QueryResult&lt;User&gt; result1 = query.execute();
+
+      Query&lt;Object[]&gt; queryProj = remoteQueryAccess.query(QUERY_PROJ);
+      query.setParameters(params);
+      QueryResult&lt;Object[]&gt; result2 = queryProj.execute();
+
+      return result1.count().value() + result2.count().value();
+   }
+
+   @Override
+   public String getName() {
+      return "remote-query-access-task";
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>RemoteQueryAccess</code> can be obtained from the <code>TaskContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>It allows run the remote queries.</p>
+</div>
+<div class="paragraph">
+<p>Using the method <code>executeQuery</code>, that will take the following parameter:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>queryString</code>: the Iclke query to execute, as it was executed from a client</p>
+</li>
+<li>
+<p><code>namedParametersMap</code>: the parameters to pass to the query</p>
+</li>
+<li>
+<p><code>offset</code> and <code>maxResults</code>: for pagination</p>
+</li>
+<li>
+<p><code>hitCountAccuracy</code>: the bound up to hit count will be exact</p>
+</li>
+<li>
+<p><code>local</code>: if the query should report results only considering the local index shard</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The feature is marked as experimental.
+Several query APIs are not available from this setting.
+In particular is not possible to execute a statement, verify if a query has projections defined, it is not possible to use
+Neither the iterator, nor the entity iterator, timeouts and forcing the score to be computed.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3611,7 +3731,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-21 05:43:59 UTC
+Last updated 2024-05-22 18:02:01 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
