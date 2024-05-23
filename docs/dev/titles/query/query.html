@@ -968,6 +968,23 @@ By default no indexing operation takes place when a cache starts but you can con
 &lt;/distributed-cache&gt;</code></pre>
 </div>
 </div>
+<h5 id="use_java_entities" class="discrete">Use Java Entities</h5>
+<div class="paragraph">
+<p>If the cache is protostream-encoded and the indexes initialized from a Infinispan server instance,
+the indexed entities must be the indexed Protobuf messages defined on some Proto schema.
+It is possible to change this behavior forcing the indexes be defined on the indexed entities that are discovered
+from the java entities locally accessible from the server VM.
+Useful in case we want to run embedded queries from a server task, in the case the cache is Protobuf encoded.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;distributed-cache&gt;
+  &lt;indexing use-java-embedded-entities="true"&gt;
+    &lt;!-- Additional indexing configuration goes here. --&gt;
+  &lt;/indexing&gt;
+&lt;/distributed-cache&gt;</code></pre>
+</div>
+</div>
 <h5 id="index_reader" class="discrete">Index reader</h5>
 <div class="paragraph">
 <p>The index reader is an internal component that provides access to the indexes to perform queries. As the index content changes, Infinispan needs to refresh the reader so that search results are up to date.
@@ -3731,7 +3748,7 @@ If you do not need data returned in queries as soon as it is written, you should
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-05-22 18:02:01 UTC
+Last updated 2024-05-23 12:36:56 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
