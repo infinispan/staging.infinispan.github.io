@@ -1858,6 +1858,7 @@ Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes i
   "transactional": false,
   "secured": false,
   "has_remote_backup": false,
+  "tracing": true,
   "indexing_in_progress": false,
   "statistics": false,
   "mode" : "DIST_SYNC",
@@ -1901,6 +1902,9 @@ Add the <code>ignoreMutable=true</code> parameter to ignore mutable attributes i
 </li>
 <li>
 <p><code>secured</code> true if the cache is secured.</p>
+</li>
+<li>
+<p><code>tracing</code> true if the cache has tracing enabled.</p>
 </li>
 <li>
 <p><code>has_remote_backup</code> true if the cache has remote backups.</p>
@@ -2730,6 +2734,7 @@ cache, as in the following example:</p>
   "secured": false,
   "indexed": true,
   "has_remote_backup": true,
+  "tracing": false,
   "health":"HEALTHY",
   "rebalancing_enabled": true
 }, {
@@ -2743,6 +2748,7 @@ cache, as in the following example:</p>
   "secured": false,
   "indexed": true,
   "has_remote_backup": true,
+  "tracing": true,
   "health":"HEALTHY",
   "rebalancing_enabled": false
 }]</code></pre>
@@ -4620,6 +4626,7 @@ Information about caches with security authorization is available only to users 
         "LON",
         "NYC"
     ],
+    "tracing": true,
     "rebalancing_enabled": true
 }</code></pre>
 </div>
@@ -4685,6 +4692,9 @@ If cross-site replication is not configured, Infinispan returns an empty list.</
 </li>
 <li>
 <p><code>rebalancing_enabled</code> is true if rebalancing is enabled. Fetching this property might fail on the server. In that case the property won&#8217;t be present in the payload.</p>
+</li>
+<li>
+<p><code>tracing_enabled</code> is true if tracing is enabled.</p>
 </li>
 </ul>
 </div>
@@ -7630,7 +7640,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-12 14:16:30 UTC
+Last updated 2024-06-12 17:11:06 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
