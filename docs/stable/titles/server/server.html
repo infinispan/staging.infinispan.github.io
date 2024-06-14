@@ -9046,7 +9046,7 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
   &lt;cache-container statistics="true"&gt;
     &lt;tracing collector-endpoint="http://localhost:4318"
              enabled="true"
-             exporter-protocol="OTLP"
+             exporter-protocol="otlp"
              service-name="infinispan-server"
              security="false" /&gt;
   &lt;/cache-container&gt;
@@ -9063,7 +9063,7 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
       "tracing" : {
         "collector-endpoint" : "http://localhost:4318",
         "enabled" : true,
-        "exporter-protocol" : "OTLP",
+        "exporter-protocol" : "otlp",
         "service-name" : "infinispan-server",
         "security" : false
       }
@@ -9081,8 +9081,8 @@ Monitoring cross-site latency metrics can help you to discover potential issues.
     tracing:
       collector-endpoint: "http://localhost:4318"
       enabled: true
-      exporter-protocol: "OTLP"
-      service-name: "infinispan-server"
+      exporter-protocol : "otlp"
+      service-name : "infinispan-server"
       security: false</code></pre>
 </div>
 </div>
@@ -9173,7 +9173,7 @@ not only cache scope.</p>
 <div class="title">XML</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-xml" data-lang="xml">&lt;replicated-cache&gt;
-    &lt;tracing enabled="true" categories="container cluster x-site persistence" /&gt;
+    &lt;tracing enabled="true" categories="container, cluster" /&gt;
 &lt;/replicated-cache&gt;</code></pre>
 </div>
 </div>
@@ -9184,12 +9184,7 @@ not only cache scope.</p>
   "distributed-cache": {
     "tracing": {
       "enabled" : true,
-      "categories": [
-        "container",
-        "cluster",
-        "x-site",
-        "persistence"
-      ]
+      "categories" : "container, cluster"
     }
   }
 }</code></pre>
@@ -9202,10 +9197,8 @@ not only cache scope.</p>
   tracing:
     enabled: true
     categories:
-      - "container"
-      - "cluster"
-      - "x-site"
-      - "persistence"</code></pre>
+      - container
+      - cluster</code></pre>
 </div>
 </div>
 <h4 id="enabledisable_tracing_at_runtime" class="discrete">Enable/disable tracing at runtime</h4>
@@ -13321,7 +13314,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-14 07:59:31 UTC
+Last updated 2024-04-18 11:25:44 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -1,4 +1,328 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-06-14T09:49:59+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">New video out! Highly available IAM with multi-site Keycloak deployments in the cloud</title><link href="https://infinispan.org/blog/2024/05/16/keycloak-infinispan-secret-sauce" rel="alternate" type="text/html" title="New video out! Highly available IAM with multi-site Keycloak deployments in the cloud" /><published>2024-05-16T02:00:00+02:00</published><updated>2024-05-16T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/05/16/keycloak-infinispan-video</id><content type="html" xml:base="https://infinispan.org/blog/2024/05/16/keycloak-infinispan-secret-sauce"><![CDATA[<div class="paragraph">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-06-14T17:45:45+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2024/06/10/infinispan-15-queries" rel="alternate" type="text/html" title="Infinispan 15 indexing &amp;amp; query news" /><published>2024-06-10T02:00:00+02:00</published><updated>2024-06-10T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/06/10/infinispan-15-queries</id><content type="html" xml:base="https://infinispan.org/blog/2024/06/10/infinispan-15-queries"><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>A short while back we released Infinispan 15 which delivered many improvements to the query API. This blog is an in-depth dive into some of these:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#rest_projections">Rest queries with projections</a>: more projection types are supported using the REST API.</p>
+</li>
+<li>
+<p><a href="#continuous-queries">Query cache API</a>: regular and continuous queries can be defined directly from the cache API.</p>
+</li>
+<li>
+<p><a href="#filter-elements">Filter elements for kNN queries</a>: it is now possible to filter out the set of entities on which to apply a kNN-vector search.</p>
+</li>
+<li>
+<p><a href="#index-query-by-keys">Index by keys - query by keys</a>: indexes can be defined also on the keys, not only on the values, so that we can query also the keys values.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rest_projections">Rest queries with projections</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Recently we introduced score and version projections, which are added to the already available entity and field projections.</p>
+</div>
+<div class="paragraph">
+<p>The same projections are now available using the REST query API.</p>
+</div>
+<div class="paragraph">
+<p>Following an example of entity, query and result:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed(index = "play")
+public class Game {
+
+   private final String name;
+   private final String description;
+
+   @ProtoFactory
+   public Game(String name, String description) {
+      this.name = name;
+      this.description = description;
+   }
+
+   @Keyword(projectable = true, sortable = true)
+   @ProtoField(1)
+   public String getName() {
+      return name;
+   }
+
+   @Text
+   @ProtoField(2)
+   public String getDescription() {
+      return description;
+   }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">select g, g.description, version(g), score(g) from Game g where g.description : 'bla3'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+    "hit_count": 1,
+    "hit_count_exact": true,
+    "hits": [
+        {
+            "hit": {
+                "version()": 7,
+                "description": "bla bla3",
+                "*": {
+                    "_type": "Game",
+                    "name": "bla3",
+                    "description": "bla bla3"
+                },
+                "score()": 0.90565
+            }
+        }
+    ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case we have requested the version projection using the projection function <code>version(g)</code>
+and receiving the corresponding result in the <code>version()</code> attribute of the returned <code>hit</code>.
+Similarly, a <code>score()</code> projection is produced.
+The special attribute <code>*</code> corresponds to the entity projection result, in which the special field <code>_type</code> corresponds to the type of the entity.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="continuous-queries">Query cache API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With Infinispan 15, both embedded and remote caches can be queried with the same API method <code>cache#query</code>.
+The use of the search factory to access the query APIs is no longer required and it is now deprecated.
+Here is an example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Query&lt;Person&gt; query = myCache.query("FROM space.Person WHERE name = 'user1' AND age &gt; 20");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>From this point forward we will use the usual API to configure and run the query. For instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">query.startOffset(10);
+query.maxResults(10);
+QueryResult&lt;Person&gt; = query.execute();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly, it is possible to get a continuous query instance (both for remote and embedded cache),
+using the method <code>cache#continuousQuery</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ContinuousQuery&lt;Integer, Person&gt; continuousQuery = myCache.continuousQuery();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>From which as usual it will be possible to define the continuous callback:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">continuousQuery.addContinuousQueryListener(query, new ContinuousQueryListener&lt;&gt;() {
+
+      @Override
+      public void resultJoining(Integer key, Object value) {
+         // handle entity creations
+      }
+      @Override
+      public void resultUpdated(Integer key, Object value) {
+         // handle entry updates
+      }
+      @Override
+      public void resultLeaving(Integer key) {
+         // handle entry leavings
+      }
+   });</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="filter-elements">Filter elements for kNN queries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>kNN queries can be run filtering the population on which to apply the search.
+A kNN filter is defined using any kind of predicate (included boolean expressions) provided by the Infinispan query language.</p>
+</div>
+<div class="paragraph">
+<p>For instance, let&#8217;s consider the following entity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed
+public class Item {
+
+   private String code;
+   private float[] floatVector;
+   private String description;
+
+   @ProtoFactory
+   public Item(String code, float[] floatVector, String description) {
+      this.code = code;
+      this.floatVector = floatVector;
+      this.description = description;
+   }
+
+   @Keyword
+   @ProtoField(1)
+   public String getCode() {
+      return code;
+   }
+
+   @Vector(dimension = 3)
+   @ProtoField(2)
+   public float[] getFloatVector() {
+      return floatVector;
+   }
+
+   @Text
+   @ProtoField(3)
+   public String getDescription() {
+      return description;
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Suppose that we want to limit the vector search only to record with the word <code>cat</code> in the description. We can do like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Query&lt;Object[]&gt; query = remoteCache.query(
+      "select score(i), i from Item i where i.floatVector &lt;-&gt; [:a]~:k filtering i.description : 'cat'");
+query.setParameter("a", new float[]{7.0f, 7.0f, 7.0f});
+query.setParameter("k", 3);
+
+List&lt;Object[]&gt; hits = query.list();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is example shows a combination of full text search and vector search.</p>
+</div>
+<div class="paragraph">
+<p>Boolean composite predicates are also supported.
+In the following we will limit the search only to the items having the term <code>cat</code> in their description and having code <code>w739</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Query&lt;Object[]&gt; query = remoteCache.query(
+      "select score(i), i from Item i where i.floatVector &lt;-&gt; [:a]~:k filtering (i.description : 'cat' or i.code : 'w739')");
+query.setParameter("a", new float[]{7.0f, 7.0f, 7.0f});
+query.setParameter("k", 3);
+
+List&lt;Object[]&gt; hits = query.list();</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="index-query-by-keys">Index by keys - query by keys</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In case of complex keys, e.g., keys that are entities themselves, it is now possible to define indexes on the keys as well.</p>
+</div>
+<div class="paragraph">
+<p>Once this is done, we will be able to run queries targeting fields from both keys and values,
+on both projections and selections.</p>
+</div>
+<div class="paragraph">
+<p>As an example let&#8217;s consider a cache having keys of the type <code>PlaceKey</code> and values of type <code>Place</code>.
+A possible indexing mapping to enable the index by the keys is the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed
+public class PlaceKey {
+
+   private Integer row;
+   private Integer column;
+
+   @ProtoFactory
+   public StructureKey(Integer row, Integer column) {
+      this.row = row;
+      this.column = column;
+   }
+
+   @Basic(projectable = true, sortable = true)
+   @ProtoField(2)
+   public Integer getRow() {
+      return row;
+   }
+
+   @Basic(projectable = true, sortable = true)
+   @ProtoField(3)
+   public Integer getColumn() {
+      return column;
+   }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed(keyEntity = "model.PlaceKey")
+public class Place {
+
+   private final String code;
+   private final String description;
+
+   @ProtoFactory
+   public Structure(String code, String description) {
+      this.code = code;
+      this.description = description;
+   }
+
+   @ProtoField(1)
+   @Basic
+   public String getCode() {
+      return code;
+   }
+
+   @ProtoField(2)
+   @Text
+   public String getDescription() {
+      return description;
+   }
+
+   @ProtoSchema(includeClasses = { Place.class, PlaceKey.class }, schemaPackageName = "model")
+   public interface StructureSchema extends GeneratedSchema {
+      PlaceSchema INSTANCE = new PlaceSchemaImpl();
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that the type of the key must be declared in the main entity definition using the <code>keyEntity</code> attribute of
+the <code>@Indexing</code> annotation.</p>
+</div>
+<div class="paragraph">
+<p>After that it is possible to search for all the cache entries having the field <code>column</code> in their keys equals to <code>77</code> and
+containing the term <code>cat</code> in the field <code>description</code> of their values, projecting the field <code>row</code> of the keys and the field <code>code</code>
+of the value, using for instance the following query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">RemoteCache&lt;PlaceKey, Place&gt; cache = remoteCacheManager.getCache();
+Query&lt;Object[]&gt; query = cache.query("select p.key.row, p.code from model.Place p where p.key.column = 77 and p.description : 'cat'");
+List&lt;Object[]&gt; list = query.list();</code></pre>
+</div>
+</div>
+</div>
+</div>]]></content><author><name>Fabio Massimo Ercoli</name></author><category term="search" /><category term="vector" /><category term="score" /><category term="knn" /><category term="indexing" /><category term="embeddings" /><summary type="html"><![CDATA[A short while back we released Infinispan 15 which delivered many improvements to the query API. This blog is an in-depth dive into some of these:]]></summary></entry><entry><title type="html">New video out! Highly available IAM with multi-site Keycloak deployments in the cloud</title><link href="https://infinispan.org/blog/2024/05/16/keycloak-infinispan-secret-sauce" rel="alternate" type="text/html" title="New video out! Highly available IAM with multi-site Keycloak deployments in the cloud" /><published>2024-05-16T02:00:00+02:00</published><updated>2024-05-16T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/05/16/keycloak-infinispan-video</id><content type="html" xml:base="https://infinispan.org/blog/2024/05/16/keycloak-infinispan-secret-sauce"><![CDATA[<div class="paragraph">
 <p>The Infinispan team is excited to announce that the video of the acclaimed and
 highly rated talk at Devoxx France about Keycloak and Infinispan has been published.</p>
 </div>
@@ -1742,65 +2066,4 @@ which can be handled with Keycloak. Run the
 to test it.</p>
 </div>
 </div>
-</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><summary type="html"><![CDATA[This article shows you how to secure your Infinispan cluster, protecting both cluster management and data access in various Infinispan caches]]></summary></entry><entry><title type="html">Infinispan 15.0.0.Dev06</title><link href="https://infinispan.org/blog/2023/12/14/infinispan-15dev06" rel="alternate" type="text/html" title="Infinispan 15.0.0.Dev06" /><published>2023-12-14T01:00:00+01:00</published><updated>2023-12-14T01:00:00+01:00</updated><id>https://infinispan.org/blog/2023/12/14/infinispan-15.0.0.Dev06</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/14/infinispan-15dev06"><![CDATA[<div class="sect1">
-<h2 id="redis-endpoint">Redis endpoint</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The Redis endpoint now implements most of the core Redis commands and data structures (strings, sets, lists, hashes and sorted sets), as well as implementing
-clustering and CRC16 slots.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="knn-vector-search">kNN Vector search</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Infinispan can now perform indexed kNN vector searches. See our recent <a href="https://infinispan.org/blog/2023/12/13/infinispan-vector-search">blog post</a> for more information.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="infinispan-web-console">Infinispan Web Console</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The console has gained an access management section that lets you create, update, and delete roles, as well as assign access to principal mappers.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="graalvm-feature">GraalVM feature</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>A GraalVM native-image <a href="https://www.graalvm.org/sdk/javadoc/org/graalvm/nativeimage/hosted/Feature.html">Feature</a> is now available via the dedicated
-modules <code>infinispan-hotrod-graalvm</code> and <code>infinispan-embedded-graalvm</code>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="hibernate-orm-6-3-2lc">Hibernate ORM 6.3 2LC</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Our second-level cache provider now supports Hibernate ORM 6.3.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="jcache-is-back">JCache is back!</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>While working on the Jakarta migration, we temporarily removed the JCache provider because of its optional dependency on CDI conflicting with the migration to Jakarta EE.
-As of 15.0.0.Dev06, the JCache component is back, albeit without the CDI integration.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="when-is-the-final-release-coming">When is the Final release coming?</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>We hope to have the final release of Infinispan 15 ready for consumption by the end of the year and we will be making regular development releases.</p>
-</div>
-<div class="paragraph">
-<p>Get them from our <a href="https://infinispan.org/download/">download page</a>.]</p>
-</div>
-</div>
-</div>]]></content><author><name>Tristan Tarrant</name></author><category term="release" /><category term="development" /><summary type="html"><![CDATA[Redis endpoint]]></summary></entry></feed>
+</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><summary type="html"><![CDATA[This article shows you how to secure your Infinispan cluster, protecting both cluster management and data access in various Infinispan caches]]></summary></entry></feed>
