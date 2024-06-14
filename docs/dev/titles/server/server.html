@@ -8799,7 +8799,7 @@ class InfinispanConnection:
     def __init__(self, server: str = 'http://localhost:11222', cache_manager: str = 'default',
                  auth: tuple = ('admin', 'change_me')) -&gt; None:
         super().__init__()
-        self.__url = f'{server}/rest/v2/cache-managers/{cache_manager}/x-site/backups/'
+        self.__url = f'{server}/rest/v2/container/x-site/backups/'
         self.__auth = auth
         self.__headers = {
             'accept': 'application/json'
@@ -11136,7 +11136,7 @@ Starting Infinispan Server automatically instantiates the Cache Manager so you c
 </dd>
 <dt class="hdlist1">REST</dt>
 <dd>
-<p>Open <code>127.0.0.1:11222/rest/v2/cache-managers/default/</code> in any browser.</p>
+<p>Open <code>127.0.0.1:11222/rest/v2/container/</code> in any browser.</p>
 </dd>
 </dl>
 </div>
@@ -13280,7 +13280,7 @@ configuration, which means the root configuration is used instead:</p>
 <p>Invoke a <code>GET</code> request to retrieve cluster health.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>GET /rest/v2/cache-managers/{cacheManagerName}/health</code></pre>
+<pre class="highlight"><code>GET /rest/v2/container/health</code></pre>
 </div>
 </div>
 </li>
@@ -13306,7 +13306,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>GET /rest/v2/cache-managers/{cacheManagerName}/health/status</code></pre>
+<pre class="highlight nowrap"><code>GET /rest/v2/container/health/status</code></pre>
 </div>
 </div>
 </td>
@@ -13345,7 +13345,7 @@ configuration, which means the root configuration is used instead:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-14 07:56:13 UTC
+Last updated 2024-06-14 12:31:59 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
