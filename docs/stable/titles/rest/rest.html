@@ -5361,21 +5361,6 @@ operation completes.</p>
 <code>{restoreName}</code> is for tracking restore progress, and is independent of the name of
 backup file being restored.</p>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>You can restore resources only if the container name in the backup archive
-matches <code>{cacheManagerName}</code>.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>POST /rest/v2/container/restores/{restoreName}</code></pre>
@@ -5541,7 +5526,7 @@ failed.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>GET /rest/v2/cache-managers/{cacheManagerName}/restores</code></pre>
+<pre class="highlight nowrap"><code>GET /rest/v2/container/restores</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -7630,7 +7615,7 @@ public class RestExample {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-14 16:22:12 UTC
+Last updated 2024-06-14 16:27:45 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
