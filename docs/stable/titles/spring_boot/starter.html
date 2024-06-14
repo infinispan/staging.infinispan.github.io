@@ -612,14 +612,11 @@ System.out.println("Received value from cache: " + cacheManager.getCache("testCa
 <div class="sect2">
 <h3 id="configuring-remotecm-bean_embedded"><a class="anchor" href="#configuring-remotecm-bean_embedded"></a>1.2. Using the reactive mode with Reactor</h3>
 <div class="paragraph">
-<p>Since Spring 6.1, reactive mode is supported to make use of caching withing
-reactive applications.
-If you are using <code>spring-boot-starter-webflux</code>, your application may block.
-To enable the Infinispan reactive driver, you need to specify the following property
-in the <code>application.properties</code>.</p>
+<p>Starting with Spring 6.1, reactive mode is supported to make use of caching within reactive applications.
+If you use <code>spring-boot-starter-webflux</code>, your application may block.</p>
 </div>
 <div class="paragraph">
-<p>+</p>
+<p>To enable the Infinispan reactive driver, specify the following property in <code>application.properties</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -789,14 +786,11 @@ public YourClassName(RemoteCacheManager cacheManager) {
 <div class="sect2">
 <h3 id="configuring-remotecm-bean_remote"><a class="anchor" href="#configuring-remotecm-bean_remote"></a>2.2. Using the reactive mode with Reactor</h3>
 <div class="paragraph">
-<p>Since Spring 6.1, reactive mode is supported to make use of caching withing
-reactive applications.
-If you are using <code>spring-boot-starter-webflux</code>, your application may block.
-To enable the Infinispan reactive driver, you need to specify the following property
-in the <code>application.properties</code>.</p>
+<p>Starting with Spring 6.1, reactive mode is supported to make use of caching within reactive applications.
+If you use <code>spring-boot-starter-webflux</code>, your application may block.</p>
 </div>
 <div class="paragraph">
-<p>+</p>
+<p>To enable the Infinispan reactive driver, specify the following property in <code>application.properties</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1215,7 +1209,7 @@ To use Spring Session, you must first create a Infinispan cache.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-14 16:27:45 UTC
+Last updated 2024-06-14 17:58:53 UTC
 </div>
 </div>
 <script type="text/x-mathjax-config">
