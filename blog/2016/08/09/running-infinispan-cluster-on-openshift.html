@@ -105,13 +105,16 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="running-infinispan-cluster-on-openshift">Running Infinispan cluster on OpenShift</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>Did you know that it&#8217;s extremely easy to run Infinispan in
 <a href="https://www.openshift.com/">OpenShift</a>? Infinispan 9.0.0.Alpha4 adds out
 of the box support for OpenShift (and Kubernetes) discovery!</p>
 </div>
-<div class="sect4">
-<h5 id="our-goal">Our goal</h5>
+<div class="sect2">
+<h3 id="our-goal">Our goal</h3>
 <div class="paragraph">
 <p>We&#8217;d like to build an Infinispan cluster on top of OpenShift and expose
 a <em>Service</em> for it (you may think about <em>Services</em> as Load Balancers).
@@ -122,8 +125,8 @@ we will use REST interface to PUT and GET some data from the cluster.</p>
 <p><a href="https://4.bp.blogspot.com/-l9FMkQOGKDQ/V6Q5tFuHkSI/AAAAAAAAHFA/J7eiuzoh3ksnpZ7FGMcixeRVhpgn7-qVgCLcB/s1600/Infinispan%2B%252B%2BOpenShift.png"><span class="image"><img src="https://4.bp.blogspot.com/-l9FMkQOGKDQ/V6Q5tFuHkSI/AAAAAAAAHFA/J7eiuzoh3ksnpZ7FGMcixeRVhpgn7-qVgCLcB/s320/Infinispan%2B%252B%2BOpenShift.png" alt="image" width="240" height="320"></span></a></p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="accessing-the-openshift-cloud">Accessing the OpenShift cloud</h5>
+<div class="sect2">
+<h3 id="accessing-the-openshift-cloud">Accessing the OpenShift cloud</h3>
 <div class="paragraph">
 <p>Of course before playing with Infinispan, you will need an OpenShift
 cluster. There are
@@ -148,8 +151,8 @@ in your $PATH. I usually copy such things into my '/usr/bin' directory
 project has been automatically set to 'myproject'. </p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="spinning-an-infinispan-cluster">Spinning an Infinispan cluster</h5>
+<div class="sect2">
+<h3 id="spinning-an-infinispan-cluster">Spinning an Infinispan cluster</h3>
 <div class="paragraph">
 <p>The first step is to create an Infinispan app:</p>
 </div>
@@ -194,8 +197,8 @@ the OpenShift web console or by using 'oc get pods' and 'oc logs'
 commands:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="accessing-the-cluster">Accessing the cluster</h5>
+<div class="sect2">
+<h3 id="accessing-the-cluster">Accessing the cluster</h3>
 <div class="paragraph">
 <p>In order to access the Infinispan cluster from the outside world we need
 a Route:</p>
@@ -214,8 +217,8 @@ configuration:</p>
 </ul>
 </div>
 </div>
-<div class="sect4">
-<h5 id="testing-the-setup">Testing the setup</h5>
+<div class="sect2">
+<h3 id="testing-the-setup">Testing the setup</h3>
 <div class="paragraph">
 <p>You can easily see how to access the cluster by describing the Route:</p>
 </div>
@@ -223,15 +226,15 @@ configuration:</p>
 <p>Now let&#8217;s try to play with the data:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="cleaning-up">Cleaning up</h5>
+<div class="sect2">
+<h3 id="cleaning-up">Cleaning up</h3>
 <div class="paragraph">
 <p>Finally, when you are done with experimenting, you can remove everything
 using 'oc delete' command:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="conclusion">Conclusion</h5>
+<div class="sect2">
+<h3 id="conclusion">Conclusion</h3>
 <div class="paragraph">
 <p>Running Infinispan cluster inside an OpenShift cloud is really simple.
 Just 3 steps to remember:</p>
@@ -252,6 +255,8 @@ other cluster members ('oc edit dc/infinispan-server')</p>
 </div>
 <div class="paragraph">
 <p>Happy scaling!</p>
+</div>
+</div>
 </div>
 </div>
           

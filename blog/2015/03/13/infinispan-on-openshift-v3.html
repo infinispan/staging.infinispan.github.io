@@ -105,7 +105,10 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="infinispan-on-openshift-v3">Infinispan on Openshift v3</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>Openshift v3 is the open source next generation of Paas, where
 applications run on <a href="https://www.docker.com/">Docker</a> containers and are
 orchestrated/controlled/scheduled by
@@ -115,12 +118,8 @@ orchestrated/controlled/scheduled by
 <p>In this post I&#8217;ll show how to create an Infinispan cluster on Openshift
 v3 and resize it with a snap of a finger.</p>
 </div>
-<div class="sect3">
-<h4 id="installing-openshift-v3">Installing Openshift v3</h4>
-
-</div>
-<div class="sect3">
-<h4 id=""> </h4>
+<div class="sect2">
+<h3 id="installing-openshift-v3">Installing Openshift v3</h3>
 <div class="paragraph">
 <p>Openshift v3 has not been released yet, so I&#8217;m going to use the code
 from <a href="https://github.com/openshift/origin">origin</a>.
@@ -147,12 +146,8 @@ number of nodes:</p>
 should be able to see 3 instances running:</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="-2"> </h4>
-
-</div>
-<div class="sect3">
-<h4 id="creating-the-infinispan-template">Creating the Infinispan template</h4>
+<div class="sect2">
+<h3 id="creating-the-infinispan-template">Creating the Infinispan template</h3>
 <div class="paragraph">
 <p>The following template defines a 2 node Infinispan cluster communicating
 via TCP, and discovery done using the
@@ -193,8 +188,8 @@ pods (consumers).</p>
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="applying-the-template">Applying the template</h4>
+<div class="sect2">
+<h3 id="applying-the-template">Applying the template</h3>
 <div class="paragraph">
 <p>To apply the template via cmd line:</p>
 </div>
@@ -205,8 +200,8 @@ registry. In the meantime, to inspect the pods, along with their
 containers and statuses:</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="resizing-the-cluster">Resizing the cluster</h4>
+<div class="sect2">
+<h3 id="resizing-the-cluster">Resizing the cluster</h3>
 <div class="paragraph">
 <p>Changing the number of pods (and thus the number of nodes in the
 Infinispan cluster) is a simple matter of manipulating the number of
@@ -223,6 +218,8 @@ Openshift in the
 <a href="http://docs.openshift.org/latest/welcome/index.html#">project
 documentation</a> and try out other
 <a href="https://github.com/openshift/origin/tree/master/examples">samples</a>.</p>
+</div>
+</div>
 </div>
 </div>
           

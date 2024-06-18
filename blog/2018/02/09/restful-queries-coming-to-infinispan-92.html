@@ -105,7 +105,10 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="restful-queries-coming-to-infinispan-9-2">RESTful queries coming to Infinispan 9.2</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>One of the interesting features in the upcoming Infinispan 9.2 release
 is the possibility to execute queries over the REST endpoint, enabling
 users to take advantage of the easy-to-use and expressiveness of the
@@ -125,8 +128,8 @@ sample app from scratch!</p>
 </div>
 <div class="sect2">
 <h3 id="sample-app">Sample app</h3>
-<div class="sect4">
-<h5 id="running-the-server">Running the server</h5>
+<div class="sect3">
+<h4 id="running-the-server">Running the server</h4>
 <div class="paragraph">
 <p>We start by
 <a href="https://github.com/jboss-dockerfiles/infinispan/tree/master/server">running</a>
@@ -138,8 +141,8 @@ password 'user' and the REST port 8080 mapped to localhost. TIP: if you
 run more than one container, they&#8217;ll form a cluster automatically.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="creating-an-indexed-cache">Creating an indexed cache</h5>
+<div class="sect3">
+<h4 id="creating-an-indexed-cache">Creating an indexed cache</h4>
 <div class="paragraph">
 <p>Next step is to create an indexed cache called 'pokemon'. We make use of
 the CLI  (Command Line Interface) to create this cache. In the future,
@@ -148,8 +151,8 @@ able to create cache with arbitrary configuration using REST, but for
 now we execute a CLI recipe:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="creating-the-schema">Creating the schema</h5>
+<div class="sect3">
+<h4 id="creating-the-schema">Creating the schema</h4>
 <div class="paragraph">
 <p>In order to be able to query, we need to define a protobuf schema for
 our data. The schema follows the Protobuf 2 format (Protobuf 3 support
@@ -166,14 +169,14 @@ will recognize some of those pseudo annotations we are using here: they
 resemble closely their counterpart.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="registering-the-schema">Registering the schema</h5>
+<div class="sect3">
+<h4 id="registering-the-schema">Registering the schema</h4>
 <div class="paragraph">
 <p>Once we have our schema, we can easily register it via REST:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="populating-the-cache">Populating the cache</h5>
+<div class="sect3">
+<h4 id="populating-the-cache">Populating the cache</h4>
 <div class="paragraph">
 <p>We&#8217;re now ready to put some data in the cache. As mentioned earlier,
 ingesting can be done by sending JSON documents directly. Once
@@ -193,8 +196,8 @@ conforms to our schema:</p>
 <p>we can retrieve content by key as JSON:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="querying">Querying</h5>
+<div class="sect3">
+<h4 id="querying">Querying</h4>
 <div class="paragraph">
 <p>The new query endpoint can be called with an "action" parameter named
 "search", after the cache name. The simplest query, which returns all
@@ -238,10 +241,6 @@ count(p.name) from Pokemon p group by generation</a></p>
 </div>
 <div class="sect2">
 <h3 id="conclusion">Conclusion</h3>
-
-</div>
-<div class="sect2">
-<h3 id=""> </h3>
 <div class="paragraph">
 <p>Infinispan 9.2 makes it easier to quickly ingest and query datasets
 using the ubiquitous JSON format, without sacrificing type safety and
@@ -260,6 +259,8 @@ populate the whole dataset can be found at
 <div class="paragraph">
 <p>Finally, please try out this new feature in your own dataset and let us
 know how it goes!</p>
+</div>
+</div>
 </div>
 </div>
           

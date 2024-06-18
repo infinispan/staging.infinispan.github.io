@@ -105,7 +105,10 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="infinispan-docker-image-custom-configuration">Infinispan Docker image: custom configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>In the
 <a href="http://blog.infinispan.org/2016/07/improved-infinispan-docker-image.html">previous
 post</a> we introduced the improved Docker image for Infinispan and showed
@@ -117,12 +120,8 @@ clustered and domain mode servers.</p>
 than swapping the JGroups stack, covering cases like creating extra
 caches or using a pre-existent configuration file.</p>
 </div>
-<div class="sect3">
-<h4 id=""> </h4>
-
-</div>
-<div class="sect3">
-<h4 id="runtime-configuration-changes">Runtime configuration changes</h4>
+<div class="sect2">
+<h3 id="runtime-configuration-changes">Runtime configuration changes</h3>
 <div class="paragraph">
 <p>Since the Infinispan server is based on Wildfly, it also supports the
 Command Line Interface (CLI) to change configurations at runtime.</p>
@@ -157,12 +156,8 @@ dump the config to a local file called <em>config.xml.</em></p>
 via the CLI.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="-2"> </h4>
-
-</div>
-<div class="sect3">
-<h4 id="using-an-existent-configuration-file"> Using an existent configuration file</h4>
+<div class="sect2">
+<h3 id="using-an-existent-configuration-file">Using an existent configuration file</h3>
 <div class="paragraph">
 <p>Most of the time changing configuration at runtime is sufficient, but it
 may be desirable to run the server with an existent xml, or change
@@ -188,12 +183,8 @@ usually located at
 <em>/opt/jboss/infinispan-server/standalone/configuration</em>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="-3"> </h4>
-
-</div>
-<div class="sect3">
-<h4 id="conclusion">Conclusion</h4>
+<div class="sect2">
+<h3 id="conclusion">Conclusion</h3>
 <div class="paragraph">
 <p>And that&#8217;s all about custom configuration using the Infinispan Docker
 image.</p>
@@ -201,6 +192,8 @@ image.</p>
 <div class="paragraph">
 <p>Stay tuned for the next post where we&#8217;ll dive into multi-host clusters
 with the Infinispan Docker image.</p>
+</div>
+</div>
 </div>
 </div>
           

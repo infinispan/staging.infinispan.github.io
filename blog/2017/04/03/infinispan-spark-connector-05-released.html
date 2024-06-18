@@ -105,15 +105,18 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="infinispan-spark-connector-0-5-released">Infinispan Spark connector 0.5 released!</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>The Infinispan Spark connector offers seamless integration between
 Apache Spark and Infinispan Servers.
 Apart from supporting Infinispan 9.0.0.Final and Spark 2.1.0, this
 release brings many usability improvements, and support for another
 major Spark API.</p>
 </div>
-<div class="sect3">
-<h4 id="configuration-changes">Configuration changes</h4>
+<div class="sect2">
+<h3 id="configuration-changes">Configuration changes</h3>
 <div class="paragraph">
 <p>The connector no longer uses a <em>java.util.Properties</em> object to hold
 configuration, that&#8217;s now duty of
@@ -121,12 +124,8 @@ configuration, that&#8217;s now duty of
 Java and Scala friendly:</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id=""> </h4>
-
-</div>
-<div class="sect3">
-<h4 id="filtering-by-query-string">Filtering by query String</h4>
+<div class="sect2">
+<h3 id="filtering-by-query-string">Filtering by query String</h3>
 <div class="paragraph">
 <p>The previous version introduced the possibility of filtering an
 InfinispanRDD by providing a <em>Query</em> instance, that required going
@@ -137,8 +136,8 @@ cache.</p>
 <p>It&#8217;s now possible to simply use an Ickle query string:</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="improved-support-for-protocol-buffers">Improved support for Protocol Buffers</h4>
+<div class="sect2">
+<h3 id="improved-support-for-protocol-buffers">Improved support for Protocol Buffers</h3>
 <div class="paragraph">
 <p>Support for reading from a Cache with protobuf encoding was present in
 the previous connector version, but now it&#8217;s possible to also write
@@ -159,8 +158,8 @@ entity(ies) and will handle registration of schemas in the server prior
 to writing.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="splitter-is-now-pluggable">Splitter is now pluggable</h4>
+<div class="sect2">
+<h3 id="splitter-is-now-pluggable">Splitter is now pluggable</h3>
 <div class="paragraph">
 <p>The <em>Splitter</em> is the interface responsible to create one or more
 partitions from a Infinispan cache, being each partition related to one
@@ -169,32 +168,24 @@ using a custom implementation of Splitter allowing for different data
 partitioning strategies during the job processing.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="goodbye-scala-2-10">Goodbye Scala 2.10</h4>
+<div class="sect2">
+<h3 id="goodbye-scala-2-10">Goodbye Scala 2.10</h3>
 <div class="paragraph">
 <p>Scala 2.10 support was removed, Scala 2.11 is currently the only
 supported version. Scala 2.12 support will follow
 <a href="https://issues.apache.org/jira/browse/SPARK-14220" class="bare">https://issues.apache.org/jira/browse/SPARK-14220</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="-2"> </h4>
-
-</div>
-<div class="sect3">
-<h4 id="streams-with-initial-state">Streams with initial state</h4>
+<div class="sect2">
+<h3 id="streams-with-initial-state">Streams with initial state</h3>
 <div class="paragraph">
 <p>It is possible to configure the <em><span class="pl-en">InfinispanInputDStream</span></em> with
 an extra boolean parameter to receive the current cache state as
 events.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="-3"> </h4>
-
-</div>
-<div class="sect3">
-<h4 id="dataset-support">Dataset support</h4>
+<div class="sect2">
+<h3 id="dataset-support">Dataset support</h3>
 <div class="paragraph">
 <p>The Infinispan Spark connector now ships with support for Spark&#8217;s
 Dataset API, with support for pushing down predicates, similar to
@@ -224,6 +215,8 @@ documentation</a> is the place to go. Also check the
 <a href="https://github.com/infinispan/infinispan-spark/tree/master/examples/twitter">twitter
 data processing sample</a> and to report bugs or request new features use
 the <a href="https://issues.jboss.org/projects/ISPRK">project JIRA</a>.</p>
+</div>
+</div>
 </div>
 </div>
           

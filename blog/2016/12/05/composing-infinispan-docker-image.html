@@ -105,7 +105,10 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="composing-the-infinispan-docker-image">Composing the Infinispan Docker image</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>In the
 <a href="http://blog.infinispan.org/2016/10/infinispan-docker-image-custom.html">previous</a>
 post we showed how to manipulate the Infinispan Docker container
@@ -125,15 +128,7 @@ by an Oracle database as a cache store.</p>
 <a href="https://github.com/gustavonalle/infinispan-docker-compose">github</a>.</p>
 </div>
 <div class="sect2">
-<h3 id=""> </h3>
-
-</div>
-<div class="sect2">
 <h3 id="infinispan-with-oracle-jdbc-cache-store">Infinispan with Oracle JDBC cache store</h3>
-
-</div>
-<div class="sect2">
-<h3 id="-2"> </h3>
 <div class="paragraph">
 <p>In order to have a cache with persistence with Oracle, we need to do
 some configuration: configure the driver in the server, create the data
@@ -143,8 +138,8 @@ JDBC persistence.</p>
 <div class="paragraph">
 <p>Let&#8217;s take a look at each of those steps:</p>
 </div>
-<div class="sect4">
-<h5 id="obtaining-and-configuring-the-driver">Obtaining and configuring the driver</h5>
+<div class="sect3">
+<h4 id="obtaining-and-configuring-the-driver">Obtaining and configuring the driver</h4>
 <div class="paragraph">
 <p>The driver (ojdbc6.jar) should be
 <a href="http://www.oracle.com/technetwork/apps-tech/jdbc-112010-090769.html">downloaded</a>
@@ -155,8 +150,8 @@ and placed in the 'driver' folder of the sample project.</p>
 follows:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="configuring-the-data-source">Configuring the Data source</h5>
+<div class="sect3">
+<h4 id="configuring-the-data-source">Configuring the Data source</h4>
 <div class="paragraph">
 <p>The data source is configured in the "datasource" element of the server
 configuration file as shown below:</p>
@@ -166,14 +161,14 @@ configuration file as shown below:</p>
 driver:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="creating-the-cache">Creating the cache</h5>
+<div class="sect3">
+<h4 id="creating-the-cache">Creating the cache</h4>
 <div class="paragraph">
 <p>The last piece is to define a cache with the proper JDBC Store:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="putting-all-together">Putting all together</h5>
+<div class="sect3">
+<h4 id="putting-all-together">Putting all together</h4>
 <div class="paragraph">
 <p>From now on, without using Docker we&#8217;d be ready to download and install
 Oracle following the specific instructions for your OS, then download
@@ -200,8 +195,8 @@ centralized control of the containers, including custom configuration
 and parameters, and it also allows runtime interactions with each of the
 exposed services.</p>
 </div>
-<div class="sect4">
-<h5 id="composing-infinispan">Composing Infinispan</h5>
+<div class="sect3">
+<h4 id="composing-infinispan">Composing Infinispan</h4>
 <div class="paragraph">
 <p>Our Docker Compose file to assemble the application is given below:</p>
 </div>
@@ -227,8 +222,8 @@ folder holding our server xml configuration.</p>
 </ul>
 </div>
 </div>
-<div class="sect4">
-<h5 id="launching">Launching</h5>
+<div class="sect3">
+<h4 id="launching">Launching</h4>
 <div class="paragraph">
 <p>To start the application, just execute</p>
 </div>
@@ -246,8 +241,8 @@ the log output for "Infinispan Server 8.2.5.Final (WildFly Core
 properly initialized.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="testing-it">Testing it</h5>
+<div class="sect3">
+<h4 id="testing-it">Testing it</h4>
 <div class="paragraph">
 <p>Let&#8217;s insert a value using the Rest endpoint from Infinispan and verify
 it was saved to the Oracle database:</p>
@@ -257,8 +252,8 @@ it was saved to the Oracle database:</p>
 Sqlplus:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="other-operations">Other operations</h5>
+<div class="sect3">
+<h4 id="other-operations">Other operations</h4>
 <div class="paragraph">
 <p>It&#8217;s also possible to increase and decrease the number of containers for
 each of the services:</p>
@@ -267,10 +262,6 @@ each of the services:</p>
 </div>
 <div class="sect2">
 <h3 id="a-thing-or-two-about-startup-order">A thing or two about startup order</h3>
-
-</div>
-<div class="sect2">
-<h3 id="-3"> </h3>
 <div class="paragraph">
 <p>When dealing with dependent containers in Docker based environments,
 it&#8217;s highly recommended to make the connection obtention between parties
@@ -319,6 +310,8 @@ Infinispan: the
 Twitter demo</a>, and the
 <a href="https://github.com/infinispan/infinispan-hadoop/tree/master/samples/flink">Infinispan+Apache
 Flink</a> demo.</p>
+</div>
+</div>
 </div>
 </div>
           

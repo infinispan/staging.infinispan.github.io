@@ -105,7 +105,10 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="new-functional-map-api-in-infinispan-8-introduction">New Functional Map API in Infinispan 8 - Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>In Infinispan 8.0.0.Beta3, we have a introduced a new experimental API
 for interacting with your data which takes advantage of the functional
 programming additions and improved asynchronous programming capabilities
@@ -192,8 +195,8 @@ interface to be used for as either a caching or data grid API.</p>
 Map API</a> is a distilled map­like asynchronous API which uses lambdas to
 interact with data.</p>
 </div>
-<div class="sect4">
-<h5 id="asynchronous-and-lazy">Asynchronous and Lazy</h5>
+<div class="sect3">
+<h4 id="asynchronous-and-lazy">Asynchronous and Lazy</h4>
 <div class="paragraph">
 <p>Being an asynchronous API, all methods that return a single result,
 return a
@@ -220,7 +223,6 @@ user’s perspective. T​raversable,​ being a lazy pull­-style API, can
 still be asynchronous underneath since the user can decide to work on
 the traversable at a later stage, and the Traversable implementation
 itself can decide when to compute those results.</p>
-</div>
 </div>
 <div class="sect4">
 <h5 id="lambda-transparency">Lambda transparency</h5>
@@ -297,6 +299,7 @@ comparisons not only based on value equality but based on metadata
 parameter equality such as version information, and you can send back
 previous value or boolean instances to signal whether the CAS­-like
 comparison succeeded.</p>
+</div>
 </div>
 </div>
 </div>
@@ -387,6 +390,8 @@ JCache offer.</p>
 </div>
 <div class="paragraph">
 <p>Galder</p>
+</div>
+</div>
 </div>
 </div>
           

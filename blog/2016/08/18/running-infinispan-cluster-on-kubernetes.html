@@ -105,7 +105,10 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div class="paragraph">
+          <div class="sect1">
+<h2 id="running-infinispan-cluster-on-kubernetes">Running Infinispan cluster on Kubernetes</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>In the
 <a href="http://blog.infinispan.org/2016/08/running-infinispan-cluster-on-openshift.html">previous
 post</a> we looked how to run Infinispan on OpenShift. Today, our goal is
@@ -119,8 +122,8 @@ but it&#8217;s also possible to use
 <a href="http://blog.infinispan.org/2016/07/improved-infinispan-docker-image.html">Gossip
 Router</a>.</p>
 </div>
-<div class="sect4">
-<h5 id="our-goal">Our goal</h5>
+<div class="sect2">
+<h3 id="our-goal">Our goal</h3>
 <div class="paragraph">
 <p>We&#8217;d like to build Infinispan cluster based on Kubernetes hosted locally
 (using <a href="https://github.com/kubernetes/minikube">Minikube</a>). We will expose
@@ -131,8 +134,8 @@ put data into the grid.</p>
 <p><a href="https://2.bp.blogspot.com/-SxPVOKzEEH8/V62_FFizzhI/AAAAAAAAHI8/ARH6rBWLOtwwibGis3djKZk9vCDAvFipgCLcB/s1600/Infinispan%2B%252B%2BKubernetes.png"><span class="image"><img src="https://2.bp.blogspot.com/-SxPVOKzEEH8/V62_FFizzhI/AAAAAAAAHI8/ARH6rBWLOtwwibGis3djKZk9vCDAvFipgCLcB/s320/Infinispan%2B%252B%2BKubernetes.png" alt="image" width="240" height="320"></span></a></p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="spinning-local-kubernetes-cluster">Spinning local Kubernetes cluster</h5>
+<div class="sect2">
+<h3 id="spinning-local-kubernetes-cluster">Spinning local Kubernetes cluster</h3>
 <div class="paragraph">
 <p>There are many ways to spin up a local Kubernetes cluster. One of my
 favorites is <a href="https://github.com/kubernetes/minikube">Minikube</a>. At first
@@ -151,8 +154,8 @@ to '/usr/bin'.</p>
 <p>We are ready to spin up Kubernetes:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="deploying-infinispan-cluster">Deploying Infinispan cluster</h5>
+<div class="sect2">
+<h3 id="deploying-infinispan-cluster">Deploying Infinispan cluster</h3>
 <div class="paragraph">
 <p>This time we&#8217;ll focus on automation, so there will be no 'kubectl edit'
 commands. Below is the yaml file for creating all necessary components
@@ -185,8 +188,8 @@ service type</a> which we will expose via Minikube in the next paragraph</p>
 <p>Save it somewhere on the disk and execute 'kubectl create' command:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="exposing-the-service-port">Exposing the service port</h5>
+<div class="sect2">
+<h3 id="exposing-the-service-port">Exposing the service port</h3>
 <div class="paragraph">
 <p>One of the
 <a href="https://github.com/kubernetes/minikube#known-issues">Minikube&#8217;s
@@ -203,21 +206,21 @@ following command:</p>
 <p>In order to obtain the Kubernetes node IP, use the following command:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="testing-the-setup">Testing the setup</h5>
+<div class="sect2">
+<h3 id="testing-the-setup">Testing the setup</h3>
 <div class="paragraph">
 <p>Testing is quite simple and the only thing to remember is to use the
 proper address - &lt;minikube_ip&gt;:&lt;node_port&gt;:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="clean-up">Clean up</h5>
+<div class="sect2">
+<h3 id="clean-up">Clean up</h3>
 <div class="paragraph">
 <p>Minikube has all-in-one command to do the clean up:</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="conclusion">Conclusion</h5>
+<div class="sect2">
+<h3 id="conclusion">Conclusion</h3>
 <div class="paragraph">
 <p>Kubernetes setup is almost identical to the OpenShift one but there are
 a couple of differences to keep in mind:</p>
@@ -241,6 +244,8 @@ with ReplicaSets</p>
 (hint - look into the
 <a href="http://blog.infinispan.org/2016/08/running-infinispan-cluster-on-openshift.html">previous
 post</a>).</p>
+</div>
+</div>
 </div>
 </div>
           
