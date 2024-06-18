@@ -105,7 +105,8 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div id="preamble">
+          <div class="sect1">
+<h2 id="lithops-hot-rod-storage-backend">Lithops Hot Rod storage backend</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We are very happy to announce a Hot Rod storage backend for <a href="https://lithops-cloud.github.io/">Lithops</a>, an open source framework for big data analytics
@@ -113,11 +114,8 @@ and embarrassingly parallel jobs, that provides an universal API for building pa
 The work was done in the context of the <a href="https://cloudbutton.eu">CloudButton</a> project, which aims to build a serverless platform for quickly deploying
 workloads to the cloud, but the advantages are available to everyone using Infinispan!</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="background">Background</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="background">Background</h3>
 <div class="imageblock">
 <div class="content">
 <img src="/assets/images/blog/lithops.png" alt="Lithops" width="252" height="205">
@@ -134,10 +132,8 @@ While the REST API is functional, it doesn&#8217;t offer all of the advantages t
 client-side intelligence to automatically locate the owner of an entry, thus avoiding extra network hops.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="the-new-hot-rod-python-client">The new Hot Rod Python client</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="the-new-hot-rod-python-client">The new Hot Rod Python client</h3>
 <div class="paragraph">
 <p>We used to have a Hot Rod Python client that lied in semi-abandoned state for a long time. We decided it was time to get back on track.
 The <a href="https://github.com/infinispan/python-client">Hot Rod Python client</a> repository has been completely overhauled with our brand new implementation, which
@@ -166,10 +162,8 @@ manager.stop()</code></pre>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="the-lithops-backend">The Lithops backend</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="the-lithops-backend">The Lithops backend</h3>
 <div class="paragraph">
 <p>Enabling the Lithops Hot Rod storage backend is very simple, as demonstrated by the code snippet below:</p>
 </div>
@@ -186,6 +180,7 @@ if __name__ == "__main__":
 
     print(st.get_object(bucket='mybucket',
                         key='test.txt'))</code></pre>
+</div>
 </div>
 </div>
 </div>
