@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-06-18T10:05:51+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2024/06/10/infinispan-15-queries" rel="alternate" type="text/html" title="Infinispan 15 indexing &amp;amp; query news" /><published>2024-06-10T02:00:00+02:00</published><updated>2024-06-10T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/06/10/infinispan-15-queries</id><content type="html" xml:base="https://infinispan.org/blog/2024/06/10/infinispan-15-queries"><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-06-18T10:17:44+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2024/06/10/infinispan-15-queries" rel="alternate" type="text/html" title="Infinispan 15 indexing &amp;amp; query news" /><published>2024-06-10T02:00:00+02:00</published><updated>2024-06-10T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/06/10/infinispan-15-queries</id><content type="html" xml:base="https://infinispan.org/blog/2024/06/10/infinispan-15-queries"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>A short while back we released Infinispan 15 which delivered many improvements to the query API. This blog is an in-depth dive into some of these:</p>
@@ -1276,7 +1276,8 @@ The Infinispan Team</p>
 </div>
 <div class="paragraph">
 <p>(*) What? You also noticed we changed the expected result for a test. Surely you can easily guess why&#8230;&#8203; if not just ask us on <a href="https://infinispan.zulipchat.com/#">Zulip</a>!</p>
-</div>]]></content><author><name>Vittorio Rigamonti</name></author><category term="demo" /><category term="use case" /><category term="resp" /><category term="redis" /><summary type="html"><![CDATA[As you may know Infinispan 15 extended its RESP compatibility implementing most of the command related to the principal data types (set, list, hashes, sorted set&#8230;&#8203;).]]></summary></entry><entry><title type="html">Infinispan Insights: Securing Infinispan with Keycloak</title><link href="https://infinispan.org/blog/2024/01/09/securing-infinispan-with-keycloak" rel="alternate" type="text/html" title="Infinispan Insights: Securing Infinispan with Keycloak" /><published>2024-01-09T01:00:00+01:00</published><updated>2024-01-09T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/01/09/infinispan-security-keycloak</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/09/securing-infinispan-with-keycloak"><![CDATA[<div id="preamble">
+</div>]]></content><author><name>Vittorio Rigamonti</name></author><category term="demo" /><category term="use case" /><category term="resp" /><category term="redis" /><summary type="html"><![CDATA[As you may know Infinispan 15 extended its RESP compatibility implementing most of the command related to the principal data types (set, list, hashes, sorted set&#8230;&#8203;).]]></summary></entry><entry><title type="html">Infinispan Insights, securing Infinispan with Keycloak</title><link href="https://infinispan.org/blog/2024/01/09/securing-infinispan-with-keycloak" rel="alternate" type="text/html" title="Infinispan Insights, securing Infinispan with Keycloak" /><published>2024-01-09T01:00:00+01:00</published><updated>2024-01-09T01:00:00+01:00</updated><id>https://infinispan.org/blog/2024/01/09/infinispan-security-keycloak</id><content type="html" xml:base="https://infinispan.org/blog/2024/01/09/securing-infinispan-with-keycloak"><![CDATA[<div class="sect1">
+<h2 id="infinispan-insights-securing-infinispan-with-keycloak">Infinispan Insights: Securing Infinispan with Keycloak</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This tutorial shows you how to secure your Infinispan cluster using Keycloak.
@@ -1299,11 +1300,8 @@ To understand the basics of Infinispan Security, check
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="infinispan-and-keycloak-in-a-nutshell">Infinispan and Keycloak in a nutshell</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="infinispan-and-keycloak-in-a-nutshell">Infinispan and Keycloak in a nutshell</h3>
 <div class="sect3">
 <h4 id="about-infinispan">About Infinispan</h4>
 <div class="paragraph">
@@ -1349,6 +1347,7 @@ and more.</p>
 <p>Infinispan provides several ways to handle authentication and user management.
 By default, the security realm is properties based. However, token based authentication is supported
 and Keycloak can be used for that purpose.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1734,7 +1733,8 @@ There are many other advanced features in Keycloak, this is just the most simple
 </div>
 </div>
 </div>
-</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><category term="keycloak" /><summary type="html"><![CDATA[This tutorial shows you how to secure your Infinispan cluster using Keycloak. To understand the basics of Infinispan Security, check this blog post before.]]></summary></entry><entry><title type="html">Infinispan Insights: Security basics and secured caches</title><link href="https://infinispan.org/blog/2023/12/20/infinispan-secured-caches" rel="alternate" type="text/html" title="Infinispan Insights: Security basics and secured caches" /><published>2023-12-20T01:00:00+01:00</published><updated>2023-12-20T01:00:00+01:00</updated><id>https://infinispan.org/blog/2023/12/20/infinispan-secured-caches</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/20/infinispan-secured-caches"><![CDATA[<div id="preamble">
+</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><category term="keycloak" /><summary type="html"><![CDATA[Infinispan Insights: Securing Infinispan with Keycloak]]></summary></entry><entry><title type="html">Infinispan Insights, security basics and secured caches</title><link href="https://infinispan.org/blog/2023/12/20/infinispan-secured-caches" rel="alternate" type="text/html" title="Infinispan Insights, security basics and secured caches" /><published>2023-12-20T01:00:00+01:00</published><updated>2023-12-20T01:00:00+01:00</updated><id>https://infinispan.org/blog/2023/12/20/infinispan-secured-caches</id><content type="html" xml:base="https://infinispan.org/blog/2023/12/20/infinispan-secured-caches"><![CDATA[<div class="sect1">
+<h2 id="infinispan-insights-security-basics-and-secured-caches">Infinispan Insights: Security basics and secured caches</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This article shows you how to secure your Infinispan cluster, protecting both cluster management and data
@@ -1756,11 +1756,8 @@ access in various Infinispan caches</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="security-in-a-nutshell">Security in a nutshell</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="security-in-a-nutshell">Security in a nutshell</h3>
 <div class="paragraph">
 <p>When we talk about security, there are two main things to consider: proving who you are (authentication) and deciding
 what you&#8217;re allowed to do (authorization). These tasks are managed by one or more security realms.</p>
@@ -1794,10 +1791,8 @@ providers such as <a href="https://www.keycloak.org/">Keycloak</a>.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="infinispan-server-security">Infinispan Server Security</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="infinispan-server-security">Infinispan Server Security</h3>
 <div class="paragraph">
 <p>To truly grasp the basics, the best method is hands-on experience.
 Infinispan 15.0 simplifies understanding authentication and authorization through a visual interface.</p>
@@ -1919,10 +1914,8 @@ or accessing the access management functionalities.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="secured-caches-in-infinispan">Secured Caches in Infinispan</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="secured-caches-in-infinispan">Secured Caches in Infinispan</h3>
 <div class="paragraph">
 <p>In Infinispan, it&#8217;s possible to create caches with data manipulation permissions restricted
 to specific roles.</p>
@@ -1978,10 +1971,8 @@ roles.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="going-further">Going further</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="going-further">Going further</h3>
 <div class="paragraph">
 <p>In this article, you&#8217;ve explored the interplay of permissions, roles, Infinispan Security,
 and the fundamentals of secured caches. Beyond these, Infinispan Security management offers a
@@ -1996,4 +1987,5 @@ which can be handled with Keycloak. Run the
 to test it.</p>
 </div>
 </div>
-</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><summary type="html"><![CDATA[This article shows you how to secure your Infinispan cluster, protecting both cluster management and data access in various Infinispan caches]]></summary></entry></feed>
+</div>
+</div>]]></content><author><name>Katia Aresti</name></author><category term="tutorial" /><category term="security" /><category term="rbac" /><category term="authentication" /><summary type="html"><![CDATA[Infinispan Insights: Security basics and secured caches]]></summary></entry></feed>

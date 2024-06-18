@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Infinispan Insights: Security basics and secured caches</title>
+  <title>Infinispan Insights, security basics and secured caches</title>
   <!-- <script id="adobe_dtm" src="//www.redhat.com/dtm.js" type="text/javascript"></script> -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,14 +82,14 @@
 <div class="component-slim full-width-bg dark-bg light-blue">
   <div class="grid-wrapper">
     <div class="width-12-12">
-      <a href="/blog">Blogs</a>  <i class="fas fa-chevron-right"></i> Infinispan Insights: Security basics and secured caches
+      <a href="/blog">Blogs</a>  <i class="fas fa-chevron-right"></i> Infinispan Insights, security basics and secured caches
     </div>
   </div>
 </div>
 
 <div class="post-page grid-wrapper">
   <div class="grid__item width-10-12 width-12-12-m doc-content">
-    <h1>Infinispan Insights: Security basics and secured caches</h1>
+    <h1>Infinispan Insights, security basics and secured caches</h1>
     <div class="post-date">December 20, 2023
       Tags: <a href="/blog/tag/tutorial">tutorial</a> <a href="/blog/tag/security">security</a> <a href="/blog/tag/rbac">rbac</a> <a href="/blog/tag/authentication">authentication</a> 
     </div>
@@ -105,7 +105,8 @@
         </div>
       </div>
       <div class="grid__item width-12-12">
-          <div id="preamble">
+          <div class="sect1">
+<h2 id="infinispan-insights-security-basics-and-secured-caches">Infinispan Insights: Security basics and secured caches</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This article shows you how to secure your Infinispan cluster, protecting both cluster management and data
@@ -127,11 +128,8 @@ access in various Infinispan caches</p>
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="security-in-a-nutshell">Security in a nutshell</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="security-in-a-nutshell">Security in a nutshell</h3>
 <div class="paragraph">
 <p>When we talk about security, there are two main things to consider: proving who you are (authentication) and deciding
 what you&#8217;re allowed to do (authorization). These tasks are managed by one or more security realms.</p>
@@ -165,10 +163,8 @@ providers such as <a href="https://www.keycloak.org/">Keycloak</a>.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="infinispan-server-security">Infinispan Server Security</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="infinispan-server-security">Infinispan Server Security</h3>
 <div class="paragraph">
 <p>To truly grasp the basics, the best method is hands-on experience.
 Infinispan 15.0 simplifies understanding authentication and authorization through a visual interface.</p>
@@ -290,10 +286,8 @@ or accessing the access management functionalities.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="secured-caches-in-infinispan">Secured Caches in Infinispan</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="secured-caches-in-infinispan">Secured Caches in Infinispan</h3>
 <div class="paragraph">
 <p>In Infinispan, it&#8217;s possible to create caches with data manipulation permissions restricted
 to specific roles.</p>
@@ -349,10 +343,8 @@ roles.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="going-further">Going further</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="going-further">Going further</h3>
 <div class="paragraph">
 <p>In this article, you&#8217;ve explored the interplay of permissions, roles, Infinispan Security,
 and the fundamentals of secured caches. Beyond these, Infinispan Security management offers a
@@ -365,6 +357,7 @@ Infinispan supports many authentication mechanisms, such as token based authenti
 which can be handled with Keycloak. Run the
 <a href="https://infinispan.org/tutorials/simple/simple_tutorials.html#secured_with_token_keycloak_remote-cache-tutorials">simple tutorial</a>
 to test it.</p>
+</div>
 </div>
 </div>
 </div>
