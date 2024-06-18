@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-06-14T17:45:45+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2024/06/10/infinispan-15-queries" rel="alternate" type="text/html" title="Infinispan 15 indexing &amp;amp; query news" /><published>2024-06-10T02:00:00+02:00</published><updated>2024-06-10T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/06/10/infinispan-15-queries</id><content type="html" xml:base="https://infinispan.org/blog/2024/06/10/infinispan-15-queries"><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://infinispan.org/feed.xml" rel="self" type="application/atom+xml" /><link href="https://infinispan.org/" rel="alternate" type="text/html" /><updated>2024-06-18T10:05:51+02:00</updated><id>https://infinispan.org/feed.xml</id><title type="html">Infinispan</title><subtitle>Infinispan is a distributed in-memory key/value data store with optional schema, available under the Apache License 2.0.</subtitle><entry><title type="html">Infinispan 15 indexing &amp;amp; query news</title><link href="https://infinispan.org/blog/2024/06/10/infinispan-15-queries" rel="alternate" type="text/html" title="Infinispan 15 indexing &amp;amp; query news" /><published>2024-06-10T02:00:00+02:00</published><updated>2024-06-10T02:00:00+02:00</updated><id>https://infinispan.org/blog/2024/06/10/infinispan-15-queries</id><content type="html" xml:base="https://infinispan.org/blog/2024/06/10/infinispan-15-queries"><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>A short while back we released Infinispan 15 which delivered many improvements to the query API. This blog is an in-depth dive into some of these:</p>
@@ -35,29 +35,13 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed(index = "play")
-public class Game {
-
-   private final String name;
-   private final String description;
-
-   @ProtoFactory
-   public Game(String name, String description) {
-      this.name = name;
-      this.description = description;
-   }
-
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Proto
+@Indexed(index = "play")
+public record Game(
    @Keyword(projectable = true, sortable = true)
-   @ProtoField(1)
-   public String getName() {
-      return name;
-   }
-
-   @Text
-   @ProtoField(2)
-   public String getDescription() {
-      return description;
-   }
+   String name,
+   @Text @ProtoField(2)
+   String description) {
 }</code></pre>
 </div>
 </div>
@@ -164,37 +148,15 @@ A kNN filter is defined using any kind of predicate (included boolean expression
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed
-public class Item {
-
-   private String code;
-   private float[] floatVector;
-   private String description;
-
-   @ProtoFactory
-   public Item(String code, float[] floatVector, String description) {
-      this.code = code;
-      this.floatVector = floatVector;
-      this.description = description;
-   }
-
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Proto
+@Indexed
+public record Item(
    @Keyword
-   @ProtoField(1)
-   public String getCode() {
-      return code;
-   }
-
+   String code,
    @Vector(dimension = 3)
-   @ProtoField(2)
-   public float[] getFloatVector() {
-      return floatVector;
-   }
-
+   float[] floatVector,
    @Text
-   @ProtoField(3)
-   public String getDescription() {
-      return description;
-   }
+   String description) {
 }</code></pre>
 </div>
 </div>
@@ -246,60 +208,28 @@ A possible indexing mapping to enable the index by the keys is the following:</p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed
-public class PlaceKey {
-
-   private Integer row;
-   private Integer column;
-
-   @ProtoFactory
-   public StructureKey(Integer row, Integer column) {
-      this.row = row;
-      this.column = column;
-   }
-
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Proto
+@Indexed
+public record PlaceKey(
    @Basic(projectable = true, sortable = true)
-   @ProtoField(2)
-   public Integer getRow() {
-      return row;
-   }
-
+   Integer row,
    @Basic(projectable = true, sortable = true)
-   @ProtoField(3)
-   public Integer getColumn() {
-      return column;
-   }
+   Integer column) {
 }</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Indexed(keyEntity = "model.PlaceKey")
-public class Place {
-
-   private final String code;
-   private final String description;
-
-   @ProtoFactory
-   public Structure(String code, String description) {
-      this.code = code;
-      this.description = description;
-   }
-
-   @ProtoField(1)
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Proto
+@Indexed(keyEntity = "model.PlaceKey")
+public record Place(
    @Basic
-   public String getCode() {
-      return code;
-   }
-
-   @ProtoField(2)
+   String code,
    @Text
-   public String getDescription() {
-      return description;
-   }
+   String description) {
 
-   @ProtoSchema(includeClasses = { Place.class, PlaceKey.class }, schemaPackageName = "model")
-   public interface StructureSchema extends GeneratedSchema {
+   @ProtoSchema(includeClasses = {Place.class, PlaceKey.class}, schemaPackageName = "model")
+   public interface PlaceSchema extends GeneratedSchema {
       PlaceSchema INSTANCE = new PlaceSchemaImpl();
    }
 }</code></pre>
